@@ -13,10 +13,34 @@
 
     <style name="ControlPanel">
         <item name="android:padding">10dp</item>
+        <item name="android:paddingStart">20dp</item>
+        <item name="android:paddingEnd">20dp</item>
         <item name="android:background">?attr/panel_color</item>
     </style>
 
     <style name="Background">
         <item name="android:background">?attr/background_image</item>
     </style>
+
+    <style name="MainText">
+        <item name="android:textSize">40sp</item>
+        <item name="android:backgroundTint">@color/black</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+    </style>
+
+    <style name="SecondaryText">
+        <item name="android:textSize">20sp</item>
+        <item name="android:backgroundTint">@color/grey_dark</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+    </style>
+
+    <style name="LinkText">
+        <item name="android:textSize">30sp</item>
+        <item name="android:backgroundTint">@color/blue</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+    </style>
+
 </resources>

@@ -1,5 +1,72 @@
 <resources>
+
+    //Global
     <string name="app_name">DIACompanion</string>
-    <string name="username">Username</string>
+    <string name="Next">Next</string>
+    <string name="Back">Back</string>
+    <string name="LogIn">Log in</string>
+    <string name="LogOut">Log out</string>
+
+    //Categories
+    <string name="SugarLevel">SugarLevel</string>
+    <string name="Insulin">Insulin</string>
+    <string name="Meal">Meal</string>
+    <string name="Workout">Workout</string>
+    <string name="Sleep">Sleep</string>
+    <string name="Weight">Weight</string>
+    <string name="Ketone">Ketone</string>
+
+    //Units of measurement
+    <string name="mmoll">mmol/l</string>
+    <string name="units">units</string>
+    <string name="kkal">kkal</string>
+    <string name="hours">h</string>
+
+    //----------------------------------------------------------------------------------------------
+    //Options
+    <string name="Account">Account</string>
+    <string name="AppType">App type</string>
+    <string name="Audio">Audio</string>
+    <string name="Notifications">Notifications</string>
+    <string name="Info">Info</string>
+    <string name="Help">Help</string>
+
+    //Account
+    <string name="Username">Username</string>
+    <string name="Password">Password</string>
+    <string name="Email">Email</string>
+    <string name="Phone">Phone</string>
+    <string name="FCs">FCs</string>
+    <string name="FirstName">First name</string>
+    <string name="LastName">Last name</string>
+    <string name="Patronymic">Patronymic</string>
+    <string name="BirthDate">Birth date</string>
+    <string name="Gender">Gender</string>
+    <string name="Height">Height</string>
+    <string name="AttendingDoctor">Attending doctor</string>
+    <string name="PregnancyStart">Date of the beginning of pregnancy</string>
+
+    //----------------------------------------------------------------------------------------------
+    //Fragments
+
+    //OnBoarding
+    <string name="OnBWelcome">Welcome to\nDIA Companion!</string>
+    <string name="OnBAboutApp">Our app is your indispensable assistant for health monitoring.
+        Please follow initial steps to setup your app.</string>
+    <string name="OnBLetsStart">Let\'s start!</string>
+    <string name="OnBSetupComplete">Setup complete!</string>
+    <string name="Finish">Finish</string>
+
+
+    //HomePage
     <string name="Analytics">Analytics</string>
+    <string name="Details">Details</string>
+    <string name="LastRecords">Last Records</string>
+    <string name="RecordsHistory">Records History</string>
+
+    //RecordsCategories
+    <string name="ChooseCategory">ChooseCategory</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
 </resources>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/onBoardingViewPager">
+
+    <fragment
+        android:id="@+id/homePage"
+        android:name="com.almazov.diacompanion.HomePage"
+        android:label="fragment_home_page"
+        tools:layout="@layout/fragment_home_page" >
+        <action
+            android:id="@+id/action_homePage_to_recordsCategories"
+            app:destination="@id/recordsCategories"
+            app:enterAnim="@anim/slide_in_up"
+            app:exitAnim="@anim/slide_out_up"
+            app:popEnterAnim="@anim/slide_in_down"
+            app:popExitAnim="@anim/slide_out_down" />
+    </fragment>
+    <fragment
+        android:id="@+id/recordsCategories"
+        android:name="com.almazov.diacompanion.RecordsCategories"
+        android:label="fragment_records_categories"
+        tools:layout="@layout/fragment_records_categories" />
+    <fragment
+        android:id="@+id/exportData"
+        android:name="com.almazov.diacompanion.ExportData"
+        android:label="fragment_export_data"
+        tools:layout="@layout/fragment_export_data" />
+    <fragment
+        android:id="@+id/sugarLevelAddRecord"
+        android:name="com.almazov.diacompanion.SugarLevelAddRecord"
+        android:label="fragment_sugar_level_add_record"
+        tools:layout="@layout/fragment_sugar_level_add_record" />
+    <fragment
+        android:id="@+id/mealAddRecord"
+        android:name="com.almazov.diacompanion.MealAddRecord"
+        android:label="fragment_meal_add_record"
+        tools:layout="@layout/fragment_meal_add_record" />
+    <fragment
+        android:id="@+id/onBoardingViewPager"
+        android:name="com.almazov.diacompanion.onboard.OnBoardingViewPager"
+        android:label="fragment_on_boarding_view_pager"
+        tools:layout="@layout/fragment_on_boarding_view_pager" >
+        <action
+            android:id="@+id/action_onBoardingViewPager_to_homePage"
+            app:destination="@id/homePage"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+</navigation>

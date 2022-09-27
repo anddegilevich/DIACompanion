@@ -4,4 +4,7 @@
     <attr name="panel_color" format="reference|color" />
     <attr name="button_color" format="reference|color" />
     <attr name="background_image" format="reference" />
+    <attr name="main_text_color" format="reference|color" />
+    <attr name="secondary_text_color" format="reference|color" />
+    <attr name="link_text_color" format="reference|color" />
 </resources>

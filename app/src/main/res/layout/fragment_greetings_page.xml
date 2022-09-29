@@ -35,7 +35,7 @@
 
     <TextView
         android:id="@+id/textView4"
-        style="@style/SecondaryText"
+        style="@style/SmallText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"

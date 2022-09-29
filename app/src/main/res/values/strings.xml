@@ -8,7 +8,7 @@
     <string name="LogOut">Log out</string>
 
     //Categories
-    <string name="SugarLevel">SugarLevel</string>
+    <string name="SugarLevel">Sugar level</string>
     <string name="Insulin">Insulin</string>
     <string name="Meal">Meal</string>
     <string name="Workout">Workout</string>
@@ -24,6 +24,7 @@
 
     //----------------------------------------------------------------------------------------------
     //Options
+    <string name="Options">Options</string>
     <string name="Account">Account</string>
     <string name="AppType">App type</string>
     <string name="Audio">Audio</string>
@@ -56,6 +57,7 @@
     <string name="OnBLetsStart">Let\'s start!</string>
     <string name="OnBSetupComplete">Setup complete!</string>
     <string name="Finish">Finish</string>
+    <string name="OnBEnterPersonalData">Please, enter your personal data</string>
 
 
     //HomePage

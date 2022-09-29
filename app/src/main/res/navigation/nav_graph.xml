@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/onBoardingViewPager">
+    app:startDestination="@id/homePage">
 
     <fragment
         android:id="@+id/homePage"
@@ -17,12 +17,32 @@
             app:exitAnim="@anim/slide_out_up"
             app:popEnterAnim="@anim/slide_in_down"
             app:popExitAnim="@anim/slide_out_down" />
+        <action
+            android:id="@+id/action_homePage_to_onBoardingViewPager"
+            app:destination="@id/onBoardingViewPager"
+            app:popUpTo="@id/homePage"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/recordsCategories"
         android:name="com.almazov.diacompanion.RecordsCategories"
         android:label="fragment_records_categories"
-        tools:layout="@layout/fragment_records_categories" />
+        tools:layout="@layout/fragment_records_categories" >
+        <action
+            android:id="@+id/action_recordsCategories_to_sugarLevelAddRecord"
+            app:destination="@id/sugarLevelAddRecord"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_recordsCategories_to_mealAddRecord"
+            app:destination="@id/mealAddRecord"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
     <fragment
         android:id="@+id/exportData"
         android:name="com.almazov.diacompanion.ExportData"
@@ -49,6 +69,8 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/onBoardingViewPager"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

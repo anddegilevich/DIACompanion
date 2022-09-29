@@ -23,32 +23,36 @@
     </style>
 
     <style name="Content">
-        <item name="android:layout_marginLeft">10dp</item>
-        <item name="android:layout_marginRight">10dp</item>
-        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingTop">10dp</item>
     </style>
 
     <style name="MainText">
-        <item name="android:textSize">40sp</item>
+        <item name="android:layout_margin">10dp</item>
+        <item name="android:textSize">32sp</item>
         <item name="android:textColor">?main_text_color</item>
-        <item name="android:layout_marginTop">10dp</item>
-        <item name="android:layout_marginBottom">10dp</item>
         <item name="fontFamily">@font/open_sans</item>
     </style>
 
-    <style name="SecondaryText">
-        <item name="android:textSize">20sp</item>
+    <style name="SecondaryText" parent="MainText">
+        <item name="android:textSize">24sp</item>
         <item name="android:textColor">?secondary_text_color</item>
-        <item name="android:layout_marginTop">10dp</item>
-        <item name="android:layout_marginBottom">10dp</item>
-        <item name="fontFamily">@font/open_sans</item>
     </style>
 
-    <style name="LinkText">
+    <style name="EditText" parent="SecondaryText">
+        <item name="android:background">@drawable/edit_text</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+    </style>
+
+     <style name="SmallText" parent="SecondaryText">
+         <item name="android:textSize">20sp</item>
+     </style>
+
+    <style name="LinkText" parent="MainText">
         <item name="android:textSize">30sp</item>
         <item name="android:textColor">?link_text_color</item>
-        <item name="android:layout_marginTop">10dp</item>
-        <item name="android:layout_marginBottom">10dp</item>
     </style>
 
 </resources>

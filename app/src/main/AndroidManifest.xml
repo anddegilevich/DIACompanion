@@ -14,7 +14,9 @@
         android:theme="@style/Theme.DIACompanion"
         tools:targetApi="31" >
 
+
         <activity
+            android:windowSoftInputMode="adjustPan"
             android:name=".MainActivity"
             android:exported="true"
             android:theme="@style/SplashScreen" >

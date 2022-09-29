@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/CardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="15dp"
+    android:layout_margin="10dp"
+    android:clickable="true"
+    app:cardElevation="7dp">
+
+    <LinearLayout
+        android:background="@color/red"
+        android:id="@+id/Content"
+        style="@style/Content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            style="@style/ImageButton"
+            android:id="@+id/CategoryIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="222dp"
+            android:src="@drawable/sugar_level"
+            android:adjustViewBounds="true"
+            android:layout_gravity="center"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/CategoryName"
+            style="@style/SecondaryText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/SugarLevel"
+            android:textColor="@color/red_dark"
+            android:maxLines="2"
+            android:textStyle="bold"
+            android:layout_weight="0"/>
+
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

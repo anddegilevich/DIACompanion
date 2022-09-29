@@ -1,6 +1,7 @@
 package com.almazov.diacompanion.onboard.pages
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -42,6 +43,12 @@ class SetupCompletePage : Fragment() {
 
     private fun OnBoardingFinish(){
         val Finished: Boolean = true
+
+        val sharedPreferences = context?.getSharedPreferences("SharedPreferences", Context.MODE_PRIVATE)
+        val editor = sharedPreferences?.edit()
+        editor?.apply{
+            putBoolean("ON_BOARDING_FINISHED", Finished)
+        }?.apply()
 
     }
 

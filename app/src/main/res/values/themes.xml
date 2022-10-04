@@ -1,16 +1,19 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.DIACompanion" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+
+        <item name="category_color">@color/red</item>
+
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/red</item>
-        <item name="colorPrimaryVariant">@color/red</item>
+        <item name="colorPrimary">?attr/category_color</item>
+        <item name="colorPrimaryVariant">?attr/category_color</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/red</item>
-        <item name="colorSecondaryVariant">@color/red_dark</item>
+        <item name="colorSecondary">?attr/category_color</item>
+        <item name="colorSecondaryVariant">?attr/category_color</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">@color/black</item>
+        <item name="android:statusBarColor">@color/black</item>
         <!-- Customize your theme here. -->
 
         <item name="panel_color">@color/white</item>
@@ -20,6 +23,15 @@
         <item name="main_text_color">@color/black</item>
         <item name="secondary_text_color">@color/grey_dark</item>
         <item name="link_text_color">@color/blue</item>
+
+    </style>
+
+    <style name="InsulinTheme" parent="Theme.DIACompanion">
+        <item name="category_color">@color/blue</item>
+    </style>
+
+    <style name="MealTheme" parent="Theme.DIACompanion">
+        <item name="category_color">@color/purple</item>
     </style>
 
     <style name="SplashScreen" parent="Theme.DIACompanion">

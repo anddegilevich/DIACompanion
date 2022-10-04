@@ -6,9 +6,16 @@
     <string name="Back">Back</string>
     <string name="LogIn">Log in</string>
     <string name="LogOut">Log out</string>
+    <string name="Save">Save</string>
+    <string name="Delete">Delete</string>
+    <string name="Preferences">Preferences</string>
+    <string name="TimeDate">Time &amp; date</string>
+    <string name="Time">Time</string>
+    <string name="Date">Date</string>
+    <string name="SelectRecordTime">Select the record time</string>
 
     //Categories
-    <string name="SugarLevel">Sugar level</string>
+    <string name="SugarLevel">Sugar Level</string>
     <string name="Insulin">Insulin</string>
     <string name="Meal">Meal</string>
     <string name="Workout">Workout</string>
@@ -34,6 +41,7 @@
 
     //Account
     <string name="Username">Username</string>
+    <string name="UserID">UserID</string>
     <string name="Password">Password</string>
     <string name="Email">Email</string>
     <string name="Phone">Phone</string>
@@ -68,7 +76,20 @@
 
     //RecordsCategories
     <string name="ChooseCategory">ChooseCategory</string>
+    <string name="NewRecord">New Record</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    //SugarLevelAddRecord
+
+    <string-array name="SugarLevelSpinner">
+        <item>On an empty stomach</item>
+        <item>After breakfast</item>
+        <item>After lunch</item>
+        <item>After dinner</item>
+        <item>During childbirth</item>
+        <item>Additionally</item>
+    </string-array>
+    <string name="WasWorkout">There was physical activity</string>
 
 
 </resources>

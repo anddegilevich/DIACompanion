@@ -20,12 +20,13 @@ class HomePage : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_home_page, container, false)
-        ifOnBoardingFinished(view)
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        ifOnBoardingFinished(view)
 
         btn_add_record.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_homePage_to_recordsCategories)

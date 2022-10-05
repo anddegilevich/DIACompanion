@@ -13,17 +13,17 @@
     <color name="grey_dark">#6B6B6B</color>
     <color name="grey_darker">#292929</color>
     <color name="red">#FF857C</color>
-    <color name="red_dark">#C4615F</color>
+    <color name="red_dark">#BD5C5A</color>
     <color name="blue">#7FAEF5</color>
-    <color name="blue_dark">#4E8DEA</color>
+    <color name="blue_dark">#4782DA</color>
     <color name="purple">#9985ED</color>
-    <color name="purple_dark">#6B66D3</color>
+    <color name="purple_dark">#6763C8</color>
     <color name="green">#86EACE</color>
-    <color name="green_dark">#69CC9A</color>
-    <color name="yellow">#E3E887</color>
-    <color name="yellow_dark">#CACC69</color>
+    <color name="green_dark">#5EB88B</color>
+    <color name="yellow">#E1DF6F</color>
+    <color name="yellow_dark">#B3B040</color>
     <color name="pink">#E188E5</color>
-    <color name="pink_dark">#C76ACC</color>
+    <color name="pink_dark">#B15CB6</color>
     <color name="orange">#E0B475</color>
-    <color name="orange_dark">#D19647</color>
+    <color name="orange_dark">#AE7E40</color>
 </resources>

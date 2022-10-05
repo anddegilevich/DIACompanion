@@ -34,6 +34,22 @@
         <item name="category_color">@color/purple</item>
     </style>
 
+    <style name="WorkoutTheme" parent="Theme.DIACompanion">
+        <item name="category_color">@color/green</item>
+    </style>
+
+    <style name="SleepTheme" parent="Theme.DIACompanion">
+        <item name="category_color">@color/pink</item>
+    </style>
+
+    <style name="WeightTheme" parent="Theme.DIACompanion">
+        <item name="category_color">@color/yellow</item>
+    </style>
+
+    <style name="KetoneTheme" parent="Theme.DIACompanion">
+        <item name="category_color">@color/orange</item>
+    </style>
+
     <style name="SplashScreen" parent="Theme.DIACompanion">
         <item name="android:windowBackground">@drawable/splashscreen</item>
     </style>

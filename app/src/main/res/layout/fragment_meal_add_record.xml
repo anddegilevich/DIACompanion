@@ -34,18 +34,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <EditText
-                android:id="@+id/edit_text_sugar_level"
-                style="@style/EditText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:inputType="numberDecimal"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:hint="@string/WasWorkout"/>
-
 
         </LinearLayout>
     </ScrollView>

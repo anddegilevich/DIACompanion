@@ -9,7 +9,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="100dp"
-        android:src="@drawable/sugar_level"
+        android:src="@drawable/weight"
         android:layout_gravity="center"/>
 
     <TextView
@@ -38,14 +38,14 @@
                 style="@style/MainText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/SugarLevel" />
+                android:text="@string/Weight" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/edit_text_sugar_level"
+                    android:id="@+id/edit_text_weight"
                     style="@style/EditText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -59,32 +59,13 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="@string/mmoll" />
+                    android:text="@string/kg" />
             </LinearLayout>
 
             <SeekBar
-                android:id="@+id/seek_bar_sugar_level"
+                android:id="@+id/seek_bar_weight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-
-            <TextView
-                style="@style/MainText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/Preferences" />
-
-            <Spinner
-                style="@style/SecondaryText"
-                android:id="@+id/spinner_sugar_level"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:spinnerMode="dropdown"/>
-
-            <CheckBox
-                style="@style/SecondaryText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/WasWorkout"/>
 
             <TextView
                 style="@style/MainText"

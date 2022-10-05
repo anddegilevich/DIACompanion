@@ -60,7 +60,7 @@ class RecordsCategories : Fragment(), CategoryClickListener {
             R.string.Insulin,
             resources.getColor(R.color.blue),
             resources.getColor(R.color.blue_dark),
-            R.id.action_recordsCategories_to_sugarLevelAddRecord
+            R.id.action_recordsCategories_to_insulinAddRecord
         )
         categoryList.add(insulin)
 
@@ -78,7 +78,7 @@ class RecordsCategories : Fragment(), CategoryClickListener {
             R.string.Workout,
             resources.getColor(R.color.green),
             resources.getColor(R.color.green_dark),
-            R.id.action_recordsCategories_to_sugarLevelAddRecord
+            R.id.action_recordsCategories_to_workoutAddRecord
         )
         categoryList.add(workout)
 
@@ -87,7 +87,7 @@ class RecordsCategories : Fragment(), CategoryClickListener {
             R.string.Sleep,
             resources.getColor(R.color.pink),
             resources.getColor(R.color.pink_dark),
-            R.id.action_recordsCategories_to_sugarLevelAddRecord
+            R.id.action_recordsCategories_to_sleepAddRecord
         )
         categoryList.add(sleep)
 
@@ -96,7 +96,7 @@ class RecordsCategories : Fragment(), CategoryClickListener {
             R.string.Weight,
             resources.getColor(R.color.yellow),
             resources.getColor(R.color.yellow_dark),
-            R.id.action_recordsCategories_to_sugarLevelAddRecord
+            R.id.action_recordsCategories_to_weightAddRecord
         )
         categoryList.add(weight)
 
@@ -105,7 +105,7 @@ class RecordsCategories : Fragment(), CategoryClickListener {
             R.string.Ketone,
             resources.getColor(R.color.orange),
             resources.getColor(R.color.orange_dark),
-            R.id.action_recordsCategories_to_sugarLevelAddRecord
+            R.id.action_recordsCategories_to_ketoneAddRecord
         )
         categoryList.add(ketone)
     }

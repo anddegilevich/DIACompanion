@@ -10,8 +10,8 @@ import androidx.room.Query
 interface Dao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun addRecord(record: Record)
+    suspend fun addRecord(record: RecordEntity)
 
     @Query("SELECT * FROM record_table ORDER BY id")
-    fun readAllData(): LiveData<List<Record>>
+    fun readAllData(): LiveData<List<RecordEntity>>
 }

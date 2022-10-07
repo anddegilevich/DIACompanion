@@ -2,13 +2,15 @@ package com.almazov.diacompanion.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.almazov.diacompanion.categories.Category
 
 @Entity(tableName = "record_table")
-data class Record (
+data class RecordEntity (
     @PrimaryKey(autoGenerate = true)
     val id: Int,
-    val category: Category,
+    val category: String,
+    val cat_id: String,
+    val mainInfo: String,
     val time: String,
-    val date: String
+    val date: String,
+    val dateSubmit: String
 )

@@ -2,9 +2,8 @@ package com.almazov.diacompanion.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.text.DecimalFormat
 
-@Entity(tableName = "ketone_table")
+@Entity(tableName = "user_table")
 data class UserEntity (
     @PrimaryKey(autoGenerate = true)
     val id: Int,
@@ -17,7 +16,7 @@ data class UserEntity (
     val gender: String,
     val email: String,
     val phone: String,
-    val height: DecimalFormat,
+    val height: Double,
     val attendingDoctor: String,
     val pregnancyStart: String,
 )

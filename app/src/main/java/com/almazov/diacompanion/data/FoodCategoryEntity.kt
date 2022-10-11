@@ -3,11 +3,9 @@ package com.almazov.diacompanion.data
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "food_table")
-data class FoodEntity (
+@Entity(tableName = "food_category_table")
+data class FoodCategoryEntity (
     @PrimaryKey(autoGenerate = true)
     val id: Int,
-    val name: String,
-    val gi: Int,
-    //todo add
+    val category: String
 )

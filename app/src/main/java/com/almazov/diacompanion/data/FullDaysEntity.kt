@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.text.DecimalFormat
 
-@Entity(tableName = "full_day_table")
+@Entity(tableName = "full_days_table")
 data class FullDaysEntity (
     @PrimaryKey(autoGenerate = true)
     val id: Int,

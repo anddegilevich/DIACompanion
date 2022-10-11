@@ -8,5 +8,6 @@ data class WorkoutEntity (
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     val duration: Int,
-    val type: Int
+    val type: String,
+    val kkalMinus: Double
     )

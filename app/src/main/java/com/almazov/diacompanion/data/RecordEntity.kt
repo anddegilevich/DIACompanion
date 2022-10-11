@@ -8,9 +8,10 @@ data class RecordEntity (
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     val category: String,
-    val cat_id: String,
+    val idCategory: Int,
     val mainInfo: String,
     val time: String,
     val date: String,
-    val dateSubmit: String
+    val dateSubmit: String,
+    val fullDay: Boolean
 )

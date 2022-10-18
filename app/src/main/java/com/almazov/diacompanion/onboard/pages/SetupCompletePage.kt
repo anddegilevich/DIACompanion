@@ -20,6 +20,8 @@ import kotlinx.android.synthetic.main.fragment_setup_page1.view.btn_back
 
 class SetupCompletePage : Fragment() {
 
+    private val pageNum: Int = 3;
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -35,7 +37,7 @@ class SetupCompletePage : Fragment() {
        }
 
         view.btn_back.setOnClickListener {
-            viewPager?.currentItem = 1
+            viewPager?.currentItem = pageNum-1
         }
 
         return view

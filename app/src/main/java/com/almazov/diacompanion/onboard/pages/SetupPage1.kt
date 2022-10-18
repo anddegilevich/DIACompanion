@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.fragment_setup_page1.view.*
 
 class SetupPage1 : Fragment() {
 
+    private val pageNum: Int = 1;
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,11 +25,11 @@ class SetupPage1 : Fragment() {
         val viewPager = activity?.findViewById<ViewPager2>(R.id.ViewPager)
 
         view.btn_next.setOnClickListener {
-            viewPager?.currentItem = 2
+            viewPager?.currentItem = pageNum+1
         }
 
         view.btn_back.setOnClickListener {
-            viewPager?.currentItem = 0
+            viewPager?.currentItem = pageNum-1
         }
 
         return view

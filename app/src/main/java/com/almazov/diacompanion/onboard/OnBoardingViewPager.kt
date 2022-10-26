@@ -9,6 +9,7 @@ import com.almazov.diacompanion.R
 import com.almazov.diacompanion.onboard.pages.GreetingsPage
 import com.almazov.diacompanion.onboard.pages.SetupCompletePage
 import com.almazov.diacompanion.onboard.pages.SetupPage1
+import com.almazov.diacompanion.onboard.pages.SetupPage2
 import kotlinx.android.synthetic.main.fragment_on_boarding_view_pager.view.*
 
 class OnBoardingViewPager : Fragment() {
@@ -23,6 +24,7 @@ class OnBoardingViewPager : Fragment() {
         val fragmentList = arrayListOf<Fragment>(
             GreetingsPage(),
             SetupPage1(),
+            SetupPage2(),
             SetupCompletePage()
         )
 

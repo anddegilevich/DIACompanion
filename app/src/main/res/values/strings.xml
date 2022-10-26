@@ -75,6 +75,9 @@
     <string name="OnBSetupComplete">Setup complete!</string>
     <string name="Finish">Finish</string>
     <string name="OnBEnterPersonalData">Please, enter your personal data</string>
+    <string name="OnBEnterGender">Please, enter your gender</string>
+    <string name="Male">Male</string>
+    <string name="Female">Female</string>
 
 
     //HomePage

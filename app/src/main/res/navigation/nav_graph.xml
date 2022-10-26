@@ -29,6 +29,13 @@
             app:exitAnim="@anim/slide_out_up"
             app:popEnterAnim="@anim/slide_in_down"
             app:popExitAnim="@anim/slide_out_down"/>
+        <action
+            android:id="@+id/action_homePage_to_recordHistory"
+            app:destination="@id/recordHistory"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
     <fragment
         android:id="@+id/recordsCategories"
@@ -92,7 +99,7 @@
         tools:layout="@layout/fragment_export_data" />
     <fragment
         android:id="@+id/sugarLevelAddRecord"
-        android:name="com.almazov.diacompanion.SugarLevelAddRecord"
+        android:name="com.almazov.diacompanion.add_record.SugarLevelAddRecord"
         android:label="fragment_sugar_level_add_record"
         tools:layout="@layout/fragment_sugar_level_add_record" >
         <action
@@ -104,10 +111,15 @@
             app:popExitAnim="@anim/slide_out_up"
             app:popUpTo="@id/homePage"
             app:popUpToInclusive="true" />
+        <argument
+            android:name="selectedRecord"
+            app:argType="com.almazov.diacompanion.data.RecordEntity"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
     <fragment
         android:id="@+id/mealAddRecord"
-        android:name="com.almazov.diacompanion.MealAddRecord"
+        android:name="com.almazov.diacompanion.add_record.MealAddRecord"
         android:label="fragment_meal_add_record"
         tools:layout="@layout/fragment_meal_add_record" >
         <action
@@ -137,7 +149,7 @@
     </fragment>
     <fragment
         android:id="@+id/insulinAddRecord"
-        android:name="com.almazov.diacompanion.InsulinAddRecord"
+        android:name="com.almazov.diacompanion.add_record.InsulinAddRecord"
         android:label="fragment_insulin_add_record"
         tools:layout="@layout/fragment_insulin_add_record" >
         <action
@@ -152,7 +164,7 @@
     </fragment>
     <fragment
         android:id="@+id/workoutAddRecord"
-        android:name="com.almazov.diacompanion.WorkoutAddRecord"
+        android:name="com.almazov.diacompanion.add_record.WorkoutAddRecord"
         android:label="fragment_workout_add_record"
         tools:layout="@layout/fragment_workout_add_record" >
         <action
@@ -167,7 +179,7 @@
     </fragment>
     <fragment
         android:id="@+id/sleepAddRecord"
-        android:name="com.almazov.diacompanion.SleepAddRecord"
+        android:name="com.almazov.diacompanion.add_record.SleepAddRecord"
         android:label="fragment_sleep_add_record"
         tools:layout="@layout/fragment_sleep_add_record" >
         <action
@@ -182,7 +194,7 @@
     </fragment>
     <fragment
         android:id="@+id/weightAddRecord"
-        android:name="com.almazov.diacompanion.WeightAddRecord"
+        android:name="com.almazov.diacompanion.add_record.WeightAddRecord"
         android:label="fragment_weight_add_record"
         tools:layout="@layout/fragment_weight_add_record" >
         <action
@@ -197,7 +209,7 @@
     </fragment>
     <fragment
         android:id="@+id/ketoneAddRecord"
-        android:name="com.almazov.diacompanion.KetoneAddRecord"
+        android:name="com.almazov.diacompanion.add_record.KetoneAddRecord"
         android:label="fragment_ketone_add_record"
         tools:layout="@layout/fragment_ketone_add_record" >
         <action
@@ -209,5 +221,17 @@
             app:popExitAnim="@anim/slide_out_up"
             app:popUpTo="@id/homePage"
             app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/recordHistory"
+        android:name="com.almazov.diacompanion.RecordHistory"
+        android:label="RecordHistory" >
+        <action
+            android:id="@+id/action_recordHistory_to_sugarLevelAddRecord"
+            app:destination="@id/sugarLevelAddRecord"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
 </navigation>

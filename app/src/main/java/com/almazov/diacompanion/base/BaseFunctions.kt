@@ -72,7 +72,7 @@ fun editTextSeekBarSetup(min: Int, max: Int, editText: EditText, seekBar: SeekBa
 fun timeDateSelectSetup(fragmentManager: FragmentManager, tvTime: TextView, tvDate: TextView) {
     val now = LocalDateTime.now()
     val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
-    val dateFormatter = DateTimeFormatter.ofPattern("dd MMMM yyyy")
+    val dateFormatter = DateTimeFormatter.ofPattern("dd MM yyyy")
 
     val time = now.format(timeFormatter)
     val date = now.format(dateFormatter)
@@ -94,7 +94,7 @@ fun timeDateSelectSetup(fragmentManager: FragmentManager, tvTime: TextView, tvDa
 @RequiresApi(Build.VERSION_CODES.O)
 private fun openDatePicker(fragmentManager: FragmentManager, date: String, tvDate: TextView) {
 
-    val myFormat = "dd MMMM yyyy"
+    val myFormat = "dd MM yyyy"
 
     val sdf = SimpleDateFormat(myFormat)
     val curDate = sdf.parse(date)

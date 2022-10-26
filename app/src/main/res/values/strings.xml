@@ -14,6 +14,10 @@
     <string name="Date">Date</string>
     <string name="SelectRecordTime">Select the record time</string>
     <string name="SelectRecordDate">Select the record date</string>
+    <string name="Yes">Yes</string>
+    <string name="No">No</string>
+    <string name="TimeFormat">HH:mm</string>
+    <string name="DateFormat">dd MM yyyy</string>
 
     //Categories
     <string name="SugarLevel">Sugar Level</string>
@@ -41,6 +45,8 @@
     <string name="Notifications">Notifications</string>
     <string name="Info">Info</string>
     <string name="Help">Help</string>
+    <string name="AreUSureDeleteAllRecords">Are you sure you want to delete all the records?</string>
+    <string name="DeleteAllRecords">Delete all the records?</string>
 
     //Account
     <string name="Username">Username</string>
@@ -80,6 +86,9 @@
     //RecordsCategories
     <string name="ChooseCategory">ChooseCategory</string>
     <string name="NewRecord">New Record</string>
+    <string name="UpdateRecord">Update Record</string>
+    <string name="DeleteRecord">Delete Record?</string>
+    <string name="AreUSureDeleteRecord">Are you sure you want to delete the record?</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     //SugarLevelAddRecord

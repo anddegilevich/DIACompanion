@@ -44,6 +44,7 @@
                         android:text="@string/LastRecords" />
 
                     <TextView
+                        android:id="@+id/recordHistoryLink"
                         style="@style/LinkText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

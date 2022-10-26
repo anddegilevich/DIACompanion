@@ -52,6 +52,10 @@
          <item name="android:textSize">20sp</item>
      </style>
 
+    <style name="SmallerText" parent="SecondaryText">
+        <item name="android:textSize">16sp</item>
+    </style>
+
     <style name="LinkText" parent="MainText">
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">?link_text_color</item>

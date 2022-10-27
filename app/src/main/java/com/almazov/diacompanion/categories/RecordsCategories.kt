@@ -1,18 +1,13 @@
-package com.almazov.diacompanion
+package com.almazov.diacompanion.categories
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.GridLayout
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
-import com.almazov.diacompanion.categories.CategoriesAdapter
-import com.almazov.diacompanion.categories.Category
-import com.almazov.diacompanion.categories.CategoryClickListener
-import com.almazov.diacompanion.categories.categoryList
+import com.almazov.diacompanion.R
 import com.almazov.diacompanion.databinding.FragmentRecordsCategoriesBinding
 
 

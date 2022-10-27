@@ -18,27 +18,47 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
         readALlData = repository.readAllData
     }
 
-    fun addRecord(recordEntity: RecordEntity){
-        viewModelScope.launch(Dispatchers.IO){
+    //Records
+
+    fun addRecord(recordEntity: RecordEntity) {
+        viewModelScope.launch(Dispatchers.IO) {
             repository.addRecord(recordEntity)
         }
     }
 
-    fun updateRecord(recordEntity: RecordEntity){
-        viewModelScope.launch(Dispatchers.IO){
+
+    fun addRecord(sugarLevelEntity: SugarLevelEntity){
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.addRecord(sugarLevelEntity)
+        }
+    }
+
+    fun updateRecord(recordEntity: RecordEntity) {
+        viewModelScope.launch(Dispatchers.IO) {
             repository.updateRecord(recordEntity)
         }
     }
 
-    fun deleteRecord(recordEntity: RecordEntity){
-        viewModelScope.launch(Dispatchers.IO){
+    fun deleteRecord(recordEntity: RecordEntity) {
+        viewModelScope.launch(Dispatchers.IO) {
             repository.deleteRecord(recordEntity)
         }
     }
 
-    fun deleteAllRecords(){
-        viewModelScope.launch(Dispatchers.IO){
+    fun deleteAllRecords() {
+        viewModelScope.launch(Dispatchers.IO) {
             repository.deleteAllRecords()
         }
     }
+
+    fun filterDatabase(filter: String): LiveData<List<RecordEntity>> {
+        return repository.filterDatabase(filter)
+    }
+
+    //SugarLevel
+    /* fun addSugarLevel(sugarLevelEntity: SugarLevelEntity) {
+            
+
+        }*/
+
 }

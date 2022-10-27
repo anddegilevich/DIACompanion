@@ -18,6 +18,7 @@ import com.almazov.diacompanion.base.editTextSeekBarSetup
 import com.almazov.diacompanion.base.timeDateSelectSetup
 import com.almazov.diacompanion.data.AppDatabaseViewModel
 import com.almazov.diacompanion.data.RecordEntity
+import com.almazov.diacompanion.data.SugarLevelEntity
 import kotlinx.android.synthetic.main.fragment_sugar_level_add_record.*
 import kotlinx.android.synthetic.main.fragment_sugar_level_add_record.btn_save
 import kotlinx.android.synthetic.main.fragment_sugar_level_add_record.tv_Date
@@ -63,9 +64,10 @@ class SugarLevelAddRecord : Fragment() {
             tv_title.text = this.resources.getString(R.string.UpdateRecord)
             tv_Time.text = args.selectedRecord?.time
             tv_Date.text = args.selectedRecord?.date
-            /*tv_title.setOnClickListener {
+            btn_delete.visibility = View.VISIBLE
+            btn_delete.setOnClickListener {
                 deleteRecord()
-            }*/
+            }
         }
 
         btn_save.setOnClickListener {
@@ -86,8 +88,14 @@ class SugarLevelAddRecord : Fragment() {
         val time = tv_Time.text.toString()
         val date = tv_Date.text.toString()
 
-        val recordEntity = RecordEntity(null, category, null, mainInfo, time, date,
+        val sugarLevelEntity = SugarLevelEntity(null,sugarLevel.toDouble(),null,null)
+
+        appDatabaseViewModel.addRecord(sugarLevelEntity)
+
+
+        val recordEntity = RecordEntity(null, category, sugarLevelEntity.id, mainInfo, time, date,
             dateSubmit,false)
+
         appDatabaseViewModel.addRecord(recordEntity)
 
     }

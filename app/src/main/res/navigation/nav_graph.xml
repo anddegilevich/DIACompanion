@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/onBoardingViewPager">
+    app:startDestination="@id/homePage">
 
     <fragment
         android:id="@+id/homePage"
@@ -39,7 +39,7 @@
     </fragment>
     <fragment
         android:id="@+id/recordsCategories"
-        android:name="com.almazov.diacompanion.RecordsCategories"
+        android:name="com.almazov.diacompanion.categories.RecordsCategories"
         android:label="fragment_records_categories"
         tools:layout="@layout/fragment_records_categories" >
         <action
@@ -224,7 +224,7 @@
     </fragment>
     <fragment
         android:id="@+id/recordHistory"
-        android:name="com.almazov.diacompanion.RecordHistory"
+        android:name="com.almazov.diacompanion.record_history.RecordHistory"
         android:label="RecordHistory" >
         <action
             android:id="@+id/action_recordHistory_to_sugarLevelAddRecord"

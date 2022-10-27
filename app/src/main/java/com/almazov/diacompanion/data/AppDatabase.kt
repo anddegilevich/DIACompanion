@@ -6,7 +6,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [RecordEntity::class], version = 1, exportSchema = false)
+@Database(entities = [RecordEntity::class, SugarLevelEntity::class, InsulinEntity::class,
+                     MealEntity::class, WorkoutEntity::class,SleepEntity::class,
+                     WeightEntity::class, KetoneEntity::class],
+    version = 1, exportSchema = false)
 abstract class AppDatabase: RoomDatabase() {
 
     abstract fun appDao(): AppDao

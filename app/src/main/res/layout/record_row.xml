@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -11,6 +10,7 @@
     android:backgroundTint="@color/red">
 
     <LinearLayout
+        android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
@@ -35,6 +35,7 @@
             android:textColor="@color/red_dark"/>
 
         <TextView
+            android:textStyle="bold"
             android:layout_weight="0"
             android:id="@+id/time"
             android:layout_width="wrap_content"
@@ -43,6 +44,7 @@
             android:gravity="center"
             android:textColor="@color/red_dark"/>
         <TextView
+            android:textStyle="bold"
             android:layout_weight="0"
             android:id="@+id/date"
             android:layout_width="wrap_content"

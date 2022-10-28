@@ -6,7 +6,7 @@ import io.reactivex.Single
 import kotlinx.coroutines.flow.Flow
 import java.util.concurrent.Callable
 
-class DatabaseRepository(private val appDao: AppDao) {
+class AppDatabaseRepository(private val appDao: AppDao) {
 
     val readAllData: LiveData<List<RecordEntity>> = appDao.readAllData()
 

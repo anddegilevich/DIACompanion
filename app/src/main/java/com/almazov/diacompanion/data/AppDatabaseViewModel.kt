@@ -10,11 +10,11 @@ import kotlinx.coroutines.launch
 class AppDatabaseViewModel(application: Application): AndroidViewModel(application) {
 
     val readALlData: LiveData<List<RecordEntity>>
-    private val repository: DatabaseRepository
+    private val repository: AppDatabaseRepository
 
     init {
         val appDao = AppDatabase.getDatabase(application).appDao()
-        repository = DatabaseRepository(appDao)
+        repository = AppDatabaseRepository(appDao)
         readALlData = repository.readAllData
     }
 

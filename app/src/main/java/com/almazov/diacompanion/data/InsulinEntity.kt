@@ -9,7 +9,7 @@ import kotlinx.android.parcel.Parcelize
 @Entity(tableName = "insulin_table")
 data class InsulinEntity (
     @PrimaryKey(autoGenerate = true)
-    val id: Int?,
+    var id: Int?,
     val insulin: Int?,
     val type: String?,
     val preferences: String?,

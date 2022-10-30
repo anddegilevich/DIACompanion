@@ -84,7 +84,6 @@ class RecordListAdapter(): RecyclerView.Adapter<RecordListAdapter.MyViewHolder>(
         holder.itemView.card_view.setOnClickListener{
             val action = RecordHistoryDirections.actionRecordHistoryToSugarLevelAddRecord(currentItem)
             holder.itemView.findNavController().navigate(action)
-
         }
 
     }

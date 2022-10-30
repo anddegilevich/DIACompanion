@@ -16,7 +16,6 @@ import com.almazov.diacompanion.R
 import com.almazov.diacompanion.base.editTextSeekBarSetup
 import com.almazov.diacompanion.base.timeDateSelectSetup
 import com.almazov.diacompanion.data.AppDatabaseViewModel
-import com.almazov.diacompanion.data.RecordEntity
 import kotlinx.android.synthetic.main.fragment_insulin_add_record.*
 import kotlinx.android.synthetic.main.fragment_sugar_level_add_record.btn_save
 import kotlinx.android.synthetic.main.fragment_sugar_level_add_record.tv_Date

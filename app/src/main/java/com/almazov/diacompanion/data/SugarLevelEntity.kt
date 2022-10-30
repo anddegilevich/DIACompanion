@@ -9,7 +9,7 @@ import kotlinx.android.parcel.Parcelize
 @Entity(tableName = "sugar_level_table")
 data class SugarLevelEntity (
     @PrimaryKey(autoGenerate = true)
-    val id: Int?,
+    var id: Int?,
     val sugarLevel: Double?,
     val preferences: String?,
     val wasPhysicalAct: Boolean?

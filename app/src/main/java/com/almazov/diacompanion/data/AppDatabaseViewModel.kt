@@ -20,19 +20,6 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
 
     //Records
 
-    fun addRecord(recordEntity: RecordEntity) {
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.addRecord(recordEntity)
-        }
-    }
-
-
-    fun addRecord(sugarLevelEntity: SugarLevelEntity){
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.addRecord(sugarLevelEntity)
-        }
-    }
-
     fun updateRecord(recordEntity: RecordEntity) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.updateRecord(recordEntity)
@@ -56,9 +43,38 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
     }
 
     //SugarLevel
-    /* fun addSugarLevel(sugarLevelEntity: SugarLevelEntity) {
-            
 
-        }*/
+    fun addRecord(recordEntity: RecordEntity, sugarLevelEntity: SugarLevelEntity) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val id = repository.addRecord(recordEntity)
+            sugarLevelEntity.id = id.toInt()
+            repository.addRecord(sugarLevelEntity)
+        }
+    }
 
+    fun updateRecord(recordEntity: RecordEntity, sugarLevelEntity: SugarLevelEntity) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.updateRecord(recordEntity)
+            repository.updateRecord(sugarLevelEntity)
+        }
+    }
+
+    fun readSugarLevelRecord(id: Int?): LiveData<SugarLevelEntity>{
+        return repository.readSugarLevelRecord(id)
+    }
+
+    fun deleteSugarLevelRecord(id: Int?){
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteSugarLevelRecord(id)
+        }
+    }
+
+    //Insulin
+    fun addRecord(recordEntity: RecordEntity, insulinEntity: InsulinEntity) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val id = repository.addRecord(recordEntity)
+            insulinEntity.id = id.toInt()
+            repository.addRecord(insulinEntity)
+        }
+    }
 }

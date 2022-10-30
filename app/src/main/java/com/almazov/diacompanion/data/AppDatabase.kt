@@ -1,13 +1,13 @@
 package com.almazov.diacompanion.data
 
 import android.content.Context
-import androidx.room.Dao
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.almazov.diacompanion.data.*
 
 @Database(entities = [RecordEntity::class, SugarLevelEntity::class, InsulinEntity::class,
-                     MealEntity::class, WorkoutEntity::class,SleepEntity::class,
+                     MealEntity::class, WorkoutEntity::class, SleepEntity::class,
                      WeightEntity::class, KetoneEntity::class],
     version = 1, exportSchema = false)
 abstract class AppDatabase: RoomDatabase() {
@@ -18,7 +18,7 @@ abstract class AppDatabase: RoomDatabase() {
         @Volatile
         private var INSTANCE: AppDatabase? = null
 
-        fun getDatabase(context: Context): AppDatabase{
+        fun getDatabase(context: Context): AppDatabase {
             val tempInstance = INSTANCE
             if(tempInstance != null){
                 return tempInstance

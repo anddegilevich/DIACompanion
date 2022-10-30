@@ -43,9 +43,8 @@ class RecordHistory : Fragment() {
     }
 
     private fun filterRecords() {
-        appDatabaseViewModel.filterDatabase("insulin_table").observe(
-            viewLifecycleOwner
-        ) { list -> list.let { adapter.setData(it) }
+        appDatabaseViewModel.filterDatabase("insulin_table").observe(viewLifecycleOwner) {
+                list -> list.let { adapter.setData(it) }
         }
     }
 

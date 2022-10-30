@@ -1,22 +1,14 @@
 package com.almazov.diacompanion.data
 
 import androidx.lifecycle.LiveData
-import androidx.room.*
-import io.reactivex.Single
-import kotlinx.coroutines.flow.Flow
-import java.util.concurrent.Callable
 
 class AppDatabaseRepository(private val appDao: AppDao) {
 
     val readAllData: LiveData<List<RecordEntity>> = appDao.readAllData()
 
     //Records
-    suspend fun addRecord(recordEntity: RecordEntity){
-        appDao.addRecord(recordEntity)
-    }
-
-    fun addRecord(sugarLevelEntity: SugarLevelEntity){
-        appDao.addRecord(sugarLevelEntity)
+    suspend fun addRecord(recordEntity: RecordEntity): Long {
+        return appDao.addRecord(recordEntity)
     }
 
     suspend fun updateRecord(recordEntity: RecordEntity){
@@ -36,20 +28,24 @@ class AppDatabaseRepository(private val appDao: AppDao) {
     }
 
     //SugarLevel
-    /*suspend fun addSugarLevel(sugarLevelEntity: SugarLevelEntity) {
-        appDao.addSugarLevel(sugarLevelEntity)
+    suspend fun addRecord(sugarLevelEntity: SugarLevelEntity){
+        appDao.addRecord(sugarLevelEntity)
     }
 
-    suspend fun updateSugarLevel(sugarLevelEntity: SugarLevelEntity){
-        appDao.updateSugarLevel(sugarLevelEntity)
+    fun readSugarLevelRecord(id: Int?): LiveData<SugarLevelEntity>{
+        return appDao.readSugarLevelRecord(id)
     }
 
-    suspend fun deleteSugarLevel(sugarLevelEntity: SugarLevelEntity){
-        appDao.deleteSugarLevel(sugarLevelEntity)
+    suspend fun updateRecord(sugarLevelEntity: SugarLevelEntity){
+        appDao.updateRecord(sugarLevelEntity)
+    }
+    suspend fun deleteSugarLevelRecord(id: Int?){
+        appDao.deleteSugarLevelRecord(id)
     }
 
-    suspend fun readSugarLevel(id: String): SugarLevelEntity {
-        return appDao.readSugarLevel(id)
-    }*/
+    //Insulin
+    suspend fun addRecord(insulinEntity: InsulinEntity){
+        appDao.addRecord(insulinEntity)
+    }
 
 }

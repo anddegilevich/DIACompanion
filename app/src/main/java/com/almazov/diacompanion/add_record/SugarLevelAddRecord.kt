@@ -15,6 +15,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.almazov.diacompanion.R
+import com.almazov.diacompanion.base.convertDateToMils
 import com.almazov.diacompanion.base.editTextSeekBarSetup
 import com.almazov.diacompanion.base.timeDateSelectSetup
 import com.almazov.diacompanion.data.*
@@ -27,7 +28,7 @@ import kotlinx.android.synthetic.main.fragment_sugar_level_add_record.tv_Time
 class SugarLevelAddRecord : Fragment() {
 
     private lateinit var appDatabaseViewModel: AppDatabaseViewModel
-    private var dateSubmit: String? = null
+    private var dateSubmit: Long? = null
     var updateBool: Boolean = false
     private val args by navArgs<SugarLevelAddRecordArgs>()
 
@@ -55,8 +56,8 @@ class SugarLevelAddRecord : Fragment() {
             R.layout.spinner_item
         )
 
-        timeDateSelectSetup(childFragmentManager, tv_Time, tv_Date)
-        dateSubmit = tv_Date.text.toString()
+        dateSubmit = timeDateSelectSetup(childFragmentManager, tv_Time, tv_Date)
+
 
         if (updateBool)
         {
@@ -95,8 +96,9 @@ class SugarLevelAddRecord : Fragment() {
                 this.resources.getString(R.string.mmoll)
         val time = tv_Time.text.toString()
         val date = tv_Date.text.toString()
+        val dateInMilli = convertDateToMils("$time $date")
 
-        val recordEntity = RecordEntity(null, category, mainInfo, time, date,
+        val recordEntity = RecordEntity(null, category, mainInfo,dateInMilli, time, date,
             dateSubmit,false)
         val sugarLevelEntity = SugarLevelEntity(null,sugarLevel.toDouble(),preferences,wasPhysicalAct)
 
@@ -112,8 +114,9 @@ class SugarLevelAddRecord : Fragment() {
                 this.resources.getString(R.string.mmoll)
         val time = tv_Time.text.toString()
         val date = tv_Date.text.toString()
+        val dateInMilli = convertDateToMils("$time $date")
 
-        val recordEntity = RecordEntity(args.selectedRecord?.id, args.selectedRecord?.category, mainInfo, time, date,
+        val recordEntity = RecordEntity(args.selectedRecord?.id, args.selectedRecord?.category, mainInfo,dateInMilli, time, date,
             args.selectedRecord?.dateSubmit,args.selectedRecord?.fullDay)
         val sugarLevelEntity = SugarLevelEntity(args.selectedRecord?.id,sugarLevel.toDouble(),preferences,wasPhysicalAct)
         appDatabaseViewModel.updateRecord(recordEntity,sugarLevelEntity)

@@ -17,12 +17,13 @@
 
         <ImageView
             android:id="@+id/img_category"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             style="@style/ImageButton"
             android:layout_margin="10dp"
             android:src="@drawable/sugar_level"
-            android:gravity="center"/>
+            android:gravity="center"
+            />
 
         <TextView
             android:textStyle="bold"
@@ -31,8 +32,10 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             style="@style/SecondaryText"
+            android:layout_marginLeft="0dp"
             android:gravity="center"
-            android:textColor="@color/red_dark"/>
+            android:textColor="?attr/button_color"
+            android:layout_margin="0dp"/>
 
         <TextView
             android:textStyle="bold"
@@ -42,7 +45,7 @@
             android:layout_height="match_parent"
             style="@style/SmallerText"
             android:gravity="center"
-            android:textColor="@color/red_dark"/>
+            android:textColor="?attr/button_color"/>
         <TextView
             android:textStyle="bold"
             android:layout_weight="0"
@@ -51,7 +54,7 @@
             android:layout_height="match_parent"
             style="@style/SmallerText"
             android:gravity="center"
-            android:textColor="@color/red_dark"/>
+            android:textColor="?attr/button_color"/>
     </LinearLayout>
 
 

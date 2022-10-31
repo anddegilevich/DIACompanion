@@ -3,6 +3,7 @@
     <style name="Theme.DIACompanion" parent="Theme.MaterialComponents.DayNight.NoActionBar">
 
         <item name="category_color">@color/red</item>
+        <item name="category_color_dark">@color/red_dark</item>
 
         <!-- Primary brand color. -->
         <item name="colorPrimary">?attr/category_color</item>
@@ -28,4 +29,5 @@
     <style name="SplashScreen" parent="Theme.DIACompanion">
         <item name="android:windowBackground">@drawable/splashscreen</item>
     </style>
+
 </resources>

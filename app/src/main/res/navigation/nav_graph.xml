@@ -131,6 +131,11 @@
             app:popExitAnim="@anim/slide_out_up"
             app:popUpTo="@id/homePage"
             app:popUpToInclusive="true" />
+        <argument
+            android:name="selectedRecord"
+            app:argType="com.almazov.diacompanion.data.RecordEntity"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
     <fragment
         android:id="@+id/onBoardingViewPager"
@@ -161,6 +166,11 @@
             app:popExitAnim="@anim/slide_out_up"
             app:popUpTo="@id/homePage"
             app:popUpToInclusive="true"/>
+        <argument
+            android:name="selectedRecord"
+            app:argType="com.almazov.diacompanion.data.RecordEntity"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
     <fragment
         android:id="@+id/workoutAddRecord"
@@ -176,6 +186,11 @@
             app:popExitAnim="@anim/slide_out_up"
             app:popUpTo="@id/homePage"
             app:popUpToInclusive="true" />
+        <argument
+            android:name="selectedRecord"
+            app:argType="com.almazov.diacompanion.data.RecordEntity"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
     <fragment
         android:id="@+id/sleepAddRecord"
@@ -191,6 +206,11 @@
             app:popExitAnim="@anim/slide_out_up"
             app:popUpTo="@id/homePage"
             app:popUpToInclusive="true" />
+        <argument
+            android:name="selectedRecord"
+            app:argType="com.almazov.diacompanion.data.RecordEntity"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
     <fragment
         android:id="@+id/weightAddRecord"
@@ -206,6 +226,11 @@
             app:popExitAnim="@anim/slide_out_up"
             app:popUpTo="@id/homePage"
             app:popUpToInclusive="true" />
+        <argument
+            android:name="selectedRecord"
+            app:argType="com.almazov.diacompanion.data.RecordEntity"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
     <fragment
         android:id="@+id/ketoneAddRecord"
@@ -221,6 +246,11 @@
             app:popExitAnim="@anim/slide_out_up"
             app:popUpTo="@id/homePage"
             app:popUpToInclusive="true" />
+        <argument
+            android:name="selectedRecord"
+            app:argType="com.almazov.diacompanion.data.RecordEntity"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
     <fragment
         android:id="@+id/recordHistory"
@@ -229,6 +259,48 @@
         <action
             android:id="@+id/action_recordHistory_to_sugarLevelAddRecord"
             app:destination="@id/sugarLevelAddRecord"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_recordHistory_to_insulinAddRecord"
+            app:destination="@id/insulinAddRecord"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_recordHistory_to_mealAddRecord"
+            app:destination="@id/mealAddRecord"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_recordHistory_to_workoutAddRecord"
+            app:destination="@id/workoutAddRecord"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_recordHistory_to_sleepAddRecord"
+            app:destination="@id/sleepAddRecord"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_recordHistory_to_ketoneAddRecord"
+            app:destination="@id/ketoneAddRecord"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_recordHistory_to_weightAddRecord"
+            app:destination="@id/weightAddRecord"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"

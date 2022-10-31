@@ -24,7 +24,7 @@ interface AppDao {
     @Query("DELETE FROM record_table")
     suspend fun deleteAllRecords()
 
-    @Query("SELECT * FROM record_table ORDER BY id")
+    @Query("SELECT * FROM record_table ORDER BY dateInMilli")
     fun readAllData(): LiveData<List<RecordEntity>>
 
     @Query("SELECT * FROM record_table WHERE category LIKE :filter")
@@ -46,6 +46,80 @@ interface AppDao {
     // Insulin
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addRecord(insulinEntity: InsulinEntity)
+
+    @Update
+    suspend fun updateRecord(insulinEntity: InsulinEntity)
+
+    @Query("DELETE FROM insulin_table WHERE id LIKE :id")
+    suspend fun deleteInsulinRecord(id: Int?)
+
+    @Query("SELECT * FROM insulin_table WHERE id LIKE :id LIMIT 1")
+    fun readInsulinRecord(id: Int?): LiveData<InsulinEntity>
+
+    // Meal
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun addRecord(mealEntity: MealEntity)
+
+    @Update
+    suspend fun updateRecord(mealEntity: MealEntity)
+
+    @Query("DELETE FROM meal_table WHERE id LIKE :id")
+    suspend fun deleteMealRecord(id: Int?)
+
+    @Query("SELECT * FROM meal_table WHERE id LIKE :id LIMIT 1")
+    fun readMealRecord(id: Int?): LiveData<MealEntity>
+
+    // Workout
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun addRecord(workoutEntity: WorkoutEntity)
+
+    @Update
+    suspend fun updateRecord(workoutEntity: WorkoutEntity)
+
+    @Query("DELETE FROM workout_table WHERE id LIKE :id")
+    suspend fun deleteWorkoutRecord(id: Int?)
+
+    @Query("SELECT * FROM workout_table WHERE id LIKE :id LIMIT 1")
+    fun readWorkoutRecord(id: Int?): LiveData<WorkoutEntity>
+
+    // Sleep
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun addRecord(sleepEntity: SleepEntity)
+
+    @Update
+    suspend fun updateRecord(sleepEntity: SleepEntity)
+
+    @Query("DELETE FROM sleep_table WHERE id LIKE :id")
+    suspend fun deleteSleepRecord(id: Int?)
+
+    @Query("SELECT * FROM sleep_table WHERE id LIKE :id LIMIT 1")
+    fun readSleepRecord(id: Int?): LiveData<SleepEntity>
+
+    // Weight
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun addRecord(weightEntity: WeightEntity)
+
+    @Update
+    suspend fun updateRecord(weightEntity: WeightEntity)
+
+    @Query("DELETE FROM weight_table WHERE id LIKE :id")
+    suspend fun deleteWeightRecord(id: Int?)
+
+    @Query("SELECT * FROM weight_table WHERE id LIKE :id LIMIT 1")
+    fun readWeightRecord(id: Int?): LiveData<WeightEntity>
+
+    // Ketone
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun addRecord(ketoneEntity: KetoneEntity)
+
+    @Update
+    suspend fun updateRecord(ketoneEntity: KetoneEntity)
+
+    @Query("DELETE FROM ketone_table WHERE id LIKE :id")
+    suspend fun deleteKetoneRecord(id: Int?)
+
+    @Query("SELECT * FROM ketone_table WHERE id LIKE :id LIMIT 1")
+    fun readKetoneRecord(id: Int?): LiveData<KetoneEntity>
 
 
 }

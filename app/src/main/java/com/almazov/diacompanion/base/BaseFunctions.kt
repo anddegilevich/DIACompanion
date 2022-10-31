@@ -4,22 +4,19 @@ import android.annotation.SuppressLint
 import android.os.Build
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.View
 import android.widget.EditText
 import android.widget.SeekBar
 import android.widget.TextView
-import android.widget.TimePicker
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentManager
-import androidx.navigation.Navigation
 import com.almazov.diacompanion.R
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
-import kotlinx.android.synthetic.main.fragment_sugar_level_add_record.*
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.LocalTime
+import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
 
@@ -69,35 +66,35 @@ fun editTextSeekBarSetup(min: Int, max: Int, editText: EditText, seekBar: SeekBa
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
-fun timeDateSelectSetup(fragmentManager: FragmentManager, tvTime: TextView, tvDate: TextView) {
+fun timeDateSelectSetup(fragmentManager: FragmentManager, tvTime: TextView, tvDate: TextView): Long {
     val now = LocalDateTime.now()
+    val dateSubmit = now.toEpochSecond(ZoneOffset.UTC)
     val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
-    val dateFormatter = DateTimeFormatter.ofPattern("dd MM yyyy")
+    val dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
 
-    val time = now.format(timeFormatter)
-    val date = now.format(dateFormatter)
-    tvTime.text = time
-    tvDate.text = date
-
+    tvTime.text = now.format(timeFormatter)
+    tvDate.text = now.format(dateFormatter)
 
     tvTime.setOnClickListener{
-        openTimePicker(fragmentManager,time, tvTime)
+        openTimePicker(fragmentManager, tvTime)
     }
 
     tvDate.setOnClickListener{
-        openDatePicker(fragmentManager,date, tvDate)
+        openDatePicker(fragmentManager, tvDate)
     }
 
+    return dateSubmit
 }
 
 @SuppressLint("SimpleDateFormat")
 @RequiresApi(Build.VERSION_CODES.O)
-private fun openDatePicker(fragmentManager: FragmentManager, date: String, tvDate: TextView) {
+private fun openDatePicker(fragmentManager: FragmentManager, tvDate: TextView) {
 
-    val myFormat = "dd MM yyyy"
+    val myFormat = "dd.MM.yyyy"
+    val date = tvDate.text
 
     val sdf = SimpleDateFormat(myFormat)
-    val curDate = sdf.parse(date)
+    val curDate = sdf.parse(date as String)
     val timeInMillis = curDate.time
 
     val picker =
@@ -115,10 +112,10 @@ private fun openDatePicker(fragmentManager: FragmentManager, date: String, tvDat
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
-private fun openTimePicker(fragmentManager: FragmentManager, time: String, tvTime: TextView){
+private fun openTimePicker(fragmentManager: FragmentManager, tvTime: TextView){
     val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 
-    val now = LocalTime.parse(time, timeFormatter)
+    val now = LocalTime.parse(tvTime.text, timeFormatter)
     val hourFormatter = DateTimeFormatter.ofPattern("HH")
     val minuteFormatter = DateTimeFormatter.ofPattern("mm")
 
@@ -151,5 +148,11 @@ private fun openTimePicker(fragmentManager: FragmentManager, time: String, tvTim
         val selectedTime = "$selectedHour:$selectedMinute"
         tvTime.text = selectedTime
     }
+}
+
+fun convertDateToMils(date: String): Long {
+    val formatter = DateTimeFormatter.ofPattern("HH:mm dd.MM.yyyy")
+    val localDate = LocalDateTime.parse(date, formatter)
+    return localDate.atOffset(ZoneOffset.UTC).toInstant().toEpochMilli()
 }
 

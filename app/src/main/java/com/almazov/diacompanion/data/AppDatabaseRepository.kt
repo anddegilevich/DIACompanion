@@ -48,4 +48,95 @@ class AppDatabaseRepository(private val appDao: AppDao) {
         appDao.addRecord(insulinEntity)
     }
 
+    fun readInsulinRecord(id: Int?): LiveData<InsulinEntity>{
+        return appDao.readInsulinRecord(id)
+    }
+
+    suspend fun updateRecord(insulinEntity: InsulinEntity){
+        appDao.updateRecord(insulinEntity)
+    }
+    suspend fun deleteInsulinRecord(id: Int?){
+        appDao.deleteInsulinRecord(id)
+    }
+
+    //Meal
+    suspend fun addRecord(mealEntity: MealEntity){
+        appDao.addRecord(mealEntity)
+    }
+
+    fun readMealRecord(id: Int?): LiveData<MealEntity>{
+        return appDao.readMealRecord(id)
+    }
+
+    suspend fun updateRecord(mealEntity: MealEntity){
+        appDao.updateRecord(mealEntity)
+    }
+    suspend fun deleteMealRecord(id: Int?){
+        appDao.deleteMealRecord(id)
+    }
+
+    //Workout
+    suspend fun addRecord(workoutEntity: WorkoutEntity){
+        appDao.addRecord(workoutEntity)
+    }
+
+    fun readWorkoutRecord(id: Int?): LiveData<WorkoutEntity>{
+        return appDao.readWorkoutRecord(id)
+    }
+
+    suspend fun updateRecord(workoutEntity: WorkoutEntity){
+        appDao.updateRecord(workoutEntity)
+    }
+    suspend fun deleteWorkoutRecord(id: Int?){
+        appDao.deleteWorkoutRecord(id)
+    }
+
+    //Sleep
+    suspend fun addRecord(sleepEntity: SleepEntity){
+        appDao.addRecord(sleepEntity)
+    }
+
+    fun readSleepRecord(id: Int?): LiveData<SleepEntity>{
+        return appDao.readSleepRecord(id)
+    }
+
+    suspend fun updateRecord(sleepEntity: SleepEntity){
+        appDao.updateRecord(sleepEntity)
+    }
+    suspend fun deleteSleepRecord(id: Int?){
+        appDao.deleteSleepRecord(id)
+    }
+
+    //Weight
+    suspend fun addRecord(weightEntity: WeightEntity){
+        appDao.addRecord(weightEntity)
+    }
+
+    fun readWeightRecord(id: Int?): LiveData<WeightEntity>{
+        return appDao.readWeightRecord(id)
+    }
+
+    suspend fun updateRecord(weightEntity: WeightEntity){
+        appDao.updateRecord(weightEntity)
+    }
+    suspend fun deleteWeightRecord(id: Int?){
+        appDao.deleteWeightRecord(id)
+    }
+
+    //Ketone
+    suspend fun addRecord(ketoneEntity: KetoneEntity){
+        appDao.addRecord(ketoneEntity)
+    }
+
+    fun readKetoneRecord(id: Int?): LiveData<KetoneEntity>{
+        return appDao.readKetoneRecord(id)
+    }
+
+    suspend fun updateRecord(ketoneEntity: KetoneEntity){
+        appDao.updateRecord(ketoneEntity)
+    }
+    suspend fun deleteKetoneRecord(id: Int?){
+        appDao.deleteKetoneRecord(id)
+    }
+
 }

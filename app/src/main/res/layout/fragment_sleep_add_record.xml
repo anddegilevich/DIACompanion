@@ -6,11 +6,32 @@
     android:orientation="vertical"
     style="@style/ControlPanel">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="100dp"
-        android:src="@drawable/sleep"
-        android:layout_gravity="center"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:src="@drawable/sleep"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/btn_delete"
+            style="@style/ImageButton"
+            app:srcCompat="@drawable/delete_icon"
+            android:visibility="gone"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:id="@+id/tv_title"
@@ -46,7 +67,7 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/edit_text_sleep"
+                    android:id="@+id/edit_text_duration"
                     style="@style/EditText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

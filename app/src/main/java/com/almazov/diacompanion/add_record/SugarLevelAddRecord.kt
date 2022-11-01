@@ -91,9 +91,9 @@ class SugarLevelAddRecord : Fragment() {
         val sugarLevel = edit_text_sugar_level.text.toString()
         val preferences = spinner_sugar_level.selectedItem.toString()
         val wasPhysicalAct = checkbox_physical_act.isChecked
+        val unit = this.resources.getString(R.string.mmoll)
+        val mainInfo = "$sugarLevel $unit"
 
-        val mainInfo = sugarLevel + " " +
-                this.resources.getString(R.string.mmoll)
         val time = tv_Time.text.toString()
         val date = tv_Date.text.toString()
         val dateInMilli = convertDateToMils("$time $date")
@@ -109,9 +109,9 @@ class SugarLevelAddRecord : Fragment() {
         val sugarLevel = edit_text_sugar_level.text.toString()
         val preferences = spinner_sugar_level.selectedItem.toString()
         val wasPhysicalAct = checkbox_physical_act.isChecked
+        val unit = this.resources.getString(R.string.mmoll)
+        val mainInfo = "$sugarLevel $unit"
 
-        val mainInfo = sugarLevel + " " +
-                this.resources.getString(R.string.mmoll)
         val time = tv_Time.text.toString()
         val date = tv_Date.text.toString()
         val dateInMilli = convertDateToMils("$time $date")

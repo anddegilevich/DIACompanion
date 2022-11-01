@@ -96,9 +96,9 @@ class InsulinAddRecord : Fragment() {
         val insulin = edit_text_insulin.text.toString()
         val type = spinner1_insulin.selectedItem.toString()
         val preferences = spinner2_insulin.selectedItem.toString()
+        val unit = this.resources.getString(R.string.units)
+        val mainInfo = "$insulin $unit"
 
-        val mainInfo = insulin + " " +
-                this.resources.getString(R.string.units)
         val time = tv_Time.text.toString()
         val date = tv_Date.text.toString()
         val dateInMilli = convertDateToMils("$time $date")
@@ -114,9 +114,9 @@ class InsulinAddRecord : Fragment() {
         val insulin = edit_text_insulin.text.toString()
         val type = spinner1_insulin.selectedItem.toString()
         val preferences = spinner2_insulin.selectedItem.toString()
+        val unit = this.resources.getString(R.string.units)
+        val mainInfo = "$insulin $unit"
 
-        val mainInfo = insulin + " " +
-                this.resources.getString(R.string.units)
         val time = tv_Time.text.toString()
         val date = tv_Date.text.toString()
         val dateInMilli = convertDateToMils("$time $date")

@@ -27,7 +27,7 @@ class RecordListAdapter(): RecyclerView.Adapter<RecordListAdapter.MyViewHolder>(
         "ketone_table" to R.color.orange
     )
 
-    /*var categoriesAndSecondaryColors = mutableMapOf(
+    var categoriesAndSecondaryColors = mutableMapOf(
         "sugar_level_table" to R.color.red_dark,
         "insulin_table" to R.color.blue_dark,
         "meal_table" to R.color.purple_dark,
@@ -35,7 +35,7 @@ class RecordListAdapter(): RecyclerView.Adapter<RecordListAdapter.MyViewHolder>(
         "sleep_table" to R.color.pink_dark,
         "weight_table" to R.color.yellow_dark,
         "ketone_table" to R.color.orange_dark
-    )*/
+    )
 
     var categoriesAndImages = mutableMapOf(
         "sugar_level_table" to R.drawable.sugar_level,
@@ -66,17 +66,17 @@ class RecordListAdapter(): RecyclerView.Adapter<RecordListAdapter.MyViewHolder>(
         val currentItem = recordList[position]
 
         val primaryColor = categoriesAndPrimaryColors.get(currentItem.category)
-//        val secondaryColor = categoriesAndSecondaryColors.get(currentItem.category)
+        val secondaryColor = categoriesAndSecondaryColors.get(currentItem.category)
         val imageCategory = categoriesAndImages.get(currentItem.category)
 
         holder.itemView.main_info.text = currentItem.mainInfo
 //        holder.itemView.main_info.setTextColor(ContextCompat.getColor(context!!, secondaryColor!!))
 
         holder.itemView.time.text = currentItem.time
-//        holder.itemView.time.setTextColor(ContextCompat.getColor(context!!, secondaryColor!!))
+        holder.itemView.time.setTextColor(ContextCompat.getColor(context!!, secondaryColor!!))
 
         holder.itemView.date.text = currentItem.date
-//        holder.itemView.date.setTextColor(ContextCompat.getColor(context!!, secondaryColor!!))
+        holder.itemView.date.setTextColor(ContextCompat.getColor(context!!, secondaryColor!!))
 
         holder.itemView.img_category.setImageResource(imageCategory!!)
 
@@ -110,8 +110,8 @@ class RecordListAdapter(): RecyclerView.Adapter<RecordListAdapter.MyViewHolder>(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setData(record: List<RecordEntity>){
-        this.recordList = record
+    fun setData(records: List<RecordEntity>){
+        this.recordList = records
         notifyDataSetChanged()
     }
 

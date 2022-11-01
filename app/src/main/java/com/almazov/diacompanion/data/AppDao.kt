@@ -24,7 +24,7 @@ interface AppDao {
     @Query("DELETE FROM record_table")
     suspend fun deleteAllRecords()
 
-    @Query("SELECT * FROM record_table ORDER BY dateInMilli")
+    @Query("SELECT * FROM record_table ORDER BY dateInMilli DESC")
     fun readAllData(): LiveData<List<RecordEntity>>
 
     @Query("SELECT * FROM record_table WHERE category LIKE :filter")

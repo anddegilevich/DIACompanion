@@ -1,10 +1,12 @@
 package com.almazov.diacompanion.data
 
 import androidx.lifecycle.LiveData
+import androidx.paging.PagingSource
 
 class AppDatabaseRepository(private val appDao: AppDao) {
 
     val readAllData: LiveData<List<RecordEntity>> = appDao.readAllData()
+    val readAllPaged: PagingSource<Int, RecordEntity> = appDao.readAllPaged()
 
     //Records
     suspend fun addRecord(recordEntity: RecordEntity): Long {

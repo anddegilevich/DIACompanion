@@ -1,9 +1,8 @@
 package com.almazov.diacompanion.data
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.paging.PagingSource
 import androidx.room.*
-import com.almazov.diacompanion.data.RecordEntity
 
 @Dao
 interface AppDao {
@@ -26,6 +25,9 @@ interface AppDao {
 
     @Query("SELECT * FROM record_table ORDER BY dateInMilli DESC")
     fun readAllData(): LiveData<List<RecordEntity>>
+
+    @Query("SELECT * FROM record_table ORDER BY dateInMilli DESC, id DESC")
+    fun readAllPaged(): PagingSource<Int, RecordEntity>
 
     @Query("SELECT * FROM record_table WHERE category LIKE :filter")
     fun filterDatabase(filter: String): LiveData<List<RecordEntity>>

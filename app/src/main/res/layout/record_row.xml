@@ -4,7 +4,10 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="15dp"
-    android:layout_margin="10dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
     android:clickable="true"
     app:cardElevation="7dp"
     android:backgroundTint="@color/red">
@@ -26,16 +29,14 @@
             />
 
         <TextView
-            android:textStyle="bold"
-            android:layout_weight="1"
             android:id="@+id/main_info"
+            style="@style/SmallText"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            style="@style/SmallText"
-            android:layout_marginLeft="0dp"
-            android:gravity="center"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
             android:textColor="?attr/button_color"
-            android:layout_margin="0dp"/>
+            android:textStyle="bold" />
 
         <TextView
             android:textStyle="bold"

@@ -7,15 +7,31 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.almazov.diacompanion.R
 import com.almazov.diacompanion.data.RecordEntity
 import kotlinx.android.synthetic.main.record_row.view.*
 
-class RecordListAdapter(): RecyclerView.Adapter<RecordListAdapter.MyViewHolder>() {
+class RecordListAdapter(): PagingDataAdapter<RecordEntity, RecordListAdapter.RecordViewHolder>(DIFF_CALLBACK) {
 
     private var recordList = emptyList<RecordEntity>()
     var context: Context? = null
+
+    companion object {
+        private val DIFF_CALLBACK = object :
+            DiffUtil.ItemCallback<RecordEntity>() {
+
+            override fun areItemsTheSame(oldItem: RecordEntity, newItem: RecordEntity): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(oldItem: RecordEntity, newItem: RecordEntity): Boolean {
+                return oldItem == newItem
+            }
+        }
+    }
 
     var categoriesAndPrimaryColors = mutableMapOf(
         "sugar_level_table" to R.color.red,
@@ -47,35 +63,35 @@ class RecordListAdapter(): RecyclerView.Adapter<RecordListAdapter.MyViewHolder>(
         "ketone_table" to R.drawable.ketone
     )
 
-    class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {}
+    class RecordViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {}
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecordViewHolder {
         context=parent.context;
 
-        return MyViewHolder(LayoutInflater.from(context).inflate(
+        return RecordViewHolder(LayoutInflater.from(context).inflate(
             R.layout.record_row,
             parent, false))
     }
 
-    override fun getItemCount(): Int {
+   /* override fun getItemCount(): Int {
         return recordList.size
-    }
+    }*/
 
-    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecordViewHolder, position: Int) {
 
-        val currentItem = recordList[position]
+        val record: RecordEntity? = getItem(position)
 
-        val primaryColor = categoriesAndPrimaryColors.get(currentItem.category)
-        val secondaryColor = categoriesAndSecondaryColors.get(currentItem.category)
-        val imageCategory = categoriesAndImages.get(currentItem.category)
+        val primaryColor = categoriesAndPrimaryColors.get(record?.category)
+        val secondaryColor = categoriesAndSecondaryColors.get(record?.category)
+        val imageCategory = categoriesAndImages.get(record?.category)
 
-        holder.itemView.main_info.text = currentItem.mainInfo
-//        holder.itemView.main_info.setTextColor(ContextCompat.getColor(context!!, secondaryColor!!))
+        holder.itemView.main_info.text = record?.mainInfo
+        holder.itemView.main_info.setTextColor(ContextCompat.getColor(context!!, secondaryColor!!))
 
-        holder.itemView.time.text = currentItem.time
+        holder.itemView.time.text = record?.time
         holder.itemView.time.setTextColor(ContextCompat.getColor(context!!, secondaryColor!!))
 
-        holder.itemView.date.text = currentItem.date
+        holder.itemView.date.text = record?.date
         holder.itemView.date.setTextColor(ContextCompat.getColor(context!!, secondaryColor!!))
 
         holder.itemView.img_category.setImageResource(imageCategory!!)
@@ -83,36 +99,36 @@ class RecordListAdapter(): RecyclerView.Adapter<RecordListAdapter.MyViewHolder>(
         holder.itemView.card_view.setBackgroundResource(primaryColor!!)
         holder.itemView.card_view.setOnClickListener{
 
-            when (currentItem.category) {
-                "sugar_level_table" -> {val action = RecordHistoryDirections.actionRecordHistoryToSugarLevelAddRecord(currentItem)
+            when (record?.category) {
+                "sugar_level_table" -> {val action = RecordHistoryDirections.actionRecordHistoryToSugarLevelAddRecord(record)
                     holder.itemView.findNavController().navigate(action)}
 
-                "insulin_table" -> {val action = RecordHistoryDirections.actionRecordHistoryToInsulinAddRecord(currentItem)
+                "insulin_table" -> {val action = RecordHistoryDirections.actionRecordHistoryToInsulinAddRecord(record)
                     holder.itemView.findNavController().navigate(action)}
 
-                "meal_table" -> {val action = RecordHistoryDirections.actionRecordHistoryToMealAddRecord(currentItem)
+                "meal_table" -> {val action = RecordHistoryDirections.actionRecordHistoryToMealAddRecord(record)
                     holder.itemView.findNavController().navigate(action)}
 
-                "workout_table" -> {val action = RecordHistoryDirections.actionRecordHistoryToWorkoutAddRecord(currentItem)
+                "workout_table" -> {val action = RecordHistoryDirections.actionRecordHistoryToWorkoutAddRecord(record)
                     holder.itemView.findNavController().navigate(action)}
 
-                "sleep_table" -> {val action = RecordHistoryDirections.actionRecordHistoryToSleepAddRecord(currentItem)
+                "sleep_table" -> {val action = RecordHistoryDirections.actionRecordHistoryToSleepAddRecord(record)
                     holder.itemView.findNavController().navigate(action)}
 
-                "weight_table" -> {val action = RecordHistoryDirections.actionRecordHistoryToWeightAddRecord(currentItem)
+                "weight_table" -> {val action = RecordHistoryDirections.actionRecordHistoryToWeightAddRecord(record)
                     holder.itemView.findNavController().navigate(action)}
 
-                "ketone_table" -> {val action = RecordHistoryDirections.actionRecordHistoryToKetoneAddRecord(currentItem)
+                "ketone_table" -> {val action = RecordHistoryDirections.actionRecordHistoryToKetoneAddRecord(record)
                     holder.itemView.findNavController().navigate(action)}
             }
         }
 
     }
 
-    @SuppressLint("NotifyDataSetChanged")
+    /*@SuppressLint("NotifyDataSetChanged")
     fun setData(records: List<RecordEntity>){
         this.recordList = records
         notifyDataSetChanged()
-    }
+    }*/
 
 }

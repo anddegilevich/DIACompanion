@@ -4,12 +4,25 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class AppDatabaseViewModel(application: Application): AndroidViewModel(application) {
 
     val readALlData: LiveData<List<RecordEntity>>
+    val readAllPaged = Pager(
+        PagingConfig(
+            pageSize = 20,
+            enablePlaceholders = true,
+            maxSize = 200
+        )
+    ){
+        repository.readAllPaged
+    }.flow
+
     private val repository: AppDatabaseRepository
 
     init {

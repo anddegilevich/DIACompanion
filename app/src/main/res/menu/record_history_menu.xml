@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group>
+        <item android:id="@+id/all"
+            android:titleCondensed="Options"
+            android:title="@string/AllRecords">
+        </item>
+        <item android:id="@+id/sugar_level"
+            android:titleCondensed="Options"
+            android:title="@string/SugarLevel">
+        </item>
+        <item android:id="@+id/insulin"
+            android:title="@string/Insulin">
+        </item>
+        <item android:id="@+id/meal"
+            android:title="@string/Meal">
+        </item>
+        <item android:id="@+id/workout"
+            android:title="@string/Workout">
+        </item>
+        <item android:id="@+id/sleep"
+            android:title="@string/Sleep">
+        </item>
+        <item android:id="@+id/weight"
+            android:title="@string/Weight">
+        </item>
+        <item android:id="@+id/ketone"
+            android:title="@string/Ketone">
+        </item>
+    </group>
+
+</menu>

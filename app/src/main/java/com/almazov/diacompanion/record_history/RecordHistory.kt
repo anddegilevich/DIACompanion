@@ -1,11 +1,12 @@
 package com.almazov.diacompanion.record_history
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
+import android.widget.PopupMenu
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,7 +15,6 @@ import com.almazov.diacompanion.data.AppDatabaseViewModel
 import kotlinx.android.synthetic.main.fragment_record_history.*
 import kotlinx.android.synthetic.main.fragment_record_history.view.*
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.observeOn
 import kotlinx.coroutines.launch
 
 class RecordHistory : Fragment() {
@@ -34,28 +34,70 @@ class RecordHistory : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         appDatabaseViewModel = ViewModelProvider(this).get(AppDatabaseViewModel::class.java)
-        /*appDatabaseViewModel.readALlData.observe(viewLifecycleOwner, Observer{record ->
-            adapter.setData(record)
-        })*/
 
-        lifecycleScope.launch{
-            appDatabaseViewModel.readAllPaged.collectLatest {
-                adapter.submitData(it)
-            }
-        }
+        readAllRecords()
 
         view.btn_options.setOnClickListener{
-//            filterRecords()
+            showPopup(btn_options)
         }
 
         return view
     }
 
-    /*private fun filterRecords() {
-        appDatabaseViewModel.filterDatabase("insulin_table").observe(viewLifecycleOwner) {
-                list -> list.let { adapter.setData(it) }
+    private fun showPopup(view: View) {
+        val popup = PopupMenu(requireContext(), view)
+        popup.inflate(R.menu.record_history_menu)
+
+        popup.setOnMenuItemClickListener { item: MenuItem? ->
+
+            when (item!!.itemId) {
+                R.id.all -> {
+                    readAllRecords()
+                }
+                R.id.sugar_level -> {
+                    filterRecords("sugar_level_table")
+                }
+                R.id.insulin -> {
+                    filterRecords("insulin_table")
+                }
+                R.id.meal -> {
+                    filterRecords("meal_table")
+                }
+                R.id.workout -> {
+                    filterRecords("workout_table")
+                }
+                R.id.sleep -> {
+                    filterRecords("sleep_table")
+                }
+                R.id.weight -> {
+                    filterRecords("weight_table")
+                }
+                R.id.ketone -> {
+                    filterRecords("ketone_table")
+                }
+
+            }
+            false
         }
-    }*/
+
+        popup.show()
+    }
+
+    private fun filterRecords(filter: String) {
+        lifecycleScope.launch{
+            appDatabaseViewModel.filterPaged(filter).collectLatest {
+                adapter.submitData(it)
+            }
+        }
+    }
+
+    private fun readAllRecords() {
+        lifecycleScope.launch{
+            appDatabaseViewModel.readAllPaged.collectLatest {
+                adapter.submitData(it)
+            }
+        }
+    }
 
 
 }

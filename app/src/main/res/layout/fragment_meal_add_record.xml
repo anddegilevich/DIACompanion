@@ -55,11 +55,73 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
+            <TextView
+                style="@style/MainText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/MealType" />
+
+            <Spinner
+                style="@style/SecondaryText"
+                android:id="@+id/meal_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dropdown"/>
+
+            <TextView
+                style="@style/MainText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/FoodList" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_food_in_meal"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:scrollbars="vertical"
+                />
+
+            <ImageButton
+                android:id="@+id/btn_add_food"
+                style="@style/ImageButton"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:src="@drawable/plus"
+                android:background="?attr/category_color"/>
+
+            <TextView
+                style="@style/MainText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/TimeDate" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_Time"
+                    style="@style/SecondaryText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Time"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_Date"
+                    style="@style/SecondaryText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Date" />
+            </LinearLayout>
+
 
         </LinearLayout>
+
     </ScrollView>
 
     <Button
+        android:id="@+id/btn_save"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/Button"

@@ -10,16 +10,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.almazov.diacompanion.R
 import com.almazov.diacompanion.data.AppDatabaseViewModel
-import com.almazov.diacompanion.data.RecordEntity
-import com.almazov.diacompanion.data.SleepEntity
-import kotlinx.android.synthetic.main.fragment_meal_list.view.*
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.android.synthetic.main.fragment_food_list.view.*
 import kotlinx.coroutines.launch
 
-class MealList : Fragment() {
+class FoodlList : Fragment() {
 
     private lateinit var appDatabaseViewModel: AppDatabaseViewModel
-    val adapter = MealListAdapter()
+    val adapter = FoodlListAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,7 +24,7 @@ class MealList : Fragment() {
     ): View? {
 
 
-        val view = inflater.inflate(R.layout.fragment_meal_list, container, false)
+        val view = inflater.inflate(R.layout.fragment_food_list, container, false)
 
         val recyclerView = view.recycler_view_meal
         recyclerView.adapter = adapter
@@ -35,22 +32,21 @@ class MealList : Fragment() {
 
         appDatabaseViewModel = ViewModelProvider(this).get(AppDatabaseViewModel::class.java)
 
-//        prePop()
         lifecycleScope.launch{
-            appDatabaseViewModel.readAllPaged.collectLatest {
+            /*appDatabaseViewModel.readAllPaged.collectLatest {
                 adapter.submitData(it)
-            }
+            }*/
         }
 
         return view
     }
 
-    fun prePop() {
+    /*fun prePop() {
         lifecycleScope.launch{
             for (i in 0..200000) {
                 appDatabaseViewModel.addRecord(RecordEntity(null,"sleep_table","sleep$i",1667377680000+i.toLong(),"10:00","20.01.2000",1667377680000,false), SleepEntity(null,0.toDouble()))
             }
         }
-    }
+    }*/
 
 }

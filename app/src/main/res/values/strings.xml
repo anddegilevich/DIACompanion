@@ -35,6 +35,10 @@
     <string name="min">min</string>
     <string name="hours">h</string>
     <string name="kg">kg</string>
+    <string name="Carbs">C</string>
+    <string name="Protein">P</string>
+    <string name="Fats">F</string>
+    <string name="GI">GI</string>
 
     //----------------------------------------------------------------------------------------------
     //Options
@@ -86,6 +90,9 @@
     <string name="LastRecords">Last Records</string>
     <string name="RecordsHistory">Records History</string>
 
+    //RecordHistory
+    <string name="AllRecords">All Records</string>
+
     //RecordsCategories
     <string name="ChooseCategory">ChooseCategory</string>
     <string name="NewRecord">New Record</string>
@@ -117,6 +124,16 @@
         <item>After lunch</item>
         <item>After dinner</item>
         <item>Additionally</item>
+    </string-array>
+
+    //MealAddRecord
+    <string name="MealType">Meal Type</string>
+    <string name="FoodList">Food List</string>
+    <string-array name="MealSpinner">
+        <item>Breakfast</item>
+        <item>Lunch</item>
+        <item>Dinner</item>
+        <item>Snack</item>
     </string-array>
 
     //WorkoutAddRecord

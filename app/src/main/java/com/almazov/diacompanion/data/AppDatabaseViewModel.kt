@@ -6,13 +6,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import androidx.paging.PagingSource
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class AppDatabaseViewModel(application: Application): AndroidViewModel(application) {
 
-    val readALlData: LiveData<List<RecordEntity>>
+    /*val readALlData: LiveData<List<RecordEntity>>*/
     val readAllPaged = Pager(
         PagingConfig(
             pageSize = 20,
@@ -28,7 +30,7 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
     init {
         val appDao = AppDatabase.getDatabase(application).appDao()
         repository = AppDatabaseRepository(appDao)
-        readALlData = repository.readAllData
+        /*readALlData = repository.readAllData*/
     }
 
     // Records
@@ -51,8 +53,20 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
         }
     }
 
-    fun filterDatabase(filter: String): LiveData<List<RecordEntity>> {
+    /*fun filterDatabase(filter: String): LiveData<List<RecordEntity>> {
         return repository.filterDatabase(filter)
+    }*/
+
+    fun filterPaged(filter: String): Flow<PagingData<RecordEntity>> {
+        return Pager(
+            PagingConfig(
+                pageSize = 20,
+                enablePlaceholders = true,
+                maxSize = 200
+            )
+        ){
+            repository.filterPaged(filter)
+        }.flow
     }
 
     // SugarLevel
@@ -112,7 +126,7 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
     fun addRecord(recordEntity: RecordEntity, mealEntity: MealEntity) {
         viewModelScope.launch(Dispatchers.IO) {
             val id = repository.addRecord(recordEntity)
-            mealEntity.id = id.toInt()
+            mealEntity.idMeal = id.toInt()
             repository.addRecord(mealEntity)
         }
     }

@@ -23,14 +23,17 @@ interface AppDao {
     @Query("DELETE FROM record_table")
     suspend fun deleteAllRecords()
 
-    @Query("SELECT * FROM record_table ORDER BY dateInMilli DESC")
-    fun readAllData(): LiveData<List<RecordEntity>>
+    /*@Query("SELECT * FROM record_table ORDER BY dateInMilli DESC")
+    fun readAllData(): LiveData<List<RecordEntity>>*/
 
     @Query("SELECT * FROM record_table ORDER BY dateInMilli DESC, id DESC")
     fun readAllPaged(): PagingSource<Int, RecordEntity>
 
-    @Query("SELECT * FROM record_table WHERE category LIKE :filter")
-    fun filterDatabase(filter: String): LiveData<List<RecordEntity>>
+    /*@Query("SELECT * FROM record_table WHERE category LIKE :filter")
+    fun filterDatabase(filter: String): LiveData<List<RecordEntity>>*/
+
+    @Query("SELECT * FROM record_table WHERE category LIKE :filter ORDER BY dateInMilli DESC, id DESC")
+    fun filterPaged(filter: String): PagingSource<Int, RecordEntity>
 
     // SugarLevel
     @Insert(onConflict = OnConflictStrategy.IGNORE)
@@ -65,10 +68,10 @@ interface AppDao {
     @Update
     suspend fun updateRecord(mealEntity: MealEntity)
 
-    @Query("DELETE FROM meal_table WHERE id LIKE :id")
+    @Query("DELETE FROM meal_table WHERE idMeal LIKE :id")
     suspend fun deleteMealRecord(id: Int?)
 
-    @Query("SELECT * FROM meal_table WHERE id LIKE :id LIMIT 1")
+    @Query("SELECT * FROM meal_table WHERE idMeal LIKE :id LIMIT 1")
     fun readMealRecord(id: Int?): LiveData<MealEntity>
 
     // Workout
@@ -123,5 +126,10 @@ interface AppDao {
     @Query("SELECT * FROM ketone_table WHERE id LIKE :id LIMIT 1")
     fun readKetoneRecord(id: Int?): LiveData<KetoneEntity>
 
+    // Food
+
+    @Transaction
+    @Query("SELECT * FROM meal_table")
+    fun getMealWithFoods(): List<MealWithFood>
 
 }

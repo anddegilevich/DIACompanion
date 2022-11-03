@@ -36,13 +36,7 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"/>
-        <action
-            android:id="@+id/action_homePage_to_mealList"
-            app:destination="@id/mealList"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"/>
+
     </fragment>
     <fragment
         android:id="@+id/recordsCategories"
@@ -141,6 +135,18 @@
         <argument
             android:name="selectedRecord"
             app:argType="com.almazov.diacompanion.data.RecordEntity"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <action
+            android:id="@+id/action_mealAddRecord_to_foodList"
+            app:destination="@id/foodList"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <argument
+            android:name="foodItem"
+            app:argType="com.almazov.diacompanion.data.FoodEntity"
             app:nullable="true"
             android:defaultValue="@null" />
     </fragment>
@@ -314,8 +320,18 @@
             app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
     <fragment
-        android:id="@+id/mealList"
-        android:name="com.almazov.diacompanion.meal.MealList"
-        android:label="fragment_meal_list"
-        tools:layout="@layout/fragment_meal_list" />
+        android:id="@+id/foodList"
+        android:name="com.almazov.diacompanion.meal.FoodlList"
+        android:label="fragment_food_list"
+        tools:layout="@layout/fragment_food_list" >
+        <action
+            android:id="@+id/action_foodList_to_mealAddRecord"
+            app:destination="@id/mealAddRecord"
+            app:enterAnim="@anim/slide_in_down"
+            app:exitAnim="@anim/slide_out_down"
+            app:popEnterAnim="@anim/slide_in_up"
+            app:popExitAnim="@anim/slide_out_up"
+            app:popUpTo="@id/mealAddRecord"
+            app:popUpToInclusive="true"/>
+    </fragment>
 </navigation>

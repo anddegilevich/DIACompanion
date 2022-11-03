@@ -50,7 +50,7 @@ class HomePage : Fragment() {
         nav_view.setNavigationItemSelectedListener {
             when(it.itemId){
                 R.id.nav_view_account -> {deleteAllRecords()}
-                R.id.nav_view_app_type -> {Navigation.findNavController(view).navigate(R.id.action_homePage_to_mealList) }
+                R.id.nav_view_app_type -> {/*Navigation.findNavController(view).navigate(R.id.action_homePage_to_mealList)*/ }
             }
 
             drawer_layout.closeDrawer(GravityCompat.START)

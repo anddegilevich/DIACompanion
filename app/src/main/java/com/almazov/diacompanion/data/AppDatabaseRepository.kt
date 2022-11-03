@@ -5,7 +5,7 @@ import androidx.paging.PagingSource
 
 class AppDatabaseRepository(private val appDao: AppDao) {
 
-    val readAllData: LiveData<List<RecordEntity>> = appDao.readAllData()
+    /*val readAllData: LiveData<List<RecordEntity>> = appDao.readAllData()*/
     val readAllPaged: PagingSource<Int, RecordEntity> = appDao.readAllPaged()
 
     //Records
@@ -25,8 +25,12 @@ class AppDatabaseRepository(private val appDao: AppDao) {
         appDao.deleteAllRecords()
     }
 
-    fun filterDatabase(filter: String): LiveData<List<RecordEntity>> {
+    /*fun filterDatabase(filter: String): LiveData<List<RecordEntity>> {
         return appDao.filterDatabase(filter)
+    }*/
+
+    fun filterPaged(filter: String): PagingSource<Int, RecordEntity> {
+        return appDao.filterPaged(filter)
     }
 
     //SugarLevel

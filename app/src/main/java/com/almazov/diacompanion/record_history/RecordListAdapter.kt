@@ -16,7 +16,6 @@ import kotlinx.android.synthetic.main.record_row.view.*
 
 class RecordListAdapter(): PagingDataAdapter<RecordEntity, RecordListAdapter.RecordViewHolder>(DIFF_CALLBACK) {
 
-    private var recordList = emptyList<RecordEntity>()
     var context: Context? = null
 
     companion object {
@@ -73,10 +72,6 @@ class RecordListAdapter(): PagingDataAdapter<RecordEntity, RecordListAdapter.Rec
             parent, false))
     }
 
-   /* override fun getItemCount(): Int {
-        return recordList.size
-    }*/
-
     override fun onBindViewHolder(holder: RecordViewHolder, position: Int) {
 
         val record: RecordEntity? = getItem(position)
@@ -125,10 +120,5 @@ class RecordListAdapter(): PagingDataAdapter<RecordEntity, RecordListAdapter.Rec
 
     }
 
-    /*@SuppressLint("NotifyDataSetChanged")
-    fun setData(records: List<RecordEntity>){
-        this.recordList = records
-        notifyDataSetChanged()
-    }*/
 
 }

@@ -6,6 +6,6 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "meal_table")
 data class MealEntity (
     @PrimaryKey(autoGenerate = true)
-    var id: Int?,
+    var idMeal: Int?,
     val kkalPlus: Double?
     )

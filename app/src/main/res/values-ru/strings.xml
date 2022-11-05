@@ -1,4 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="Back">Назад</string>
+    <string name="LogIn">Войти</string>
+    <string name="LogOut">Выйти</string>
+    <string name="Save">Сохранить</string>
+    <string name="Delete">Удалить</string>
+    <string name="Preferences">Настройки</string>
+    <string name="TimeDate">Дата и время</string>
+    <string name="Time">Время</string>
+    <string name="Date">Дата</string>
+    <string name="SelectRecordTime">Выбрать время записи</string>
+    <string name="SelectRecordDate">Выбрать дату записи</string>
+    <string name="Yes">Да</string>
+    <string name="No">Нет</string>
+    <string name="SugarLevel">Уровень сахара</string>
+    <string name="Insulin">Инсулин</string>
+    <string name="Meal">Прием пищи</string>
+    <string name="Workout">Физ. активность</string>
+    <string name="Sleep">Сон</string>
+    <string name="Weight">Вес</string>
+    <string name="Ketone">Кетонурия</string>
+    <string name="mmoll">ммол/л</string>
+    <string name="units">ед.</string>
+    <string name="kkal">ккал</string>
+    <string name="min">мин.</string>
+    <string name="hours">ч.</string>
+    <string name="kg">кг</string>
+    <string name="Carbs">У</string>
+    <string name="Protein">Б</string>
+    <string name="Fats">Ж</string>
+    <string name="GI">ГИ</string>
+    <string name="Options">Настройки</string>
+    <string name="Account">Аккаунт</string>
+    <string name="AppType">Тип приложения</string>
+    <string name="Audio">Аудио</string>
+    <string name="Notifications">Уведомления</string>
+    <string name="Info">Справка</string>
+    <string name="Help">Помощь</string>
+    <string name="AreUSureDeleteAllRecords">Вы уверены что хотите удалить все записи</string>
+    <string name="DeleteAllRecords">Удалить все записи?</string>
+    <string name="Username">Логин</string>
+    <string name="UserID">ID</string>
+    <string name="Password">Пароль</string>
+    <string name="Phone">Телефон</string>
+    <string name="FCs">ФИО</string>
+    <string name="FirstName">Имя</string>
+    <string name="LastName">Фамилия</string>
+    <string name="Patronymic">Отчество</string>
+    <string name="BirthDate">Дата рождения</string>
+    <string name="Gender">Пол</string>
+    <string name="Height">Рост</string>
+    <string name="AttendingDoctor">Лечащий доктор</string>
+    <string name="PregnancyStart">Дата начала беременности</string>
+    <string name="OnBWelcome">Добро пожаловать в\\nDIA Companion!</string>
+    <string name="OnBAboutApp">Наше приложение - ваш незаменимый помощник в мониторинге состояния здоровья. Пожалуйста, выполните начальные шаги по настройке вашего приложения.</string>
+    <string name="OnBLetsStart">Начнем!</string>
+    <string name="OnBSetupComplete">Настройка завершена!</string>
+    <string name="Finish">Завершить</string>
+    <string name="OnBEnterPersonalData">Пожалуйста, введите свои персональные данные</string>
+    <string name="OnBEnterGender">Пожалуйста, введите свой пол</string>
+    <string name="Male">Мужской</string>
+    <string name="Female">Женский</string>
+    <string name="Analytics">Аналитика</string>
+    <string name="Details">Подробнее</string>
+    <string name="LastRecords">Последние записи</string>
+    <string name="RecordsHistory">История</string>
+    <string name="AllRecords">Все записи</string>
+    <string name="ChooseCategory">Выберите категорию</string>
+    <string name="NewRecord">Новая запись</string>
+    <string name="UpdateRecord">Изменение записи</string>
+    <string name="DeleteRecord">Удалить запись?</string>
+    <string name="AreUSureDeleteRecord">Вы уверены что хотите удалить запись?</string>
+    <string name="WasWorkout">Была физ. активность</string>
+    <string name="MealType">Тип приема пищи</string>
+    <string name="FoodList">Список продуктов/блюд</string>
+    <string name="EnterFoodName">Введите имя продукта</string>
+    <string name="Next">Вперед</string>
+
+    <string-array name="SugarLevelSpinner">
+        <item>На голодный желудок</item>
+        <item>После завтрака</item>
+        <item>После обеда</item>
+        <item>После ужина</item>
+        <item>При родах</item>
+        <item>Дополнительно</item>
+    </string-array>
+
+    <string-array name="InsulinSpinner1">
+        <item>Пролонгированный</item>
+        <item>Ультракороткий</item>
+        <item>Короткий</item>
+    </string-array>
+
+    <string-array name="InsulinSpinner2">
+        <item>На голодный желудок</item>
+        <item>После завтрака</item>
+        <item>После обеда</item>
+        <item>После ужина</item>
+        <item>Дополнительно</item>
+    </string-array>
+
+    <string-array name="MealSpinner">
+        <item>Завтрак</item>
+        <item>Обед</item>
+        <item>Ужин</item>
+        <item>Перекус</item>
+    </string-array>
+
+    <string-array name="WorkoutSpinner">
+        <item>Ходьба</item>
+        <item>Зарядка</item>
+        <item>Спорт</item>
+        <item>Уборка</item>
+        <item>Садовые работы</item>
+    </string-array>
+
+    <string-array name="KetoneSpinner">
+        <item>0</item>
+        <item>5</item>
+        <item>10</item>
+        <item>50</item>
+        <item>100</item>
+    </string-array>
 </resources>

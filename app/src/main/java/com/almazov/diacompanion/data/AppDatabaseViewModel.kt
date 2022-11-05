@@ -17,7 +17,7 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
     /*val readALlData: LiveData<List<RecordEntity>>*/
     val readAllPaged = Pager(
         PagingConfig(
-            pageSize = 20,
+            pageSize = 10,
             enablePlaceholders = true,
             maxSize = 200
         )
@@ -60,7 +60,7 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
     fun filterPaged(filter: String): Flow<PagingData<RecordEntity>> {
         return Pager(
             PagingConfig(
-                pageSize = 20,
+                pageSize = 10,
                 enablePlaceholders = true,
                 maxSize = 200
             )
@@ -97,6 +97,7 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
     }
 
     // Insulin
+
     fun addRecord(recordEntity: RecordEntity, insulinEntity: InsulinEntity) {
         viewModelScope.launch(Dispatchers.IO) {
             val id = repository.addRecord(recordEntity)
@@ -123,6 +124,7 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
     }
 
     // Meal
+
     fun addRecord(recordEntity: RecordEntity, mealEntity: MealEntity) {
         viewModelScope.launch(Dispatchers.IO) {
             val id = repository.addRecord(recordEntity)
@@ -149,6 +151,7 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
     }
 
     // Workout
+
     fun addRecord(recordEntity: RecordEntity, workoutEntity: WorkoutEntity) {
         viewModelScope.launch(Dispatchers.IO) {
             val id = repository.addRecord(recordEntity)
@@ -175,6 +178,7 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
     }
 
     // Sleep
+
     fun addRecord(recordEntity: RecordEntity, sleepEntity: SleepEntity) {
         viewModelScope.launch(Dispatchers.IO) {
             val id = repository.addRecord(recordEntity)
@@ -201,6 +205,7 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
     }
 
     // Weight
+
     fun addRecord(recordEntity: RecordEntity, weightEntity: WeightEntity) {
         viewModelScope.launch(Dispatchers.IO) {
             val id = repository.addRecord(recordEntity)
@@ -227,6 +232,7 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
     }
 
     // Ketone
+
     fun addRecord(recordEntity: RecordEntity, ketoneEntity: KetoneEntity) {
         viewModelScope.launch(Dispatchers.IO) {
             val id = repository.addRecord(recordEntity)
@@ -251,4 +257,16 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
             repository.deleteKetoneRecord(id)
         }
     }
+
+    // Food
+
+    val readFoodPaged = Pager(
+        PagingConfig(
+            pageSize = 10,
+            enablePlaceholders = true,
+            maxSize = 200
+        )
+    ){
+        repository.readFoodPaged
+    }.flow
 }

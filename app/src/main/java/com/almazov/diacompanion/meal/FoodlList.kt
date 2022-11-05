@@ -1,16 +1,20 @@
 package com.almazov.diacompanion.meal
 
+import android.content.Context
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.view.ContextThemeWrapper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.almazov.diacompanion.R
 import com.almazov.diacompanion.data.AppDatabaseViewModel
 import kotlinx.android.synthetic.main.fragment_food_list.view.*
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class FoodlList : Fragment() {
@@ -33,20 +37,22 @@ class FoodlList : Fragment() {
         appDatabaseViewModel = ViewModelProvider(this).get(AppDatabaseViewModel::class.java)
 
         lifecycleScope.launch{
-            /*appDatabaseViewModel.readAllPaged.collectLatest {
+            appDatabaseViewModel.readFoodPaged.collectLatest {
                 adapter.submitData(it)
-            }*/
+            }
+        }
+
+        view.edit_text_search_food.setOnClickListener{
+            /*Navigation.findNavController(view).popBackStack(R.id.mealAddRecord,false,true);*/
         }
 
         return view
     }
 
-    /*fun prePop() {
-        lifecycleScope.launch{
-            for (i in 0..200000) {
-                appDatabaseViewModel.addRecord(RecordEntity(null,"sleep_table","sleep$i",1667377680000+i.toLong(),"10:00","20.01.2000",1667377680000,false), SleepEntity(null,0.toDouble()))
-            }
-        }
-    }*/
+    override fun onGetLayoutInflater(savedInstanceState: Bundle?): LayoutInflater {
+        val inflater = super.onGetLayoutInflater(savedInstanceState)
+        val contextThemeWrapper: Context = ContextThemeWrapper(requireContext(), R.style.MealTheme)
+        return inflater.cloneInContext(contextThemeWrapper)
+    }
 
 }

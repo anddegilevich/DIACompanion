@@ -10,18 +10,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.annotation.RequiresApi
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.almazov.diacompanion.R
 import com.almazov.diacompanion.base.timeDateSelectSetup
 import com.almazov.diacompanion.data.AppDatabaseViewModel
+import com.almazov.diacompanion.meal.MealFoodSharedViewModel
 import kotlinx.android.synthetic.main.fragment_meal_add_record.*
 
 
 class MealAddRecord : Fragment() {
 
     private lateinit var appDatabaseViewModel: AppDatabaseViewModel
+    private val mealFoodSharedViewModel: MealFoodSharedViewModel by activityViewModels()
     private var dateSubmit: Long? = null
     var updateBool: Boolean = false
     private val args by navArgs<MealAddRecordArgs>()
@@ -39,6 +42,10 @@ class MealAddRecord : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         appDatabaseViewModel = ViewModelProvider(this)[AppDatabaseViewModel::class.java]
+
+        mealFoodSharedViewModel.foodInMeal.observe(viewLifecycleOwner,{
+            foodInMeal ->
+        })
 
         meal_spinner.adapter = ArrayAdapter.createFromResource(requireContext(),
             R.array.MealSpinner,

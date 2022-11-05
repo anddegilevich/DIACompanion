@@ -105,6 +105,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/Time"
+                    android:freezesText="true"
                     />
 
                 <TextView
@@ -112,7 +113,8 @@
                     style="@style/SecondaryText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/Date" />
+                    android:text="@string/Date"
+                    android:freezesText="true"/>
             </LinearLayout>
 
 

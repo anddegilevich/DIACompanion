@@ -1,7 +1,7 @@
 <resources>
 
     //Global
-    <string name="app_name">DIACompanion</string>
+    <string name="app_name" translatable="false">DIACompanion</string>
     <string name="Next">Next</string>
     <string name="Back">Back</string>
     <string name="LogIn">Log in</string>
@@ -16,8 +16,8 @@
     <string name="SelectRecordDate">Select the record date</string>
     <string name="Yes">Yes</string>
     <string name="No">No</string>
-    <string name="TimeFormat">HH:mm</string>
-    <string name="DateFormat">dd MM yyyy</string>
+    <string name="TimeFormat" translatable="false">HH:mm</string>
+    <string name="DateFormat" translatable="false">dd MM yyyy</string>
 
     //Categories
     <string name="SugarLevel">Sugar Level</string>
@@ -48,7 +48,6 @@
     <string name="Audio">Audio</string>
     <string name="Notifications">Notifications</string>
     <string name="Info">Info</string>
-    <string name="Help">Help</string>
     <string name="AreUSureDeleteAllRecords">Are you sure you want to delete all the records?</string>
     <string name="DeleteAllRecords">Delete all the records?</string>
 
@@ -56,7 +55,7 @@
     <string name="Username">Username</string>
     <string name="UserID">UserID</string>
     <string name="Password">Password</string>
-    <string name="Email">Email</string>
+    <string name="Email" translatable="false">Email</string>
     <string name="Phone">Phone</string>
     <string name="FCs">FCs</string>
     <string name="FirstName">First name</string>
@@ -99,7 +98,7 @@
     <string name="UpdateRecord">Update Record</string>
     <string name="DeleteRecord">Delete Record?</string>
     <string name="AreUSureDeleteRecord">Are you sure you want to delete the record?</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
 
     //SugarLevelAddRecord
     <string-array name="SugarLevelSpinner">
@@ -135,6 +134,7 @@
         <item>Dinner</item>
         <item>Snack</item>
     </string-array>
+    <string name="EnterFoodName">Enter food name</string>
 
     //WorkoutAddRecord
     <string-array name="WorkoutSpinner">
@@ -153,6 +153,7 @@
         <item>50</item>
         <item>100</item>
     </string-array>
+    <string name="Help">Help</string>
 
 
 </resources>

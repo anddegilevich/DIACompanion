@@ -16,9 +16,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_marginTop="10dp"
-    android:layout_marginBottom="10dp">
+    android:orientation="vertical">
 
     <GridLayout
         android:layout_width="wrap_content"
@@ -26,76 +24,48 @@
         android:columnCount="4">
 
         <TextView
-            style="@style/SmallText"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            style="@style/FoodRowVarText"
             android:text="@string/Carbs"
-            android:textColor="@color/yellow_dark"
-            android:layout_margin="0dp"
-            android:textAlignment="center"/>
+            android:textColor="@color/yellow"/>
         <TextView
-            style="@style/SmallText"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            style="@style/FoodRowVarText"
             android:text="@string/Protein"
-            android:textColor="@color/green_dark"
-            android:layout_margin="0dp"
-            android:textAlignment="center"/>
+            android:textColor="@color/green"/>
         <TextView
-            style="@style/SmallText"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            style="@style/FoodRowVarText"
             android:text="@string/Fats"
-            android:textColor="@color/blue_dark"
-            android:layout_margin="0dp"
-            android:textAlignment="center"/>
+            android:textColor="@color/blue"/>
         <TextView
-            style="@style/SmallText"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            style="@style/FoodRowVarText"
             android:text="@string/GI"
-            android:textColor="@color/red_dark"
-            android:layout_margin="0dp"
-            android:textAlignment="center"/>
-
+            android:textColor="@color/red"/>
 
         <TextView
             android:id="@+id/tv_carbs"
-            style="@style/SmallText"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:textColor="@color/yellow_dark"
-            android:textAlignment="center"/>
+            style="@style/FoodRowVarText"
+            android:textColor="@color/yellow"/>
         <TextView
             android:id="@+id/tv_protein"
-            style="@style/SmallText"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:textColor="@color/green_dark"
-            android:textAlignment="center"/>
+            style="@style/FoodRowVarText"
+            android:textColor="@color/green"/>
         <TextView
             android:id="@+id/tv_fats"
-            style="@style/SmallText"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:textColor="@color/blue_dark"
-            android:textAlignment="center"/>
+            style="@style/FoodRowVarText"
+            android:textColor="@color/blue"/>
         <TextView
             android:id="@+id/tv_gi"
-            style="@style/SmallText"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:textColor="@color/red_dark"
-            android:textAlignment="center"/>
+            style="@style/FoodRowVarText"
+            android:textColor="@color/red"/>
 
 
     </GridLayout>
 
     <TextView
+        style="@style/SmallerText"
         android:id="@+id/tv_food_name"
-        style="@style/SmallText"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:textColor="?main_text_color"/>
 
 
 </LinearLayout>

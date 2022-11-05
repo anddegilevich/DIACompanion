@@ -5,10 +5,11 @@ import androidx.paging.PagingSource
 
 class AppDatabaseRepository(private val appDao: AppDao) {
 
+    //Records
+
     /*val readAllData: LiveData<List<RecordEntity>> = appDao.readAllData()*/
     val readAllPaged: PagingSource<Int, RecordEntity> = appDao.readAllPaged()
 
-    //Records
     suspend fun addRecord(recordEntity: RecordEntity): Long {
         return appDao.addRecord(recordEntity)
     }
@@ -34,6 +35,7 @@ class AppDatabaseRepository(private val appDao: AppDao) {
     }
 
     //SugarLevel
+
     suspend fun addRecord(sugarLevelEntity: SugarLevelEntity){
         appDao.addRecord(sugarLevelEntity)
     }
@@ -50,6 +52,7 @@ class AppDatabaseRepository(private val appDao: AppDao) {
     }
 
     //Insulin
+
     suspend fun addRecord(insulinEntity: InsulinEntity){
         appDao.addRecord(insulinEntity)
     }
@@ -66,6 +69,7 @@ class AppDatabaseRepository(private val appDao: AppDao) {
     }
 
     //Meal
+
     suspend fun addRecord(mealEntity: MealEntity){
         appDao.addRecord(mealEntity)
     }
@@ -82,6 +86,7 @@ class AppDatabaseRepository(private val appDao: AppDao) {
     }
 
     //Workout
+
     suspend fun addRecord(workoutEntity: WorkoutEntity){
         appDao.addRecord(workoutEntity)
     }
@@ -98,6 +103,7 @@ class AppDatabaseRepository(private val appDao: AppDao) {
     }
 
     //Sleep
+
     suspend fun addRecord(sleepEntity: SleepEntity){
         appDao.addRecord(sleepEntity)
     }
@@ -114,6 +120,7 @@ class AppDatabaseRepository(private val appDao: AppDao) {
     }
 
     //Weight
+
     suspend fun addRecord(weightEntity: WeightEntity){
         appDao.addRecord(weightEntity)
     }
@@ -130,6 +137,7 @@ class AppDatabaseRepository(private val appDao: AppDao) {
     }
 
     //Ketone
+
     suspend fun addRecord(ketoneEntity: KetoneEntity){
         appDao.addRecord(ketoneEntity)
     }
@@ -144,5 +152,9 @@ class AppDatabaseRepository(private val appDao: AppDao) {
     suspend fun deleteKetoneRecord(id: Int?){
         appDao.deleteKetoneRecord(id)
     }
+
+    //Food
+
+    val readFoodPaged: PagingSource<Int, FoodEntity> = appDao.readFoodPaged()
 
 }

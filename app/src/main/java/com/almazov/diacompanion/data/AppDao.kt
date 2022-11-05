@@ -8,8 +8,6 @@ import androidx.room.*
 interface AppDao {
 
     //Records
-    @Query("SELECT id FROM record_table ORDER BY id DESC LIMIT 1")
-    fun getLastRecordId(): LiveData<Long>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addRecord(recordEntity: RecordEntity): Long
@@ -36,6 +34,7 @@ interface AppDao {
     fun filterPaged(filter: String): PagingSource<Int, RecordEntity>
 
     // SugarLevel
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addRecord(sugarLevelEntity: SugarLevelEntity)
 
@@ -49,6 +48,7 @@ interface AppDao {
     fun readSugarLevelRecord(id: Int?): LiveData<SugarLevelEntity>
 
     // Insulin
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addRecord(insulinEntity: InsulinEntity)
 
@@ -62,6 +62,7 @@ interface AppDao {
     fun readInsulinRecord(id: Int?): LiveData<InsulinEntity>
 
     // Meal
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addRecord(mealEntity: MealEntity)
 
@@ -75,6 +76,7 @@ interface AppDao {
     fun readMealRecord(id: Int?): LiveData<MealEntity>
 
     // Workout
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addRecord(workoutEntity: WorkoutEntity)
 
@@ -88,6 +90,7 @@ interface AppDao {
     fun readWorkoutRecord(id: Int?): LiveData<WorkoutEntity>
 
     // Sleep
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addRecord(sleepEntity: SleepEntity)
 
@@ -101,6 +104,7 @@ interface AppDao {
     fun readSleepRecord(id: Int?): LiveData<SleepEntity>
 
     // Weight
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addRecord(weightEntity: WeightEntity)
 
@@ -114,6 +118,7 @@ interface AppDao {
     fun readWeightRecord(id: Int?): LiveData<WeightEntity>
 
     // Ketone
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addRecord(ketoneEntity: KetoneEntity)
 
@@ -127,6 +132,9 @@ interface AppDao {
     fun readKetoneRecord(id: Int?): LiveData<KetoneEntity>
 
     // Food
+
+    @Query("SELECT * FROM food_table ORDER BY name ASC")
+    fun readFoodPaged(): PagingSource<Int, FoodEntity>
 
     @Transaction
     @Query("SELECT * FROM meal_table")

@@ -63,10 +63,11 @@
 
             <Spinner
                 style="@style/SecondaryText"
-                android:id="@+id/meal_spinner"
+                android:id="@+id/spinner_meal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:spinnerMode="dropdown"/>
+                android:spinnerMode="dropdown"
+                android:background="@null"/>
 
             <TextView
                 style="@style/MainText"

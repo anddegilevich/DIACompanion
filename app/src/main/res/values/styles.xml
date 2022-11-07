@@ -3,7 +3,7 @@
 
     <!--Buttons-->
     <style name="Button">
-        <item name="android:textSize">40sp</item>
+        <item name="android:textSize">26sp</item>
         <item name="android:backgroundTint">?attr/category_color</item>
         <item name="android:textAllCaps">false</item>
         <item name="fontFamily">@font/open_sans</item>

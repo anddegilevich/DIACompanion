@@ -21,6 +21,7 @@
         app:dividerColor="?attr/category_color"/>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:background="?attr/background_image"
         android:id="@+id/recycler_view_meal"
         android:layout_height="0dp"
         android:layout_width="match_parent"

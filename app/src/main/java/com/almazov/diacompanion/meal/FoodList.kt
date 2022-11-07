@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.almazov.diacompanion.R
 import com.almazov.diacompanion.data.AppDatabaseViewModel
@@ -17,10 +17,10 @@ import kotlinx.android.synthetic.main.fragment_food_list.view.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class FoodlList : Fragment() {
+class FoodList : Fragment() {
 
     private lateinit var appDatabaseViewModel: AppDatabaseViewModel
-    val adapter = FoodlListAdapter()
+    val adapter = FoodListAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,7 +34,7 @@ class FoodlList : Fragment() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        appDatabaseViewModel = ViewModelProvider(this).get(AppDatabaseViewModel::class.java)
+        appDatabaseViewModel = ViewModelProvider(this)[AppDatabaseViewModel::class.java]
 
         lifecycleScope.launch{
             appDatabaseViewModel.readFoodPaged.collectLatest {
@@ -43,7 +43,7 @@ class FoodlList : Fragment() {
         }
 
         view.edit_text_search_food.setOnClickListener{
-            /*Navigation.findNavController(view).popBackStack(R.id.mealAddRecord,false,true);*/
+
         }
 
         return view

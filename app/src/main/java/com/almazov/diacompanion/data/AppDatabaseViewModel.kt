@@ -8,6 +8,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.PagingSource
+import com.almazov.diacompanion.meal.FoodInMealItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -30,7 +31,6 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
     init {
         val appDao = AppDatabase.getDatabase(application).appDao()
         repository = AppDatabaseRepository(appDao)
-        /*readALlData = repository.readAllData*/
     }
 
     // Records
@@ -52,10 +52,6 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
             repository.deleteAllRecords()
         }
     }
-
-    /*fun filterDatabase(filter: String): LiveData<List<RecordEntity>> {
-        return repository.filterDatabase(filter)
-    }*/
 
     fun filterPaged(filter: String): Flow<PagingData<RecordEntity>> {
         return Pager(
@@ -125,11 +121,15 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
 
     // Meal
 
-    fun addRecord(recordEntity: RecordEntity, mealEntity: MealEntity) {
+    fun addRecord(recordEntity: RecordEntity, mealEntity: MealEntity, foodList: MutableList<FoodInMealItem>) {
         viewModelScope.launch(Dispatchers.IO) {
             val id = repository.addRecord(recordEntity)
             mealEntity.idMeal = id.toInt()
             repository.addRecord(mealEntity)
+            for (food in foodList) {
+                val foodInMealEntity = FoodInMealEntity(id.toInt(), food.foodEntity.idFood!!,food.weight)
+                repository.addRecord(foodInMealEntity)
+            }
         }
     }
 

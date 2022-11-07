@@ -4,18 +4,16 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.almazov.diacompanion.R
 import com.almazov.diacompanion.data.FoodEntity
-import com.almazov.diacompanion.record_history.RecordHistoryDirections
 import kotlinx.android.synthetic.main.food_row.view.*
 
-class FoodlListAdapter(): PagingDataAdapter<FoodEntity, FoodlListAdapter.FoodViewHolder>(DIFF_CALLBACK) {
+
+class FoodListAdapter(): PagingDataAdapter<FoodEntity, FoodListAdapter.FoodViewHolder>(DIFF_CALLBACK) {
     var context: Context? = null
 
     companion object {
@@ -35,7 +33,7 @@ class FoodlListAdapter(): PagingDataAdapter<FoodEntity, FoodlListAdapter.FoodVie
     class FoodViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {}
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FoodViewHolder {
-        context=parent.context;
+        context=parent.context
 
         return FoodViewHolder(
             LayoutInflater.from(context).inflate(
@@ -52,13 +50,12 @@ class FoodlListAdapter(): PagingDataAdapter<FoodEntity, FoodlListAdapter.FoodVie
         holder.itemView.tv_protein.text = food?.prot.toString()
         holder.itemView.tv_fats.text = food?.fat.toString()
         holder.itemView.tv_gi.text = food?.gi.toString()
-
-        val action = FoodlListDirections.actionFoodListToMealAddRecord(null,food)
         holder.itemView.setOnClickListener{ view ->
-            view.findNavController().navigate(action)
+            view.findNavController().previousBackStackEntry?.savedStateHandle?.set("foodKey", food)
+            view.findNavController().popBackStack()
         }
+
     }
 
-
-
 }
+

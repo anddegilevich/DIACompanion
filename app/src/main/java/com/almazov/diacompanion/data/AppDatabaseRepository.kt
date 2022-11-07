@@ -5,9 +5,9 @@ import androidx.paging.PagingSource
 
 class AppDatabaseRepository(private val appDao: AppDao) {
 
-    //Records
+    // Records
 
-    /*val readAllData: LiveData<List<RecordEntity>> = appDao.readAllData()*/
+
     val readAllPaged: PagingSource<Int, RecordEntity> = appDao.readAllPaged()
 
     suspend fun addRecord(recordEntity: RecordEntity): Long {
@@ -26,15 +26,11 @@ class AppDatabaseRepository(private val appDao: AppDao) {
         appDao.deleteAllRecords()
     }
 
-    /*fun filterDatabase(filter: String): LiveData<List<RecordEntity>> {
-        return appDao.filterDatabase(filter)
-    }*/
-
     fun filterPaged(filter: String): PagingSource<Int, RecordEntity> {
         return appDao.filterPaged(filter)
     }
 
-    //SugarLevel
+    // SugarLevel
 
     suspend fun addRecord(sugarLevelEntity: SugarLevelEntity){
         appDao.addRecord(sugarLevelEntity)
@@ -51,7 +47,7 @@ class AppDatabaseRepository(private val appDao: AppDao) {
         appDao.deleteSugarLevelRecord(id)
     }
 
-    //Insulin
+    // Insulin
 
     suspend fun addRecord(insulinEntity: InsulinEntity){
         appDao.addRecord(insulinEntity)
@@ -68,7 +64,7 @@ class AppDatabaseRepository(private val appDao: AppDao) {
         appDao.deleteInsulinRecord(id)
     }
 
-    //Meal
+    // Meal
 
     suspend fun addRecord(mealEntity: MealEntity){
         appDao.addRecord(mealEntity)
@@ -85,7 +81,7 @@ class AppDatabaseRepository(private val appDao: AppDao) {
         appDao.deleteMealRecord(id)
     }
 
-    //Workout
+    // Workout
 
     suspend fun addRecord(workoutEntity: WorkoutEntity){
         appDao.addRecord(workoutEntity)
@@ -102,7 +98,7 @@ class AppDatabaseRepository(private val appDao: AppDao) {
         appDao.deleteWorkoutRecord(id)
     }
 
-    //Sleep
+    // Sleep
 
     suspend fun addRecord(sleepEntity: SleepEntity){
         appDao.addRecord(sleepEntity)
@@ -119,7 +115,7 @@ class AppDatabaseRepository(private val appDao: AppDao) {
         appDao.deleteSleepRecord(id)
     }
 
-    //Weight
+    // Weight
 
     suspend fun addRecord(weightEntity: WeightEntity){
         appDao.addRecord(weightEntity)
@@ -136,7 +132,7 @@ class AppDatabaseRepository(private val appDao: AppDao) {
         appDao.deleteWeightRecord(id)
     }
 
-    //Ketone
+    // Ketone
 
     suspend fun addRecord(ketoneEntity: KetoneEntity){
         appDao.addRecord(ketoneEntity)
@@ -153,8 +149,14 @@ class AppDatabaseRepository(private val appDao: AppDao) {
         appDao.deleteKetoneRecord(id)
     }
 
-    //Food
+    // Food
 
     val readFoodPaged: PagingSource<Int, FoodEntity> = appDao.readFoodPaged()
+
+    // Food in meal
+
+    suspend fun addRecord(foodInMealEntity: FoodInMealEntity){
+        appDao.addRecord(foodInMealEntity)
+    }
 
 }

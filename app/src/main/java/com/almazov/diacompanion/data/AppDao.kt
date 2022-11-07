@@ -140,4 +140,11 @@ interface AppDao {
     @Query("SELECT * FROM meal_table")
     fun getMealWithFoods(): List<MealWithFood>
 
+
+    // Food in meal
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun addRecord(foodInMealEntity: FoodInMealEntity)
+
+
 }

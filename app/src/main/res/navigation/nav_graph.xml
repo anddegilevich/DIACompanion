@@ -321,16 +321,16 @@
     </fragment>
     <fragment
         android:id="@+id/foodList"
-        android:name="com.almazov.diacompanion.meal.FoodlList"
+        android:name="com.almazov.diacompanion.meal.FoodList"
         android:label="fragment_food_list"
         tools:layout="@layout/fragment_food_list" >
         <action
             android:id="@+id/action_foodList_to_mealAddRecord"
             app:destination="@id/mealAddRecord"
-            app:enterAnim="@anim/slide_in_down"
-            app:exitAnim="@anim/slide_out_down"
-            app:popEnterAnim="@anim/slide_in_up"
-            app:popExitAnim="@anim/slide_out_up"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@id/mealAddRecord"
             app:popUpToInclusive="true"/>
     </fragment>

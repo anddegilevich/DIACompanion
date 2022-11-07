@@ -26,7 +26,7 @@
         <TextView
             style="@style/FoodRowVarText"
             android:text="@string/Carbs"
-            android:textColor="@color/yellow"/>
+            android:textColor="@color/orange"/>
         <TextView
             style="@style/FoodRowVarText"
             android:text="@string/Protein"
@@ -43,7 +43,7 @@
         <TextView
             android:id="@+id/tv_carbs"
             style="@style/FoodRowVarText"
-            android:textColor="@color/yellow"/>
+            android:textColor="@color/orange"/>
         <TextView
             android:id="@+id/tv_protein"
             style="@style/FoodRowVarText"
@@ -61,7 +61,7 @@
     </GridLayout>
 
     <TextView
-        style="@style/SmallerText"
+        style="@style/SmallText"
         android:id="@+id/tv_food_name"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"

@@ -6,5 +6,5 @@ import androidx.room.Entity
 data class FoodInMealEntity (
     val idMeal: Int,
     val idFood: Int,
-    val weight: Double
+    val weight: Double?
 )

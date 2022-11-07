@@ -53,7 +53,7 @@
     <string name="Height">Рост</string>
     <string name="AttendingDoctor">Лечащий доктор</string>
     <string name="PregnancyStart">Дата начала беременности</string>
-    <string name="OnBWelcome">Добро пожаловать в\\nDIA Companion!</string>
+    <string name="OnBWelcome">Добро пожаловать в\nDIA Companion!</string>
     <string name="OnBAboutApp">Наше приложение - ваш незаменимый помощник в мониторинге состояния здоровья. Пожалуйста, выполните начальные шаги по настройке вашего приложения.</string>
     <string name="OnBLetsStart">Начнем!</string>
     <string name="OnBSetupComplete">Настройка завершена!</string>
@@ -94,7 +94,6 @@
     </string-array>
 
     <string-array name="InsulinSpinner2">
-        <item>На голодный желудок</item>
         <item>После завтрака</item>
         <item>После обеда</item>
         <item>После ужина</item>
@@ -123,4 +122,6 @@
         <item>50</item>
         <item>100</item>
     </string-array>
+    <string name="g">гр.</string>
+    <string name="EnterFoodWeight">Введите массу продукта:</string>
 </resources>

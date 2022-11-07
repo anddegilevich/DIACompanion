@@ -73,7 +73,8 @@
                     android:layout_height="wrap_content"
                     android:spinnerMode="dropdown"
                     android:layout_weight="0"
-                    android:gravity="center"/>
+                    android:gravity="center"
+                    android:background="@null"/>
 
                 <TextView
                     style="@style/SecondaryText"

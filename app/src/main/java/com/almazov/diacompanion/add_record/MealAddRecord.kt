@@ -119,7 +119,7 @@ class MealAddRecord : Fragment() {
                 if (!foodAlreadyInList) {
                     val selectWeightDialog = SelectWeightDialog(requireContext())
                     selectWeightDialog.isCancelable = false
-                    selectWeightDialog.show(requireFragmentManager(), "simple dialog")
+                    selectWeightDialog.show(requireFragmentManager(), "weight select dialog")
 
                     setFragmentResultListener("requestKey") { key, bundle ->
                         val result = bundle.getString("resultKey")

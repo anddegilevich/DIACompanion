@@ -1,8 +1,7 @@
-package com.almazov.diacompanion
+package com.almazov.diacompanion.home
 
 import android.app.AlertDialog
 import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,6 +11,7 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import com.almazov.diacompanion.R
 import com.almazov.diacompanion.data.AppDatabaseViewModel
 import kotlinx.android.synthetic.main.fragment_home_page.*
 
@@ -72,9 +72,9 @@ class HomePage : Fragment() {
 
     private fun deleteAllRecords(){
         val builder = AlertDialog.Builder(requireContext())
-        builder.setPositiveButton(this.resources.getString(R.string.Yes)) {_, _ ->
+        builder.setPositiveButton(this.resources.getString(R.string.Yes)) { _, _ ->
              appDatabaseViewModel.deleteAllRecords()}
-        builder.setNegativeButton(this.resources.getString(R.string.No)) {_, _ ->
+        builder.setNegativeButton(this.resources.getString(R.string.No)) { _, _ ->
         }
         builder.setTitle(this.resources.getString(R.string.DeleteAllRecords))
         builder.setMessage(this.resources.getString(R.string.AreUSureDeleteAllRecords))

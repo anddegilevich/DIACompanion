@@ -3,17 +3,21 @@ package com.almazov.diacompanion.meal
 import android.content.Context
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.ContextThemeWrapper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.almazov.diacompanion.R
 import com.almazov.diacompanion.data.AppDatabaseViewModel
 import kotlinx.android.synthetic.main.fragment_food_list.view.*
+import kotlinx.android.synthetic.main.fragment_sugar_level_add_record.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -42,9 +46,21 @@ class FoodList : Fragment() {
             }
         }
 
-        view.edit_text_search_food.setOnClickListener{
+        view.edit_text_search_food.addTextChangedListener(object : TextWatcher {
 
-        }
+            override fun afterTextChanged(string: Editable) {
+                filterFood(string.toString())
+            }
+
+            override fun beforeTextChanged(string: CharSequence, start: Int,
+                                           count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(string: CharSequence, start: Int,
+                                       before: Int, count: Int) {
+
+            }
+        })
 
         return view
     }
@@ -53,6 +69,14 @@ class FoodList : Fragment() {
         val inflater = super.onGetLayoutInflater(savedInstanceState)
         val contextThemeWrapper: Context = ContextThemeWrapper(requireContext(), R.style.MealTheme)
         return inflater.cloneInContext(contextThemeWrapper)
+    }
+
+    private fun filterFood(filter: String) {
+        lifecycleScope.launch{
+            appDatabaseViewModel.readFoodFilter(filter).collectLatest {
+                adapter.submitData(it)
+            }
+        }
     }
 
 }

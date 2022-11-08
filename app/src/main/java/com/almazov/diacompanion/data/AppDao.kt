@@ -136,6 +136,24 @@ interface AppDao {
     @Query("SELECT * FROM food_table ORDER BY name ASC")
     fun readFoodPaged(): PagingSource<Int, FoodEntity>
 
+    @Query("""
+        SELECT * FROM (SELECT * FROM food_table WHERE name LIKE :filter+'%'
+            ORDER BY name ASC LIMIT 20)
+        UNION
+        SELECT * FROM (SELECT * FROM food_table WHERE name LIKE '%'+:filter
+            ORDER BY name ASC LIMIT 5)
+        UNION
+        SELECT * FROM (SELECT * FROM food_table WHERE name LIKE '%'+:filter+'%'
+            ORDER BY name ASC LIMIT 5)
+    """)
+    fun readFoodPagedFilterBegin(filter: String): PagingSource<Int, FoodEntity>
+
+    /*@Query("SELECT * FROM food_table WHERE name LIKE '%'+:filter ORDER BY name ASC LIMIT 5")
+    suspend fun readFoodPagedFilterEnd(filter: String): LiveData<List<FoodEntity>>
+
+    @Query("SELECT * FROM food_table WHERE name LIKE '%'+:filter+'%'ORDER BY name ASC LIMIT 5")
+    suspend fun readFoodPagedFilterInside(filter: String): LiveData<List<FoodEntity>>*/
+
     // Food in meal
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)

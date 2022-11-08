@@ -149,6 +149,18 @@ class AppDatabaseRepository(private val appDao: AppDao) {
 
     val readFoodPaged: PagingSource<Int, FoodEntity> = appDao.readFoodPaged()
 
+    fun readFoodPagedFilterBegin(filter: String): PagingSource<Int, FoodEntity> {
+        return appDao.readFoodPagedFilterBegin(filter)
+    }
+
+    /*suspend fun readFoodPagedFilterEnd(filter: String): LiveData<List<FoodEntity>> {
+        return appDao.readFoodPagedFilterEnd(filter)
+    }
+
+    suspend fun readFoodPagedFilterInside(filter: String): LiveData<List<FoodEntity>> {
+        return appDao.readFoodPagedFilterInside(filter)
+    }*/
+
     // Food in meal
 
     suspend fun addRecord(foodInMealEntity: FoodInMealEntity){

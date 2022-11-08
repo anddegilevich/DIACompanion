@@ -11,6 +11,8 @@ import androidx.paging.PagingSource
 import com.almazov.diacompanion.meal.FoodInMealItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.launch
 
 class AppDatabaseViewModel(application: Application): AndroidViewModel(application) {
@@ -262,7 +264,7 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
 
     // Food
 
-    val readFoodPaged = Pager(
+    var readFoodPaged = Pager(
         PagingConfig(
             pageSize = 10,
             enablePlaceholders = true,
@@ -272,6 +274,17 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
         repository.readFoodPaged
     }.flow
 
+    fun readFoodFilter(filter: String): Flow<PagingData<FoodEntity>> {
+        return Pager(
+            PagingConfig(
+                pageSize = 10,
+                enablePlaceholders = true,
+                maxSize = 200
+            )
+        ){
+            repository.readFoodPagedFilterBegin(filter)
+        }.flow
+    }
 
     // Food in meal
 

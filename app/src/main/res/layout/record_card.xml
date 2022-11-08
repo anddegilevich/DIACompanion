@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="15dp"
+    android:layout_margin="10dp"
+    android:clickable="true"
+    app:cardElevation="7dp"
+    android:backgroundTint="@color/red">
+
+    <LinearLayout
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/img_category"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            style="@style/ImageButton"
+            android:layout_margin="10dp"
+            android:src="@drawable/sugar_level"
+            android:layout_gravity="center"
+            />
+
+        <TextView
+            android:id="@+id/main_info"
+            style="@style/MainText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="?attr/button_color"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_weight="0.5"
+                android:textStyle="bold"
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/SmallText"
+                android:gravity="right"
+                android:textColor="?attr/button_color"/>
+            <TextView
+                android:layout_weight="0.5"
+                android:textStyle="bold"
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/SmallText"
+                android:gravity="left"
+                android:textColor="?attr/button_color"
+                android:layout_margin="10dp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

@@ -70,10 +70,6 @@ class AppDatabaseRepository(private val appDao: AppDao) {
         appDao.addRecord(mealEntity)
     }
 
-    fun readMealRecord(id: Int?): LiveData<MealEntity>{
-        return appDao.readMealRecord(id)
-    }
-
     suspend fun updateRecord(mealEntity: MealEntity){
         appDao.updateRecord(mealEntity)
     }
@@ -159,4 +155,11 @@ class AppDatabaseRepository(private val appDao: AppDao) {
         appDao.addRecord(foodInMealEntity)
     }
 
+    fun getMealWithFoods(id: Int?): LiveData<List<MealWithFood>>{
+        return appDao.getMealWithFoods(id)
+    }
+
+    suspend fun deleteMealWithFoodsRecord(id: Int?){
+        appDao.deleteMealWithFoodsRecord(id)
+    }
 }

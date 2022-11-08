@@ -1,5 +1,6 @@
 package com.almazov.diacompanion.add_record
 
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
@@ -11,8 +12,10 @@ import android.widget.ArrayAdapter
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -85,7 +88,24 @@ class MealAddRecord : Fragment() {
 
         if (updateBool)
         {
+            appDatabaseViewModel.getMealWithFoods(args.selectedRecord?.id).observe(viewLifecycleOwner, Observer{record ->
 
+                view.spinner_meal.setSelection(resources.getStringArray(R.array.MealSpinner).indexOf(record[0].meal.type))
+                if (foodList.isNullOrEmpty()) {
+                    for (food in record) {
+                        foodList.add(FoodInMealItem(food.food, food.weight!!))
+                        adapter.notifyItemInserted(foodList.size)
+                    }
+                }
+            })
+
+            tv_title.text = this.resources.getString(R.string.UpdateRecord)
+            tv_Time.text = args.selectedRecord?.time
+            tv_Date.text = args.selectedRecord?.date
+            btn_delete.visibility = View.VISIBLE
+            btn_delete.setOnClickListener {
+                deleteRecord()
+            }
         }
 
         Navigation.findNavController(view).currentBackStackEntry?.savedStateHandle?.getLiveData<FoodEntity>("foodKey")
@@ -122,6 +142,20 @@ class MealAddRecord : Fragment() {
         }
     }
 
+    private fun deleteRecord() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setPositiveButton(this.resources.getString(R.string.Yes)) {_, _ ->
+            appDatabaseViewModel.deleteMealRecord(args.selectedRecord?.id)
+            args.selectedRecord?.let { appDatabaseViewModel.deleteRecord(it) }
+            findNavController().navigate(R.id.action_mealAddRecord_to_homePage)
+        }
+        builder.setNegativeButton(this.resources.getString(R.string.No)) {_, _ ->
+        }
+        builder.setTitle(this.resources.getString(R.string.DeleteRecord))
+        builder.setMessage(this.resources.getString(R.string.AreUSureDeleteRecord))
+        builder.create().show()
+    }
+
     private fun addRecord() {
         val category = "meal_table"
 
@@ -140,7 +174,18 @@ class MealAddRecord : Fragment() {
     }
 
     private fun updateRecord() {
-        TODO("Not yet implemented")
+        val type = spinner_meal.selectedItem.toString()
+        val mainInfo = type
+
+        val time = tv_Time.text.toString()
+        val date = tv_Date.text.toString()
+        val dateInMilli = convertDateToMils("$time $date")
+
+        val recordEntity = RecordEntity(args.selectedRecord?.id, args.selectedRecord?.category, mainInfo,dateInMilli, time, date,
+            args.selectedRecord?.dateSubmit,args.selectedRecord?.fullDay)
+        val mealEntity = MealEntity(args.selectedRecord?.id,type)
+
+        appDatabaseViewModel.updateRecord(recordEntity,mealEntity,foodList)
     }
 
     override fun onGetLayoutInflater(savedInstanceState: Bundle?): LayoutInflater {

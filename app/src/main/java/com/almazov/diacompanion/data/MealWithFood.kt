@@ -7,10 +7,6 @@ import androidx.room.Relation
 data class MealWithFood (
 
     @Embedded val meal: MealEntity,
-    @Relation(
-        parentColumn = "idMeal",
-        entityColumn = "idFood",
-        associateBy = Junction(FoodInMealEntity::class)
-    )
-    val foods: List<FoodEntity>
+    @Embedded val food: FoodEntity,
+    val weight: Double?
 )

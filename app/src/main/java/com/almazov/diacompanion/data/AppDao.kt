@@ -136,15 +136,19 @@ interface AppDao {
     @Query("SELECT * FROM food_table ORDER BY name ASC")
     fun readFoodPaged(): PagingSource<Int, FoodEntity>
 
-    @Transaction
-    @Query("SELECT * FROM meal_table")
-    fun getMealWithFoods(): List<MealWithFood>
-
-
     // Food in meal
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addRecord(foodInMealEntity: FoodInMealEntity)
 
+    @Query("""
+        SELECT * FROM meal_table 
+        INNER JOIN food_in_meal_table ON (meal_table.idMeal = food_in_meal_table.idMeal)
+        AND (food_in_meal_table.idMeal = :id)
+        INNER JOIN food_table ON (food_table.idFood = food_in_meal_table.idFood)
+        """)
+    fun getMealWithFoods(id: Int?): LiveData<List<MealWithFood>>
 
+    @Query("DELETE FROM food_in_meal_table WHERE idMeal LIKE :id")
+    suspend fun deleteMealWithFoodsRecord(id: Int?)
 }

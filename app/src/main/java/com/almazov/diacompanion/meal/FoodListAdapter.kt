@@ -54,6 +54,7 @@ class FoodListAdapter() : PagingDataAdapter<FoodEntity, FoodListAdapter.FoodView
         holder.itemView.tv_carbs.text = food?.carbo.toString()
         holder.itemView.tv_protein.text = food?.prot.toString()
         holder.itemView.tv_fats.text = food?.fat.toString()
+        holder.itemView.tv_kkal.text = food?.ec.toString()
         holder.itemView.tv_gi.text = food?.gi.toString()
         holder.itemView.setOnClickListener{ view ->
             view.findNavController().previousBackStackEntry?.savedStateHandle?.set("foodKey", food)

@@ -14,6 +14,7 @@
     <color name="grey_darker">#292929</color>
     <color name="red">#FF857C</color>
     <color name="red_dark">#BD5C5A</color>
+    <color name="red_bright">#FFA9A9</color>
     <color name="blue">#7FAEF5</color>
     <color name="blue_dark">#4782DA</color>
     <color name="purple">#9985ED</color>

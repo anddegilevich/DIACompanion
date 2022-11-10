@@ -7,5 +7,6 @@ import androidx.room.PrimaryKey
 data class MealEntity (
     @PrimaryKey(autoGenerate = true)
     var idMeal: Int?,
-    val type: String?
+    val type: String?,
+    val sugarLevel: Double?
     )

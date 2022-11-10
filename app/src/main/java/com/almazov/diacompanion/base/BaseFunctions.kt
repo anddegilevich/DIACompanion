@@ -1,9 +1,13 @@
 package com.almazov.diacompanion.base
 
+import android.animation.AnimatorSet
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.os.Build
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.EditText
 import android.widget.SeekBar
 import android.widget.TextView
@@ -154,5 +158,26 @@ fun convertDateToMils(date: String): Long {
     val formatter = DateTimeFormatter.ofPattern("HH:mm dd.MM.yyyy")
     val localDate = LocalDateTime.parse(date, formatter)
     return localDate.atOffset(ZoneOffset.UTC).toInstant().toEpochMilli()
+}
+
+fun slideView(
+    view: View,
+    currentHeight: Int,
+    newHeight: Int
+) {
+    val slideAnimator = ValueAnimator
+        .ofInt(currentHeight, newHeight)
+        .setDuration(200)
+
+        slideAnimator.addUpdateListener { animation1: ValueAnimator ->
+        val value = animation1.animatedValue as Int
+        view.layoutParams.height = value
+        view.requestLayout()
+    }
+
+    val animationSet = AnimatorSet()
+    animationSet.interpolator = AccelerateDecelerateInterpolator()
+    animationSet.play(slideAnimator)
+    animationSet.start()
 }
 

@@ -1,5 +1,6 @@
 package com.almazov.diacompanion.add_record
 
+import android.animation.LayoutTransition
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Build
@@ -22,17 +23,27 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.almazov.diacompanion.R
 import com.almazov.diacompanion.base.convertDateToMils
+import com.almazov.diacompanion.base.editTextSeekBarSetup
+import com.almazov.diacompanion.base.slideView
 import com.almazov.diacompanion.base.timeDateSelectSetup
-import com.almazov.diacompanion.data.*
+import com.almazov.diacompanion.data.AppDatabaseViewModel
+import com.almazov.diacompanion.data.FoodEntity
+import com.almazov.diacompanion.data.MealEntity
+import com.almazov.diacompanion.data.RecordEntity
 import com.almazov.diacompanion.meal.FoodInMealItem
 import com.almazov.diacompanion.meal.FoodInMealListAdapter
 import com.almazov.diacompanion.meal.SelectWeightDialog
 import com.almazov.diacompanion.meal.SwipeDeleteFood
 import kotlinx.android.synthetic.main.fragment_meal_add_record.*
+import kotlinx.android.synthetic.main.fragment_meal_add_record.btn_delete
 import kotlinx.android.synthetic.main.fragment_meal_add_record.btn_save
+import kotlinx.android.synthetic.main.fragment_meal_add_record.edit_text_sugar_level
+import kotlinx.android.synthetic.main.fragment_meal_add_record.seek_bar_sugar_level
 import kotlinx.android.synthetic.main.fragment_meal_add_record.tv_Date
 import kotlinx.android.synthetic.main.fragment_meal_add_record.tv_Time
+import kotlinx.android.synthetic.main.fragment_meal_add_record.tv_title
 import kotlinx.android.synthetic.main.fragment_meal_add_record.view.*
+import kotlinx.android.synthetic.main.fragment_sugar_level_add_record.*
 
 
 class MealAddRecord : Fragment() {
@@ -44,8 +55,6 @@ class MealAddRecord : Fragment() {
 
     var foodList = mutableListOf<FoodInMealItem>()
     lateinit var adapter: FoodInMealListAdapter
-
-    private var favouriteChanges = ArrayList<Pair<Int?, Int>>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -142,6 +151,15 @@ class MealAddRecord : Fragment() {
                 Navigation.findNavController(view).navigate(R.id.action_mealAddRecord_to_homePage)
             }
         }
+
+        checkbox_sugar_level.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                slideView(sugar_level_layout,0,200)
+            } else {
+                slideView(sugar_level_layout,200,0)
+            }
+        }
+        editTextSeekBarSetup(1, 20, edit_text_sugar_level, seek_bar_sugar_level )
     }
 
     private fun deleteRecord() {
@@ -170,7 +188,7 @@ class MealAddRecord : Fragment() {
 
         val recordEntity = RecordEntity(null, category, mainInfo,dateInMilli, time, date,
             dateSubmit,false)
-        val mealEntity = MealEntity(null,type)
+        val mealEntity = MealEntity(null,type, null)
 
         appDatabaseViewModel.addRecord(recordEntity,mealEntity,foodList)
     }
@@ -185,10 +203,13 @@ class MealAddRecord : Fragment() {
 
         val recordEntity = RecordEntity(args.selectedRecord?.id, args.selectedRecord?.category, mainInfo,dateInMilli, time, date,
             args.selectedRecord?.dateSubmit,args.selectedRecord?.fullDay)
-        val mealEntity = MealEntity(args.selectedRecord?.id,type)
+        val mealEntity = MealEntity(args.selectedRecord?.id,type, null)
 
         appDatabaseViewModel.updateRecord(recordEntity,mealEntity,foodList)
     }
+
+
+
 
     override fun onGetLayoutInflater(savedInstanceState: Bundle?): LayoutInflater {
         val inflater = super.onGetLayoutInflater(savedInstanceState)

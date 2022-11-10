@@ -24,29 +24,30 @@
         <GridLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:columnCount="4">
+            android:columnCount="5"
+            android:layout_marginTop="5dp">
 
-            <TextView
+            <ImageView
                 style="@style/FoodRowVarText"
-                android:text="@string/Carbs"
-                android:textColor="@color/orange"/>
-            <TextView
+                android:src="@drawable/protein"
+                />
+            <ImageView
                 style="@style/FoodRowVarText"
-                android:text="@string/Protein"
-                android:textColor="@color/green"/>
-            <TextView
+                android:src="@drawable/fat"
+                />
+            <ImageView
                 style="@style/FoodRowVarText"
-                android:text="@string/Fats"
-                android:textColor="@color/blue"/>
-            <TextView
+                android:src="@drawable/carb"
+                />
+            <ImageView
                 style="@style/FoodRowVarText"
-                android:text="@string/GI"
-                android:textColor="@color/red"/>
+                android:src="@drawable/kkal"
+                />
+            <ImageView
+                style="@style/FoodRowVarText"
+                android:src="@drawable/gi"
+                />
 
-            <TextView
-                android:id="@+id/tv_carbs"
-                style="@style/FoodRowVarText"
-                android:textColor="@color/orange"/>
             <TextView
                 android:id="@+id/tv_protein"
                 style="@style/FoodRowVarText"
@@ -54,11 +55,19 @@
             <TextView
                 android:id="@+id/tv_fats"
                 style="@style/FoodRowVarText"
-                android:textColor="@color/blue"/>
+                android:textColor="@color/yellow"/>
+            <TextView
+                android:id="@+id/tv_carbs"
+                style="@style/FoodRowVarText"
+                android:textColor="@color/orange"/>
+            <TextView
+                android:id="@+id/tv_kkal"
+                style="@style/FoodRowVarText"
+                android:textColor="@color/red"/>
             <TextView
                 android:id="@+id/tv_gi"
                 style="@style/FoodRowVarText"
-                android:textColor="@color/red"/>
+                android:textColor="@color/blue"/>
 
 
         </GridLayout>

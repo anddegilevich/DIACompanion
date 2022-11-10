@@ -91,6 +91,52 @@
                 android:src="@drawable/plus"
                 android:background="?attr/category_color"/>
 
+            <CheckBox
+                android:id="@+id/checkbox_sugar_level"
+                style="@style/MainText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/SugarLevelBeforeFood"
+                android:button="@null"
+                android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"/>
+
+            <LinearLayout
+                android:id="@+id/sugar_level_layout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                android:animateLayoutChanges="true"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/edit_text_sugar_level"
+                        style="@style/EditText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:inputType="numberDecimal" />
+
+                    <TextView
+                        style="@style/SecondaryText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/mmoll" />
+                </LinearLayout>
+
+                <SeekBar
+                    android:id="@+id/seek_bar_sugar_level"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
             <TextView
                 style="@style/MainText"
                 android:layout_width="match_parent"

@@ -8,6 +8,7 @@ class AppDatabaseRepository(private val appDao: AppDao) {
 
     // Records
 
+    val readLastRecords: LiveData<List<RecordEntity>> = appDao.readLastRecords()
 
     val readAllPaged: PagingSource<Int, RecordEntity> = appDao.readAllPaged()
 

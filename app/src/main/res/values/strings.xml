@@ -128,6 +128,7 @@
     //MealAddRecord
     <string name="MealType">Meal Type</string>
     <string name="FoodList">Food List</string>
+    <string name="SugarLevelBeforeFood">Sugar Level Before Food</string>
     <string-array name="MealSpinner">
         <item>Breakfast</item>
         <item>Lunch</item>

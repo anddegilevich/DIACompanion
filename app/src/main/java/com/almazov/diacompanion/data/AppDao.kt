@@ -5,9 +5,6 @@ import androidx.paging.PagingSource
 import androidx.room.*
 import androidx.sqlite.db.SupportSQLiteQuery
 
-
-
-
 @Dao
 interface AppDao {
 
@@ -25,14 +22,11 @@ interface AppDao {
     @Query("DELETE FROM record_table")
     suspend fun deleteAllRecords()
 
-    /*@Query("SELECT * FROM record_table ORDER BY dateInMilli DESC")
-    fun readAllData(): LiveData<List<RecordEntity>>*/
+    @Query("SELECT * FROM record_table ORDER BY dateInMilli DESC, id DESC LIMIT 10")
+    fun readLastRecords(): LiveData<List<RecordEntity>>
 
-    @Query("SELECT * FROM record_table ORDER BY dateInMilli DESC")
+    @Query("SELECT * FROM record_table ORDER BY dateInMilli DESC, id DESC")
     fun readAllPaged(): PagingSource<Int, RecordEntity>
-
-    /*@Query("SELECT * FROM record_table WHERE category LIKE :filter")
-    fun filterDatabase(filter: String): LiveData<List<RecordEntity>>*/
 
     @Query("SELECT * FROM record_table WHERE category LIKE :filter ORDER BY dateInMilli DESC")
     fun filterPaged(filter: String): PagingSource<Int, RecordEntity>

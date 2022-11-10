@@ -124,4 +124,5 @@
     </string-array>
     <string name="g">гр.</string>
     <string name="EnterFoodWeight">Введите массу продукта:</string>
+    <string name="SugarLevelBeforeFood">Уровень сахара до еды</string>
 </resources>

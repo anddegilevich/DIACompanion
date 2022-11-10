@@ -19,7 +19,8 @@ import kotlinx.coroutines.launch
 class AppDatabaseViewModel(application: Application): AndroidViewModel(application) {
 
 
-    /*val readALlData: LiveData<List<RecordEntity>>*/
+    val readLastRecords: LiveData<List<RecordEntity>>
+
     val readAllPaged = Pager(
         PagingConfig(
             pageSize = 10,
@@ -35,6 +36,7 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
     init {
         val appDao = AppDatabase.getDatabase(application).appDao()
         repository = AppDatabaseRepository(appDao)
+        readLastRecords = repository.readLastRecords
     }
 
     // Records

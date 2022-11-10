@@ -45,6 +45,8 @@ class MealAddRecord : Fragment() {
     var foodList = mutableListOf<FoodInMealItem>()
     lateinit var adapter: FoodInMealListAdapter
 
+    private var favouriteChanges = ArrayList<Pair<Int?, Int>>()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -108,8 +110,8 @@ class MealAddRecord : Fragment() {
             }
         }
 
-        Navigation.findNavController(view).currentBackStackEntry?.savedStateHandle?.getLiveData<FoodEntity>("foodKey")
-            ?.observe(viewLifecycleOwner) {
+        Navigation.findNavController(view).currentBackStackEntry?.savedStateHandle
+            ?.getLiveData<FoodEntity>("foodKey")?.observe(viewLifecycleOwner) {
 
                 var foodAlreadyInList = false
                 for (food in foodList) {

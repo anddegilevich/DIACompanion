@@ -2,6 +2,7 @@ package com.almazov.diacompanion.data
 
 import androidx.lifecycle.LiveData
 import androidx.paging.PagingSource
+import androidx.sqlite.db.SimpleSQLiteQuery
 
 class AppDatabaseRepository(private val appDao: AppDao) {
 
@@ -149,17 +150,25 @@ class AppDatabaseRepository(private val appDao: AppDao) {
 
     val readFoodPaged: PagingSource<Int, FoodEntity> = appDao.readFoodPaged()
 
-    fun readFoodPagedFilterBegin(filter: String): PagingSource<Int, FoodEntity> {
-        return appDao.readFoodPagedFilterBegin(filter)
+    fun readFoodPagedFilter(filter: String): PagingSource<Int, FoodEntity> {
+
+        var queryWords = ""
+        val words = filter.split(" ")
+        for (word in words){
+            queryWords += if (queryWords.isEmpty())
+                "name LIKE '%$word%'"
+            else
+                "AND name LIKE '%$word%'"
+        }
+        val stringQuery =
+            """SELECT * FROM food_table WHERE $queryWords ORDER BY favourite DESC,name ASC"""
+        val query = SimpleSQLiteQuery(stringQuery)
+        return appDao.readFoodPagedFilter(query)
     }
 
-    /*suspend fun readFoodPagedFilterEnd(filter: String): LiveData<List<FoodEntity>> {
-        return appDao.readFoodPagedFilterEnd(filter)
+    fun updateFavourite(id: Int?, favourite: Int?){
+        appDao.updateFavourite(id, favourite)
     }
-
-    suspend fun readFoodPagedFilterInside(filter: String): LiveData<List<FoodEntity>> {
-        return appDao.readFoodPagedFilterInside(filter)
-    }*/
 
     // Food in meal
 

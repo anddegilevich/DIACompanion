@@ -12,62 +12,75 @@
     app:cardElevation="7dp"
     android:background="?attr/panel_color">
 
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
-
-    <GridLayout
+    android:layout_height="wrap_content">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
+        android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:columnCount="4">
+        android:orientation="vertical">
 
-        <TextView
-            style="@style/FoodRowVarText"
-            android:text="@string/Carbs"
-            android:textColor="@color/orange"/>
-        <TextView
-            style="@style/FoodRowVarText"
-            android:text="@string/Protein"
-            android:textColor="@color/green"/>
-        <TextView
-            style="@style/FoodRowVarText"
-            android:text="@string/Fats"
-            android:textColor="@color/blue"/>
-        <TextView
-            style="@style/FoodRowVarText"
-            android:text="@string/GI"
-            android:textColor="@color/red"/>
+        <GridLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:columnCount="4">
 
-        <TextView
-            android:id="@+id/tv_carbs"
-            style="@style/FoodRowVarText"
-            android:textColor="@color/orange"/>
-        <TextView
-            android:id="@+id/tv_protein"
-            style="@style/FoodRowVarText"
-            android:textColor="@color/green"/>
-        <TextView
-            android:id="@+id/tv_fats"
-            style="@style/FoodRowVarText"
-            android:textColor="@color/blue"/>
-        <TextView
-            android:id="@+id/tv_gi"
-            style="@style/FoodRowVarText"
-            android:textColor="@color/red"/>
+            <TextView
+                style="@style/FoodRowVarText"
+                android:text="@string/Carbs"
+                android:textColor="@color/orange"/>
+            <TextView
+                style="@style/FoodRowVarText"
+                android:text="@string/Protein"
+                android:textColor="@color/green"/>
+            <TextView
+                style="@style/FoodRowVarText"
+                android:text="@string/Fats"
+                android:textColor="@color/blue"/>
+            <TextView
+                style="@style/FoodRowVarText"
+                android:text="@string/GI"
+                android:textColor="@color/red"/>
 
-
-    </GridLayout>
-
-    <TextView
-        style="@style/SmallText"
-        android:id="@+id/tv_food_name"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:textColor="?main_text_color"/>
+            <TextView
+                android:id="@+id/tv_carbs"
+                style="@style/FoodRowVarText"
+                android:textColor="@color/orange"/>
+            <TextView
+                android:id="@+id/tv_protein"
+                style="@style/FoodRowVarText"
+                android:textColor="@color/green"/>
+            <TextView
+                android:id="@+id/tv_fats"
+                style="@style/FoodRowVarText"
+                android:textColor="@color/blue"/>
+            <TextView
+                android:id="@+id/tv_gi"
+                style="@style/FoodRowVarText"
+                android:textColor="@color/red"/>
 
 
+        </GridLayout>
+
+        <TextView
+            style="@style/SmallText"
+            android:id="@+id/tv_food_name"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="?main_text_color"/>
+
+
+    </LinearLayout>
+
+    <CheckBox
+        android:id="@+id/checkbox_favourite"
+        android:layout_marginEnd="10dp"
+        android:button="@drawable/favourite_star"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_weight="0"
+        android:layout_gravity="center"/>
 </LinearLayout>
 
 </androidx.cardview.widget.CardView>

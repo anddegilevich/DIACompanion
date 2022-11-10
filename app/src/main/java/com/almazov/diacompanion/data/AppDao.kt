@@ -3,6 +3,10 @@ package com.almazov.diacompanion.data
 import androidx.lifecycle.LiveData
 import androidx.paging.PagingSource
 import androidx.room.*
+import androidx.sqlite.db.SupportSQLiteQuery
+
+
+
 
 @Dao
 interface AppDao {
@@ -24,13 +28,13 @@ interface AppDao {
     /*@Query("SELECT * FROM record_table ORDER BY dateInMilli DESC")
     fun readAllData(): LiveData<List<RecordEntity>>*/
 
-    @Query("SELECT * FROM record_table ORDER BY dateInMilli DESC, id DESC")
+    @Query("SELECT * FROM record_table ORDER BY dateInMilli DESC")
     fun readAllPaged(): PagingSource<Int, RecordEntity>
 
     /*@Query("SELECT * FROM record_table WHERE category LIKE :filter")
     fun filterDatabase(filter: String): LiveData<List<RecordEntity>>*/
 
-    @Query("SELECT * FROM record_table WHERE category LIKE :filter ORDER BY dateInMilli DESC, id DESC")
+    @Query("SELECT * FROM record_table WHERE category LIKE :filter ORDER BY dateInMilli DESC")
     fun filterPaged(filter: String): PagingSource<Int, RecordEntity>
 
     // SugarLevel
@@ -133,26 +137,14 @@ interface AppDao {
 
     // Food
 
-    @Query("SELECT * FROM food_table ORDER BY name ASC")
+    @Query("SELECT * FROM food_table ORDER BY favourite DESC,name ASC")
     fun readFoodPaged(): PagingSource<Int, FoodEntity>
 
-    @Query("""
-        SELECT * FROM (SELECT * FROM food_table WHERE name LIKE :filter+'%'
-            ORDER BY name ASC LIMIT 20)
-        UNION
-        SELECT * FROM (SELECT * FROM food_table WHERE name LIKE '%'+:filter
-            ORDER BY name ASC LIMIT 5)
-        UNION
-        SELECT * FROM (SELECT * FROM food_table WHERE name LIKE '%'+:filter+'%'
-            ORDER BY name ASC LIMIT 5)
-    """)
-    fun readFoodPagedFilterBegin(filter: String): PagingSource<Int, FoodEntity>
+    @RawQuery(observedEntities = [FoodEntity::class])
+    fun readFoodPagedFilter(query: SupportSQLiteQuery): PagingSource<Int, FoodEntity>
 
-    /*@Query("SELECT * FROM food_table WHERE name LIKE '%'+:filter ORDER BY name ASC LIMIT 5")
-    suspend fun readFoodPagedFilterEnd(filter: String): LiveData<List<FoodEntity>>
-
-    @Query("SELECT * FROM food_table WHERE name LIKE '%'+:filter+'%'ORDER BY name ASC LIMIT 5")
-    suspend fun readFoodPagedFilterInside(filter: String): LiveData<List<FoodEntity>>*/
+    @Query("UPDATE food_table SET favourite = :favourite WHERE idFood = :id")
+    fun updateFavourite(id: Int?, favourite: Int?)
 
     // Food in meal
 

@@ -10,12 +10,14 @@ import androidx.paging.PagingData
 import androidx.paging.PagingSource
 import com.almazov.diacompanion.meal.FoodInMealItem
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.launch
 
 class AppDatabaseViewModel(application: Application): AndroidViewModel(application) {
+
 
     /*val readALlData: LiveData<List<RecordEntity>>*/
     val readAllPaged = Pager(
@@ -264,17 +266,7 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
 
     // Food
 
-    var readFoodPaged = Pager(
-        PagingConfig(
-            pageSize = 10,
-            enablePlaceholders = true,
-            maxSize = 200
-        )
-    ){
-        repository.readFoodPaged
-    }.flow
-
-    fun readFoodFilter(filter: String): Flow<PagingData<FoodEntity>> {
+    fun readFoodPaged(): Flow<PagingData<FoodEntity>> {
         return Pager(
             PagingConfig(
                 pageSize = 10,
@@ -282,8 +274,26 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
                 maxSize = 200
             )
         ){
-            repository.readFoodPagedFilterBegin(filter)
+            repository.readFoodPaged
         }.flow
+    }
+
+    fun readFoodPagedFilter(filter: String): Flow<PagingData<FoodEntity>> {
+        return Pager(
+            PagingConfig(
+                pageSize = 10,
+                enablePlaceholders = true,
+                maxSize = 200
+            )
+        ){
+            repository.readFoodPagedFilter(filter)
+        }.flow
+    }
+
+    fun updateFavourite(id: Int?, favourite: Int?) {
+        GlobalScope.launch(Dispatchers.IO) {
+            repository.updateFavourite(id,favourite)
+        }
     }
 
     // Food in meal

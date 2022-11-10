@@ -11,10 +11,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.almazov.diacompanion.R
 import com.almazov.diacompanion.data.FoodEntity
 import kotlinx.android.synthetic.main.food_row.view.*
+import kotlinx.coroutines.DelicateCoroutinesApi
 
 
-class FoodListAdapter(): PagingDataAdapter<FoodEntity, FoodListAdapter.FoodViewHolder>(DIFF_CALLBACK) {
+class FoodListAdapter() : PagingDataAdapter<FoodEntity, FoodListAdapter.FoodViewHolder>(DIFF_CALLBACK) {
     var context: Context? = null
+    val favouriteChanges = mutableListOf<Pair<Int?, Int>>()
+    private val favouriteChangesIdFood = mutableListOf<Int?>()
+
 
     companion object {
         private val DIFF_CALLBACK = object :
@@ -43,6 +47,7 @@ class FoodListAdapter(): PagingDataAdapter<FoodEntity, FoodListAdapter.FoodViewH
         )
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onBindViewHolder(holder: FoodViewHolder, position: Int) {
         val food: FoodEntity? = getItem(position)
         holder.itemView.tv_food_name.text = food?.name
@@ -55,6 +60,34 @@ class FoodListAdapter(): PagingDataAdapter<FoodEntity, FoodListAdapter.FoodViewH
             view.findNavController().popBackStack()
         }
 
+        var second = false
+        if (favouriteChangesIdFood.contains(food?.idFood))
+        {
+            var i = favouriteChanges.count()
+            while (i>0){
+                if (favouriteChanges[i-1].first == food?.idFood) {
+                    second = intToBool(favouriteChanges[i-1].second)
+                    break
+                }
+                i -= 1
+            }
+        } else second = intToBool(food?.favourite)
+
+        holder.itemView.checkbox_favourite.isChecked = second
+        holder.itemView.checkbox_favourite.setOnClickListener {
+            favouriteChanges.add(Pair(food?.idFood,boolToInt(
+                holder.itemView.checkbox_favourite.isChecked)))
+            favouriteChangesIdFood.add(food?.idFood)
+        }
+
+    }
+
+    private fun intToBool(int: Int?): Boolean {
+        return int==1
+    }
+
+    private fun boolToInt(boolean: Boolean): Int {
+        return if (boolean) 1 else 0
     }
 
 }

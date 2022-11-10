@@ -10,46 +10,44 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.almazov.diacompanion.R
 import com.almazov.diacompanion.data.AppDatabaseViewModel
 import kotlinx.android.synthetic.main.fragment_food_list.view.*
-import kotlinx.android.synthetic.main.fragment_sugar_level_add_record.*
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class FoodList : Fragment() {
 
     private lateinit var appDatabaseViewModel: AppDatabaseViewModel
-    val adapter = FoodListAdapter()
+    private lateinit var adapter: FoodListAdapter
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-
         val view = inflater.inflate(R.layout.fragment_food_list, container, false)
-
-        val recyclerView = view.recycler_view_meal
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        val recyclerView = view.recycler_view_food
 
         appDatabaseViewModel = ViewModelProvider(this)[AppDatabaseViewModel::class.java]
 
-        lifecycleScope.launch{
-            appDatabaseViewModel.readFoodPaged.collectLatest {
-                adapter.submitData(it)
-            }
-        }
+        adapter = FoodListAdapter()
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        readFood()
 
         view.edit_text_search_food.addTextChangedListener(object : TextWatcher {
 
             override fun afterTextChanged(string: Editable) {
-                filterFood(string.toString())
+                if (string.isNullOrBlank()) readFood()
+                else {
+                    filterFood(string.toString().trim())
+                }
             }
 
             override fun beforeTextChanged(string: CharSequence, start: Int,
@@ -73,10 +71,35 @@ class FoodList : Fragment() {
 
     private fun filterFood(filter: String) {
         lifecycleScope.launch{
-            appDatabaseViewModel.readFoodFilter(filter).collectLatest {
+            appDatabaseViewModel.readFoodPagedFilter(filter).collectLatest {
+                view?.recycler_view_food?.smoothScrollToPosition(0)
                 adapter.submitData(it)
             }
         }
+    }
+
+    private fun readFood() {
+        lifecycleScope.launch{
+            appDatabaseViewModel.readFoodPaged().collectLatest {
+                view?.recycler_view_food?.smoothScrollToPosition(0)
+                adapter.submitData(it)
+            }
+        }
+    }
+
+    private fun applyChanges(){
+        val changes = adapter.favouriteChanges
+        GlobalScope.launch {
+            for (change in changes) {
+                appDatabaseViewModel.updateFavourite(change.first, change.second)
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        applyChanges()
+
+        super.onDestroy()
     }
 
 }

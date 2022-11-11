@@ -73,8 +73,13 @@ class KetoneAddRecord : Fragment() {
         }
 
         btn_save.setOnClickListener {
-            if (updateBool) updateRecord() else addRecord()
-            Navigation.findNavController(view).navigate(R.id.action_ketoneAddRecord_to_homePage)
+            if (updateBool) {
+                updateRecord()
+                findNavController().popBackStack()
+            } else {
+                addRecord()
+                Navigation.findNavController(view).navigate(R.id.action_ketoneAddRecord_to_homePage)
+            }
         }
     }
 
@@ -116,7 +121,7 @@ class KetoneAddRecord : Fragment() {
         builder.setPositiveButton(this.resources.getString(R.string.Yes)) {_, _ ->
             appDatabaseViewModel.deleteKetoneRecord(args.selectedRecord?.id)
             args.selectedRecord?.let { appDatabaseViewModel.deleteRecord(it) }
-            findNavController().navigate(R.id.action_ketoneAddRecord_to_homePage)
+            findNavController().popBackStack()
         }
         builder.setNegativeButton(this.resources.getString(R.string.No)) {_, _ ->
         }

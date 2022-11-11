@@ -73,8 +73,13 @@ class WeightAddRecord : Fragment() {
         btn_save.setOnClickListener {
             val weightSubmitted = !edit_text_weight.text.toString().isNullOrBlank()
             if (weightSubmitted) {
-                if (updateBool) updateRecord() else addRecord()
-                Navigation.findNavController(view).navigate(R.id.action_weightAddRecord_to_homePage)
+                if (updateBool) {
+                    updateRecord()
+                    findNavController().popBackStack()
+                } else {
+                    addRecord()
+                    Navigation.findNavController(view).navigate(R.id.action_weightAddRecord_to_homePage)
+                }
             }
         }
     }
@@ -117,7 +122,7 @@ class WeightAddRecord : Fragment() {
         builder.setPositiveButton(this.resources.getString(R.string.Yes)) {_, _ ->
             appDatabaseViewModel.deleteWeightRecord(args.selectedRecord?.id)
             args.selectedRecord?.let { appDatabaseViewModel.deleteRecord(it) }
-            findNavController().navigate(R.id.action_weightAddRecord_to_homePage)
+            findNavController().popBackStack()
         }
         builder.setNegativeButton(this.resources.getString(R.string.No)) {_, _ ->
         }

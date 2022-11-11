@@ -10,7 +10,17 @@ class AppDatabaseRepository(private val appDao: AppDao) {
 
     val readLastRecords: LiveData<List<RecordEntity>> = appDao.readLastRecords()
 
-    val readAllPaged: PagingSource<Int, RecordEntity> = appDao.readAllPaged()
+    fun readDatesPaged(): PagingSource<Int, DateClass> {
+        return appDao.readDatesPaged()
+    }
+
+    fun readDayRecords(date: String): LiveData<List<RecordEntity>> {
+        return appDao.readDayRecords(date)
+    }
+
+    fun readDayRecords(date: String, filter: String): LiveData<List<RecordEntity>> {
+        return appDao.readDayRecords(date, filter)
+    }
 
     suspend fun addRecord(recordEntity: RecordEntity): Long {
         return appDao.addRecord(recordEntity)
@@ -26,10 +36,6 @@ class AppDatabaseRepository(private val appDao: AppDao) {
 
     suspend fun deleteAllRecords(){
         appDao.deleteAllRecords()
-    }
-
-    fun filterPaged(filter: String): PagingSource<Int, RecordEntity> {
-        return appDao.filterPaged(filter)
     }
 
     // SugarLevel

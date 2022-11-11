@@ -73,8 +73,13 @@ class SleepAddRecord : Fragment() {
         btn_save.setOnClickListener {
             val durationSubmitted = !edit_text_duration.text.toString().isNullOrBlank()
             if (durationSubmitted) {
-                if (updateBool) updateRecord() else addRecord()
-                Navigation.findNavController(view).navigate(R.id.action_sleepAddRecord_to_homePage)
+                if (updateBool) {
+                    updateRecord()
+                    findNavController().popBackStack()
+                } else {
+                    addRecord()
+                    Navigation.findNavController(view).navigate(R.id.action_sleepAddRecord_to_homePage)
+                }
             }
         }
     }
@@ -117,7 +122,7 @@ class SleepAddRecord : Fragment() {
         builder.setPositiveButton(this.resources.getString(R.string.Yes)) {_, _ ->
             appDatabaseViewModel.deleteSleepRecord(args.selectedRecord?.id)
             args.selectedRecord?.let { appDatabaseViewModel.deleteRecord(it) }
-            findNavController().navigate(R.id.action_sleepAddRecord_to_homePage)
+            findNavController().popBackStack()
         }
         builder.setNegativeButton(this.resources.getString(R.string.No)) {_, _ ->
         }

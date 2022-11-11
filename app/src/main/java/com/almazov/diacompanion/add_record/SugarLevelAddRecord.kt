@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.almazov.diacompanion.R
@@ -78,10 +79,14 @@ class SugarLevelAddRecord : Fragment() {
         btn_save.setOnClickListener {
             val sugarLevelSubmitted = !edit_text_sugar_level.text.toString().isNullOrBlank()
             if (sugarLevelSubmitted) {
-                if (updateBool) updateRecord() else addRecord()
-                Navigation.findNavController(view).navigate(R.id.action_sugarLevelAddRecord_to_homePage)
+                if (updateBool) {
+                    updateRecord()
+                    findNavController().popBackStack()
+                } else {
+                    addRecord()
+                    Navigation.findNavController(view).navigate(R.id.action_sugarLevelAddRecord_to_homePage)
+                }
             }
-
         }
     }
 
@@ -127,7 +132,7 @@ class SugarLevelAddRecord : Fragment() {
         builder.setPositiveButton(this.resources.getString(R.string.Yes)) {_, _ ->
             appDatabaseViewModel.deleteSugarLevelRecord(args.selectedRecord?.id)
             args.selectedRecord?.let { appDatabaseViewModel.deleteRecord(it) }
-            findNavController().navigate(R.id.action_sugarLevelAddRecord_to_homePage)
+            findNavController().popBackStack()
         }
         builder.setNegativeButton(this.resources.getString(R.string.No)) {_, _ ->
         }

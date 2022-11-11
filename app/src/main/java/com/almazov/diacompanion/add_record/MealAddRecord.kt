@@ -108,6 +108,10 @@ class MealAddRecord : Fragment() {
                         adapter.notifyItemInserted(foodList.size)
                     }
                 }
+                if (!record[0].meal.sugarLevel!!.isNaN()) {
+                    view.checkbox_sugar_level.isChecked = true
+                    edit_text_sugar_level.setText(record[0].meal.sugarLevel.toString())
+                }
             })
 
             tv_title.text = this.resources.getString(R.string.UpdateRecord)
@@ -145,10 +149,22 @@ class MealAddRecord : Fragment() {
         }
 
         btn_save.setOnClickListener {
+            val sugarLevelSubmit = checkbox_sugar_level.isChecked
             val mealIsEmpty = foodList.isNullOrEmpty()
-            if (!mealIsEmpty) {
-                if (updateBool) updateRecord() else addRecord()
-                Navigation.findNavController(view).navigate(R.id.action_mealAddRecord_to_homePage)
+            val finalBool = if (sugarLevelSubmit) {
+                val sugarLevelNotEntered = edit_text_sugar_level.text.isNullOrEmpty()
+                !sugarLevelNotEntered and !mealIsEmpty
+            } else {
+                !mealIsEmpty
+            }
+            if (finalBool) {
+                if (updateBool) {
+                    updateRecord(sugarLevelSubmit)
+                    findNavController().popBackStack()
+                } else {
+                    addRecord(sugarLevelSubmit)
+                    Navigation.findNavController(view).navigate(R.id.action_mealAddRecord_to_homePage)
+                }
             }
         }
 
@@ -167,7 +183,7 @@ class MealAddRecord : Fragment() {
         builder.setPositiveButton(this.resources.getString(R.string.Yes)) {_, _ ->
             appDatabaseViewModel.deleteMealRecord(args.selectedRecord?.id)
             args.selectedRecord?.let { appDatabaseViewModel.deleteRecord(it) }
-            findNavController().navigate(R.id.action_mealAddRecord_to_homePage)
+            findNavController().popBackStack()
         }
         builder.setNegativeButton(this.resources.getString(R.string.No)) {_, _ ->
         }
@@ -176,11 +192,17 @@ class MealAddRecord : Fragment() {
         builder.create().show()
     }
 
-    private fun addRecord() {
+    private fun addRecord(sugarLevelSubmit: Boolean) {
         val category = "meal_table"
 
         val type = spinner_meal.selectedItem.toString()
         val mainInfo = type
+
+        val sugarLevel = if (sugarLevelSubmit) {
+            edit_text_sugar_level.text.toString().toDouble()
+        } else {
+            null
+        }
 
         val time = tv_Time.text.toString()
         val date = tv_Date.text.toString()
@@ -188,14 +210,20 @@ class MealAddRecord : Fragment() {
 
         val recordEntity = RecordEntity(null, category, mainInfo,dateInMilli, time, date,
             dateSubmit,false)
-        val mealEntity = MealEntity(null,type, null)
+        val mealEntity = MealEntity(null,type, sugarLevel)
 
         appDatabaseViewModel.addRecord(recordEntity,mealEntity,foodList)
     }
 
-    private fun updateRecord() {
+    private fun updateRecord(sugarLevelSubmit: Boolean) {
         val type = spinner_meal.selectedItem.toString()
         val mainInfo = type
+
+        val sugarLevel = if (sugarLevelSubmit) {
+            edit_text_sugar_level.text.toString().toDouble()
+        } else {
+            null
+        }
 
         val time = tv_Time.text.toString()
         val date = tv_Date.text.toString()
@@ -203,7 +231,7 @@ class MealAddRecord : Fragment() {
 
         val recordEntity = RecordEntity(args.selectedRecord?.id, args.selectedRecord?.category, mainInfo,dateInMilli, time, date,
             args.selectedRecord?.dateSubmit,args.selectedRecord?.fullDay)
-        val mealEntity = MealEntity(args.selectedRecord?.id,type, null)
+        val mealEntity = MealEntity(args.selectedRecord?.id,type, sugarLevel)
 
         appDatabaseViewModel.updateRecord(recordEntity,mealEntity,foodList)
     }

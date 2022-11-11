@@ -12,7 +12,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.almazov.diacompanion.R
 import com.almazov.diacompanion.data.AppDatabaseViewModel
-import kotlinx.android.synthetic.main.fragment_record_history.*
 import kotlinx.android.synthetic.main.fragment_record_history.view.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -20,7 +19,7 @@ import kotlinx.coroutines.launch
 class RecordHistory : Fragment() {
 
     private lateinit var appDatabaseViewModel: AppDatabaseViewModel
-    val adapter = RecordListAdapter()
+    private lateinit var adapter: DateListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,16 +28,18 @@ class RecordHistory : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_record_history, container, false)
 
+        appDatabaseViewModel = ViewModelProvider(this)[AppDatabaseViewModel::class.java]
+
+        adapter = DateListAdapter(appDatabaseViewModel, viewLifecycleOwner)
+
         val recyclerView = view.recyclerView
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        appDatabaseViewModel = ViewModelProvider(this).get(AppDatabaseViewModel::class.java)
-
         readAllRecords()
 
         view.btn_options.setOnClickListener{
-            showPopup(btn_options)
+            showPopup(view.btn_options)
         }
 
         return view
@@ -84,17 +85,22 @@ class RecordHistory : Fragment() {
     }
 
     private fun filterRecords(filter: String) {
+
+        adapter.filter = filter
         lifecycleScope.launch{
-            appDatabaseViewModel.filterPaged(filter).collectLatest {
+            appDatabaseViewModel.readDatesPaged().collectLatest {
                 adapter.submitData(it)
             }
         }
     }
 
     private fun readAllRecords() {
+
+        adapter.filter = ""
         lifecycleScope.launch{
-            appDatabaseViewModel.readAllPaged.collectLatest {
+            appDatabaseViewModel.readDatesPaged().collectLatest {
                 adapter.submitData(it)
+
             }
         }
     }

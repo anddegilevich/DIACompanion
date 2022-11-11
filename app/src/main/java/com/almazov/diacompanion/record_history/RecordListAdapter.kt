@@ -6,30 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
-import androidx.paging.PagingDataAdapter
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.almazov.diacompanion.R
 import com.almazov.diacompanion.data.RecordEntity
 import kotlinx.android.synthetic.main.record_row.view.*
 
-class RecordListAdapter(): PagingDataAdapter<RecordEntity, RecordListAdapter.RecordViewHolder>(DIFF_CALLBACK) {
-
+class RecordListAdapter(): RecyclerView.Adapter<RecordListAdapter.HomeRecordsViewHolder>()  {
     var context: Context? = null
-
-    companion object {
-        private val DIFF_CALLBACK = object :
-            DiffUtil.ItemCallback<RecordEntity>() {
-
-            override fun areItemsTheSame(oldItem: RecordEntity, newItem: RecordEntity): Boolean {
-                return oldItem.id == newItem.id
-            }
-
-            override fun areContentsTheSame(oldItem: RecordEntity, newItem: RecordEntity): Boolean {
-                return oldItem == newItem
-            }
-        }
-    }
+    private var recordsList = emptyList<RecordEntity>()
 
     var categoriesAndPrimaryColors = mutableMapOf(
         "sugar_level_table" to R.color.red,
@@ -61,39 +45,39 @@ class RecordListAdapter(): PagingDataAdapter<RecordEntity, RecordListAdapter.Rec
         "ketone_table" to R.drawable.ketone
     )
 
-    class RecordViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {}
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecordViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeRecordsViewHolder {
         context=parent.context;
 
-        return RecordViewHolder(LayoutInflater.from(context).inflate(
-            R.layout.record_row,
-            parent, false))
+        return HomeRecordsViewHolder(
+            LayoutInflater.from(context).inflate(
+                R.layout.record_row,
+                parent, false
+            )
+        )
     }
 
-    override fun onBindViewHolder(holder: RecordViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: HomeRecordsViewHolder, position: Int) {
+        val record = recordsList[position]
 
-        val record: RecordEntity? = getItem(position)
+        val primaryColor = categoriesAndPrimaryColors.get(record.category)
+        val secondaryColor = categoriesAndSecondaryColors.get(record.category)
+        val imageCategory = categoriesAndImages.get(record.category)
 
-        val primaryColor = categoriesAndPrimaryColors.get(record?.category)
-        val secondaryColor = categoriesAndSecondaryColors.get(record?.category)
-        val imageCategory = categoriesAndImages.get(record?.category)
-
-        holder.itemView.main_info.text = record?.mainInfo
+        holder.itemView.main_info.text = record.mainInfo
         holder.itemView.main_info.setTextColor(ContextCompat.getColor(context!!, secondaryColor!!))
 
-        holder.itemView.time.text = record?.time
-        holder.itemView.time.setTextColor(ContextCompat.getColor(context!!, secondaryColor!!))
+        holder.itemView.time.text = record.time
+        holder.itemView.time.setTextColor(ContextCompat.getColor(context!!, secondaryColor))
 
-        holder.itemView.date.text = record?.date
-        holder.itemView.date.setTextColor(ContextCompat.getColor(context!!, secondaryColor!!))
+        holder.itemView.date.text = record.date
+        holder.itemView.date.setTextColor(ContextCompat.getColor(context!!, secondaryColor))
 
         holder.itemView.img_category.setImageResource(imageCategory!!)
 
         holder.itemView.card_view.setBackgroundResource(primaryColor!!)
         holder.itemView.card_view.setOnClickListener{
 
-            when (record?.category) {
+            when (record.category) {
                 "sugar_level_table" -> {val action = RecordHistoryDirections.actionRecordHistoryToSugarLevelAddRecord(record)
                     holder.itemView.findNavController().navigate(action)}
 
@@ -119,5 +103,14 @@ class RecordListAdapter(): PagingDataAdapter<RecordEntity, RecordListAdapter.Rec
 
     }
 
+    fun setData(records: List<RecordEntity>) {
+        this.recordsList = records
+        notifyDataSetChanged()
+    }
 
+    override fun getItemCount(): Int {
+        return recordsList.size
+    }
+
+    class HomeRecordsViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {}
 }

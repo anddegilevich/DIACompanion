@@ -21,15 +21,17 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
 
     val readLastRecords: LiveData<List<RecordEntity>>
 
-    val readAllPaged = Pager(
-        PagingConfig(
-            pageSize = 10,
-            enablePlaceholders = true,
-            maxSize = 200
-        )
-    ){
-        repository.readAllPaged
-    }.flow
+    fun readDatesPaged(): Flow<PagingData<DateClass>> {
+        return Pager(
+            PagingConfig(
+                pageSize = 5,
+                enablePlaceholders = true,
+                maxSize = 60
+            )
+        ){
+            repository.readDatesPaged()
+        }.flow
+    }
 
     private val repository: AppDatabaseRepository
 
@@ -59,16 +61,12 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
         }
     }
 
-    fun filterPaged(filter: String): Flow<PagingData<RecordEntity>> {
-        return Pager(
-            PagingConfig(
-                pageSize = 10,
-                enablePlaceholders = true,
-                maxSize = 200
-            )
-        ){
-            repository.filterPaged(filter)
-        }.flow
+    fun readDayRecords(date: String): LiveData<List<RecordEntity>> {
+        return repository.readDayRecords(date)
+    }
+
+    fun readDayRecords(date: String, filter: String): LiveData<List<RecordEntity>> {
+        return repository.readDayRecords(date, filter)
     }
 
     // SugarLevel

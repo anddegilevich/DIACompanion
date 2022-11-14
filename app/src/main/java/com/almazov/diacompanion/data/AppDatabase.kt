@@ -9,7 +9,7 @@ import com.almazov.diacompanion.data.*
 @Database(entities = [RecordEntity::class, SugarLevelEntity::class, InsulinEntity::class,
                      MealEntity::class, WorkoutEntity::class, SleepEntity::class,
                      WeightEntity::class, KetoneEntity::class, FoodEntity::class,
-                     FoodInMealEntity::class],
+                     FoodInMealEntity::class, FoodInRecipeEntity::class],
     version = 1, exportSchema = false)
 abstract class AppDatabase: RoomDatabase() {
 

@@ -36,6 +36,13 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_homePage_to_recipeList"
+            app:destination="@id/recipeList"
+            app:enterAnim="@anim/slide_in_up"
+            app:exitAnim="@anim/slide_out_up"
+            app:popEnterAnim="@anim/slide_in_down"
+            app:popExitAnim="@anim/slide_out_down"/>
 
     </fragment>
     <fragment
@@ -326,20 +333,36 @@
         android:id="@+id/foodList"
         android:name="com.almazov.diacompanion.meal.FoodList"
         android:label="fragment_food_list"
-        tools:layout="@layout/fragment_food_list" >
-        <action
-            android:id="@+id/action_foodList_to_mealAddRecord"
-            app:destination="@id/mealAddRecord"
-            app:enterAnim="@anim/slide_in_left"
-            app:exitAnim="@anim/slide_out_right"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            app:popUpTo="@id/mealAddRecord"
-            app:popUpToInclusive="true"/>
-    </fragment>
+        tools:layout="@layout/fragment_food_list" />
     <fragment
         android:id="@+id/mealRecordInfo"
         android:name="com.almazov.diacompanion.MealRecordInfo"
         android:label="fragment_meal_record_info"
         tools:layout="@layout/fragment_meal_record_info" />
+    <fragment
+        android:id="@+id/recipeList"
+        android:name="com.almazov.diacompanion.recipe.RecipeList"
+        android:label="fragment_recipe_list"
+        tools:layout="@layout/fragment_recipe_list" >
+        <action
+            android:id="@+id/action_recipeList_to_addRecipe"
+            app:destination="@id/addRecipe"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/addRecipe"
+        android:name="com.almazov.diacompanion.recipe.AddRecipe"
+        android:label="fragment_add_recipe"
+        tools:layout="@layout/fragment_add_recipe" >
+        <action
+            android:id="@+id/action_addRecipe_to_foodList"
+            app:destination="@id/foodList"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
 </navigation>

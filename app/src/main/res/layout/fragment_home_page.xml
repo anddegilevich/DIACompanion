@@ -173,7 +173,7 @@
                 app:srcCompat="@drawable/export" />
 
             <ImageButton
-                android:id="@+id/btn_call_doctor"
+                android:id="@+id/btn_recipe_list"
                 style="@style/ImageButton"
                 android:layout_marginStart="8dp"
                 android:layout_width="66dp"

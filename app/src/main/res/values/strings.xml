@@ -158,5 +158,13 @@
     </string-array>
     <string name="Help">Help</string>
 
+    //RecipeList
+    <string name="RecipeList">Recipe List</string>
+    <string name="AddRecipe">Add Recipe</string>
+
+    //AddRecipe
+    <string name="RecipeName">Recipe Name</string>
+    <string name="Ingredients">Ingredients</string>
+
 
 </resources>

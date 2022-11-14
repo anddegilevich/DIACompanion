@@ -1,6 +1,5 @@
 package com.almazov.diacompanion.add_record
 
-import android.animation.LayoutTransition
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Build
@@ -43,18 +42,20 @@ import kotlinx.android.synthetic.main.fragment_meal_add_record.tv_Date
 import kotlinx.android.synthetic.main.fragment_meal_add_record.tv_Time
 import kotlinx.android.synthetic.main.fragment_meal_add_record.tv_title
 import kotlinx.android.synthetic.main.fragment_meal_add_record.view.*
-import kotlinx.android.synthetic.main.fragment_sugar_level_add_record.*
 
 
 class MealAddRecord : Fragment() {
 
     private lateinit var appDatabaseViewModel: AppDatabaseViewModel
     private var dateSubmit: Long? = null
-    var updateBool: Boolean = false
+
     private val args by navArgs<MealAddRecordArgs>()
 
     var foodList = mutableListOf<FoodInMealItem>()
+    var lastFood: String = ""
     lateinit var adapter: FoodInMealListAdapter
+    var updateBool: Boolean = false
+    var updateFinished: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -97,7 +98,7 @@ class MealAddRecord : Fragment() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        if (updateBool)
+        if (updateBool and !updateFinished)
         {
             appDatabaseViewModel.getMealWithFoods(args.selectedRecord?.id).observe(viewLifecycleOwner, Observer{record ->
 
@@ -108,10 +109,11 @@ class MealAddRecord : Fragment() {
                         adapter.notifyItemInserted(foodList.size)
                     }
                 }
-                if (!record[0].meal.sugarLevel!!.isNaN()) {
+                if (record[0].meal.sugarLevel != null) {
                     view.checkbox_sugar_level.isChecked = true
                     edit_text_sugar_level.setText(record[0].meal.sugarLevel.toString())
                 }
+
             })
 
             tv_title.text = this.resources.getString(R.string.UpdateRecord)
@@ -121,6 +123,7 @@ class MealAddRecord : Fragment() {
             btn_delete.setOnClickListener {
                 deleteRecord()
             }
+            updateFinished = true
         }
 
         Navigation.findNavController(view).currentBackStackEntry?.savedStateHandle
@@ -130,8 +133,10 @@ class MealAddRecord : Fragment() {
                 for (food in foodList) {
                     if (it.name == food.foodEntity.name) foodAlreadyInList = true
                 }
+                val lastFoodBool = lastFood == it.name
 
-                if (!foodAlreadyInList) {
+                if (!foodAlreadyInList and !lastFoodBool) {
+                    lastFood = it.name!!
                     val selectWeightDialog = SelectWeightDialog(requireContext())
                     selectWeightDialog.isCancelable = false
                     selectWeightDialog.show(requireFragmentManager(), "weight select dialog")

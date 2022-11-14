@@ -6,13 +6,18 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.almazov.diacompanion.R
 import com.almazov.diacompanion.data.AppDatabaseViewModel
+import com.almazov.diacompanion.data.DateClass
+import kotlinx.android.synthetic.main.fragment_home_page.*
 import kotlinx.android.synthetic.main.fragment_record_history.view.*
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -100,10 +105,28 @@ class RecordHistory : Fragment() {
         lifecycleScope.launch{
             appDatabaseViewModel.readDatesPaged().collectLatest {
                 adapter.submitData(it)
-
             }
         }
     }
 
+
+    private fun applyChanges(){
+        val changes = adapter.fullDaysChanges
+        GlobalScope.launch {
+            for (change in changes) {
+                appDatabaseViewModel.updateFullDays(change.first, change.second)
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        applyChanges()
+        super.onDestroy()
+    }
+
+    override fun onPause() {
+        applyChanges()
+        super.onPause()
+    }
 
 }

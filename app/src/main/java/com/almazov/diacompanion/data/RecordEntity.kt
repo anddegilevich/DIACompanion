@@ -16,5 +16,5 @@ data class RecordEntity (
     val time: String?,
     val date: String?,
     val dateSubmit: Long?,
-    val fullDay: Boolean?
+    var fullDay: Boolean?
 ): Parcelable

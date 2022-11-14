@@ -16,7 +16,7 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 
 class FoodListAdapter() : PagingDataAdapter<FoodEntity, FoodListAdapter.FoodViewHolder>(DIFF_CALLBACK) {
     var context: Context? = null
-    val favouriteChanges = mutableListOf<Pair<Int?, Int>>()
+    val favouriteChanges = mutableListOf<Pair<Int?, Boolean>>()
     private val favouriteChangesIdFood = mutableListOf<Int?>()
 
 
@@ -29,7 +29,7 @@ class FoodListAdapter() : PagingDataAdapter<FoodEntity, FoodListAdapter.FoodView
             }
 
             override fun areContentsTheSame(oldItem: FoodEntity, newItem: FoodEntity): Boolean {
-                return oldItem == newItem
+                return oldItem.idFood == newItem.idFood
             }
         }
     }
@@ -61,35 +61,37 @@ class FoodListAdapter() : PagingDataAdapter<FoodEntity, FoodListAdapter.FoodView
             view.findNavController().popBackStack()
         }
 
-        var second = false
-        if (favouriteChangesIdFood.contains(food?.idFood))
-        {
-            var i = favouriteChanges.count()
-            while (i>0){
-                if (favouriteChanges[i-1].first == food?.idFood) {
-                    second = intToBool(favouriteChanges[i-1].second)
-                    break
+        var second: Boolean? = false
+        if (food?.favourite != null) {
+            if (favouriteChangesIdFood.contains(food.idFood))
+            {
+                var i = favouriteChanges.count()
+                while (i>0){
+                    if (favouriteChanges[i-1].first == food.idFood) {
+                        second = favouriteChanges[i-1].second
+                        break
+                    }
+                    i -= 1
                 }
-                i -= 1
-            }
-        } else second = intToBool(food?.favourite)
+            } else second = food.favourite
+        }
+        holder.itemView.checkbox_favourite.isChecked = second!!
 
-        holder.itemView.checkbox_favourite.isChecked = second
         holder.itemView.checkbox_favourite.setOnClickListener {
-            favouriteChanges.add(Pair(food?.idFood,boolToInt(
-                holder.itemView.checkbox_favourite.isChecked)))
+            favouriteChanges.add(Pair(food?.idFood,
+                holder.itemView.checkbox_favourite.isChecked))
             favouriteChangesIdFood.add(food?.idFood)
         }
 
     }
-
+/*
     private fun intToBool(int: Int?): Boolean {
         return int==1
     }
 
     private fun boolToInt(boolean: Boolean): Int {
         return if (boolean) 1 else 0
-    }
+    }*/
 
 }
 

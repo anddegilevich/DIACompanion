@@ -8,25 +8,31 @@ class AppDatabaseRepository(private val appDao: AppDao) {
 
     // Records
 
-    val readLastRecords: LiveData<List<RecordEntity>> = appDao.readLastRecords()
+    fun readLastRecords(): LiveData<List<RecordEntity>> {
+        return appDao.readLastRecords()
+    }
 
     fun readDatesPaged(): PagingSource<Int, DateClass> {
         return appDao.readDatesPaged()
     }
 
-    fun readDayRecords(date: String): LiveData<List<RecordEntity>> {
+    fun readDayRecords(date: String?): LiveData<List<RecordEntity>> {
         return appDao.readDayRecords(date)
     }
 
-    fun readDayRecords(date: String, filter: String): LiveData<List<RecordEntity>> {
+    fun readDayRecords(date: String?, filter: String): LiveData<List<RecordEntity>> {
         return appDao.readDayRecords(date, filter)
     }
 
     suspend fun addRecord(recordEntity: RecordEntity): Long {
+        val fullDaysCheck = appDao.checkFullDays(recordEntity.date)
+        if (fullDaysCheck.contains(true)) recordEntity.fullDay = true
         return appDao.addRecord(recordEntity)
     }
 
     suspend fun updateRecord(recordEntity: RecordEntity){
+        val fullDaysCheck = appDao.checkFullDays(recordEntity.date)
+        if (fullDaysCheck.contains(true)) recordEntity.fullDay = true
         appDao.updateRecord(recordEntity)
     }
 
@@ -36,6 +42,10 @@ class AppDatabaseRepository(private val appDao: AppDao) {
 
     suspend fun deleteAllRecords(){
         appDao.deleteAllRecords()
+    }
+
+    fun updateFullDays(date: String?, fullDays: Boolean?){
+        appDao.updateFullDays(date, fullDays)
     }
 
     // SugarLevel
@@ -160,20 +170,29 @@ class AppDatabaseRepository(private val appDao: AppDao) {
     fun readFoodPagedFilter(filter: String): PagingSource<Int, FoodEntity> {
 
         var queryWords = ""
+        var firstWord = ""
+        var stringQuery = ""
         val words = filter.split(" ")
-        for (word in words){
-            queryWords += if (queryWords.isEmpty())
-                "name LIKE '%$word%'"
-            else
-                "AND name LIKE '%$word%'"
+        for (i in 0 until words.count()){
+            val word = words[i]
+            when (i) {
+                0 -> {
+                    firstWord =
+                        """SELECT * FROM (SELECT *, 1 AS filter FROM food_table WHERE name LIKE '$word%' ORDER BY name ASC)
+                        UNION
+                        SELECT * FROM (SELECT *, 2 AS filter FROM food_table WHERE name LIKE '%$word%' ORDER BY name ASC)"""
+                    stringQuery = """SELECT * FROM ($firstWord)"""
+                }
+                1 -> queryWords += """ WHERE name LIKE '%$word%'"""
+                else -> queryWords += """ AND name LIKE '%$word%'"""
+            }
         }
-        val stringQuery =
-            """SELECT * FROM food_table WHERE $queryWords ORDER BY favourite DESC,name ASC"""
+        stringQuery += "$queryWords ORDER BY filter, favourite DESC"
         val query = SimpleSQLiteQuery(stringQuery)
         return appDao.readFoodPagedFilter(query)
     }
 
-    fun updateFavourite(id: Int?, favourite: Int?){
+    fun updateFavourite(id: Int?, favourite: Boolean?){
         appDao.updateFavourite(id, favourite)
     }
 

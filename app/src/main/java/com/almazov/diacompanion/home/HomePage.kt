@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.GravityCompat
+import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -17,10 +18,12 @@ import com.almazov.diacompanion.R
 import com.almazov.diacompanion.data.AppDatabaseViewModel
 import com.almazov.diacompanion.record_history.RecordListAdapter
 import kotlinx.android.synthetic.main.fragment_home_page.*
+import kotlinx.android.synthetic.main.fragment_home_page.view.*
 
 class HomePage : Fragment() {
 
     private lateinit var appDatabaseViewModel: AppDatabaseViewModel
+    private lateinit var adapter: HomeRecordsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,21 +31,24 @@ class HomePage : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_home_page, container, false)
+
+        appDatabaseViewModel = ViewModelProvider(this)[AppDatabaseViewModel::class.java]
+
+        adapter = HomeRecordsAdapter()
+        view.record_recycler_view.adapter = adapter
+        view.record_recycler_view.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+
+        appDatabaseViewModel.readLastRecords().observe(viewLifecycleOwner, Observer { records ->
+            if (records.isNullOrEmpty()) {
+                tv_no_records.isVisible = true
+            } else adapter.setData(records)
+        })
+
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        appDatabaseViewModel = ViewModelProvider(this)[AppDatabaseViewModel::class.java]
-
-        val adapter = HomeRecordsAdapter()
-        record_recycler_view.adapter = adapter
-        record_recycler_view.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-
-        appDatabaseViewModel.readLastRecords.observe(viewLifecycleOwner, Observer { records ->
-            adapter.setData(records)
-        })
 
         btn_add_record.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_homePage_to_recordsCategories)

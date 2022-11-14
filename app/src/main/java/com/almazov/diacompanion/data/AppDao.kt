@@ -25,14 +25,20 @@ interface AppDao {
     @Query("SELECT * FROM record_table ORDER BY dateInMilli DESC, id DESC LIMIT 10")
     fun readLastRecords(): LiveData<List<RecordEntity>>
 
-    @Query("SELECT DISTINCT date FROM record_table ORDER BY dateInMilli DESC")
+    @Query("SELECT DISTINCT date, fullDay FROM record_table ORDER BY dateInMilli DESC")
     fun readDatesPaged(): PagingSource<Int, DateClass>
 
     @Query("SELECT * FROM record_table WHERE date LIKE :date ORDER BY dateInMilli DESC, id DESC")
-    fun readDayRecords(date: String): LiveData<List<RecordEntity>>
+    fun readDayRecords(date: String?): LiveData<List<RecordEntity>>
 
     @Query("SELECT * FROM record_table WHERE (date LIKE :date) AND (category LIKE :filter) ORDER BY dateInMilli DESC, id DESC")
-    fun readDayRecords(date: String, filter: String): LiveData<List<RecordEntity>>
+    fun readDayRecords(date: String?, filter: String): LiveData<List<RecordEntity>>
+
+    @Query("UPDATE record_table SET fullDay = :fullDay WHERE date = :date")
+    fun updateFullDays(date: String?, fullDay: Boolean?)
+
+    @Query("SELECT DISTINCT fullDay FROM record_table WHERE date LIKE :date")
+    fun checkFullDays(date: String?): List<Boolean>
 
     // SugarLevel
 
@@ -141,7 +147,7 @@ interface AppDao {
     fun readFoodPagedFilter(query: SupportSQLiteQuery): PagingSource<Int, FoodEntity>
 
     @Query("UPDATE food_table SET favourite = :favourite WHERE idFood = :id")
-    fun updateFavourite(id: Int?, favourite: Int?)
+    fun updateFavourite(id: Int?, favourite: Boolean?)
 
     // Food in meal
 

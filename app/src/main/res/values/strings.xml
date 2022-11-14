@@ -89,6 +89,7 @@
     <string name="Details">Details</string>
     <string name="LastRecords">Last Records</string>
     <string name="RecordsHistory">Records History</string>
+    <string name="NoRecords">No Records</string>
 
     //RecordHistory
     <string name="AllRecords">All Records</string>

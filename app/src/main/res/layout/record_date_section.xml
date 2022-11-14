@@ -18,10 +18,10 @@
             app:dividerColor="?attr/category_color"
             android:layout_gravity="center"/>
 
-        <TextView
+        <CheckBox
             android:id="@+id/date"
             android:layout_width="0dp"
-            android:layout_weight="0.3"
+            android:layout_weight="0.4"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textAlignment="center"

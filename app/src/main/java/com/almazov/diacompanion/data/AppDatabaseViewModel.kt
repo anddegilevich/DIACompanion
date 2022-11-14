@@ -1,25 +1,17 @@
 package com.almazov.diacompanion.data
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.viewModelScope
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import androidx.paging.PagingSource
+import androidx.lifecycle.*
+import androidx.paging.*
 import com.almazov.diacompanion.meal.FoodInMealItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.launch
 
 class AppDatabaseViewModel(application: Application): AndroidViewModel(application) {
 
 
-    val readLastRecords: LiveData<List<RecordEntity>>
 
     fun readDatesPaged(): Flow<PagingData<DateClass>> {
         return Pager(
@@ -38,10 +30,13 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
     init {
         val appDao = AppDatabase.getDatabase(application).appDao()
         repository = AppDatabaseRepository(appDao)
-        readLastRecords = repository.readLastRecords
     }
 
     // Records
+
+    fun readLastRecords(): LiveData<List<RecordEntity>> {
+        return repository.readLastRecords()
+    }
 
     fun updateRecord(recordEntity: RecordEntity) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -61,12 +56,18 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
         }
     }
 
-    fun readDayRecords(date: String): LiveData<List<RecordEntity>> {
+    fun readDayRecords(date: String?): LiveData<List<RecordEntity>> {
         return repository.readDayRecords(date)
     }
 
-    fun readDayRecords(date: String, filter: String): LiveData<List<RecordEntity>> {
+    fun readDayRecords(date: String?, filter: String): LiveData<List<RecordEntity>> {
         return repository.readDayRecords(date, filter)
+    }
+
+    fun updateFullDays(date: String?, fullDay: Boolean?) {
+        GlobalScope.launch(Dispatchers.IO) {
+            repository.updateFullDays(date,fullDay)
+        }
     }
 
     // SugarLevel
@@ -287,10 +288,19 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
             )
         ){
             repository.readFoodPagedFilter(filter)
-        }.flow
+        }.liveData.map {
+            val foodMap = mutableSetOf<Int?>()
+            it.filter { food ->
+                if (foodMap.contains(food.idFood)) {
+                    false
+                } else {
+                    foodMap.add(food.idFood)
+                }
+            }
+        }.asFlow()
     }
 
-    fun updateFavourite(id: Int?, favourite: Int?) {
+    fun updateFavourite(id: Int?, favourite: Boolean?) {
         GlobalScope.launch(Dispatchers.IO) {
             repository.updateFavourite(id,favourite)
         }

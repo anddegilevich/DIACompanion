@@ -288,16 +288,7 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
             )
         ){
             repository.readFoodPagedFilter(filter)
-        }.liveData.map {
-            val foodMap = mutableSetOf<Int?>()
-            it.filter { food ->
-                if (foodMap.contains(food.idFood)) {
-                    false
-                } else {
-                    foodMap.add(food.idFood)
-                }
-            }
-        }.asFlow()
+        }.flow
     }
 
     fun updateFavourite(id: Int?, favourite: Boolean?) {

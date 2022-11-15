@@ -24,8 +24,6 @@ import com.almazov.diacompanion.meal.SwipeDeleteFood
 import kotlinx.android.synthetic.main.fragment_add_recipe.*
 import kotlinx.android.synthetic.main.fragment_add_recipe.view.*
 import java.math.BigDecimal
-import java.math.RoundingMode
-import java.text.DecimalFormat
 
 class AddRecipe : Fragment() {
 
@@ -306,8 +304,6 @@ class AddRecipe : Fragment() {
         w_2ed = BigDecimal(w_2ed / weightSum).setScale(2, BigDecimal.ROUND_HALF_DOWN).toDouble()
         op_2ed = BigDecimal(op_2ed / weightSum).setScale(2, BigDecimal.ROUND_HALF_DOWN).toDouble()
         proc_pot = BigDecimal(proc_pot / weightSum).setScale(2, BigDecimal.ROUND_HALF_DOWN).toDouble()
-
-
 
         return FoodEntity(null,name, category, carbo,prot,fat,ec,gi,water,nzhk,hol,pv,zola,
             na,k,ca,mg,p,fe,a,b1,b2,rr,c,re,kar,mds,kr,te,ok,ne,zn,cu,mn,se,b5,b6,fol,b9,dfe,holin,

@@ -180,7 +180,7 @@ class AppDatabaseRepository(private val appDao: AppDao) {
                     firstWord =
                         """SELECT * FROM (SELECT *, 1 AS filter FROM food_table WHERE name LIKE '$word%' ORDER BY name ASC)
                         UNION
-                        SELECT * FROM (SELECT *, 2 AS filter FROM food_table WHERE name LIKE '%$word%' ORDER BY name ASC)"""
+                        SELECT * FROM (SELECT *, 2 AS filter FROM food_table WHERE name LIKE '_%$word%' ORDER BY name ASC)"""
                     stringQuery = """SELECT * FROM ($firstWord)"""
                 }
                 1 -> queryWords += """ WHERE name LIKE '%$word%'"""

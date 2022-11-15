@@ -312,4 +312,46 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
         return repository.getMealWithFoods(id)
     }
 
+    // Recipe
+
+    fun addRecord(foodEntity: FoodEntity, foodList: MutableList<FoodInMealItem>) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val id = repository.addRecord(foodEntity)
+            for (food in foodList) {
+                val foodInRecipeEntity = FoodInRecipeEntity(id.toInt(), food.foodEntity.idFood!!,food.weight)
+                repository.addRecord(foodInRecipeEntity)
+            }
+        }
+    }
+
+    fun updateRecord(foodEntity: FoodEntity) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.updateRecord(foodEntity)
+        }
+    }
+
+    fun deleteRecipeRecord(id: Int?){
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteRecipeRecord(id)
+        }
+    }
+
+    fun readRecipePaged(): Flow<PagingData<FoodEntity>> {
+        return Pager(
+            PagingConfig(
+                pageSize = 10,
+                enablePlaceholders = true,
+                maxSize = 200
+            )
+        ){
+            repository.readRecipePaged()
+        }.flow
+    }
+
+    //Food in Recipe
+
+    /*fun getRecipeWithFoods(id: Int?): LiveData<List<RecipeWithFood>>{
+        return repository.getRecipeWithFoods(id)
+    }*/
+
 }

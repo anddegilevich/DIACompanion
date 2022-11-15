@@ -209,4 +209,36 @@ class AppDatabaseRepository(private val appDao: AppDao) {
     suspend fun deleteMealWithFoodsRecord(id: Int?){
         appDao.deleteMealWithFoodsRecord(id)
     }
+
+    // Recipe
+
+    suspend fun addRecord(foodEntity: FoodEntity): Long {
+        return appDao.addRecord(foodEntity)
+    }
+
+    suspend fun updateRecord(foodEntity: FoodEntity){
+        appDao.updateRecord(foodEntity)
+    }
+    suspend fun deleteRecipeRecord(id: Int?){
+        appDao.deleteRecipeRecord(id)
+    }
+
+    fun readRecipePaged(): PagingSource<Int, FoodEntity> {
+        return appDao.readRecipePaged()
+    }
+
+    // Food in Recipe
+
+    suspend fun addRecord(foodInRecipeEntity: FoodInRecipeEntity){
+        appDao.addRecord(foodInRecipeEntity)
+    }
+
+    /*fun getRecipeWithFoods(id: Int?): LiveData<List<RecipeWithFood>>{
+        return appDao.getRecipeWithFoods(id)
+    }*/
+
+    suspend fun deleteRecipeWithFoodsRecord(id: Int?){
+        appDao.deleteRecipeWithFoodsRecord(id)
+    }
+
 }

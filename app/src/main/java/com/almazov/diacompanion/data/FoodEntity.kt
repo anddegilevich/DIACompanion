@@ -67,7 +67,7 @@ data class FoodEntity (
     val w_2ed: Double?,
     val op_2ed: Double?,
     val proc_pot: Int?,
-    val additional: Int?,
+    val additional: Boolean?,
     val favourite: Boolean?,
     var recipe: Boolean?
 ): Parcelable

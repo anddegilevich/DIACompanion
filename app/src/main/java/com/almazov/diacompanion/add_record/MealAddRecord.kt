@@ -81,7 +81,7 @@ class MealAddRecord : Fragment() {
         val recyclerView = view.recycler_view_food_in_meal
         adapter = FoodInMealListAdapter(foodList)
 
-        val swipeDeleteFood = object : SwipeDeleteFood(requireContext()) {
+        val swipeDeleteFood = object : SwipeDeleteFood(requireContext(), R.color.purple_dark) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 when (direction) {
                     ItemTouchHelper.LEFT -> {

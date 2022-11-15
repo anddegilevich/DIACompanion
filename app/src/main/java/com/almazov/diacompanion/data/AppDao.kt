@@ -164,4 +164,35 @@ interface AppDao {
 
     @Query("DELETE FROM food_in_meal_table WHERE idMeal LIKE :id")
     suspend fun deleteMealWithFoodsRecord(id: Int?)
+
+    // Recipe
+
+    @Query("SELECT * FROM food_table WHERE recipe LIKE :recipe ORDER BY favourite DESC,name ASC")
+    fun readRecipePaged(recipe: Boolean = true): PagingSource<Int, FoodEntity>
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun addRecord(foodEntity: FoodEntity): Long
+
+    @Update
+    suspend fun updateRecord(foodEntity: FoodEntity)
+
+    @Query("DELETE FROM food_table WHERE idFood LIKE :id")
+    suspend fun deleteRecipeRecord(id: Int?)
+
+    // Food In Recipe
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun addRecord(foodInRecipeEntity: FoodInRecipeEntity)
+
+    /*@Query("""
+        SELECT * FROM food_table 
+        INNER JOIN food_in_recipe_table ON (food_table.idFood = food_in_recipe_table.idRecipe)
+        AND (food_in_recipe_table.idRecipe = :id)
+        INNER JOIN food_table ON (food_table.idFood = food_in_recipe_table.idFood)
+        """)
+    fun getRecipeWithFoods(id: Int?): LiveData<List<RecipeWithFood>>*/
+
+    @Query("DELETE FROM food_in_recipe_table WHERE idRecipe LIKE :id")
+    suspend fun deleteRecipeWithFoodsRecord(id: Int?)
+
 }

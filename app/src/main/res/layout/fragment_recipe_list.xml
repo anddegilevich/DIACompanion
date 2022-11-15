@@ -16,7 +16,7 @@
                 android:layout_weight="0.5"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/RecordsHistory"/>
+                android:text="@string/RecipeList"/>
 
             <ImageButton
                 android:id="@+id/btn_add_recipe"

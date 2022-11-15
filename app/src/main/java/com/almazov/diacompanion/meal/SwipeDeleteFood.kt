@@ -9,10 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 
 
-abstract class SwipeDeleteFood(context: Context): ItemTouchHelper.SimpleCallback(0,
+abstract class SwipeDeleteFood(context: Context, color: Int): ItemTouchHelper.SimpleCallback(0,
     ItemTouchHelper.LEFT) {
 
-    val deleteColor = ContextCompat.getColor(context, R.color.purple_dark)
+    val deleteColor = ContextCompat.getColor(context, color)
     val deleteIcon = R.drawable.delete_icon
 
     override fun onMove(

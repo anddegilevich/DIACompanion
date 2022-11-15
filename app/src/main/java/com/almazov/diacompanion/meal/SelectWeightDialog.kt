@@ -46,7 +46,7 @@ class SelectWeightDialog(context: Context): DialogFragment() {
 
     override fun onGetLayoutInflater(savedInstanceState: Bundle?): LayoutInflater {
         val inflater = super.onGetLayoutInflater(savedInstanceState)
-        val contextThemeWrapper: Context = ContextThemeWrapper(requireContext(), R.style.MealTheme)
+        val contextThemeWrapper: Context = ContextThemeWrapper(requireContext(), requireContext().theme)
         return inflater.cloneInContext(contextThemeWrapper)
     }
 

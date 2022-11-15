@@ -164,7 +164,59 @@
 
     //AddRecipe
     <string name="RecipeName">Recipe Name</string>
+    <string name="RecipeCategory">Recipe Category</string>
     <string name="Ingredients">Ingredients</string>
+    <string-array name="RecipeSpinner">
+        <item>Алкогольные напитки</item>
+        <item>Блюда из картофеля, овощей и грибов</item>
+        <item>Блюда из круп</item>
+        <item>Блюда из мяса и мясных продуктов</item>
+        <item>Блюда из рыбы, морепродуктов и раков</item>
+        <item>Блюда из творога</item>
+        <item>Блюда из яиц</item>
+        <item>Бобовые, орехи, продукты из бобовых</item>
+        <item>Быстрое питание</item>
+        <item>Вспомогательные продукты</item>
+        <item>Вспомогательные продукты</item>
+        <item>Гарниры</item>
+        <item>Готовые завтраки</item>
+        <item>Детское питание</item>
+        <item>Диабетические продукты</item>
+        <item>Жиры и масла</item>
+        <item>Закуски</item>
+        <item>Зелень и овощные продукты</item>
+        <item>Зерно, мука</item>
+        <item>Злаки и макароны</item>
+        <item>Злаки на завтрак</item>
+        <item>Колбасы</item>
+        <item>Кондитерские изделия</item>
+        <item>Конфеты, шоколад</item>
+        <item>Молочные и яичные продукты</item>
+        <item>Молочные продукты</item>
+        <item>Морепродукты</item>
+        <item>Мясо и мясные продукты</item>
+        <item>Напитки</item>
+        <item>Овощи</item>
+        <item>Пища коренных народов</item>
+        <item>Продукты из говядины</item>
+        <item>Продукты из орехов и семян</item>
+        <item>Продукты из птицы</item>
+        <item>Продукты из свинины</item>
+        <item>Продукция из баранины, телятины и дичи</item>
+        <item>Ресторанная еда</item>
+        <item>Рыба и рыбные продукты</item>
+        <item>Сладости</item>
+        <item>Сосиски и мясные блюда</item>
+        <item>Соусы</item>
+        <item>Специи и травы</item>
+        <item>Супы</item>
+        <item>Сыры</item>
+        <item>Фрукты и фруктовые соки</item>
+        <item>Хлебобулочные изделия</item>
+        <item>Холодные блюда (готовые изделия)</item>
+        <item>Ягоды, варенье</item>
+    </string-array>
+
 
 
 </resources>

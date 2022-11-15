@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.food_row.view.*
 import kotlinx.coroutines.DelicateCoroutinesApi
 
 
-class FoodListAdapter() : PagingDataAdapter<FoodEntity, FoodListAdapter.FoodViewHolder>(DIFF_CALLBACK) {
+open class FoodListAdapter() : PagingDataAdapter<FoodEntity, FoodListAdapter.FoodViewHolder>(DIFF_CALLBACK) {
     var context: Context? = null
     val favouriteChanges = mutableListOf<Pair<Int?, Boolean>>()
     private val favouriteChangesIdFood = mutableListOf<Int?>()
@@ -56,6 +56,19 @@ class FoodListAdapter() : PagingDataAdapter<FoodEntity, FoodListAdapter.FoodView
         holder.itemView.tv_fats.text = food?.fat.toString()
         holder.itemView.tv_kkal.text = food?.ec.toString()
         holder.itemView.tv_gi.text = food?.gi.toString()
+        setItemViewClickListener(holder, food)
+
+    }
+/*
+    private fun intToBool(int: Int?): Boolean {
+        return int==1
+    }
+
+    private fun boolToInt(boolean: Boolean): Int {
+        return if (boolean) 1 else 0
+    }*/
+
+    open fun setItemViewClickListener(holder: FoodViewHolder, food: FoodEntity?) {
         holder.itemView.setOnClickListener{ view ->
             view.findNavController().previousBackStackEntry?.savedStateHandle?.set("foodKey", food)
             view.findNavController().popBackStack()
@@ -82,16 +95,7 @@ class FoodListAdapter() : PagingDataAdapter<FoodEntity, FoodListAdapter.FoodView
                 holder.itemView.checkbox_favourite.isChecked))
             favouriteChangesIdFood.add(food?.idFood)
         }
-
     }
-/*
-    private fun intToBool(int: Int?): Boolean {
-        return int==1
-    }
-
-    private fun boolToInt(boolean: Boolean): Int {
-        return if (boolean) 1 else 0
-    }*/
 
 }
 

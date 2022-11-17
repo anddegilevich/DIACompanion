@@ -102,16 +102,20 @@ class MealAddRecord : Fragment() {
         {
             appDatabaseViewModel.getMealWithFoods(args.selectedRecord?.id).observe(viewLifecycleOwner, Observer{record ->
 
-                view.spinner_meal.setSelection(resources.getStringArray(R.array.MealSpinner).indexOf(record[0].meal.type))
-                if (foodList.isNullOrEmpty()) {
-                    for (food in record) {
-                        foodList.add(FoodInMealItem(food.food, food.weight!!))
-                        adapter.notifyItemInserted(foodList.size)
+                if (!record.isNullOrEmpty()) {
+                    view.spinner_meal.setSelection(
+                        resources.getStringArray(R.array.MealSpinner).indexOf(record[0].meal.type)
+                    )
+                    if (foodList.isNullOrEmpty()) {
+                        for (food in record) {
+                            foodList.add(FoodInMealItem(food.food, food.weight!!))
+                            adapter.notifyItemInserted(foodList.size)
+                        }
                     }
-                }
-                if (record[0].meal.sugarLevel != null) {
-                    view.checkbox_sugar_level.isChecked = true
-                    edit_text_sugar_level.setText(record[0].meal.sugarLevel.toString())
+                    if (record[0].meal.sugarLevel != null) {
+                        view.checkbox_sugar_level.isChecked = true
+                        edit_text_sugar_level.setText(record[0].meal.sugarLevel.toString())
+                    }
                 }
 
             })

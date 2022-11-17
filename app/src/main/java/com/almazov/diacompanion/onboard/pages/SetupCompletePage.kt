@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.fragment_home_page.*
 import kotlinx.android.synthetic.main.fragment_setup_complete_page.view.*
 import kotlinx.android.synthetic.main.fragment_setup_page1.view.*
 import kotlinx.android.synthetic.main.fragment_setup_page1.view.btn_back
+import kotlin.math.pow
 
 
 class SetupCompletePage : Fragment() {
@@ -32,7 +33,7 @@ class SetupCompletePage : Fragment() {
         val viewPager = activity?.findViewById<ViewPager2>(R.id.ViewPager)
 
        view.btn_finish.setOnClickListener {
-           OnBoardingFinish()
+           onBoardingFinish()
            Navigation.findNavController(view).navigate(R.id.action_onBoardingViewPager_to_homePage)
        }
 
@@ -43,13 +44,18 @@ class SetupCompletePage : Fragment() {
         return view
     }
 
-    private fun OnBoardingFinish(){
-        val Finished: Boolean = true
+    private fun onBoardingFinish(){
+        val finished = true
+        val height  = 1.72f
+        val weight  = 66.5f
+        val bmi  = weight/height.pow(2)
 
         val sharedPreferences = context?.getSharedPreferences("SharedPreferences", Context.MODE_PRIVATE)
         val editor = sharedPreferences?.edit()
         editor?.apply{
-            putBoolean("ON_BOARDING_FINISHED", Finished)
+            putBoolean("ON_BOARDING_FINISHED", finished)
+            putFloat("HEIGHT",height)
+            putFloat("BMI",bmi)
         }?.apply()
 
     }

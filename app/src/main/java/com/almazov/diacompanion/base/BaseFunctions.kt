@@ -3,6 +3,7 @@ package com.almazov.diacompanion.base
 import android.animation.AnimatorSet
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
+import android.content.res.Resources
 import android.os.Build
 import android.text.Editable
 import android.text.TextWatcher
@@ -14,6 +15,7 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentManager
 import com.almazov.diacompanion.R
+import com.almazov.diacompanion.meal.FoodInMealItem
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
@@ -97,8 +99,8 @@ private fun openDatePicker(fragmentManager: FragmentManager, tvDate: TextView) {
     val myFormat = "dd.MM.yyyy"
     val date = tvDate.text
 
-    val sdf = SimpleDateFormat(myFormat)
-    val curDate = sdf.parse(date as String)
+    val sPV = SimpleDateFormat(myFormat)
+    val curDate = sPV.parse(date as String)
     val timeInMillis = curDate.time
 
     val picker =
@@ -111,7 +113,7 @@ private fun openDatePicker(fragmentManager: FragmentManager, tvDate: TextView) {
     picker.show(fragmentManager, "DATE")
 
     picker.addOnPositiveButtonClickListener {
-        tvDate.text = sdf.format(picker.selection)
+        tvDate.text = sPV.format(picker.selection)
     }
 }
 

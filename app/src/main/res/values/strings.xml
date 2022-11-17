@@ -136,6 +136,10 @@
         <item>Dinner</item>
         <item>Snack</item>
     </string-array>
+    <string name="Breakfast">Breakfast</string>
+    <string name="Lunch">Lunch</string>
+    <string name="Dinner">Dinner</string>
+    <string name="Snack">Snack</string>
     <string name="EnterFoodName">Enter food name</string>
     <string name="EnterFoodWeight">Enter food weight:</string>
 
@@ -217,6 +221,16 @@
         <item>Ягоды, варенье</item>
     </string-array>
 
+    // Prediction strings
 
+    <string name="HighGI" translatable="false">Рекомендуется исключить из рациона или уменьшить количество
+        продуктов с высоким гликемическим индексом (более 55)</string>
+    <string name="ManyCarbs" translatable="false">Рекомендовано уменьшить количество углеводов в приеме пищи</string>
+    <string name="HighBGBefore" translatable="false">Высокий уровень глюкозы до еды.
+        Рекомендовано уменьшить количество углеводов во время перекусов.</string>
+    <string name="LowPV" translatable="false">В последнее время в Вашем рационе было недостаточно
+        пищевых волокон. Добавьте в рацион разрешённые овощи, фрукты, злаковые, отруби
+        (см. обучающие материалы).</string>
+    <string name="BGPredict" translatable="false">Вероятно, уровень глюкозы после еды будет высоким, рекомендована прогулка после приема пищи.</string>
 
 </resources>

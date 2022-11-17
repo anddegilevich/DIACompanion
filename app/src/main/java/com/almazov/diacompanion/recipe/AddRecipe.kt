@@ -245,7 +245,7 @@ class AddRecipe : Fragment() {
             if (food.foodEntity.prot != null) prot += food.foodEntity.prot * food.weight
             if (food.foodEntity.fat != null) fat += food.foodEntity.fat * food.weight
             if (food.foodEntity.ec != null) ec += food.foodEntity.ec * food.weight
-            if (food.foodEntity.gi != null) gi += food.foodEntity.gi * food.weight
+            if (food.foodEntity.gi != null) gi += food.foodEntity.gi * food.foodEntity.carbo!! * food.weight
             if (food.foodEntity.water != null) water += food.foodEntity.water * food.weight
             if (food.foodEntity.nzhk != null) nzhk += food.foodEntity.nzhk * food.weight
             if (food.foodEntity.hol != null) hol += food.foodEntity.hol * food.weight
@@ -302,7 +302,7 @@ class AddRecipe : Fragment() {
         prot = BigDecimal(prot / weightSum).setScale(2, BigDecimal.ROUND_HALF_DOWN).toDouble()
         fat = BigDecimal(fat / weightSum).setScale(2, BigDecimal.ROUND_HALF_DOWN).toDouble()
         ec = BigDecimal(ec / weightSum).setScale(2, BigDecimal.ROUND_HALF_DOWN).toDouble()
-        gi = BigDecimal(gi / weightSum).setScale(2, BigDecimal.ROUND_HALF_DOWN).toDouble()
+        gi = BigDecimal(gi / (carbo * weightSum)).setScale(2, BigDecimal.ROUND_HALF_DOWN).toDouble()
         water = BigDecimal(water / weightSum).setScale(2, BigDecimal.ROUND_HALF_DOWN).toDouble()
         nzhk = BigDecimal(nzhk / weightSum).setScale(2, BigDecimal.ROUND_HALF_DOWN).toDouble()
         hol = BigDecimal(hol / weightSum).setScale(2, BigDecimal.ROUND_HALF_DOWN).toDouble()

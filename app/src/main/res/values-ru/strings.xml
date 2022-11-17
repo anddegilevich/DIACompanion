@@ -182,4 +182,8 @@
         <item>Холодные блюда (готовые изделия)</item>
         <item>Ягоды, варенье</item>
     </string-array>
+    <string name="Breakfast">Завтрак</string>
+    <string name="Lunch">Обед</string>
+    <string name="Dinner">Ужин</string>
+    <string name="Snack">Перекус</string>
 </resources>

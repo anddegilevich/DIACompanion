@@ -87,8 +87,8 @@ class HomePage : Fragment() {
 
     private fun ifOnBoardingFinished(view: View){
         val sharedPreferences = context?.getSharedPreferences("SharedPreferences", Context.MODE_PRIVATE)
-        val Finished: Boolean = sharedPreferences!!.getBoolean("ON_BOARDING_FINISHED", false)
-        if (!Finished) {Navigation.findNavController(view).navigate(R.id.action_homePage_to_onBoardingViewPager)}
+        val finished: Boolean = sharedPreferences!!.getBoolean("ON_BOARDING_FINISHED", false)
+        if (!finished) {Navigation.findNavController(view).navigate(R.id.action_homePage_to_onBoardingViewPager)}
     }
 
     private fun deleteAllRecords(){

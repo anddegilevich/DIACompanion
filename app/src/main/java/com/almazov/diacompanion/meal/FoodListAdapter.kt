@@ -29,7 +29,7 @@ open class FoodListAdapter() : PagingDataAdapter<FoodEntity, FoodListAdapter.Foo
             }
 
             override fun areContentsTheSame(oldItem: FoodEntity, newItem: FoodEntity): Boolean {
-                return oldItem.idFood == newItem.idFood
+                return oldItem == newItem
             }
         }
     }
@@ -50,23 +50,18 @@ open class FoodListAdapter() : PagingDataAdapter<FoodEntity, FoodListAdapter.Foo
     @OptIn(DelicateCoroutinesApi::class)
     override fun onBindViewHolder(holder: FoodViewHolder, position: Int) {
         val food: FoodEntity? = getItem(position)
+        if ((food?.recipe != null) and (food?.recipe == true) ) holder.itemView.image_recipe.visibility = View.VISIBLE
+        else holder.itemView.image_recipe.visibility = View.GONE
         holder.itemView.tv_food_name.text = food?.name
         holder.itemView.tv_carbs.text = food?.carbo.toString()
         holder.itemView.tv_protein.text = food?.prot.toString()
         holder.itemView.tv_fats.text = food?.fat.toString()
         holder.itemView.tv_kkal.text = food?.ec.toString()
         holder.itemView.tv_gi.text = food?.gi.toString()
+
         setItemViewClickListener(holder, food)
 
     }
-/*
-    private fun intToBool(int: Int?): Boolean {
-        return int==1
-    }
-
-    private fun boolToInt(boolean: Boolean): Int {
-        return if (boolean) 1 else 0
-    }*/
 
     open fun setItemViewClickListener(holder: FoodViewHolder, food: FoodEntity?) {
         holder.itemView.setOnClickListener{ view ->

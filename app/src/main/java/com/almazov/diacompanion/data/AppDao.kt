@@ -48,10 +48,10 @@ interface AppDao {
     @Update
     suspend fun updateRecord(sugarLevelEntity: SugarLevelEntity)
 
-    @Query("DELETE FROM sugar_level_table WHERE id LIKE :id")
+    @Query("DELETE FROM sugar_level_table WHERE id = :id")
     suspend fun deleteSugarLevelRecord(id: Int?)
 
-    @Query("SELECT * FROM sugar_level_table WHERE id LIKE :id LIMIT 1")
+    @Query("SELECT * FROM sugar_level_table WHERE id = :id LIMIT 1")
     fun readSugarLevelRecord(id: Int?): LiveData<SugarLevelEntity>
 
     // Insulin
@@ -62,10 +62,10 @@ interface AppDao {
     @Update
     suspend fun updateRecord(insulinEntity: InsulinEntity)
 
-    @Query("DELETE FROM insulin_table WHERE id LIKE :id")
+    @Query("DELETE FROM insulin_table WHERE id = :id")
     suspend fun deleteInsulinRecord(id: Int?)
 
-    @Query("SELECT * FROM insulin_table WHERE id LIKE :id LIMIT 1")
+    @Query("SELECT * FROM insulin_table WHERE id = :id LIMIT 1")
     fun readInsulinRecord(id: Int?): LiveData<InsulinEntity>
 
     // Meal
@@ -76,10 +76,10 @@ interface AppDao {
     @Update
     suspend fun updateRecord(mealEntity: MealEntity)
 
-    @Query("DELETE FROM meal_table WHERE idMeal LIKE :id")
+    @Query("DELETE FROM meal_table WHERE idMeal = :id")
     suspend fun deleteMealRecord(id: Int?)
 
-    @Query("SELECT * FROM meal_table WHERE idMeal LIKE :id LIMIT 1")
+    @Query("SELECT * FROM meal_table WHERE idMeal = :id LIMIT 1")
     fun readMealRecord(id: Int?): LiveData<MealEntity>
 
     // Workout
@@ -90,10 +90,10 @@ interface AppDao {
     @Update
     suspend fun updateRecord(workoutEntity: WorkoutEntity)
 
-    @Query("DELETE FROM workout_table WHERE id LIKE :id")
+    @Query("DELETE FROM workout_table WHERE id = :id")
     suspend fun deleteWorkoutRecord(id: Int?)
 
-    @Query("SELECT * FROM workout_table WHERE id LIKE :id LIMIT 1")
+    @Query("SELECT * FROM workout_table WHERE id = :id LIMIT 1")
     fun readWorkoutRecord(id: Int?): LiveData<WorkoutEntity>
 
     // Sleep
@@ -104,10 +104,10 @@ interface AppDao {
     @Update
     suspend fun updateRecord(sleepEntity: SleepEntity)
 
-    @Query("DELETE FROM sleep_table WHERE id LIKE :id")
+    @Query("DELETE FROM sleep_table WHERE id = :id")
     suspend fun deleteSleepRecord(id: Int?)
 
-    @Query("SELECT * FROM sleep_table WHERE id LIKE :id LIMIT 1")
+    @Query("SELECT * FROM sleep_table WHERE id = :id LIMIT 1")
     fun readSleepRecord(id: Int?): LiveData<SleepEntity>
 
     // Weight
@@ -118,10 +118,10 @@ interface AppDao {
     @Update
     suspend fun updateRecord(weightEntity: WeightEntity)
 
-    @Query("DELETE FROM weight_table WHERE id LIKE :id")
+    @Query("DELETE FROM weight_table WHERE id = :id")
     suspend fun deleteWeightRecord(id: Int?)
 
-    @Query("SELECT * FROM weight_table WHERE id LIKE :id LIMIT 1")
+    @Query("SELECT * FROM weight_table WHERE id = :id LIMIT 1")
     fun readWeightRecord(id: Int?): LiveData<WeightEntity>
 
     // Ketone
@@ -132,16 +132,19 @@ interface AppDao {
     @Update
     suspend fun updateRecord(ketoneEntity: KetoneEntity)
 
-    @Query("DELETE FROM ketone_table WHERE id LIKE :id")
+    @Query("DELETE FROM ketone_table WHERE id = :id")
     suspend fun deleteKetoneRecord(id: Int?)
 
-    @Query("SELECT * FROM ketone_table WHERE id LIKE :id LIMIT 1")
+    @Query("SELECT * FROM ketone_table WHERE id = :id LIMIT 1")
     fun readKetoneRecord(id: Int?): LiveData<KetoneEntity>
 
     // Food
 
-    @Query("SELECT * FROM food_table ORDER BY favourite DESC,name ASC")
+    @Query("SELECT * FROM food_table ORDER BY favourite DESC, recipe DESC, name")
     fun readFoodPaged(): PagingSource<Int, FoodEntity>
+
+    @Query("SELECT * FROM food_table WHERE recipe != :recipe ORDER BY favourite DESC, recipe DESC, name")
+    fun readFoodPagedWithoutRecipes(recipe: Boolean): PagingSource<Int, FoodEntity>
 
     @RawQuery(observedEntities = [FoodEntity::class])
     fun readFoodPagedFilter(query: SupportSQLiteQuery): PagingSource<Int, FoodEntity>
@@ -162,12 +165,15 @@ interface AppDao {
         """)
     fun getMealWithFoods(id: Int?): LiveData<List<MealWithFood>>
 
-    @Query("DELETE FROM food_in_meal_table WHERE idMeal LIKE :id")
+    @Query("DELETE FROM food_in_meal_table WHERE idMeal = :id")
     suspend fun deleteMealWithFoodsRecord(id: Int?)
+
+    @Query("DELETE FROM food_in_meal_table WHERE idFood = :id")
+    suspend fun deleteMealWithRecipesRecord(id: Int?)
 
     // Recipe
 
-    @Query("SELECT * FROM food_table WHERE recipe LIKE :recipe ORDER BY favourite DESC,name ASC")
+    @Query("SELECT * FROM food_table WHERE recipe = :recipe ORDER BY favourite DESC,name ASC")
     fun readRecipePaged(recipe: Boolean = true): PagingSource<Int, FoodEntity>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
@@ -176,7 +182,7 @@ interface AppDao {
     @Update
     suspend fun updateRecord(foodEntity: FoodEntity)
 
-    @Query("DELETE FROM food_table WHERE idFood LIKE :id")
+    @Query("DELETE FROM food_table WHERE idFood = :id")
     suspend fun deleteRecipeRecord(id: Int?)
 
     // Food In Recipe
@@ -184,13 +190,12 @@ interface AppDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addRecord(foodInRecipeEntity: FoodInRecipeEntity)
 
-    /*@Query("""
-        SELECT * FROM food_table 
-        INNER JOIN food_in_recipe_table ON (food_table.idFood = food_in_recipe_table.idRecipe)
-        AND (food_in_recipe_table.idRecipe = :id)
-        INNER JOIN food_table ON (food_table.idFood = food_in_recipe_table.idFood)
-        """)
-    fun getRecipeWithFoods(id: Int?): LiveData<List<RecipeWithFood>>*/
+    @Query("""SELECT * FROM food_table WHERE idFood IN 
+        (SELECT idFood  FROM food_in_recipe_table WHERE (idRecipe = :id))""")
+    fun getFoodsInRecipe(id: Int?): LiveData<List<FoodEntity>>
+
+    @Query("""SELECT weight FROM food_in_recipe_table WHERE (idRecipe = :id)""")
+    fun getWeightsOfFoodsInRecipe(id: Int?): LiveData<List<Double>>
 
     @Query("DELETE FROM food_in_recipe_table WHERE idRecipe LIKE :id")
     suspend fun deleteRecipeWithFoodsRecord(id: Int?)

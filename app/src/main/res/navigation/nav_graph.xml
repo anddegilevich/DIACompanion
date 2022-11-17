@@ -333,7 +333,12 @@
         android:id="@+id/foodList"
         android:name="com.almazov.diacompanion.meal.FoodList"
         android:label="fragment_food_list"
-        tools:layout="@layout/fragment_food_list" />
+        tools:layout="@layout/fragment_food_list" >
+        <argument
+            android:name="recipeBool"
+            app:argType="boolean"
+            android:defaultValue="false" />
+    </fragment>
     <fragment
         android:id="@+id/mealRecordInfo"
         android:name="com.almazov.diacompanion.MealRecordInfo"
@@ -364,5 +369,10 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <argument
+            android:name="recipe"
+            app:argType="com.almazov.diacompanion.data.FoodEntity"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
 </navigation>

@@ -1,5 +1,6 @@
 package com.almazov.diacompanion.recipe
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.text.InputType
 import android.view.LayoutInflater
@@ -8,9 +9,11 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,27 +22,31 @@ import com.almazov.diacompanion.data.AppDatabaseViewModel
 import com.almazov.diacompanion.data.FoodEntity
 import com.almazov.diacompanion.meal.FoodInMealItem
 import com.almazov.diacompanion.meal.FoodInMealListAdapter
-import com.almazov.diacompanion.meal.SelectWeightDialog
 import com.almazov.diacompanion.meal.SwipeDeleteFood
 import kotlinx.android.synthetic.main.fragment_add_recipe.*
 import kotlinx.android.synthetic.main.fragment_add_recipe.view.*
+import kotlinx.android.synthetic.main.fragment_add_recipe.view.btn_add_food
+import kotlinx.android.synthetic.main.fragment_add_recipe.view.btn_save
 import java.math.BigDecimal
 
 class AddRecipe : Fragment() {
 
     private lateinit var appDatabaseViewModel: AppDatabaseViewModel
 
+    private val args by navArgs<AddRecipeArgs>()
     var foodList = mutableListOf<FoodInMealItem>()
     var lastFood: String = ""
     lateinit var adapter: FoodInMealListAdapter
 
     var updateBool: Boolean = false
+    var updateFinished: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        updateBool = args.recipe != null
         val view = inflater.inflate(R.layout.fragment_add_recipe, container, false)
 
         view.edit_text_recipe_name.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
@@ -72,7 +79,35 @@ class AddRecipe : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         view.btn_add_food.setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.action_addRecipe_to_foodList)
+            val action = AddRecipeDirections.actionAddRecipeToFoodList(true)
+            findNavController().navigate(action)
+        }
+
+        if (updateBool and !updateFinished)
+        {
+            view.edit_text_recipe_name.setText(args.recipe?.name)
+            view.spinner_recipe.setSelection(resources.getStringArray(R.array.RecipeSpinner).indexOf(args.recipe?.category))
+
+            appDatabaseViewModel.getRecipeWithFoods(args.recipe?.idFood).observe(viewLifecycleOwner, Observer{ ingredients ->
+
+                appDatabaseViewModel.getWeightsOfFoodsInRecipe(args.recipe?.idFood).observe(viewLifecycleOwner , Observer { weights ->
+
+                    if (foodList.isNullOrEmpty()) {
+                        for (i in ingredients.indices) {
+                            foodList.add(FoodInMealItem(ingredients[i], weights[i]))
+                            adapter.notifyItemInserted(foodList.size)
+                        }
+                    }
+
+                })
+            })
+
+            view.btn_delete.visibility = View.VISIBLE
+            view.btn_delete.setOnClickListener {
+                deleteRecord()
+            }
+
+            updateFinished = true
         }
 
         view.btn_save.setOnClickListener {
@@ -88,8 +123,22 @@ class AddRecipe : Fragment() {
         return view
     }
 
+    private fun deleteRecord() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setPositiveButton(this.resources.getString(R.string.Yes)) {_, _ ->
+            appDatabaseViewModel.deleteRecipeRecord(args.recipe?.idFood)
+            findNavController().popBackStack()
+        }
+        builder.setNegativeButton(this.resources.getString(R.string.No)) {_, _ ->
+        }
+        builder.setTitle(this.resources.getString(R.string.DeleteRecord))
+        builder.setMessage(this.resources.getString(R.string.AreUSureDeleteRecord))
+        builder.create().show()
+    }
+
     private fun updateRecipe() {
-        val recipe = createRecipe()
+        val recipe = createRecipe(args.recipe?.idFood)
+        appDatabaseViewModel.updateRecord(recipe,foodList)
     }
 
     private fun addRecipe() {
@@ -109,7 +158,7 @@ class AddRecipe : Fragment() {
 
                 if (!foodAlreadyInList and !lastFoodBool) {
                     lastFood = it.name!!
-                    val selectWeightDialog = SelectWeightDialog(requireContext())
+                    val selectWeightDialog = SelectWeightRecipe(requireContext())
                     selectWeightDialog.isCancelable = false
                     selectWeightDialog.show(requireFragmentManager(), "weight select dialog")
 
@@ -123,7 +172,7 @@ class AddRecipe : Fragment() {
         super.onViewCreated(view, savedInstanceState)
     }
 
-    private fun createRecipe():FoodEntity {
+    private fun createRecipe(idFood: Int? = null):FoodEntity {
 
         val name = edit_text_recipe_name.text.toString()
         val category = spinner_recipe.selectedItem.toString()
@@ -305,7 +354,7 @@ class AddRecipe : Fragment() {
         op_2ed = BigDecimal(op_2ed / weightSum).setScale(2, BigDecimal.ROUND_HALF_DOWN).toDouble()
         proc_pot = BigDecimal(proc_pot / weightSum).setScale(2, BigDecimal.ROUND_HALF_DOWN).toDouble()
 
-        return FoodEntity(null,name, category, carbo,prot,fat,ec,gi,water,nzhk,hol,pv,zola,
+        return FoodEntity(idFood,name, category, carbo,prot,fat,ec,gi,water,nzhk,hol,pv,zola,
             na,k,ca,mg,p,fe,a,b1,b2,rr,c,re,kar,mds,kr,te,ok,ne,zn,cu,mn,se,b5,b6,fol,b9,dfe,holin,
             b12,ear,a_kar,b_kript,likopin,lut_z,vit_e,vit_d,d_mezd,vit_k,mzhk,pzhk,w_1ed,op_1ed,
             w_2ed,op_2ed,proc_pot.toInt(),additional,favourite,recipe)

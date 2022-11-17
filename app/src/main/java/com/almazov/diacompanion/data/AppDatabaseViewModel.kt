@@ -267,7 +267,7 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
 
     // Food
 
-    fun readFoodPaged(): Flow<PagingData<FoodEntity>> {
+    fun readFoodPaged(recipe: Boolean): Flow<PagingData<FoodEntity>> {
         return Pager(
             PagingConfig(
                 pageSize = 10,
@@ -275,11 +275,11 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
                 maxSize = 200
             )
         ){
-            repository.readFoodPaged
+            repository.readFoodPaged(recipe)
         }.flow
     }
 
-    fun readFoodPagedFilter(filter: String): Flow<PagingData<FoodEntity>> {
+    fun readFoodPagedFilter(filter: String, recipe: Boolean): Flow<PagingData<FoodEntity>> {
         return Pager(
             PagingConfig(
                 pageSize = 10,
@@ -287,7 +287,7 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
                 maxSize = 200
             )
         ){
-            repository.readFoodPagedFilter(filter)
+            repository.readFoodPagedFilter(filter,recipe)
         }.flow
     }
 
@@ -315,15 +315,22 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
         }
     }
 
-    fun updateRecord(foodEntity: FoodEntity) {
+    fun updateRecord(foodEntity: FoodEntity, foodList: MutableList<FoodInMealItem>) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.updateRecord(foodEntity)
+            repository.deleteRecipeWithFoodsRecord(foodEntity.idFood)
+            for (food in foodList) {
+                val foodInRecipeEntity = FoodInRecipeEntity(foodEntity.idFood!!, food.foodEntity.idFood!!,food.weight)
+                repository.addRecord(foodInRecipeEntity)
+            }
         }
     }
 
     fun deleteRecipeRecord(id: Int?){
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteRecipeRecord(id)
+            repository.deleteRecipeWithFoodsRecord(id)
+            repository.deleteMealWithRecipesRecord(id)
         }
     }
 
@@ -341,8 +348,11 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
 
     //Food in Recipe
 
-    /*fun getRecipeWithFoods(id: Int?): LiveData<List<RecipeWithFood>>{
+    fun getRecipeWithFoods(id: Int?): LiveData<List<FoodEntity>> {
         return repository.getRecipeWithFoods(id)
-    }*/
+    }
+    fun getWeightsOfFoodsInRecipe(id: Int?): LiveData<List<Double>> {
+        return repository.getWeightsOfFoodsInRecipe(id)
+    }
 
 }

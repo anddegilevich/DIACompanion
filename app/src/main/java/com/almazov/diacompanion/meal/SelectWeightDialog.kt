@@ -13,7 +13,7 @@ import com.almazov.diacompanion.base.editTextSeekBarSetup
 import kotlinx.android.synthetic.main.fragment_sugar_level_add_record.*
 import kotlinx.android.synthetic.main.select_weight_dialog.view.*
 
-class SelectWeightDialog(context: Context): DialogFragment() {
+open class SelectWeightDialog(context: Context): DialogFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,7 +46,7 @@ class SelectWeightDialog(context: Context): DialogFragment() {
 
     override fun onGetLayoutInflater(savedInstanceState: Bundle?): LayoutInflater {
         val inflater = super.onGetLayoutInflater(savedInstanceState)
-        val contextThemeWrapper: Context = ContextThemeWrapper(requireContext(), requireContext().theme)
+        val contextThemeWrapper: Context = ContextThemeWrapper(requireContext(), R.style.MealTheme)
         return inflater.cloneInContext(contextThemeWrapper)
     }
 

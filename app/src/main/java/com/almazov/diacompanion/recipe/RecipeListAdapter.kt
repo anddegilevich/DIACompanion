@@ -10,7 +10,7 @@ class RecipeListAdapter(): FoodListAdapter() {
 
     override fun setItemViewClickListener(holder: FoodViewHolder, food: FoodEntity?) {
         holder.itemView.setOnClickListener{ view ->
-            val action = RecipeListDirections.actionRecipeListToAddRecipe()
+            val action = RecipeListDirections.actionRecipeListToAddRecipe(food)
             view.findNavController().navigate(action)
         }
 

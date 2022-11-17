@@ -1,8 +1,11 @@
 package com.almazov.diacompanion.data
 
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingSource
 import androidx.sqlite.db.SimpleSQLiteQuery
+import com.almazov.diacompanion.meal.FoodInMealItem
 
 class AppDatabaseRepository(private val appDao: AppDao) {
 
@@ -165,9 +168,18 @@ class AppDatabaseRepository(private val appDao: AppDao) {
 
     // Food
 
-    val readFoodPaged: PagingSource<Int, FoodEntity> = appDao.readFoodPaged()
+    fun readFoodPaged(recipe:Boolean): PagingSource<Int, FoodEntity> {
+        val x = if (recipe)
+        {
+            appDao.readFoodPagedWithoutRecipes(recipe)
+        }
+        else {
+            appDao.readFoodPaged()
+        }
+        return x
+    }
 
-    fun readFoodPagedFilter(filter: String): PagingSource<Int, FoodEntity> {
+    fun readFoodPagedFilter(filter: String, recipe:Boolean): PagingSource<Int, FoodEntity> {
 
         var queryWords = ""
         var firstWord = ""
@@ -187,7 +199,8 @@ class AppDatabaseRepository(private val appDao: AppDao) {
                 else -> queryWords += """ AND name LIKE '%$word%'"""
             }
         }
-        stringQuery += "$queryWords ORDER BY filter, favourite DESC"
+        stringQuery += "$queryWords ORDER BY filter, favourite DESC, recipe DESC"
+        if (recipe) stringQuery ="SELECT * FROM ($stringQuery) WHERE recipe NOT LIKE 1"
         val query = SimpleSQLiteQuery(stringQuery)
         return appDao.readFoodPagedFilter(query)
     }
@@ -208,6 +221,9 @@ class AppDatabaseRepository(private val appDao: AppDao) {
 
     suspend fun deleteMealWithFoodsRecord(id: Int?){
         appDao.deleteMealWithFoodsRecord(id)
+    }
+    suspend fun deleteMealWithRecipesRecord(id: Int?){
+        appDao.deleteMealWithRecipesRecord(id)
     }
 
     // Recipe
@@ -233,9 +249,13 @@ class AppDatabaseRepository(private val appDao: AppDao) {
         appDao.addRecord(foodInRecipeEntity)
     }
 
-    /*fun getRecipeWithFoods(id: Int?): LiveData<List<RecipeWithFood>>{
-        return appDao.getRecipeWithFoods(id)
-    }*/
+    fun getRecipeWithFoods(id: Int?): LiveData<List<FoodEntity>> {
+        return appDao.getFoodsInRecipe(id)
+    }
+
+    fun getWeightsOfFoodsInRecipe(id: Int?): LiveData<List<Double>> {
+        return appDao.getWeightsOfFoodsInRecipe(id)
+    }
 
     suspend fun deleteRecipeWithFoodsRecord(id: Int?){
         appDao.deleteRecipeWithFoodsRecord(id)

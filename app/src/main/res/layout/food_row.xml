@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/food_row_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -82,14 +83,6 @@
 
     </LinearLayout>
 
-    <CheckBox
-        android:id="@+id/checkbox_favourite"
-        android:layout_marginEnd="10dp"
-        android:button="@drawable/favourite_star"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_weight="0"
-        android:layout_gravity="center"/>
     <ImageView
         android:id="@+id/image_recipe"
         android:layout_marginEnd="10dp"
@@ -99,6 +92,15 @@
         android:layout_weight="0"
         android:layout_gravity="center"
         android:visibility="gone"/>
+
+    <CheckBox
+        android:id="@+id/checkbox_favourite"
+        android:layout_marginEnd="10dp"
+        android:button="@drawable/favourite_star"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_weight="0"
+        android:layout_gravity="center"/>
 </LinearLayout>
 
 </androidx.cardview.widget.CardView>

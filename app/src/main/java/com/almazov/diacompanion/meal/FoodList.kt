@@ -11,8 +11,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.almazov.diacompanion.R
+import com.almazov.diacompanion.add_record.MealAddRecordArgs
 import com.almazov.diacompanion.data.AppDatabaseViewModel
 import kotlinx.android.synthetic.main.fragment_food_list.view.*
 import kotlinx.coroutines.GlobalScope
@@ -24,11 +26,17 @@ class FoodList : Fragment() {
     private lateinit var appDatabaseViewModel: AppDatabaseViewModel
     private lateinit var adapter: FoodListAdapter
 
+    private val args by navArgs<FoodListArgs>()
+    private var recipe: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        recipe = args.recipeBool
+
+        if (!recipe) requireContext().setTheme(R.style.MealTheme)
 
         val view = inflater.inflate(R.layout.fragment_food_list, container, false)
         val recyclerView = view.recycler_view_food
@@ -39,14 +47,14 @@ class FoodList : Fragment() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        readFood()
+        readFood(recipe)
 
         view.edit_text_search_food.addTextChangedListener(object : TextWatcher {
 
             override fun afterTextChanged(string: Editable) {
-                if (string.isNullOrBlank()) readFood()
+                if (string.isNullOrBlank()) readFood(recipe)
                 else {
-                    filterFood(string.toString().trim())
+                    filterFood(string.toString().trim(), recipe)
                 }
             }
 
@@ -63,24 +71,19 @@ class FoodList : Fragment() {
         return view
     }
 
-    override fun onGetLayoutInflater(savedInstanceState: Bundle?): LayoutInflater {
-        val inflater = super.onGetLayoutInflater(savedInstanceState)
-        val contextThemeWrapper: Context = ContextThemeWrapper(requireContext(), R.style.MealTheme)
-        return inflater.cloneInContext(contextThemeWrapper)
-    }
 
-    private fun filterFood(filter: String) {
+    private fun filterFood(filter: String, recipe: Boolean) {
         lifecycleScope.launch{
-            appDatabaseViewModel.readFoodPagedFilter(filter).collectLatest {
+            appDatabaseViewModel.readFoodPagedFilter(filter,recipe).collectLatest {
                 view?.recycler_view_food?.smoothScrollToPosition(0)
                 adapter.submitData(it)
             }
         }
     }
 
-    private fun readFood() {
+    private fun readFood(recipe: Boolean) {
         lifecycleScope.launch{
-            appDatabaseViewModel.readFoodPaged().collectLatest {
+            appDatabaseViewModel.readFoodPaged(recipe).collectLatest {
                 view?.recycler_view_food?.smoothScrollToPosition(0)
                 adapter.submitData(it)
             }
@@ -98,7 +101,7 @@ class FoodList : Fragment() {
 
     override fun onDestroy() {
         applyChanges()
-
+        requireContext().setTheme(R.style.Theme_DIACompanion)
         super.onDestroy()
     }
 

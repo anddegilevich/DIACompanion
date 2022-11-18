@@ -303,6 +303,10 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
         return repository.getMealWithFoods(id)
     }
 
+    fun getMealWithFoods6HoursAgo(timeInMilli: Long): LiveData<List<MealWithFood>>{
+        return repository.getMealWithFoods6HoursAgo(timeInMilli)
+    }
+
     // Recipe
 
     fun addRecord(foodEntity: FoodEntity, foodList: MutableList<FoodInMealItem>) {

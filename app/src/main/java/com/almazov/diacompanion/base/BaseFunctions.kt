@@ -97,10 +97,10 @@ fun timeDateSelectSetup(fragmentManager: FragmentManager, tvTime: TextView, tvDa
 private fun openDatePicker(fragmentManager: FragmentManager, tvDate: TextView) {
 
     val myFormat = "dd.MM.yyyy"
-    val date = tvDate.text
+    val date = tvDate.text.toString()
 
     val sPV = SimpleDateFormat(myFormat)
-    val curDate = sPV.parse(date as String)
+    val curDate = sPV.parse(date)
     val timeInMillis = curDate.time
 
     val picker =

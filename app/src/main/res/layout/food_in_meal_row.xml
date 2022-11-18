@@ -13,11 +13,13 @@
         android:orientation="horizontal">
         <TextView
             android:layout_weight="1"
-            style="@style/SmallerText"
+            style="@style/SmallText"
             android:id="@+id/tv_food_in_meal_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            />
 
         <EditText
             style="@style/SmallText"
@@ -26,13 +28,22 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:inputType="numberDecimal"
-            android:lines="1"/>
+            android:lines="1"
+            android:textStyle="bold"
+            />
         <TextView
+            android:id="@+id/tv_weight_units"
             style="@style/SmallText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/g"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:textStyle="bold"/>
+
+        <View
+            android:id="@+id/gi_indexer"
+            android:layout_width="8dp"
+            android:layout_height="match_parent"/>
     </LinearLayout>
 
 

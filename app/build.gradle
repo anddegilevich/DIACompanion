@@ -88,4 +88,5 @@ dependencies {
 
     implementation 'com.github.xabaras:RecyclerViewSwipeDecorator:1.4'
 
+    implementation group: 'biz.k11i', name: 'xgboost-predictor', version: '0.3.0'
 }

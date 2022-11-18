@@ -2,8 +2,16 @@ package com.almazov.diacompanion.base
 
 import android.content.Context
 import android.content.res.Resources
+import biz.k11i.xgboost.Predictor
+import biz.k11i.xgboost.util.FVec
 import com.almazov.diacompanion.R
+import com.almazov.diacompanion.data.MealWithFood
 import com.almazov.diacompanion.meal.FoodInMealItem
+import java.io.File
+import java.io.FileInputStream
+import java.io.IOException
+import java.io.InputStream
+
 
 fun checkGI(listOfFood: List<FoodInMealItem>): Boolean {
     for (food in listOfFood) {
@@ -49,12 +57,23 @@ fun checkPV(listOfFood: List<FoodInMealItem>, sumPVToday: Double, sumPVYesterday
     return false
 }
 
-fun predictSL(BG0: Double, gl: Double, carbs: Double, protein: Double, mealType: String,
-              kr: Double): Double {
-    val breakfast = Resources.getSystem().getString(R.string.Breakfast)
+fun predictSL(
+    context: Context,
+    BG0: Double?,
+    glCarbsKr: List<Double?>,
+    protein: Double?,
+    mealType: String,
+    bmi: Double?
+): Double {
+   /* val breakfast = Resources.getSystem().getString(R.string.Breakfast)
     val lunch = Resources.getSystem().getString(R.string.Lunch)
     val dinner = Resources.getSystem().getString(R.string.Dinner)
-    val snack = Resources.getSystem().getString(R.string.Snack)
+    val snack = Resources.getSystem().getString(R.string.Snack)*/
+
+    val breakfast = "Завтрак"
+    val lunch = "Обед"
+    val dinner = "Ужин"
+    val snack = "Перекус"
 
     var t1 = 0.0
     var t2 = 0.0
@@ -68,32 +87,38 @@ fun predictSL(BG0: Double, gl: Double, carbs: Double, protein: Double, mealType:
         snack -> t4 = 1.0
     }
 
-    /*val sharedPreferences = context?.getSharedPreferences("SharedPreferences", Context.MODE_PRIVATE)
-    val bmi = sharedPreferences!!.getBoolean("BMI")*/
 
-    /*BG0 = уровень сахара до
-    gl = гликемическая нагрузка
-    carbo = углеводы текущий прием пищи
-    prot = протеины за 6 часов до приема пищи без учета текущего
+    val modelPath: InputStream = context.assets.open("predict_model.model")
+    val predictor = Predictor(modelPath)
 
-    1 0 0 0 - завтрак
-    0 1 0 0 - обед
-    0 0 1 0 - ужрин
-    0 0 0 1 - прекус
+    val denseArray = doubleArrayOf(
+        BG0!!, glCarbsKr[0]!!, glCarbsKr[1]!!,
+        protein!!, t1, t2, t3, t4, glCarbsKr[2]!!, bmi!!
+    )
+    val fVecDense: FVec = FVec.Transformer.fromArray(denseArray, false)
 
-    kr - текущий крахмал
-    BMI - индекс массы тела*/
-
-    return 0.0
+    return predictor.predictSingle(fVecDense)
 }
 
-fun getGL(listOfFood: List<FoodInMealItem>): Double {
-    var gl = 0.0
+fun getProtein(listOfFood: List<MealWithFood>): Double {
+    var protein = 0.0
     for (food in listOfFood) {
-        gl += food.foodEntity.gi!! * food.foodEntity.carbo!!
+        protein += food.food.prot!! * food.weight!! / 100
+    }
+    return protein
+}
+
+fun getGLCarbsKr(listOfFood: List<FoodInMealItem>): List<Double> {
+    var gl = 0.0
+    var carbs = 0.0
+    var kr = 0.0
+    for (food in listOfFood) {
+        gl += food.foodEntity.gi!! * food.foodEntity.carbo!! * food.weight / 100
+        carbs += food.foodEntity.carbo * food.weight / 100
+        kr += food.foodEntity.kr!! * food.weight / 100
     }
     gl /= 100
-    return gl
+    return listOf(gl, carbs, kr)
 }
 
 fun getMessage(highGI: Boolean, manyCarbs: Boolean, highBGBefore: Boolean,
@@ -114,3 +139,15 @@ fun getMessage(highGI: Boolean, manyCarbs: Boolean, highBGBefore: Boolean,
         Resources.getSystem().getString(txtInt)
     else ""
 }
+
+@Throws(IOException::class)
+fun getFileFromAssets(context: Context, fileName: String): File = File(context.cacheDir, fileName)
+    .also {
+        if (!it.exists()) {
+            it.outputStream().use { cache ->
+                context.assets.open(fileName).use { inputStream ->
+                    inputStream.copyTo(cache)
+                }
+            }
+        }
+    }

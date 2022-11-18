@@ -165,6 +165,16 @@ interface AppDao {
         """)
     fun getMealWithFoods(id: Int?): LiveData<List<MealWithFood>>
 
+    @Query("""
+        SELECT * FROM meal_table 
+        INNER JOIN food_in_meal_table ON (meal_table.idMeal = food_in_meal_table.idMeal)
+        AND (food_in_meal_table.idMeal = (SELECT id FROM record_table WHERE (category = "meal_table") AND (dateInMilli < :timeInMilli) AND (dateInMilli > :timeInMilli - 21600000)))
+        INNER JOIN food_table ON (food_table.idFood = food_in_meal_table.idFood)
+        """)
+    fun getMealWithFoods6HoursAgo(timeInMilli: Long): LiveData<List<MealWithFood>>
+    /*WHERE idMeal = (SELECT id FROM record_table WHERE (dateInMilli < :timeInMilli) AND (dateInMilli > :timeInMilli - 21600000))
+
+*/
     @Query("DELETE FROM food_in_meal_table WHERE idMeal = :id")
     suspend fun deleteMealWithFoodsRecord(id: Int?)
 

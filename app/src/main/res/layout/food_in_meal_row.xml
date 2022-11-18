@@ -4,7 +4,8 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:clickable="true">
+    android:clickable="true"
+    android:id="@+id/food_in_meal_row">
 
     <LinearLayout
         android:layout_width="match_parent"

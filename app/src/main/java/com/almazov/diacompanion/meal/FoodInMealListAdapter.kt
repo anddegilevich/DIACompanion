@@ -1,5 +1,6 @@
 package com.almazov.diacompanion.meal
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
@@ -28,11 +29,13 @@ class FoodInMealListAdapter(private val foodItemList:MutableList<FoodInMealItem>
         )
     }
 
+
     override fun onBindViewHolder(holder: FoodInMealItemViewHolder, position: Int) {
         var foodItem = foodItemList[position]
         holder.itemView.tv_food_in_meal_name.text = foodItem.foodEntity.name
         val editText = holder.itemView.edit_text_food_in_meal_weight
         editText.setText(foodItem.weight.toString())
+        if (foodItem.foodEntity.gi!! > 55) holder.itemView.food_in_meal_row.setBackgroundResource(R.color.red)
 
         editText.addTextChangedListener(object : TextWatcher {
 
@@ -67,5 +70,5 @@ class FoodInMealListAdapter(private val foodItemList:MutableList<FoodInMealItem>
         return foodItemList.size
     }
 
-    class FoodInMealItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {}
+    class FoodInMealItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
 }

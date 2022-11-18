@@ -84,8 +84,6 @@ fun predictSL(BG0: Double, gl: Double, carbs: Double, protein: Double, mealType:
     kr - текущий крахмал
     BMI - индекс массы тела*/
 
-
-
     return 0.0
 }
 

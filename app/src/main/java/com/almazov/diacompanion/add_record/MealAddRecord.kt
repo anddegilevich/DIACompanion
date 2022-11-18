@@ -48,7 +48,7 @@ class MealAddRecord : Fragment() {
 
     private lateinit var appDatabaseViewModel: AppDatabaseViewModel
     private var dateSubmit: Long? = null
-
+    private var bmi: Double? = 0.0
     private val args by navArgs<MealAddRecordArgs>()
 
     var foodList = mutableListOf<FoodInMealItem>()
@@ -61,6 +61,9 @@ class MealAddRecord : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val sharedPreferences = context?.getSharedPreferences("SharedPreferences", Context.MODE_PRIVATE)
+        bmi = sharedPreferences!!.getFloat("BMI", 1f).toDouble()
+
         updateBool = args.selectedRecord != null
         return inflater.inflate(R.layout.fragment_meal_add_record, container, false)
     }

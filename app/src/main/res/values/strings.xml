@@ -232,5 +232,9 @@
         пищевых волокон. Добавьте в рацион разрешённые овощи, фрукты, злаковые, отруби
         (см. обучающие материалы).</string>
     <string name="BGPredict" translatable="false">Вероятно, уровень глюкозы после еды будет высоким, рекомендована прогулка после приема пищи.</string>
+    <string name="EnterFullData">Enter full data</string>
+    <string name="PredictedSLHigh">Predicted SL is high</string>
+    <string name="PredictedSLLow">Predicted SL is normal</string>
+
 
 </resources>

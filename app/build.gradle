@@ -87,6 +87,6 @@ dependencies {
     testImplementation 'androidx.paging:paging-common:3.1.1'
 
     implementation 'com.github.xabaras:RecyclerViewSwipeDecorator:1.4'
+    implementation group: 'net.jafama', name: 'jafama', version: '2.1.0'
 
-    implementation group: 'biz.k11i', name: 'xgboost-predictor', version: '0.3.0'
 }

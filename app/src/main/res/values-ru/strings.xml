@@ -186,4 +186,7 @@
     <string name="Lunch">Обед</string>
     <string name="Dinner">Ужин</string>
     <string name="Snack">Перекус</string>
+    <string name="PredictedSLHigh">УСК выше нормы</string>
+    <string name="PredictedSLLow">УСК в норме</string>
+    <string name="EnterFullData">Введите все данные</string>
 </resources>

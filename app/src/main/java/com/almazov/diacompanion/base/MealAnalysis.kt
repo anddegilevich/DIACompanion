@@ -2,15 +2,13 @@ package com.almazov.diacompanion.base
 
 import android.content.Context
 import android.content.res.Resources
-import biz.k11i.xgboost.Predictor
-import biz.k11i.xgboost.util.FVec
 import com.almazov.diacompanion.R
 import com.almazov.diacompanion.data.MealWithFood
 import com.almazov.diacompanion.meal.FoodInMealItem
+import com.almazov.diacompanion.model.util.FVec
 import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
-import java.io.InputStream
 
 
 fun checkGI(listOfFood: List<FoodInMealItem>): Boolean {
@@ -57,7 +55,7 @@ fun checkPV(listOfFood: List<FoodInMealItem>, sumPVToday: Double, sumPVYesterday
     return false
 }
 
-fun predictSL(
+suspend fun predictSL(
     context: Context,
     BG0: Double?,
     glCarbsKr: List<Double?>,
@@ -88,8 +86,11 @@ fun predictSL(
     }
 
 
-    val modelPath: InputStream = context.assets.open("predict_model.model")
-    val predictor = Predictor(modelPath)
+    // Load model from a file
+    val MODEL_PATH: String = context.getDatabasePath("model.model").getPath()
+    val predictor = com.almazov.diacompanion.model.Predictor(
+        FileInputStream(MODEL_PATH)
+    )
 
     val denseArray = doubleArrayOf(
         BG0!!, glCarbsKr[0]!!, glCarbsKr[1]!!,

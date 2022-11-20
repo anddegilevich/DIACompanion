@@ -136,6 +136,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
+                <TextView
+                    android:text="@string/EnterFullData"
+                    android:id="@+id/tv_recommendation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/EditText"
+                    android:textAlignment="center"/>
+
             </LinearLayout>
 
             <TextView
@@ -165,7 +173,6 @@
                     android:text="@string/Date"
                     android:freezesText="true"/>
             </LinearLayout>
-
 
         </LinearLayout>
 

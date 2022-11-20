@@ -1,6 +1,5 @@
 package com.almazov.diacompanion.add_record
 
-import android.R.string
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Build
@@ -11,9 +10,10 @@ import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.annotation.RequiresApi
-import androidx.core.widget.addTextChangedListener
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.Observer
@@ -36,7 +36,9 @@ import com.almazov.diacompanion.meal.SelectWeightDialog
 import com.almazov.diacompanion.meal.SwipeDeleteFood
 import kotlinx.android.synthetic.main.fragment_meal_add_record.*
 import kotlinx.android.synthetic.main.fragment_meal_add_record.view.*
-import java.io.InputStream
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import java.io.*
 
 
 class MealAddRecord : Fragment() {
@@ -59,6 +61,25 @@ class MealAddRecord : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        try {
+            val myInput: InputStream = requireContext().assets.open("model.model")
+            val MODEL_PATH: String = requireContext().getDatabasePath("model.model").getPath()
+            val myOutput: OutputStream = FileOutputStream(MODEL_PATH)
+            val buffer = ByteArray(1024)
+            var length: Int
+            while (myInput.read(buffer).also { length = it } > 0) {
+                myOutput.write(buffer, 0, length)
+            }
+            myOutput.flush()
+            myOutput.close()
+            myInput.close()
+        } catch (e: FileNotFoundException) {
+            e.printStackTrace()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+
         val sharedPreferences = context?.getSharedPreferences("SharedPreferences", Context.MODE_PRIVATE)
         bmi = sharedPreferences!!.getFloat("BMI", 20f).toDouble()
 
@@ -72,12 +93,29 @@ class MealAddRecord : Fragment() {
 
         appDatabaseViewModel = ViewModelProvider(this)[AppDatabaseViewModel::class.java]
 
+
         spinner_meal.adapter = ArrayAdapter.createFromResource(requireContext(),
             R.array.MealSpinner,
             R.layout.spinner_item
         )
+        spinner_meal.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parentView: AdapterView<*>?,
+                selectedItemView: View?,
+                position: Int,
+                id: Long
+            ) {
+                if (!foodList.isNullOrEmpty() and checkbox_sugar_level.isChecked
+                    and !edit_text_sugar_level.text.isNullOrEmpty()) updateRecommendation()
+            }
+
+            override fun onNothingSelected(parentView: AdapterView<*>?) {
+
+            }
+        }
 
         dateSubmit = timeDateSelectSetup(childFragmentManager, tv_Time, tv_Date)
+
         val textWatcher = object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
@@ -103,6 +141,8 @@ class MealAddRecord : Fragment() {
                     ItemTouchHelper.LEFT -> {
                         foodList.removeAt(viewHolder.adapterPosition)
                         adapter.notifyItemRemoved(viewHolder.adapterPosition)
+                        if (!foodList.isNullOrEmpty() and checkbox_sugar_level.isChecked
+                            and !edit_text_sugar_level.text.isNullOrEmpty()) updateRecommendation()
                     }
                 }
             }
@@ -136,6 +176,9 @@ class MealAddRecord : Fragment() {
 
             })
 
+            val currentTime = getSelectedTimeInMilli()
+            getProteinDate(currentTime)
+
             tv_title.text = this.resources.getString(R.string.UpdateRecord)
             tv_Time.text = args.selectedRecord?.time
             tv_Date.text = args.selectedRecord?.date
@@ -167,8 +210,9 @@ class MealAddRecord : Fragment() {
                         adapter.notifyItemInserted(foodList.size)
 
                         glCarbsKr = getGLCarbsKr(foodList)
-                        if (checkbox_sugar_level.isChecked) {
-                            /*updateRecommendation()*/
+                        if (checkbox_sugar_level.isChecked and
+                            !edit_text_sugar_level.text.isNullOrEmpty()) {
+                            updateRecommendation()
                         }
                     }
                 }
@@ -200,13 +244,13 @@ class MealAddRecord : Fragment() {
 
         checkbox_sugar_level.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                slideView(sugar_level_layout,0,200)
+                slideView(sugar_level_layout,0,340)
             } else {
-                slideView(sugar_level_layout,200,0)
+                slideView(sugar_level_layout,340,0)
             }
         }
         editTextSeekBarSetup(1, 20, edit_text_sugar_level, seek_bar_sugar_level )
-        edit_text_sugar_level.addTextChangedListener { object : TextWatcher {
+        edit_text_sugar_level.addTextChangedListener (object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
 
@@ -214,18 +258,20 @@ class MealAddRecord : Fragment() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-//                updateRecommendation()
+                if (!foodList.isNullOrEmpty() and !s.isNullOrEmpty()) {
+                    updateRecommendation()
+                }
             }
-        } }
+        })
     }
 
     private fun getProteinDate(time: Long) {
         appDatabaseViewModel.getMealWithFoods6HoursAgo(time).observe(viewLifecycleOwner, Observer{record ->
 
-            if (!record.isNullOrEmpty() and !foodList.isNullOrEmpty()) {
                 protein = getProtein(record)
-                updateRecommendation()
-            }
+                if (checkbox_sugar_level.isChecked
+                    and !edit_text_sugar_level.text.isNullOrEmpty()
+                    and !foodList.isNullOrEmpty()) updateRecommendation()
         })
     }
 
@@ -287,11 +333,30 @@ class MealAddRecord : Fragment() {
         appDatabaseViewModel.updateRecord(recordEntity,mealEntity,foodList)
     }
 
-    fun updateRecommendation() {
-        val predict = predictSL(requireContext(),edit_text_sugar_level.text.toString().toDouble(),
-            glCarbsKr, protein, spinner_meal.selectedItem.toString(), bmi)
-        tv_title.text = predict.toString()
+    private fun updateRecommendation() {
 
+        GlobalScope.launch {
+
+            val predict = predictSL(requireContext(),edit_text_sugar_level.text.toString().toDouble(),
+                glCarbsKr, protein, spinner_meal.selectedItem.toString(), bmi)
+            if (tv_recommendation != null) {
+                if (predict > 6.8) {
+                    tv_recommendation.setTextColor(ContextCompat.getColor(requireContext(),R.color.red))
+                    tv_recommendation.text = "УСК выше нормы"
+                }
+                else {
+                    tv_recommendation.setTextColor(ContextCompat.getColor(requireContext(),R.color.green))
+                    tv_recommendation.text = predict.toString()
+                }
+            }
+
+        }
+    }
+
+    fun  getSelectedTimeInMilli(): Long {
+        val time = tv_Time.text.toString()
+        val date = tv_Date.text.toString()
+        return convertDateToMils("$time $date")
     }
 
     override fun onGetLayoutInflater(savedInstanceState: Bundle?): LayoutInflater {

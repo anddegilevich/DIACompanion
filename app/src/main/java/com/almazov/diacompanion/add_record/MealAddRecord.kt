@@ -48,7 +48,7 @@ class MealAddRecord : Fragment() {
     private val args by navArgs<MealAddRecordArgs>()
 
     var foodList = mutableListOf<FoodInMealItem>()
-    var lastFood: String = ""
+    var lastFood: Int = 0
     lateinit var adapter: FoodInMealListAdapter
     var updateBool: Boolean = false
     var updateFinished: Boolean = false
@@ -61,24 +61,6 @@ class MealAddRecord : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        try {
-            val myInput: InputStream = requireContext().assets.open("model.model")
-            val MODEL_PATH: String = requireContext().getDatabasePath("model.model").getPath()
-            val myOutput: OutputStream = FileOutputStream(MODEL_PATH)
-            val buffer = ByteArray(1024)
-            var length: Int
-            while (myInput.read(buffer).also { length = it } > 0) {
-                myOutput.write(buffer, 0, length)
-            }
-            myOutput.flush()
-            myOutput.close()
-            myInput.close()
-        } catch (e: FileNotFoundException) {
-            e.printStackTrace()
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
 
         val sharedPreferences = context?.getSharedPreferences("SharedPreferences", Context.MODE_PRIVATE)
         bmi = sharedPreferences!!.getFloat("BMI", 20f).toDouble()
@@ -141,8 +123,14 @@ class MealAddRecord : Fragment() {
                     ItemTouchHelper.LEFT -> {
                         foodList.removeAt(viewHolder.adapterPosition)
                         adapter.notifyItemRemoved(viewHolder.adapterPosition)
-                        if (!foodList.isNullOrEmpty() and checkbox_sugar_level.isChecked
-                            and !edit_text_sugar_level.text.isNullOrEmpty()) updateRecommendation()
+                        if (foodList.isNullOrEmpty()) {
+
+                        } else
+                        if (checkbox_sugar_level.isChecked
+                            and !edit_text_sugar_level.text.isNullOrEmpty()) {
+                            glCarbsKr = getGLCarbsKr(foodList)
+                            updateRecommendation()
+                        }
                     }
                 }
             }
@@ -154,70 +142,37 @@ class MealAddRecord : Fragment() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        if (updateBool and !updateFinished)
-        {
-            appDatabaseViewModel.getMealWithFoods(args.selectedRecord?.id).observe(viewLifecycleOwner, Observer{record ->
-
-                if (!record.isNullOrEmpty()) {
-                    view.spinner_meal.setSelection(
-                        resources.getStringArray(R.array.MealSpinner).indexOf(record[0].meal.type)
-                    )
-                    if (foodList.isNullOrEmpty()) {
-                        for (food in record) {
-                            foodList.add(FoodInMealItem(food.food, food.weight!!))
-                            adapter.notifyItemInserted(foodList.size)
-                        }
-                    }
-                    if (record[0].meal.sugarLevel != null) {
-                        view.checkbox_sugar_level.isChecked = true
-                        edit_text_sugar_level.setText(record[0].meal.sugarLevel.toString())
-                    }
-                }
-
-            })
-
-            val currentTime = getSelectedTimeInMilli()
-            getProteinDate(currentTime)
-
-            tv_title.text = this.resources.getString(R.string.UpdateRecord)
-            tv_Time.text = args.selectedRecord?.time
-            tv_Date.text = args.selectedRecord?.date
-            btn_delete.visibility = View.VISIBLE
-            btn_delete.setOnClickListener {
-                deleteRecord()
-            }
-            updateFinished = true
-        }
-
         Navigation.findNavController(view).currentBackStackEntry?.savedStateHandle
             ?.getLiveData<FoodEntity>("foodKey")?.observe(viewLifecycleOwner) {
 
-                var foodAlreadyInList = false
-                for (food in foodList) {
-                    if (it.name == food.foodEntity.name) foodAlreadyInList = true
-                }
-                val lastFoodBool = lastFood == it.name
+                if (it != null) {
 
-                if (!foodAlreadyInList and !lastFoodBool) {
-                    lastFood = it.name!!
-                    val selectWeightDialog = SelectWeightDialog(requireContext())
-                    selectWeightDialog.isCancelable = false
-                    selectWeightDialog.show(requireFragmentManager(), "weight select dialog")
+                    var foodAlreadyInList = false
+                    for (food in foodList) {
+                        if (it.name == food.foodEntity.name) foodAlreadyInList = true
+                    }
 
-                    setFragmentResultListener("requestKey") { key, bundle ->
-                        val result = bundle.getString("resultKey")
-                        foodList.add(FoodInMealItem(it, result!!.toDouble()))
-                        adapter.notifyItemInserted(foodList.size)
+                    if (!foodAlreadyInList) {
+                        lastFood = it.idFood!!
+                        val selectWeightDialog = SelectWeightDialog(requireContext())
+                        selectWeightDialog.isCancelable = false
+                        selectWeightDialog.show(requireFragmentManager(), "weight select dialog")
 
-                        glCarbsKr = getGLCarbsKr(foodList)
-                        if (checkbox_sugar_level.isChecked and
-                            !edit_text_sugar_level.text.isNullOrEmpty()) {
-                            updateRecommendation()
+                        setFragmentResultListener("requestKey") { _, bundle ->
+                            val result = bundle.getString("resultKey")
+                            foodList.add(FoodInMealItem(it, result!!.toDouble()))
+                            adapter.notifyItemInserted(foodList.size)
+
+                            glCarbsKr = getGLCarbsKr(foodList)
+                            if (checkbox_sugar_level.isChecked and
+                                !edit_text_sugar_level.text.isNullOrEmpty()
+                            ) {
+                                updateRecommendation()
+                            }
                         }
                     }
                 }
             }
-
         btn_add_food.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_mealAddRecord_to_foodList)
         }
@@ -263,6 +218,42 @@ class MealAddRecord : Fragment() {
                 }
             }
         })
+
+        if (updateBool and !updateFinished)
+        {
+            appDatabaseViewModel.getMealWithFoods(args.selectedRecord?.id).observe(viewLifecycleOwner, Observer{record ->
+
+                if (!record.isNullOrEmpty()) {
+                    view.spinner_meal.setSelection(
+                        resources.getStringArray(R.array.MealSpinner).indexOf(record[0].meal.type)
+                    )
+                    if (foodList.isNullOrEmpty()) {
+                        for (food in record) {
+                            foodList.add(FoodInMealItem(food.food, food.weight!!))
+                            adapter.notifyItemInserted(foodList.size)
+                        }
+                        glCarbsKr = getGLCarbsKr(foodList)
+                    }
+                    if (record[0].meal.sugarLevel != null) {
+                        view.checkbox_sugar_level.isChecked = true
+                        edit_text_sugar_level.setText(record[0].meal.sugarLevel.toString())
+                    }
+                }
+
+            })
+
+            val currentTime = getSelectedTimeInMilli()
+            getProteinDate(currentTime)
+
+            tv_title.text = this.resources.getString(R.string.UpdateRecord)
+            tv_Time.text = args.selectedRecord?.time
+            tv_Date.text = args.selectedRecord?.date
+            btn_delete.visibility = View.VISIBLE
+            btn_delete.setOnClickListener {
+                deleteRecord()
+            }
+            updateFinished = true
+        }
     }
 
     private fun getProteinDate(time: Long) {
@@ -342,11 +333,11 @@ class MealAddRecord : Fragment() {
             if (tv_recommendation != null) {
                 if (predict > 6.8) {
                     tv_recommendation.setTextColor(ContextCompat.getColor(requireContext(),R.color.red))
-                    tv_recommendation.text = "УСК выше нормы"
+                    tv_recommendation.setText(R.string.PredictedSLHigh)
                 }
                 else {
                     tv_recommendation.setTextColor(ContextCompat.getColor(requireContext(),R.color.green))
-                    tv_recommendation.text = predict.toString()
+                    tv_recommendation.setText(R.string.PredictedSLLow)
                 }
             }
 

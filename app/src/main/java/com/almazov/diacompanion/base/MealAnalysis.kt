@@ -6,6 +6,7 @@ import com.almazov.diacompanion.R
 import com.almazov.diacompanion.data.MealWithFood
 import com.almazov.diacompanion.meal.FoodInMealItem
 import com.almazov.diacompanion.model.util.FVec
+import kotlinx.android.synthetic.main.fragment_meal_add_record.*
 import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
@@ -85,11 +86,9 @@ suspend fun predictSL(
         snack -> t4 = 1.0
     }
 
-
-    // Load model from a file
-    val MODEL_PATH: String = context.getDatabasePath("model.model").getPath()
+    val modelPath: String = context.getDatabasePath("model.model").getPath()
     val predictor = com.almazov.diacompanion.model.Predictor(
-        FileInputStream(MODEL_PATH)
+        FileInputStream(modelPath)
     )
 
     val denseArray = doubleArrayOf(
@@ -112,14 +111,17 @@ fun getProtein(listOfFood: List<MealWithFood>): Double {
 fun getGLCarbsKr(listOfFood: List<FoodInMealItem>): List<Double> {
     var gl = 0.0
     var carbs = 0.0
-    var kr = 0.0
+    var krs = 0.0
     for (food in listOfFood) {
-        gl += food.foodEntity.gi!! * food.foodEntity.carbo!! * food.weight / 100
-        carbs += food.foodEntity.carbo * food.weight / 100
-        kr += food.foodEntity.kr!! * food.weight / 100
+        val gi = food.foodEntity.gi ?: 0.0
+        val carb = food.foodEntity.carbo ?: 0.0
+        val kr = food.foodEntity.kr ?: 0.0
+        gl += gi * carb * food.weight / 100
+        carbs += carb * food.weight / 100
+        krs += kr * food.weight / 100
     }
     gl /= 100
-    return listOf(gl, carbs, kr)
+    return listOf(gl, carbs, krs)
 }
 
 fun getMessage(highGI: Boolean, manyCarbs: Boolean, highBGBefore: Boolean,

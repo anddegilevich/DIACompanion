@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.fragment_home_page.*
 import kotlinx.android.synthetic.main.fragment_setup_complete_page.view.*
 import kotlinx.android.synthetic.main.fragment_setup_page1.view.*
 import kotlinx.android.synthetic.main.fragment_setup_page1.view.btn_back
+import java.io.*
 import kotlin.math.pow
 
 
@@ -45,9 +46,28 @@ class SetupCompletePage : Fragment() {
     }
 
     private fun onBoardingFinish(){
+
+        try {
+            val myInput: InputStream = requireContext().assets.open("model.model")
+            val modelPath: String = requireContext().getDatabasePath("model.model").path
+            val myOutput: OutputStream = FileOutputStream(modelPath)
+            val buffer = ByteArray(1024)
+            var length: Int
+            while (myInput.read(buffer).also { length = it } > 0) {
+                myOutput.write(buffer, 0, length)
+            }
+            myOutput.flush()
+            myOutput.close()
+            myInput.close()
+        } catch (e: FileNotFoundException) {
+            e.printStackTrace()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+
         val finished = true
-        val height  = 1.72f
-        val weight  = 66.5f
+        val height  = 1.81f
+        val weight  = 65f
         val bmi  = weight/height.pow(2)
 
         val sharedPreferences = context?.getSharedPreferences("SharedPreferences", Context.MODE_PRIVATE)

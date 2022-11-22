@@ -61,7 +61,7 @@ suspend fun predictSL(
     BG0: Double?,
     glCarbsKr: List<Double?>,
     protein: Double?,
-    mealType: String,
+    mealType: String?,
     bmi: Double?
 ): Double {
    /* val breakfast = Resources.getSystem().getString(R.string.Breakfast)
@@ -86,7 +86,7 @@ suspend fun predictSL(
         snack -> t4 = 1.0
     }
 
-    val modelPath: String = context.getDatabasePath("model.model").getPath()
+    val modelPath: String = context.getDatabasePath("model.model").path
     val predictor = com.almazov.diacompanion.model.Predictor(
         FileInputStream(modelPath)
     )

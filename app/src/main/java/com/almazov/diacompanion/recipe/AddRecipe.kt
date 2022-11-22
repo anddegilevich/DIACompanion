@@ -35,7 +35,6 @@ class AddRecipe : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
 
     private val args by navArgs<AddRecipeArgs>()
     var foodList = mutableListOf<FoodInMealItem>()
-    var lastFood: String = ""
     lateinit var adapter: FoodInMealListAdapter
 
     var updateBool: Boolean = false
@@ -150,22 +149,22 @@ class AddRecipe : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
         Navigation.findNavController(view).currentBackStackEntry?.savedStateHandle
             ?.getLiveData<FoodEntity>("foodKey")?.observe(viewLifecycleOwner) {
 
-                var foodAlreadyInList = false
-                for (food in foodList) {
-                    if (it.name == food.foodEntity.name) foodAlreadyInList = true
-                }
-                val lastFoodBool = lastFood == it.name
+                if (it != null) {
+                    var foodAlreadyInList = false
+                    for (food in foodList) {
+                        if (it.name == food.foodEntity.name) foodAlreadyInList = true
+                    }
 
-                if (!foodAlreadyInList and !lastFoodBool) {
-                    lastFood = it.name!!
-                    val selectWeightDialog = SelectWeightRecipe(requireContext())
-                    selectWeightDialog.isCancelable = false
-                    selectWeightDialog.show(requireFragmentManager(), "weight select dialog")
+                    if (!foodAlreadyInList) {
+                        val selectWeightDialog = SelectWeightRecipe(requireContext())
+                        selectWeightDialog.isCancelable = false
+                        selectWeightDialog.show(requireFragmentManager(), "weight select dialog")
 
-                    setFragmentResultListener("requestKey") { key, bundle ->
-                        val result = bundle.getString("resultKey")
-                        foodList.add(FoodInMealItem(it, result!!.toDouble()))
-                        adapter.notifyItemInserted(foodList.size)
+                        setFragmentResultListener("requestKey") { key, bundle ->
+                            val result = bundle.getString("resultKey")
+                            foodList.add(FoodInMealItem(it, result!!.toDouble()))
+                            adapter.notifyItemInserted(foodList.size)
+                        }
                     }
                 }
             }

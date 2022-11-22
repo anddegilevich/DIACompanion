@@ -172,6 +172,7 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
                 }
             }
         btn_add_food.setOnClickListener {
+            if (vf_recommendation.height != 0) slideView(vf_recommendation,160, 0)
             Navigation.findNavController(view).navigate(R.id.action_mealAddRecord_to_foodList)
         }
 
@@ -213,6 +214,7 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
             }
 
             override fun afterTextChanged(s: Editable?) {
+                if ((s.isNullOrEmpty()) and (vf_recommendation.height != 0)) slideView(vf_recommendation,160,0)
                 if (!foodList.isNullOrEmpty() and !s.isNullOrEmpty()) {
                     updateRecommendation()
                 }
@@ -331,18 +333,23 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
             val result = GlobalScope.async(Dispatchers.Default) {
             getRecommendation()
         }
-        vf_recommendation.displayedChild = result.await()
+        if (vf_recommendation != null) vf_recommendation.displayedChild = result.await()
     }
 
     }
     private suspend fun getRecommendation(): Int {
-        val predict = predictSL(requireContext(),edit_text_sugar_level.text.toString().toDouble(),
-            glCarbsKr, protein, spinner_meal.selectedItem.toString(), bmi)
-        val result = if (predict > 6.8) {
-            2
+        return if ((edit_text_sugar_level != null) and (spinner_meal != null)) {
+            val predict = predictSL(
+                requireContext(), edit_text_sugar_level.text.toString().toDouble(),
+                glCarbsKr, protein, spinner_meal.selectedItem.toString(), bmi
+            )
+            val result = if (predict > 6.8) {
+                2
+            } else
+                1
+            result
         } else
-            1
-        return result
+            0
     }
 
     private fun  getSelectedTimeInMilli(): Long {

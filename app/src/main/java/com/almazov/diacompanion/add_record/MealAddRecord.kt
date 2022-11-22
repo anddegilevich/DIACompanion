@@ -30,18 +30,17 @@ import com.almazov.diacompanion.data.AppDatabaseViewModel
 import com.almazov.diacompanion.data.FoodEntity
 import com.almazov.diacompanion.data.MealEntity
 import com.almazov.diacompanion.data.RecordEntity
-import com.almazov.diacompanion.meal.FoodInMealItem
-import com.almazov.diacompanion.meal.FoodInMealListAdapter
-import com.almazov.diacompanion.meal.SelectWeightDialog
-import com.almazov.diacompanion.meal.SwipeDeleteFood
+import com.almazov.diacompanion.meal.*
 import kotlinx.android.synthetic.main.fragment_meal_add_record.*
 import kotlinx.android.synthetic.main.fragment_meal_add_record.view.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.io.*
 
 
-class MealAddRecord : Fragment() {
+class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
 
     private lateinit var appDatabaseViewModel: AppDatabaseViewModel
     private var dateSubmit: Long? = null
@@ -56,6 +55,8 @@ class MealAddRecord : Fragment() {
     private var bmi: Double? = null
     private var protein: Double? = null
     private var glCarbsKr: List<Double?> = emptyList()
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -74,7 +75,6 @@ class MealAddRecord : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         appDatabaseViewModel = ViewModelProvider(this)[AppDatabaseViewModel::class.java]
-
 
         spinner_meal.adapter = ArrayAdapter.createFromResource(requireContext(),
             R.array.MealSpinner,
@@ -115,7 +115,7 @@ class MealAddRecord : Fragment() {
         tv_Time.addTextChangedListener(textWatcher)
         tv_Date.addTextChangedListener(textWatcher)
         val recyclerView = view.recycler_view_food_in_meal
-        adapter = FoodInMealListAdapter(foodList)
+        adapter = FoodInMealListAdapter(foodList, this)
 
         val swipeDeleteFood = object : SwipeDeleteFood(requireContext(), R.color.purple_dark) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
@@ -124,8 +124,7 @@ class MealAddRecord : Fragment() {
                         foodList.removeAt(viewHolder.adapterPosition)
                         adapter.notifyItemRemoved(viewHolder.adapterPosition)
                         if (foodList.isNullOrEmpty()) {
-
-                        } else
+                            slideView(vf_recommendation,160, 0)} else
                         if (checkbox_sugar_level.isChecked
                             and !edit_text_sugar_level.text.isNullOrEmpty()) {
                             glCarbsKr = getGLCarbsKr(foodList)
@@ -162,7 +161,6 @@ class MealAddRecord : Fragment() {
                             val result = bundle.getString("resultKey")
                             foodList.add(FoodInMealItem(it, result!!.toDouble()))
                             adapter.notifyItemInserted(foodList.size)
-
                             glCarbsKr = getGLCarbsKr(foodList)
                             if (checkbox_sugar_level.isChecked and
                                 !edit_text_sugar_level.text.isNullOrEmpty()
@@ -199,9 +197,11 @@ class MealAddRecord : Fragment() {
 
         checkbox_sugar_level.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                slideView(sugar_level_layout,0,340)
+                slideView(sugar_level_layout,0,200)
+                if (!foodList.isNullOrEmpty() and !edit_text_sugar_level.text.isNullOrEmpty()) updateRecommendation()
             } else {
-                slideView(sugar_level_layout,340,0)
+                slideView(vf_recommendation,160,0)
+                slideView(sugar_level_layout,200,0)
             }
         }
         editTextSeekBarSetup(1, 20, edit_text_sugar_level, seek_bar_sugar_level )
@@ -325,26 +325,27 @@ class MealAddRecord : Fragment() {
     }
 
     private fun updateRecommendation() {
-
-        GlobalScope.launch {
-
-            val predict = predictSL(requireContext(),edit_text_sugar_level.text.toString().toDouble(),
-                glCarbsKr, protein, spinner_meal.selectedItem.toString(), bmi)
-            if (tv_recommendation != null) {
-                if (predict > 6.8) {
-                    tv_recommendation.setTextColor(ContextCompat.getColor(requireContext(),R.color.red))
-                    tv_recommendation.setText(R.string.PredictedSLHigh)
-                }
-                else {
-                    tv_recommendation.setTextColor(ContextCompat.getColor(requireContext(),R.color.green))
-                    tv_recommendation.setText(R.string.PredictedSLLow)
-                }
-            }
-
+        vf_recommendation.displayedChild = 0
+        if (vf_recommendation.height == 0) slideView(vf_recommendation,0, 160)
+        GlobalScope.launch(Dispatchers.Main) {
+            val result = GlobalScope.async(Dispatchers.Default) {
+            getRecommendation()
         }
+        vf_recommendation.displayedChild = result.await()
     }
 
-    fun  getSelectedTimeInMilli(): Long {
+    }
+    private suspend fun getRecommendation(): Int {
+        val predict = predictSL(requireContext(),edit_text_sugar_level.text.toString().toDouble(),
+            glCarbsKr, protein, spinner_meal.selectedItem.toString(), bmi)
+        val result = if (predict > 6.8) {
+            2
+        } else
+            1
+        return result
+    }
+
+    private fun  getSelectedTimeInMilli(): Long {
         val time = tv_Time.text.toString()
         val date = tv_Date.text.toString()
         return convertDateToMils("$time $date")
@@ -354,5 +355,15 @@ class MealAddRecord : Fragment() {
         val inflater = super.onGetLayoutInflater(savedInstanceState)
         val contextThemeWrapper: Context = ContextThemeWrapper(requireContext(), R.style.MealTheme)
         return inflater.cloneInContext(contextThemeWrapper)
+    }
+
+    override fun updateRecommendationWeight(position: Int, weight: Double) {
+        foodList[position].weight = weight
+        glCarbsKr = getGLCarbsKr(foodList)
+        if (checkbox_sugar_level.isChecked and
+            !edit_text_sugar_level.text.isNullOrEmpty()
+        ) {
+            updateRecommendation()
+        }
     }
 }

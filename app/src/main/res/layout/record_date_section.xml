@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textAlignment="center"
-            style="@style/SecondaryText"
+            style="@style/SmallText"
             android:textStyle="bold" />
 
         <com.google.android.material.divider.MaterialDivider

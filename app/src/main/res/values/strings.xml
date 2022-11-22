@@ -1,7 +1,7 @@
 <resources>
 
     //Global
-    <string name="app_name" translatable="false">DIACompanion</string>
+    <string name="app_name" translatable="false">DIA Companion</string>
     <string name="Next">Next</string>
     <string name="Back">Back</string>
     <string name="LogIn">Log in</string>

@@ -1,6 +1,5 @@
 package com.almazov.diacompanion.meal
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,21 +11,22 @@ import androidx.recyclerview.widget.RecyclerView
 import com.almazov.diacompanion.R
 import kotlinx.android.synthetic.main.food_in_meal_row.view.*
 
-class FoodInMealListAdapter(private val foodItemList:MutableList<FoodInMealItem>)
+class FoodInMealListAdapter(private val foodItemList:MutableList<FoodInMealItem>, private val mListener: InterfaceFoodInMeal)
     : RecyclerView.Adapter<FoodInMealListAdapter.FoodInMealItemViewHolder>() {
+
 
     var context: Context? = null
     val minWeight = 0
     val maxWeight = 500
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FoodInMealItemViewHolder {
-        context=parent.context;
+        context=parent.context
 
         return FoodInMealItemViewHolder(
             LayoutInflater.from(context).inflate(
                 R.layout.food_in_meal_row,
                 parent, false
-            )
+            ), mListener
         )
     }
 
@@ -60,7 +60,6 @@ class FoodInMealListAdapter(private val foodItemList:MutableList<FoodInMealItem>
                 }
             }
         }*/
-
         editText.addTextChangedListener(object : TextWatcher {
 
             override fun onTextChanged(string: CharSequence, start: Int,
@@ -75,7 +74,7 @@ class FoodInMealListAdapter(private val foodItemList:MutableList<FoodInMealItem>
                         editText.setText(minWeight.toString())
                         editText.setSelection(editText.length())
                     }
-                    foodItem.weight = editText.text.toString().toDouble()
+                    holder.mListener.updateRecommendationWeight(position,editText.text.toString().toDouble())
                 }
             }
 
@@ -94,5 +93,9 @@ class FoodInMealListAdapter(private val foodItemList:MutableList<FoodInMealItem>
         return foodItemList.size
     }
 
-    class FoodInMealItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
+    class FoodInMealItemViewHolder(itemView: View, val mListener: InterfaceFoodInMeal): RecyclerView.ViewHolder(itemView)
+
+    interface InterfaceFoodInMeal{
+        fun updateRecommendationWeight(position: Int, weight: Double)
+    }
 }

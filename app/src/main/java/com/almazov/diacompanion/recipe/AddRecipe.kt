@@ -29,7 +29,7 @@ import kotlinx.android.synthetic.main.fragment_add_recipe.view.btn_add_food
 import kotlinx.android.synthetic.main.fragment_add_recipe.view.btn_save
 import java.math.BigDecimal
 
-class AddRecipe : Fragment() {
+class AddRecipe : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
 
     private lateinit var appDatabaseViewModel: AppDatabaseViewModel
 
@@ -59,7 +59,7 @@ class AddRecipe : Fragment() {
         )
 
         val recyclerView = view.recycler_view_food_in_recipe
-        adapter = FoodInMealListAdapter(foodList)
+        adapter = FoodInMealListAdapter(foodList, this)
 
         val swipeDeleteFood = object : SwipeDeleteFood(requireContext(),R.color.red_dark) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
@@ -358,6 +358,10 @@ class AddRecipe : Fragment() {
             na,k,ca,mg,p,fe,a,b1,b2,rr,c,re,kar,mds,kr,te,ok,ne,zn,cu,mn,se,b5,b6,fol,b9,dfe,holin,
             b12,ear,a_kar,b_kript,likopin,lut_z,vit_e,vit_d,d_mezd,vit_k,mzhk,pzhk,w_1ed,op_1ed,
             w_2ed,op_2ed,proc_pot.toInt(),additional,favourite,recipe)
+    }
+
+    override fun updateRecommendationWeight(position: Int, toDouble: Double) {
+
     }
 
 }

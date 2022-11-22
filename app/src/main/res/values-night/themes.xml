@@ -26,6 +26,37 @@
         <item name="link_text_color">@color/blue</item>
     </style>
 
+    <style name="InsulinTheme" parent="Theme.DIACompanion">
+        <item name="category_color">@color/blue</item>
+        <item name="category_color_dark">@color/blue_dark</item>
+
+    </style>
+
+    <style name="MealTheme" parent="Theme.DIACompanion">
+        <item name="category_color">@color/purple</item>
+        <item name="category_color_dark">@color/purple_dark</item>
+    </style>
+
+    <style name="WorkoutTheme" parent="Theme.DIACompanion">
+        <item name="category_color">@color/green</item>
+        <item name="category_color_dark">@color/green_dark</item>
+    </style>
+
+    <style name="SleepTheme" parent="Theme.DIACompanion">
+        <item name="category_color">@color/pink</item>
+        <item name="category_color_dark">@color/pink_dark</item>
+    </style>
+
+    <style name="WeightTheme" parent="Theme.DIACompanion">
+        <item name="category_color">@color/yellow</item>
+        <item name="category_color_dark">@color/yellow_dark</item>
+    </style>
+
+    <style name="KetoneTheme" parent="Theme.DIACompanion">
+        <item name="category_color">@color/orange</item>
+        <item name="category_color_dark">@color/orange_dark</item>
+    </style>
+
     <style name="SplashScreen" parent="Theme.DIACompanion">
         <item name="android:windowBackground">@drawable/splashscreen</item>
     </style>

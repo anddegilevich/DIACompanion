@@ -12,7 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:lines="1"
-        android:hint="@string/EnterFoodName"/>
+        android:hint="@string/EnterFoodName"
+        android:inputType="textShortMessage"/>
 
     <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"

@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.almazov.diacompanion.R
 import com.almazov.diacompanion.data.RecordEntity
 import kotlinx.android.synthetic.main.record_card.view.*
+import kotlinx.android.synthetic.main.record_card.view.card_view
+import kotlinx.android.synthetic.main.record_row.view.*
 import kotlinx.android.synthetic.main.record_row.view.date
 import kotlinx.android.synthetic.main.record_row.view.img_category
 import kotlinx.android.synthetic.main.record_row.view.main_info
@@ -78,10 +80,16 @@ class HomeRecordsAdapter(private val mListener: InterfaceRecordsInfo): RecyclerV
         holder.itemView.date.setTextColor(ContextCompat.getColor(context!!, secondaryColor))
 
         holder.itemView.img_category.setImageResource(imageCategory!!)
-        holder.itemView.img_category.transitionName = "$position img_category"
 
         holder.itemView.card_view.transitionName = "$position record_card"
-        holder.itemView.card_view.backgroundTintList = ContextCompat.getColorStateList(context!!, primaryColor!!)
+        holder.itemView.img_category.transitionName = "$position img_category"
+        holder.itemView.main_info.transitionName = "$position main_info"
+        holder.itemView.date.transitionName = "$position date"
+        holder.itemView.time.transitionName = "$position time"
+
+
+        holder.itemView.card_view.setBackgroundResource(primaryColor!!)
+        //holder.itemView.card_view.backgroundTintList = ContextCompat.getColorStateList(context!!, primaryColor!!)
         holder.itemView.card_view.setOnClickListener{
 
             holder.mListener.transitionToRecordInfo(holder.itemView, record)

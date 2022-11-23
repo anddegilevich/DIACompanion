@@ -34,6 +34,8 @@ class MealRecordInfo : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         main_info.text = args.selectedRecord.mainInfo
+        date.text = args.selectedRecord.date
+        time.text = args.selectedRecord.time
         super.onViewCreated(view, savedInstanceState)
     }
 

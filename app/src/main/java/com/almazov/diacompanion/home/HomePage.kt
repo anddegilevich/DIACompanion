@@ -24,6 +24,9 @@ import com.almazov.diacompanion.data.RecordEntity
 import kotlinx.android.synthetic.main.fragment_home_page.*
 import kotlinx.android.synthetic.main.fragment_home_page.view.*
 import kotlinx.android.synthetic.main.record_card.view.*
+import kotlinx.android.synthetic.main.record_card.view.card_view
+import kotlinx.android.synthetic.main.record_card.view.img_category
+import kotlinx.android.synthetic.main.record_card.view.main_info
 
 
 class HomePage : Fragment(), InterfaceRecordsInfo {
@@ -134,7 +137,8 @@ class HomePage : Fragment(), InterfaceRecordsInfo {
     override fun transitionToRecordInfo(view: View, record: RecordEntity) {
         val destination = HomePageDirections.actionHomePageToMealRecordInfo(record)
         val extras = FragmentNavigatorExtras(view.card_view to "card_view_info",
-        view.img_category to "img_category_info")
+        view.img_category to "img_category_info", view.main_info to "main_info_info",
+        view.date to "date_info", view.time to "time_info")
         findNavController().navigate(destination, extras)
     }
 

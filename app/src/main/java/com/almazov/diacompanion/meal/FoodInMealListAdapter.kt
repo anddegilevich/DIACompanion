@@ -1,5 +1,6 @@
 package com.almazov.diacompanion.meal
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
@@ -31,7 +32,7 @@ class FoodInMealListAdapter(private val foodItemList:MutableList<FoodInMealItem>
     }
 
 
-    override fun onBindViewHolder(holder: FoodInMealItemViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: FoodInMealItemViewHolder, @SuppressLint("RecyclerView") position: Int) {
         var foodItem = foodItemList[position]
         holder.itemView.tv_food_in_meal_name.text = foodItem.foodEntity.name
         val editText = holder.itemView.edit_text_food_in_meal_weight

@@ -3,52 +3,82 @@ package com.almazov.diacompanion.home
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.transition.TransitionInflater
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.GravityCompat
+import androidx.core.view.doOnPreDraw
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.almazov.diacompanion.R
 import com.almazov.diacompanion.data.AppDatabaseViewModel
-import com.almazov.diacompanion.record_history.RecordListAdapter
+import com.almazov.diacompanion.data.RecordEntity
 import kotlinx.android.synthetic.main.fragment_home_page.*
 import kotlinx.android.synthetic.main.fragment_home_page.view.*
+import kotlinx.android.synthetic.main.record_card.view.*
 
-class HomePage : Fragment() {
+
+class HomePage : Fragment(), InterfaceRecordsInfo {
 
     private lateinit var appDatabaseViewModel: AppDatabaseViewModel
-    private lateinit var adapter: HomeRecordsAdapter
+    private lateinit var adapterRecords: HomeRecordsAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        val animation = TransitionInflater.from(requireContext()).inflateTransition(
+            android.R.transition.move
+        )
+        sharedElementEnterTransition = animation
+        sharedElementReturnTransition = animation
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        sharedElementReturnTransition = TransitionInflater.from(requireContext()).inflateTransition(
+            android.R.transition.move
+        )
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_home_page, container, false)
 
         appDatabaseViewModel = ViewModelProvider(this)[AppDatabaseViewModel::class.java]
 
-        adapter = HomeRecordsAdapter()
-        view.record_recycler_view.adapter = adapter
-        view.record_recycler_view.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        adapterRecords = HomeRecordsAdapter(this)
 
-        appDatabaseViewModel.readLastRecords().observe(viewLifecycleOwner, Observer { records ->
-            if (records.isNullOrEmpty()) {
-                tv_no_records.isVisible = true
-            } else adapter.setData(records)
-        })
+        view.record_recycler_view.apply {
+            this.adapter = adapterRecords
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            postponeEnterTransition()
+            viewTreeObserver
+                .addOnPreDrawListener {
+                    true
+                }
+        }
 
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        appDatabaseViewModel.readLastRecords().observe(viewLifecycleOwner, Observer { records ->
+            if (records.isNullOrEmpty()) {
+                tv_no_records.isVisible = true
+            } else adapterRecords.setData(records)
+            (view.parent as? ViewGroup)?.doOnPreDraw {
+
+                view.doOnPreDraw { startPostponedEnterTransition() }
+            }
+        })
 
         btn_add_record.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_homePage_to_recordsCategories)
@@ -82,7 +112,6 @@ class HomePage : Fragment() {
         }
 
         ifOnBoardingFinished(view)
-
     }
 
     private fun ifOnBoardingFinished(view: View){
@@ -100,6 +129,13 @@ class HomePage : Fragment() {
         builder.setTitle(this.resources.getString(R.string.DeleteAllRecords))
         builder.setMessage(this.resources.getString(R.string.AreUSureDeleteAllRecords))
         builder.create().show()
+    }
+
+    override fun transitionToRecordInfo(view: View, record: RecordEntity) {
+        val destination = HomePageDirections.actionHomePageToMealRecordInfo(record)
+        val extras = FragmentNavigatorExtras(view.card_view to "card_view_info",
+        view.img_category to "img_category_info")
+        findNavController().navigate(destination, extras)
     }
 
 }

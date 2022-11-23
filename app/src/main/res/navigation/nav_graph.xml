@@ -43,6 +43,9 @@
             app:exitAnim="@anim/slide_out_up"
             app:popEnterAnim="@anim/slide_in_down"
             app:popExitAnim="@anim/slide_out_down"/>
+        <action
+            android:id="@+id/action_homePage_to_mealRecordInfo"
+            app:destination="@id/mealRecordInfo" />
 
     </fragment>
     <fragment
@@ -343,7 +346,11 @@
         android:id="@+id/mealRecordInfo"
         android:name="com.almazov.diacompanion.MealRecordInfo"
         android:label="fragment_meal_record_info"
-        tools:layout="@layout/fragment_meal_record_info" />
+        tools:layout="@layout/fragment_meal_record_info" >
+        <argument
+            android:name="selectedRecord"
+            app:argType="com.almazov.diacompanion.data.RecordEntity" />
+    </fragment>
     <fragment
         android:id="@+id/recipeList"
         android:name="com.almazov.diacompanion.recipe.RecipeList"

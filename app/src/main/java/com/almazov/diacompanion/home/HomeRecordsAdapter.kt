@@ -1,21 +1,22 @@
 package com.almazov.diacompanion.home
 
 import android.content.Context
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.RecyclerView
 import com.almazov.diacompanion.R
 import com.almazov.diacompanion.data.RecordEntity
-import com.almazov.diacompanion.record_history.RecordHistoryDirections
-import kotlinx.android.synthetic.main.food_in_meal_row.view.*
-import kotlinx.android.synthetic.main.record_row.view.*
+import kotlinx.android.synthetic.main.record_card.view.*
+import kotlinx.android.synthetic.main.record_row.view.date
+import kotlinx.android.synthetic.main.record_row.view.img_category
+import kotlinx.android.synthetic.main.record_row.view.main_info
+import kotlinx.android.synthetic.main.record_row.view.time
 
-class HomeRecordsAdapter(): RecyclerView.Adapter<HomeRecordsAdapter.HomeRecordsViewHolder>()  {
+class HomeRecordsAdapter(private val mListener: InterfaceRecordsInfo): RecyclerView.Adapter<HomeRecordsAdapter.HomeRecordsViewHolder>()  {
     var context: Context? = null
     private var recordsList = emptyList<RecordEntity>()
 
@@ -56,7 +57,7 @@ class HomeRecordsAdapter(): RecyclerView.Adapter<HomeRecordsAdapter.HomeRecordsV
             LayoutInflater.from(context).inflate(
                 R.layout.record_card,
                 parent, false
-            )
+            ), mListener
         )
     }
 
@@ -77,11 +78,14 @@ class HomeRecordsAdapter(): RecyclerView.Adapter<HomeRecordsAdapter.HomeRecordsV
         holder.itemView.date.setTextColor(ContextCompat.getColor(context!!, secondaryColor))
 
         holder.itemView.img_category.setImageResource(imageCategory!!)
+        holder.itemView.img_category.transitionName = "$position img_category"
 
-        holder.itemView.card_view.setBackgroundResource(primaryColor!!)
+        holder.itemView.card_view.transitionName = "$position record_card"
+        holder.itemView.card_view.backgroundTintList = ContextCompat.getColorStateList(context!!, primaryColor!!)
         holder.itemView.card_view.setOnClickListener{
 
-            /*when (record.category) {
+            holder.mListener.transitionToRecordInfo(holder.itemView, record)
+            /*when (record.category) {z
                 "sugar_level_table" -> {val action = RecordHistoryDirections.actionRecordHistoryToSugarLevelAddRecord(record)
                     holder.itemView.findNavController().navigate(action)}
 
@@ -116,5 +120,5 @@ class HomeRecordsAdapter(): RecyclerView.Adapter<HomeRecordsAdapter.HomeRecordsV
         return recordsList.size
     }
 
-    class HomeRecordsViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {}
+    class HomeRecordsViewHolder(itemView: View, val mListener: InterfaceRecordsInfo): RecyclerView.ViewHolder(itemView) {}
 }

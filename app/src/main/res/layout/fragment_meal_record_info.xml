@@ -1,14 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MealRecordInfo">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/card_view"
+        android:transitionName="card_view_info"
+        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_margin="10dp"
+        android:clickable="true"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:background="@drawable/round_layout_bg"
+        android:backgroundTint="@color/purple">
 
-</FrameLayout>
+        <ImageView
+            android:id="@+id/img_category"
+            android:transitionName="img_category_info"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            style="@style/ImageButton"
+            android:src="@drawable/meal"
+            android:gravity="center"
+            android:layout_marginTop="3dp"
+            />
+
+        <TextView
+            android:id="@+id/main_info"
+            android:transitionName="main_info_info"
+            style="@style/MainText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="?attr/button_color"
+            android:textStyle="bold"
+            android:singleLine="false"/>
+
+        <TextView
+            android:id="@+id/time"
+            style="@style/RecordPanelDataText"/>
+
+
+        <TextView
+            android:id="@+id/date"
+            style="@style/RecordPanelDataText"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+    </LinearLayout>

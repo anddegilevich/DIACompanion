@@ -1,28 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="170dp"
-    android:layout_height="268dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="15dp"
-    android:layout_margin="10dp"
-    android:clickable="true"
-    app:cardElevation="7dp"
-    android:backgroundTint="@color/red">
-
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/card_view"
+        android:transitionName="card_view_home"
         android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="170dp"
+        android:layout_height="268dp"
+        android:layout_margin="10dp"
+        android:clickable="true"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:padding="10dp"
+        android:background="@drawable/round_layout_bg"
+        android:backgroundTint="@color/purple">
 
         <ImageView
             android:id="@+id/img_category"
+            android:transitionName="img_category_home"
             android:layout_width="wrap_content"
             android:layout_height="100dp"
             style="@style/ImageButton"
-            android:src="@drawable/sugar_level"
             android:gravity="center"
             android:layout_marginTop="3dp"
             />
@@ -50,5 +45,3 @@
             android:text="11.11.1111"/>
 
     </LinearLayout>
-
-</androidx.cardview.widget.CardView>

@@ -48,6 +48,7 @@
 
 
     <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/food_divider"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:dividerThickness="2dp"

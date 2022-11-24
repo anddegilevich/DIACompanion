@@ -45,7 +45,8 @@
             app:popExitAnim="@anim/slide_out_down"/>
         <action
             android:id="@+id/action_homePage_to_mealRecordInfo"
-            app:destination="@id/mealRecordInfo" />
+            app:destination="@id/mealRecordInfo"
+            app:launchSingleTop="false" />
 
     </fragment>
     <fragment
@@ -344,7 +345,7 @@
     </fragment>
     <fragment
         android:id="@+id/mealRecordInfo"
-        android:name="com.almazov.diacompanion.MealRecordInfo"
+        android:name="com.almazov.diacompanion.record_info.MealRecordInfo"
         android:label="fragment_meal_record_info"
         tools:layout="@layout/fragment_meal_record_info" >
         <argument

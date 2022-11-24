@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.almazov.diacompanion.R
 import kotlinx.android.synthetic.main.food_in_meal_row.view.*
 
-class FoodInMealListAdapter(private val foodItemList:MutableList<FoodInMealItem>, private val mListener: InterfaceFoodInMeal)
+open class FoodInMealListAdapter(private val foodItemList:MutableList<FoodInMealItem>, private val mListener: InterfaceFoodInMeal)
     : RecyclerView.Adapter<FoodInMealListAdapter.FoodInMealItemViewHolder>() {
 
 
@@ -41,26 +41,15 @@ class FoodInMealListAdapter(private val foodItemList:MutableList<FoodInMealItem>
         else if (foodItem.foodEntity.gi!! > 25) R.color.orange
         else R.color.green
         val itemColor = ContextCompat.getColor(context!!,intColor)
-        /*holder.itemView.tv_food_in_meal_name.setTextColor(itemColor)
-        holder.itemView.edit_text_food_in_meal_weight.setTextColor(itemColor)
-        holder.itemView.tv_weight_units.setTextColor(itemColor)*/
+
         holder.itemView.gi_indexer.setBackgroundColor(itemColor)
 
-        /*editText.setOnFocusChangeListener { _, hasFocus ->
-            if (!hasFocus) {
-                val string = editText.text.toString()
-                if (string != "") {
-                    if (string.toBigDecimal().toInt() > maxWeight) {
-                        editText.setText(maxWeight.toString())
-                        editText.setSelection(editText.length())
-                    }else if (string.toBigDecimal().toInt() < minWeight) {
-                        editText.setText(minWeight.toString())
-                        editText.setSelection(editText.length())
-                    }
-                    foodItem.weight = editText.text.toString().toDouble()
-                }
-            }
-        }*/
+        changeWeight(holder, position)
+
+    }
+
+    open fun changeWeight(holder: FoodInMealItemViewHolder, position: Int) {
+        val editText = holder.itemView.edit_text_food_in_meal_weight
         editText.addTextChangedListener(object : TextWatcher {
 
             override fun onTextChanged(string: CharSequence, start: Int,

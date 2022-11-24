@@ -3,12 +3,12 @@ package com.almazov.diacompanion.home
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
-import android.transition.TransitionInflater
+import android.os.Handler
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.GravityCompat
-import androidx.core.view.doOnPreDraw
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
@@ -24,32 +24,27 @@ import com.almazov.diacompanion.data.RecordEntity
 import kotlinx.android.synthetic.main.fragment_home_page.*
 import kotlinx.android.synthetic.main.fragment_home_page.view.*
 import kotlinx.android.synthetic.main.record_card.view.*
-import kotlinx.android.synthetic.main.record_card.view.card_view
-import kotlinx.android.synthetic.main.record_card.view.img_category
-import kotlinx.android.synthetic.main.record_card.view.main_info
 
 
 class HomePage : Fragment(), InterfaceRecordsInfo {
 
     private lateinit var appDatabaseViewModel: AppDatabaseViewModel
     private lateinit var adapterRecords: HomeRecordsAdapter
+    private var mBundleRecyclerViewState = Bundle()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        val animation = TransitionInflater.from(requireContext()).inflateTransition(
-            android.R.transition.move
-        )
-        sharedElementEnterTransition = animation
-        sharedElementReturnTransition = animation
-        super.onCreate(savedInstanceState)
+    override fun onPause() {
+        mBundleRecyclerViewState = Bundle()
+        val mListState = record_recycler_view.layoutManager?.onSaveInstanceState()
+        mBundleRecyclerViewState.putParcelable("KEY_RECYCLER_STATE", mListState)
+        super.onPause()
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        sharedElementReturnTransition = TransitionInflater.from(requireContext()).inflateTransition(
-            android.R.transition.move
-        )
+
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_home_page, container, false)
 
@@ -57,15 +52,6 @@ class HomePage : Fragment(), InterfaceRecordsInfo {
 
         adapterRecords = HomeRecordsAdapter(this)
 
-        view.record_recycler_view.apply {
-            this.adapter = adapterRecords
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            postponeEnterTransition()
-            viewTreeObserver
-                .addOnPreDrawListener {
-                    true
-                }
-        }
 
         return view
     }
@@ -73,15 +59,23 @@ class HomePage : Fragment(), InterfaceRecordsInfo {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        postponeEnterTransition()
+        record_recycler_view.apply {
+            adapter = adapterRecords
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        }
+
         appDatabaseViewModel.readLastRecords().observe(viewLifecycleOwner, Observer { records ->
             if (records.isNullOrEmpty()) {
                 tv_no_records.isVisible = true
             } else adapterRecords.setData(records)
-            (view.parent as? ViewGroup)?.doOnPreDraw {
-
-                view.doOnPreDraw { startPostponedEnterTransition() }
+            if (mBundleRecyclerViewState != null) {
+                val mListState : Parcelable? = mBundleRecyclerViewState.getParcelable("KEY_RECYCLER_STATE")
+                record_recycler_view.layoutManager?.onRestoreInstanceState(mListState)
             }
+            startPostponedEnterTransition()
         })
+
 
         btn_add_record.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_homePage_to_recordsCategories)
@@ -101,7 +95,7 @@ class HomePage : Fragment(), InterfaceRecordsInfo {
         nav_view.itemIconTintList = null
         nav_view.setNavigationItemSelectedListener {
             when(it.itemId){
-                R.id.nav_view_account -> {deleteAllRecords()}
+                R.id.nav_view_account -> {/*deleteAllRecords()*/}
                 R.id.nav_view_app_type -> {/*Navigation.findNavController(view).navigate(R.id.action_homePage_to_mealList)*/ }
             }
 
@@ -135,11 +129,14 @@ class HomePage : Fragment(), InterfaceRecordsInfo {
     }
 
     override fun transitionToRecordInfo(view: View, record: RecordEntity) {
-        val destination = HomePageDirections.actionHomePageToMealRecordInfo(record)
-        val extras = FragmentNavigatorExtras(view.card_view to "card_view_info",
-        view.img_category to "img_category_info", view.main_info to "main_info_info",
-        view.date to "date_info", view.time to "time_info")
-        findNavController().navigate(destination, extras)
+        if (record.category == "meal_table") {
+            val destination = HomePageDirections.actionHomePageToMealRecordInfo(record)
+            val extras = FragmentNavigatorExtras(
+                view.card_view to "card_view_info",
+                view.img_category to "img_category_info"
+            )
+            findNavController().navigate(destination, extras)
+        }
     }
 
 }

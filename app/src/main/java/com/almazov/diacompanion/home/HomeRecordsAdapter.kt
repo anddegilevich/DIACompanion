@@ -91,7 +91,6 @@ class HomeRecordsAdapter(private val mListener: InterfaceRecordsInfo): RecyclerV
         holder.itemView.card_view.setBackgroundResource(primaryColor!!)
         //holder.itemView.card_view.backgroundTintList = ContextCompat.getColorStateList(context!!, primaryColor!!)
         holder.itemView.card_view.setOnClickListener{
-
             holder.mListener.transitionToRecordInfo(holder.itemView, record)
             /*when (record.category) {z
                 "sugar_level_table" -> {val action = RecordHistoryDirections.actionRecordHistoryToSugarLevelAddRecord(record)

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_view"
     android:transitionName="card_view_info"
     android:gravity="center"
@@ -21,44 +22,64 @@
         style="@style/ImageButton"
         android:src="@drawable/meal"
         android:gravity="center"
-        android:layout_marginTop="3dp"
+        android:layout_margin="8dp"
         />
-
-    <TextView
-        android:id="@+id/main_info"
-        android:transitionName="main_info_info"
-        style="@style/MainText"
+    <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textColor="@color/purple_dark"
-        android:textStyle="bold"
-        android:singleLine="false"/>
+        app:dividerThickness="2dp"
+        app:dividerColor="@color/purple_dark"/>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <ScrollView
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
-    </LinearLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/time"
-        android:transitionName="time_info"
-        style="@style/SecondaryText"
-        android:textColor="@color/purple_dark"
-        android:textStyle="bold"
-        android:gravity="center"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/date"
-        android:transitionName="date_info"
-        style="@style/SecondaryText"
-        android:textColor="@color/purple_dark"
-        android:textStyle="bold"
-        android:gravity="center"/>
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/meal_pie_chart"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"/>
+
+            <TextView
+                android:textColor="@color/purple_dark"
+                style="@style/MainText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/FoodList" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_food_in_meal"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:scrollbars="vertical"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/time"
+                android:transitionName="time_info"
+                style="@style/SmallText"
+                android:textColor="@color/purple_dark"
+                android:textStyle="bold"
+                android:gravity="center"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/date"
+                android:transitionName="date_info"
+                style="@style/SmallText"
+                android:textColor="@color/purple_dark"
+                android:textStyle="bold"
+                android:gravity="center"/>
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>

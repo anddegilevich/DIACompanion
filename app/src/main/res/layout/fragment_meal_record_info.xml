@@ -29,7 +29,7 @@
         app:dividerThickness="2dp"
         app:dividerColor="@color/purple_dark"/>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
@@ -38,6 +38,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
+
+            <TextView
+                android:textColor="@color/purple_dark"
+                style="@style/MainText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Meal"
+                android:textStyle="bold"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -107,48 +115,79 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <GridLayout
+                android:paddingTop="10dp"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
+                android:rowCount="2"
+                android:columnCount="3"
                 android:background="@drawable/round_layout_bg"
                 android:backgroundTint="@color/purple_dark"
-                >
+                android:orientation="horizontal"
+                android:alignmentMode="alignBounds">
+
                 <ImageView
-                    android:layout_weight="1"
-                    android:layout_width="40dp"
+                    android:layout_width="0dp"
+                    android:layout_columnWeight="1"
+                    style="@style/ImageButton"
                     android:layout_height="40dp"
                     android:src="@drawable/kkal"
-                    android:layout_gravity="center"
+                    />
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_columnWeight="1"
+                    style="@style/ImageButton"
+                    android:layout_height="40dp"
+                    android:src="@drawable/gi"
+                    />
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_columnWeight="1"
+                    style="@style/ImageButton"
+                    android:layout_height="40dp"
+                    android:src="@drawable/gl"
                     />
 
                 <TextView
-                    android:layout_weight="1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_width="0dp"
                     android:id="@+id/tv_kkal"
                     style="@style/SecondaryText"
                     android:textColor="@color/red"
-                    android:textAlignment="textStart"/>
-
-                <ImageView
-                    android:layout_weight="1"
-                    style="@style/ImageButton"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:src="@drawable/gi"
-                    android:layout_gravity="center"
-                    />
+                    android:textAlignment="center"/>
 
                 <TextView
-                    android:layout_weight="1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_width="0dp"
                     android:id="@+id/tv_gi"
                     style="@style/SecondaryText"
                     android:textColor="@color/blue"
-                    android:textAlignment="textStart"/>
+                    android:textAlignment="center"/>
+                <TextView
+                    android:layout_columnWeight="1"
+                    android:layout_width="0dp"
+                    android:id="@+id/tv_gl"
+                    style="@style/SecondaryText"
+                    android:textColor="@color/pink"
+                    android:textAlignment="center"/>
 
-            </LinearLayout>
+            </GridLayout>
+
+            <TextView
+                android:textColor="@color/purple_dark"
+                style="@style/MainText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Recommendation"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tv_recommendation"
+                android:textColor="@color/purple_dark"
+                style="@style/SmallText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""/>
 
             <TextView
                 android:textColor="@color/purple_dark"
@@ -160,10 +199,53 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_food_in_meal"
-                android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:scrollbars="vertical"
-                />
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:textColor="@color/purple_dark"
+                style="@style/MainText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/SugarLevel"
+                android:textStyle="bold"/>
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TableRow>
+                    <TextView
+                        android:textColor="@color/purple_dark"
+                        style="@style/SmallText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/SugarLevelBeforeMeal"/>
+
+                    <TextView
+                        android:id="@+id/tv_sugar_level_before"
+                        android:textColor="@color/purple_dark"
+                        style="@style/SmallText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:textColor="@color/purple_dark"
+                        style="@style/SmallText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/SugarLevelPredicted"/>
+
+                    <TextView
+                        android:id="@+id/tv_sugar_level_predict"
+                        android:textColor="@color/purple_dark"
+                        style="@style/SmallText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </TableRow>
+
+            </TableLayout>
 
             <TextView
                 android:layout_width="match_parent"
@@ -186,6 +268,6 @@
                 android:gravity="center"/>
         </LinearLayout>
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </LinearLayout>

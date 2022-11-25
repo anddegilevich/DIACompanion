@@ -15,7 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.almazov.diacompanion.R
-import com.almazov.diacompanion.base.getMealInfo
+import com.almazov.diacompanion.base.*
 import com.almazov.diacompanion.data.AppDatabaseViewModel
 import com.almazov.diacompanion.meal.FoodInMealItem
 import com.almazov.diacompanion.meal.FoodInMealListAdapter
@@ -23,7 +23,13 @@ import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
+import kotlinx.android.synthetic.main.fragment_meal_add_record.*
 import kotlinx.android.synthetic.main.fragment_meal_record_info.*
+import kotlinx.android.synthetic.main.fragment_meal_record_info.recycler_view_food_in_meal
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import java.math.BigDecimal
 
 class MealRecordInfo : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
@@ -32,6 +38,7 @@ class MealRecordInfo : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
     var mealInfo = listOf<Double>()
     var foodList = mutableListOf<FoodInMealItem>()
     lateinit var adapter: FoodInMealListAdapter
+    private var bmi: Double? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val animation = TransitionInflater.from(requireContext()).inflateTransition(
@@ -48,7 +55,7 @@ class MealRecordInfo : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
     ): View? {
 
         val sharedPreferences = context?.getSharedPreferences("SharedPreferences", Context.MODE_PRIVATE)
-        /*bmi = sharedPreferences!!.getFloat("BMI", 20f).toDouble()*/
+        bmi = sharedPreferences!!.getFloat("BMI", 20f).toDouble()
 
         return inflater.inflate(R.layout.fragment_meal_record_info, container, false)
     }
@@ -69,7 +76,33 @@ class MealRecordInfo : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
             setPieChart()
             tv_kkal.text = mealInfo[3].toInt().toString() + " ККал"
             tv_gi.text = mealInfo[4].toInt().toString()
+            tv_gl.text = mealInfo[5].toInt().toString()
             tv_weight.text = mealInfo[6].toInt().toString() + " гр."
+            if (record[0].meal.sugarLevel != null) {
+                tv_sugar_level_before.text = record[0].meal.sugarLevel.toString()
+
+
+                val time = args.selectedRecord.time
+                val date = args.selectedRecord.date
+                val timeInMilli = convertDateToMils("$time $date")
+
+                appDatabaseViewModel.getMealWithFoods6HoursAgo(timeInMilli)
+                    .observe(viewLifecycleOwner, Observer { proteinRecord ->
+                        val protein = getProtein(proteinRecord)
+                        GlobalScope.launch(Dispatchers.Main) {
+                            val predict = GlobalScope.async(Dispatchers.Default) {
+                                val glCarbsKr = getGLCarbsKr(foodList)
+                                return@async predictSL(
+                                    requireContext(), record[0].meal.sugarLevel,
+                                    glCarbsKr, protein, record[0].meal.type, bmi
+                                )
+                            }
+                            tv_sugar_level_predict.text = setTwoDigits(predict.await()).toString()
+                        }
+                    })
+
+
+            }
         })
         adapter = FoodInMealInfoAdapter(foodList, this)
         recycler_view_food_in_meal.adapter = adapter
@@ -82,9 +115,9 @@ class MealRecordInfo : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
 
     fun setPieChart() {
         mealInfo = getMealInfo(foodList)
-        tv_protein.text = setTwoDigits(mealInfo[0]).toString() + " гр."
-        tv_fats.text = setTwoDigits(mealInfo[1]).toString() + " гр."
-        tv_carbs.text = setTwoDigits(mealInfo[2]).toString() + " гр."
+        tv_protein.text = mealInfo[0].toInt().toString() + " гр."
+        tv_fats.text = mealInfo[1].toInt().toString() + " гр."
+        tv_carbs.text = mealInfo[2].toInt().toString() + " гр."
         val names = listOf("Белки", "Жиры", "Углеводы")
         val pieEntries = ArrayList<PieEntry>()
         for (i in 0..2)

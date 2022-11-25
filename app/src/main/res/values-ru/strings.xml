@@ -189,4 +189,8 @@
     <string name="PredictedSLHigh">УСК выше нормы</string>
     <string name="PredictedSLLow">УСК в норме</string>
     <string name="EnterFullData">Введите все данные</string>
+    <string name="Recommendation">Рекомендация</string>
+    <string name="SugarLevelBeforeMeal">Уровень сахара до приема пищи:</string>
+    <string name="SugarLevelPredicted">Прогнозируемый уровень сахара:</string>
+    <string name="NoRecommendation">Нет рекомендаций.</string>
 </resources>

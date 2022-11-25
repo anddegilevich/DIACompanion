@@ -236,5 +236,11 @@
     <string name="PredictedSLHigh">Predicted SL is high</string>
     <string name="PredictedSLLow">Predicted SL is normal</string>
 
+    // Meal record info
+    <string name="Recommendation">Recommendation</string>
+    <string name="NoRecommendation">No recommendations</string>
+    <string name="SugarLevelBeforeMeal">Sugar Level before the Meal:</string>
+    <string name="SugarLevelPredicted">Predicted Sugar Level:</string>
+
 
 </resources>

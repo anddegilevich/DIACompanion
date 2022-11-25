@@ -22,8 +22,7 @@
         style="@style/ImageButton"
         android:src="@drawable/meal"
         android:gravity="center"
-        android:layout_margin="8dp"
-        />
+        android:layout_margin="8dp"/>
     <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -40,17 +39,124 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <com.github.mikephil.charting.charts.PieChart
-                android:id="@+id/meal_pie_chart"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="300dp"/>
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <GridLayout
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:rowCount="4"
+                    android:columnCount="2"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        style="@style/ImageButton"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/weight"
+                        app:tint="@color/purple_dark"
+                        />
+
+                    <ImageView
+                        style="@style/ImageButton"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/protein"
+                        />
+                    <ImageView
+                        style="@style/ImageButton"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/fat"
+                        />
+                    <ImageView
+                        style="@style/ImageButton"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/carb"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_weight"
+                        style="@style/SecondaryText"
+                        android:textColor="@color/purple_dark"/>
+
+                    <TextView
+                        android:id="@+id/tv_protein"
+                        style="@style/SecondaryText"
+                        android:textColor="@color/green"/>
+                    <TextView
+                        android:id="@+id/tv_fats"
+                        style="@style/SecondaryText"
+                        android:textColor="@color/yellow"/>
+                    <TextView
+                        android:id="@+id/tv_carbs"
+                        style="@style/SecondaryText"
+                        android:textColor="@color/orange"/>
+
+                </GridLayout>
+
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/meal_pie_chart"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    style="@style/SecondaryText"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:background="@drawable/round_layout_bg"
+                android:backgroundTint="@color/purple_dark"
+                >
+                <ImageView
+                    android:layout_weight="1"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/kkal"
+                    android:layout_gravity="center"
+                    />
+
+                <TextView
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_kkal"
+                    style="@style/SecondaryText"
+                    android:textColor="@color/red"
+                    android:textAlignment="textStart"/>
+
+                <ImageView
+                    android:layout_weight="1"
+                    style="@style/ImageButton"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/gi"
+                    android:layout_gravity="center"
+                    />
+
+                <TextView
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_gi"
+                    style="@style/SecondaryText"
+                    android:textColor="@color/blue"
+                    android:textAlignment="textStart"/>
+
+            </LinearLayout>
 
             <TextView
                 android:textColor="@color/purple_dark"
                 style="@style/MainText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/FoodList" />
+                android:text="@string/FoodList"
+                android:textStyle="bold"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_food_in_meal"

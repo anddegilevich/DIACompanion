@@ -124,19 +124,29 @@ fun getGLCarbsKr(listOfFood: List<FoodInMealItem>): List<Double> {
     return listOf(gl, carbs, krs)
 }
 
-fun getProteinFatCarb(listOfFood: List<FoodInMealItem>): List<Double> {
+fun getMealInfo(listOfFood: List<FoodInMealItem>): List<Double> {
     var proteins = 0.0
     var fats = 0.0
     var carbs = 0.0
+    var weight = 0.0
+    var kkals = 0.0
+    var gl = 0.0
     for (food in listOfFood) {
         val protein = food.foodEntity.prot ?: 0.0
         val fat = food.foodEntity.fat ?: 0.0
         val carb = food.foodEntity.carbo ?: 0.0
-        proteins += protein * food.weight / 100
-        fats += fat * food.weight / 100
-        carbs += carb * food.weight / 100
+        val gi = food.foodEntity.gi ?: 0.0
+        val kkal = food.foodEntity.ec ?: 0.0
+        proteins += protein * food.weight
+        fats += fat * food.weight
+        carbs += carb * food.weight
+        kkals += kkal * food.weight
+        gl += gi * carb * food.weight
+        weight += food.weight
     }
-    return listOf(proteins, fats, carbs)
+    val gis = gl/carbs
+    return listOf(proteins / 100, fats / 100, carbs / 100, kkals / 100, gis, gl / 10000,
+        weight)
 }
 
 fun getMessage(highGI: Boolean, manyCarbs: Boolean, highBGBefore: Boolean,

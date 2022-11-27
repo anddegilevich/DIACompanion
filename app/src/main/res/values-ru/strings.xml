@@ -193,4 +193,5 @@
     <string name="SugarLevelBeforeMeal">Уровень сахара до приема пищи:</string>
     <string name="SugarLevelPredicted">Прогнозируемый уровень сахара:</string>
     <string name="NoRecommendation">Нет рекомендаций.</string>
+    <string name="Duration">Длительность:</string>
 </resources>

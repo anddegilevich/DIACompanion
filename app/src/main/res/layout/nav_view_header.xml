@@ -12,7 +12,7 @@
         android:id="@+id/nav_view_user_icon"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/export"
+        android:src="@drawable/user_icon"
         app:riv_oval="true"
         android:layout_gravity="center"/>
 

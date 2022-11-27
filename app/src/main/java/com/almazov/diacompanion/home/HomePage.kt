@@ -14,6 +14,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
@@ -129,14 +130,28 @@ class HomePage : Fragment(), InterfaceRecordsInfo {
     }
 
     override fun transitionToRecordInfo(view: View, record: RecordEntity) {
-        if (record.category == "meal_table") {
-            val destination = HomePageDirections.actionHomePageToMealRecordInfo(record)
+
+        val destination = when (record.category) {
+            "sugar_level_table" -> {HomePageDirections.actionHomePageToSugarLevelRecordInfo(record)}
+
+            "insulin_table" -> {HomePageDirections.actionHomePageToInsulinRecordInfo(record)}
+
+            "meal_table" -> {HomePageDirections.actionHomePageToMealRecordInfo(record)}
+
+            "workout_table" -> {HomePageDirections.actionHomePageToWorkoutRecordInfo(record)}
+
+            "sleep_table" -> {HomePageDirections.actionHomePageToSleepRecordInfo(record)}
+
+            "weight_table" -> {HomePageDirections.actionHomePageToWeightRecordInfo(record)}
+
+            "ketone_table" -> {HomePageDirections.actionHomePageToKetoneRecordInfo(record)}
+            else -> {null}
+        }
             val extras = FragmentNavigatorExtras(
                 view.card_view to "card_view_info",
                 view.img_category to "img_category_info"
             )
-            findNavController().navigate(destination, extras)
-        }
+            findNavController().navigate(destination!!, extras)
     }
 
 }

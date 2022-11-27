@@ -47,6 +47,25 @@
             android:id="@+id/action_homePage_to_mealRecordInfo"
             app:destination="@id/mealRecordInfo"
             app:launchSingleTop="false" />
+        <action
+            android:id="@+id/action_homePage_to_sugarLevelRecordInfo"
+            app:destination="@id/sugarLevelRecordInfo"
+            app:launchSingleTop="false"/>
+        <action
+            android:id="@+id/action_homePage_to_insulinRecordInfo"
+            app:destination="@id/insulinRecordInfo" />
+        <action
+            android:id="@+id/action_homePage_to_workoutRecordInfo"
+            app:destination="@id/workoutRecordInfo" />
+        <action
+            android:id="@+id/action_homePage_to_weightRecordInfo"
+            app:destination="@id/weightRecordInfo" />
+        <action
+            android:id="@+id/action_homePage_to_sleepRecordInfo"
+            app:destination="@id/sleepRecordInfo" />
+        <action
+            android:id="@+id/action_homePage_to_ketoneRecordInfo"
+            app:destination="@id/ketoneRecordInfo" />
 
     </fragment>
     <fragment
@@ -160,9 +179,6 @@
             app:argType="com.almazov.diacompanion.data.FoodEntity"
             app:nullable="true"
             android:defaultValue="@null" />
-        <action
-            android:id="@+id/action_mealAddRecord_to_mealRecordInfo"
-            app:destination="@id/mealRecordInfo" />
     </fragment>
     <fragment
         android:id="@+id/onBoardingViewPager"
@@ -351,6 +367,13 @@
         <argument
             android:name="selectedRecord"
             app:argType="com.almazov.diacompanion.data.RecordEntity" />
+        <action
+            android:id="@+id/action_mealRecordInfo_to_mealAddRecord"
+            app:destination="@id/mealAddRecord"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
     <fragment
         android:id="@+id/recipeList"
@@ -382,5 +405,101 @@
             app:argType="com.almazov.diacompanion.data.FoodEntity"
             app:nullable="true"
             android:defaultValue="@null" />
+    </fragment>
+    <fragment
+        android:id="@+id/sugarLevelRecordInfo"
+        android:name="com.almazov.diacompanion.record_info.SugarLevelRecordInfo"
+        android:label="fragment_sugar_level_record_info"
+        tools:layout="@layout/fragment_sugar_level_record_info" >
+        <action
+            android:id="@+id/action_sugarLevelRecordInfo_to_sugarLevelAddRecord"
+            app:destination="@id/sugarLevelAddRecord"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+        <argument
+            android:name="selectedRecord"
+            app:argType="com.almazov.diacompanion.data.RecordEntity" />
+    </fragment>
+    <fragment
+        android:id="@+id/insulinRecordInfo"
+        android:name="com.almazov.diacompanion.record_info.InsulinRecordInfo"
+        android:label="fragment_insulin_record_info"
+        tools:layout="@layout/fragment_insulin_record_info">
+        <argument
+            android:name="selectedRecord"
+            app:argType="com.almazov.diacompanion.data.RecordEntity" />
+        <action
+            android:id="@+id/action_insulinRecordInfo_to_insulinAddRecord"
+            app:destination="@id/insulinAddRecord"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+    <fragment
+        android:id="@+id/workoutRecordInfo"
+        android:name="com.almazov.diacompanion.record_info.WorkoutRecordInfo"
+        android:label="fragment_workout_record_info"
+        tools:layout="@layout/fragment_workout_record_info" >
+        <action
+            android:id="@+id/action_workoutRecordInfo_to_workoutAddRecord"
+            app:destination="@id/workoutAddRecord"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+        <argument
+            android:name="selectedRecord"
+            app:argType="com.almazov.diacompanion.data.RecordEntity" />
+    </fragment>
+    <fragment
+        android:id="@+id/weightRecordInfo"
+        android:name="com.almazov.diacompanion.record_info.WeightRecordInfo"
+        android:label="fragment_weight_record_info"
+        tools:layout="@layout/fragment_weight_record_info" >
+        <action
+            android:id="@+id/action_weightRecordInfo_to_weightAddRecord"
+            app:destination="@id/weightAddRecord"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+        <argument
+            android:name="selectedRecord"
+            app:argType="com.almazov.diacompanion.data.RecordEntity" />
+    </fragment>
+    <fragment
+        android:id="@+id/sleepRecordInfo"
+        android:name="com.almazov.diacompanion.record_info.SleepRecordInfo"
+        android:label="fragment_sleep_record_info"
+        tools:layout="@layout/fragment_sleep_record_info" >
+        <action
+            android:id="@+id/action_sleepRecordInfo_to_sleepAddRecord"
+            app:destination="@id/sleepAddRecord"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+        <argument
+            android:name="selectedRecord"
+            app:argType="com.almazov.diacompanion.data.RecordEntity" />
+    </fragment>
+    <fragment
+        android:id="@+id/ketoneRecordInfo"
+        android:name="com.almazov.diacompanion.record_info.KetoneRecordInfo"
+        android:label="fragment_ketone_record_info"
+        tools:layout="@layout/fragment_ketone_record_info" >
+        <action
+            android:id="@+id/action_ketoneRecordInfo_to_ketoneAddRecord"
+            app:destination="@id/ketoneAddRecord"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+        <argument
+            android:name="selectedRecord"
+            app:argType="com.almazov.diacompanion.data.RecordEntity" />
     </fragment>
 </navigation>

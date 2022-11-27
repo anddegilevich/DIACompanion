@@ -92,28 +92,6 @@ class HomeRecordsAdapter(private val mListener: InterfaceRecordsInfo): RecyclerV
         //holder.itemView.card_view.backgroundTintList = ContextCompat.getColorStateList(context!!, primaryColor!!)
         holder.itemView.card_view.setOnClickListener{
             holder.mListener.transitionToRecordInfo(holder.itemView, record)
-            /*when (record.category) {z
-                "sugar_level_table" -> {val action = RecordHistoryDirections.actionRecordHistoryToSugarLevelAddRecord(record)
-                    holder.itemView.findNavController().navigate(action)}
-
-                "insulin_table" -> {val action = RecordHistoryDirections.actionRecordHistoryToInsulinAddRecord(record)
-                    holder.itemView.findNavController().navigate(action)}
-
-                "meal_table" -> {val action = RecordHistoryDirections.actionRecordHistoryToMealAddRecord(record)
-                    holder.itemView.findNavController().navigate(action)}
-
-                "workout_table" -> {val action = RecordHistoryDirections.actionRecordHistoryToWorkoutAddRecord(record)
-                    holder.itemView.findNavController().navigate(action)}
-
-                "sleep_table" -> {val action = RecordHistoryDirections.actionRecordHistoryToSleepAddRecord(record)
-                    holder.itemView.findNavController().navigate(action)}
-
-                "weight_table" -> {val action = RecordHistoryDirections.actionRecordHistoryToWeightAddRecord(record)
-                    holder.itemView.findNavController().navigate(action)}
-
-                "ketone_table" -> {val action = RecordHistoryDirections.actionRecordHistoryToKetoneAddRecord(record)
-                    holder.itemView.findNavController().navigate(action)}
-            }*/
         }
 
     }

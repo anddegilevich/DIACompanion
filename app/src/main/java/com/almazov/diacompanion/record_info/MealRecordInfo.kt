@@ -1,6 +1,7 @@
 package com.almazov.diacompanion.record_info
 
 import FoodInMealInfoAdapter
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.transition.TransitionInflater
@@ -12,18 +13,19 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.almazov.diacompanion.R
 import com.almazov.diacompanion.base.*
 import com.almazov.diacompanion.data.AppDatabaseViewModel
+import com.almazov.diacompanion.data.MealWithFood
 import com.almazov.diacompanion.meal.FoodInMealItem
 import com.almazov.diacompanion.meal.FoodInMealListAdapter
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
-import kotlinx.android.synthetic.main.fragment_meal_add_record.*
 import kotlinx.android.synthetic.main.fragment_meal_record_info.*
 import kotlinx.android.synthetic.main.fragment_meal_record_info.recycler_view_food_in_meal
 import kotlinx.coroutines.Dispatchers
@@ -65,55 +67,83 @@ class MealRecordInfo : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
 
         appDatabaseViewModel = ViewModelProvider(this)[AppDatabaseViewModel::class.java]
 
-        appDatabaseViewModel.getMealWithFoods(args.selectedRecord?.id).observe(viewLifecycleOwner, Observer{record ->
-
-            if (foodList.isNullOrEmpty()) {
+        appDatabaseViewModel.getMealWithFoods(args.selectedRecord.id).observe(viewLifecycleOwner, Observer{record ->
+            if (!record.isNullOrEmpty()) {
                 for (food in record) {
                     foodList.add(FoodInMealItem(food.food, food.weight!!))
                     adapter.notifyItemInserted(foodList.size)
                 }
-            }
-            setPieChart()
-            tv_kkal.text = mealInfo[3].toInt().toString() + " ККал"
-            tv_gi.text = mealInfo[4].toInt().toString()
-            tv_gl.text = mealInfo[5].toInt().toString()
-            tv_weight.text = mealInfo[6].toInt().toString() + " гр."
-            if (record[0].meal.sugarLevel != null) {
-                tv_sugar_level_before.text = record[0].meal.sugarLevel.toString()
 
+                setPieChart()
+                tv_kkal.text = mealInfo[3].toInt().toString() + " ККал"
+                tv_gi.text = mealInfo[4].toInt().toString()
+                tv_gl.text = mealInfo[5].toInt().toString()
+                tv_weight.text = mealInfo[6].toInt().toString() + " гр."
 
-                val time = args.selectedRecord.time
-                val date = args.selectedRecord.date
-                val timeInMilli = convertDateToMils("$time $date")
-
-                appDatabaseViewModel.getMealWithFoods6HoursAgo(timeInMilli)
-                    .observe(viewLifecycleOwner, Observer { proteinRecord ->
-                        val protein = getProtein(proteinRecord)
-                        GlobalScope.launch(Dispatchers.Main) {
-                            val predict = GlobalScope.async(Dispatchers.Default) {
-                                val glCarbsKr = getGLCarbsKr(foodList)
-                                return@async predictSL(
-                                    requireContext(), record[0].meal.sugarLevel,
-                                    glCarbsKr, protein, record[0].meal.type, bmi
-                                )
-                            }
-                            tv_sugar_level_predict.text = setTwoDigits(predict.await()).toString()
-                        }
-                    })
-
-
+                if (record[0].meal.sugarLevel != null) {
+                    displayPredictedSugarLevelAndRecommendation(record)
+                }
             }
         })
+
         adapter = FoodInMealInfoAdapter(foodList, this)
         recycler_view_food_in_meal.adapter = adapter
         recycler_view_food_in_meal.layoutManager = LinearLayoutManager(requireContext())
 
         date.text = args.selectedRecord.date
         time.text = args.selectedRecord.time
+
+        btn_edit.setOnClickListener{
+            val action = MealRecordInfoDirections.actionMealRecordInfoToMealAddRecord(args.selectedRecord)
+            findNavController().navigate(action)
+        }
+
+        btn_delete.setOnClickListener{
+            val builder = AlertDialog.Builder(requireContext())
+            builder.setPositiveButton(this.resources.getString(R.string.Yes)) {_, _ ->
+                appDatabaseViewModel.deleteMealRecord(args.selectedRecord?.id)
+                args.selectedRecord?.let { appDatabaseViewModel.deleteRecord(it) }
+                findNavController().popBackStack()
+            }
+            builder.setNegativeButton(this.resources.getString(R.string.No)) {_, _ ->
+            }
+            builder.setTitle(this.resources.getString(R.string.DeleteRecord))
+            builder.setMessage(this.resources.getString(R.string.AreUSureDeleteRecord))
+            builder.create().show()
+        }
+
         super.onViewCreated(view, savedInstanceState)
     }
 
-    fun setPieChart() {
+    private fun displayPredictedSugarLevelAndRecommendation(record: List<MealWithFood>) {
+        tv_sugar_level_before.text = record[0].meal.sugarLevel.toString()
+
+        val time = args.selectedRecord.time
+        val date = args.selectedRecord.date
+        val timeInMilli = convertDateToMils("$time $date")
+
+        appDatabaseViewModel.getMealWithFoods6HoursAgo(timeInMilli)
+            .observe(viewLifecycleOwner, Observer { proteinRecord ->
+                val protein = getProtein(proteinRecord)
+                GlobalScope.launch(Dispatchers.Main) {
+                    val predict = GlobalScope.async(Dispatchers.Default) {
+                        val glCarbsKr = getGLCarbsKr(foodList)
+                        return@async predictSL(
+                            requireContext(), record[0].meal.sugarLevel,
+                            glCarbsKr, protein, record[0].meal.type, bmi
+                        )
+                    }
+                    val highGi = GlobalScope.async((Dispatchers.Default)) {
+//                        checkGI(record)
+                    }
+//                    val recommendation = getMessage(predict.await())
+                    tv_sugar_level_predict.text = setTwoDigits(predict.await()).toString()
+
+                }
+            })
+    }
+
+    private fun setPieChart() {
         mealInfo = getMealInfo(foodList)
         tv_protein.text = mealInfo[0].toInt().toString() + " гр."
         tv_fats.text = mealInfo[1].toInt().toString() + " гр."

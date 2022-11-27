@@ -242,5 +242,8 @@
     <string name="SugarLevelBeforeMeal">Sugar Level before the Meal:</string>
     <string name="SugarLevelPredicted">Predicted Sugar Level:</string>
 
+    // Workout record
+    <string name="Duration">Duration</string>
+
 
 </resources>

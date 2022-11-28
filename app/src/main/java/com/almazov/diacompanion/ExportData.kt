@@ -15,6 +15,7 @@ import org.apache.poi.ss.usermodel.FillPatternType
 import org.apache.poi.ss.usermodel.IndexedColors
 import org.apache.poi.ss.util.CellRangeAddress
 import org.apache.poi.xssf.usermodel.XSSFCellStyle
+import org.apache.poi.xssf.usermodel.XSSFColor
 import org.apache.poi.xssf.usermodel.XSSFSheet
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import java.io.FileOutputStream
@@ -66,9 +67,12 @@ class ExportData : Fragment() {
             setFillPattern(FillPatternType.LESS_DOTS)
         }
 
+        val yellowColor = XSSFColor(xlWb.stylesSource.indexedColors)
+        yellowColor.argbHex = "ffff00"
+
         styleYellow = xlWb.createCellStyle().apply {
-            setFillBackgroundColor(IndexedColors.YELLOW.getIndex())
-            setFillPattern(FillPatternType.SOLID_FOREGROUND)
+            setFillBackgroundColor(yellowColor)
+            setFillPattern(FillPatternType.DIAMONDS)
         }
 
         styleBlue = xlWb.createCellStyle().apply {
@@ -110,14 +114,17 @@ class ExportData : Fragment() {
             cellStyle = styleYellow}
         val listRowNames = listOf("Натощак", "После завтрака", "После обеда", "После ужина",
             "Дополнительно", "При родах")
-        var i = 1
-        for (rowName in listRowNames) {
-            sheet.addMergedRegion(CellRangeAddress(2, 2, i*2, i*2+1))
-            sheet.createRow(2).createCell(2*i).apply {
-                setCellValue(rowName)
-                cellStyle = styleYellow
+
+        sheet.createRow(2).apply {
+            var i = 1
+            for (rowName in listRowNames) {
+                sheet.addMergedRegion(CellRangeAddress(2, 2, i*2, i*2+1))
+                createCell(2*i).apply {
+                    setCellValue(rowName)
+                    cellStyle = styleYellow
+                }
+                i += 1
             }
-            i += 1
         }
     }
 

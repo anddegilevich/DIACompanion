@@ -238,6 +238,10 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
         }
     }
 
+    fun readLastWeightRecordDate(): LiveData<Long?>{
+        return repository.readLastWeightRecordDate()
+    }
+
     // Ketone
 
     fun addRecord(recordEntity: RecordEntity, ketoneEntity: KetoneEntity) {

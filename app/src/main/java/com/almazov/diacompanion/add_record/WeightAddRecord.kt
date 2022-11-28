@@ -25,6 +25,7 @@ import com.almazov.diacompanion.data.WeightEntity
 import kotlinx.android.synthetic.main.fragment_weight_add_record.*
 import kotlinx.android.synthetic.main.fragment_weight_add_record.btn_delete
 import kotlinx.android.synthetic.main.fragment_weight_add_record.tv_title
+import kotlin.math.pow
 
 
 class WeightAddRecord : Fragment() {
@@ -84,6 +85,26 @@ class WeightAddRecord : Fragment() {
         }
     }
 
+    private fun updateWeightPref(weight: Float, dateInMilli: Long) {
+        appDatabaseViewModel.readLastWeightRecordDate().observe(viewLifecycleOwner, Observer{lastWeightDate ->
+            var changeWeight = true
+            if (lastWeightDate != null) {
+                if (lastWeightDate > dateInMilli) changeWeight = false
+            }
+            if (changeWeight) {
+                val sharedPreferences =
+                    requireContext().getSharedPreferences("SharedPreferences", Context.MODE_PRIVATE)
+                val editor = sharedPreferences.edit()
+                val height = sharedPreferences.getFloat("HEIGHT", 1f)
+                val bmi = weight / height.pow(2)
+                editor?.apply {
+                    putFloat("WEIGHT", weight)
+                    putFloat("BMI", bmi)
+                }?.apply()
+            }
+        })
+    }
+
     private fun addRecord(){
         val category = "weight_table"
 
@@ -94,6 +115,8 @@ class WeightAddRecord : Fragment() {
         val time = tv_Time.text.toString()
         val date = tv_Date.text.toString()
         val dateInMilli = convertDateToMils("$time $date")
+
+        updateWeightPref(weight.toFloat(), dateInMilli)
 
         val recordEntity = RecordEntity(null, category, mainInfo,dateInMilli, time, date,
             dateSubmit,false)
@@ -110,6 +133,8 @@ class WeightAddRecord : Fragment() {
         val time = tv_Time.text.toString()
         val date = tv_Date.text.toString()
         val dateInMilli = convertDateToMils("$time $date")
+
+        updateWeightPref(weight.toFloat(), dateInMilli)
 
         val recordEntity = RecordEntity(args.selectedRecord?.id, args.selectedRecord?.category, mainInfo,dateInMilli, time, date,
             args.selectedRecord?.dateSubmit,args.selectedRecord?.fullDay)

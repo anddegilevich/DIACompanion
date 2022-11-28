@@ -103,6 +103,68 @@
             </LinearLayout>
 
             <TextView
+                android:textColor="@color/yellow_dark"
+                style="@style/MainText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/BMI"
+                android:textStyle="bold"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    style="@style/ImageButton"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_margin="8dp"
+                    android:gravity="center"
+                    android:src="@drawable/bmi_low" />
+
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_bmi"
+                        android:textColor="@color/yellow_dark"
+                        style="@style/SecondaryText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:textAlignment="center"/>
+                    <TextView
+                        android:id="@+id/tv_bmi_decryption"
+                        android:textColor="@color/yellow_dark"
+                        style="@style/SecondaryText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:textAlignment="center"/>
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/bmi_high"
+                    android:gravity="center"
+                    android:layout_margin="8dp"/>
+
+            </LinearLayout>
+
+            <com.google.android.material.slider.Slider
+                android:id="@+id/slider_bmi"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                app:trackColor="@color/yellow_dark"
+                app:thumbColor="@color/yellow_dark"
+                android:enabled="false"/>
+
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/time"

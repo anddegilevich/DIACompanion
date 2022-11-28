@@ -124,6 +124,9 @@ interface AppDao {
     @Query("SELECT * FROM weight_table WHERE id = :id LIMIT 1")
     fun readWeightRecord(id: Int?): LiveData<WeightEntity>
 
+    @Query("SELECT dateInMilli FROM record_table WHERE category = 'weight_table' ORDER BY dateInMilli DESC LIMIT 1")
+    fun readLastWeightRecordDate(): LiveData<Long?>
+
     // Ketone
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)

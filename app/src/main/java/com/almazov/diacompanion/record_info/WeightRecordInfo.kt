@@ -1,6 +1,7 @@
 package com.almazov.diacompanion.record_info
 
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.transition.TransitionInflater
 import androidx.fragment.app.Fragment
@@ -12,8 +13,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.almazov.diacompanion.R
+import com.almazov.diacompanion.base.setTwoDigits
 import com.almazov.diacompanion.data.AppDatabaseViewModel
 import kotlinx.android.synthetic.main.fragment_weight_record_info.*
+import kotlin.math.pow
 
 class WeightRecordInfo : Fragment() {
 
@@ -42,7 +45,7 @@ class WeightRecordInfo : Fragment() {
         appDatabaseViewModel.readWeightRecord(args.selectedRecord.id).observe(viewLifecycleOwner, Observer { record ->
 
             tv_weight.text = record.weight.toString()
-
+            showBMI(record.weight!!)
         })
 
         date.text = args.selectedRecord.date
@@ -69,6 +72,31 @@ class WeightRecordInfo : Fragment() {
 
         super.onViewCreated(view, savedInstanceState)
 
+    }
+
+    private fun showBMI(weight: Double) {
+        val sharedPreferences =
+        requireContext().getSharedPreferences("SharedPreferences", Context.MODE_PRIVATE)
+        val height = sharedPreferences.getFloat("HEIGHT", 1f)
+        val bmi = setTwoDigits(weight / height.pow(2))
+        tv_bmi.text = bmi.toString()
+        var sliderValue: Float? = null
+        if (bmi < 18.5) {
+            tv_bmi_decryption.setText(R.string.BMILow)
+            sliderValue = 0f
+        } else
+        if (bmi < 25) tv_bmi_decryption.setText(R.string.BMINormal) else
+        if (bmi < 30) tv_bmi_decryption.setText(R.string.BMIHigh) else
+        if (bmi < 35) tv_bmi_decryption.setText(R.string.Obesity1) else
+        if (bmi < 40) tv_bmi_decryption.setText(R.string.Obesity2) else {
+            tv_bmi_decryption.setText(R.string.Obesity3)
+            sliderValue = 1f
+        }
+        if (sliderValue == null){
+            sliderValue = ((bmi - 18.5) / 21.5).toFloat()
+        }
+
+        slider_bmi.value = sliderValue
     }
 
 }

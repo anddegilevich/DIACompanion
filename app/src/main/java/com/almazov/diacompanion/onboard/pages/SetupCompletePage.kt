@@ -84,6 +84,7 @@ class SetupCompletePage : Fragment() {
         editor?.apply{
             putBoolean("ON_BOARDING_FINISHED", finished)
             putFloat("HEIGHT",height)
+            putFloat("WEIGHT",weight)
             putFloat("BMI",bmi)
             putLong("PREGNANCY_START_DATE",pregnancyStartDateLong)
             putString("NAME",name)

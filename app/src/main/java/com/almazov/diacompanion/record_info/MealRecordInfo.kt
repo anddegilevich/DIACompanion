@@ -22,6 +22,7 @@ import com.almazov.diacompanion.data.AppDatabaseViewModel
 import com.almazov.diacompanion.data.MealWithFood
 import com.almazov.diacompanion.meal.FoodInMealItem
 import com.almazov.diacompanion.meal.FoodInMealListAdapter
+import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
@@ -171,20 +172,23 @@ class MealRecordInfo : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
         val backgroundColor = ContextCompat.getColor(requireContext(), R.color.purple)
         pieData.setValueTextColors(darkPieColors)
 
-        meal_pie_chart.isDrawHoleEnabled = true
-        meal_pie_chart.setUsePercentValues(true)
-        meal_pie_chart.centerText = args.selectedRecord.mainInfo
-        meal_pie_chart.setCenterTextSize(22f)
-        meal_pie_chart.setCenterTextColor(textColor)
-        meal_pie_chart.description.isEnabled = false
-        meal_pie_chart.legend.isEnabled = false
-        meal_pie_chart.setDrawEntryLabels(false)
-        meal_pie_chart.isHighlightPerTapEnabled = false
-        meal_pie_chart.setHoleColor(backgroundColor)
+        meal_pie_chart.apply{
+            isDrawHoleEnabled = true
+            setUsePercentValues(true)
+            centerText = args.selectedRecord.mainInfo
+            setCenterTextSize(22f)
+            setCenterTextColor(textColor)
+            description.isEnabled = false
+            legend.isEnabled = false
+            setDrawEntryLabels(false)
+            isHighlightPerTapEnabled = false
+            setHoleColor(backgroundColor)
+            data = pieData
+            animateY(1200, Easing.EaseInOutQuad)
+            invalidate()
+        }
 
 
-        meal_pie_chart.data = pieData
-        meal_pie_chart.invalidate()
     }
 
     override fun onGetLayoutInflater(savedInstanceState: Bundle?): LayoutInflater {
@@ -195,10 +199,6 @@ class MealRecordInfo : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
 
     override fun updateRecommendationWeight(position: Int, weight: Double) {
 
-    }
-
-    private fun setTwoDigits(double: Double): Double{
-        return BigDecimal(double).setScale(2, BigDecimal.ROUND_HALF_DOWN).toDouble()
     }
 
 }

@@ -123,7 +123,7 @@
         <item>100</item>
     </string-array>
     <string name="g">гр.</string>
-    <string name="EnterFoodWeight">Введите массу продукта:</string>
+    <string name="EnterFoodWeight">Введите массу продукта</string>
     <string name="SugarLevelBeforeFood">Уровень сахара до еды</string>
     <string name="NoRecords">Нет записей</string>
     <string name="RecipeList">Книга рецептов</string>
@@ -190,11 +190,18 @@
     <string name="PredictedSLLow">УСК в норме</string>
     <string name="EnterFullData">Введите все данные</string>
     <string name="Recommendation">Рекомендация</string>
-    <string name="SugarLevelBeforeMeal">Уровень сахара до приема пищи:</string>
-    <string name="SugarLevelPredicted">Прогнозируемый уровень сахара:</string>
+    <string name="SugarLevelBeforeMeal">Уровень сахара до приема пищи</string>
+    <string name="SugarLevelPredicted">Прогнозируемый уровень сахара</string>
     <string name="NoRecommendation">Нет рекомендаций.</string>
     <string name="Duration">Длительность:</string>
     <string name="ExportData">Экспорт данных</string>
     <string name="ExportToXLSX">Показать в таблице</string>
     <string name="ExportToDoctor">Отправить врачу</string>
+    <string name="BMI">ИМТ</string>
+    <string name="BMILow">Недостаток веса</string>
+    <string name="BMINormal">Нормальный вес</string>
+    <string name="BMIHigh">Избыточный вес</string>
+    <string name="Obesity1">Ожирение 1-й степени</string>
+    <string name="Obesity2">Ожирение 2-й степени</string>
+    <string name="Obesity3">Ожирение 3-й степени</string>
 </resources>

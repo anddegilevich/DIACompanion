@@ -149,6 +149,10 @@ class AppDatabaseRepository(private val appDao: AppDao) {
         appDao.deleteWeightRecord(id)
     }
 
+    fun readLastWeightRecordDate(): LiveData<Long?>{
+        return appDao.readLastWeightRecordDate()
+    }
+
     // Ketone
 
     suspend fun addRecord(ketoneEntity: KetoneEntity){

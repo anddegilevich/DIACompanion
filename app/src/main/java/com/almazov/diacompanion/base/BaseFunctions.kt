@@ -19,6 +19,7 @@ import com.almazov.diacompanion.meal.FoodInMealItem
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import java.math.BigDecimal
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -181,5 +182,9 @@ fun slideView(
     animationSet.interpolator = AccelerateDecelerateInterpolator()
     animationSet.play(slideAnimator)
     animationSet.start()
+}
+
+fun setTwoDigits(double: Double): Double{
+    return BigDecimal(double).setScale(2, BigDecimal.ROUND_HALF_DOWN).toDouble()
 }
 

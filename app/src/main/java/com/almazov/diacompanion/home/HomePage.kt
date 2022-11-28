@@ -86,6 +86,10 @@ class HomePage : Fragment(), InterfaceRecordsInfo {
             Navigation.findNavController(view).navigate(R.id.action_homePage_to_recipeList)
         }
 
+        btn_export.setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.action_homePage_to_exportData)
+        }
+
         drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
 
         btn_options_group.setOnClickListener{

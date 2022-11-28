@@ -245,5 +245,11 @@
     // Workout record
     <string name="Duration">Duration</string>
 
+    // Export data
+
+    <string name="ExportData">Export Data</string>
+    <string name="ExportToXLSX">Export To Table</string>
+    <string name="ExportToDoctor">Export To Doctor</string>
+
 
 </resources>

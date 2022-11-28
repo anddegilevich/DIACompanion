@@ -1,20 +1,16 @@
 package com.almazov.diacompanion.onboard.pages
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.almazov.diacompanion.R
-import com.almazov.diacompanion.onboard.OnBoardingViewPager
-import kotlinx.android.synthetic.main.fragment_home_page.*
+import com.almazov.diacompanion.base.convertDateToMils
 import kotlinx.android.synthetic.main.fragment_setup_complete_page.view.*
-import kotlinx.android.synthetic.main.fragment_setup_page1.view.*
 import kotlinx.android.synthetic.main.fragment_setup_page1.view.btn_back
 import java.io.*
 import kotlin.math.pow
@@ -69,6 +65,19 @@ class SetupCompletePage : Fragment() {
         val height  = 1.81f
         val weight  = 65f
         val bmi  = weight/height.pow(2)
+        val pregnancyStartDate = "00:00 20.10.2022"
+        val pregnancyStartDateLong = convertDateToMils(pregnancyStartDate)
+
+        val name = "Имя"
+        val secondName = "Фамилия"
+        val patronymic = "Отчество"
+
+        val attendingDoctor = "Лечащий врач"
+        val birthDate = "00:00 01.01.2000"
+        val birthDateLong = convertDateToMils(birthDate)
+
+        val appType = 1
+
 
         val sharedPreferences = context?.getSharedPreferences("SharedPreferences", Context.MODE_PRIVATE)
         val editor = sharedPreferences?.edit()
@@ -76,6 +85,13 @@ class SetupCompletePage : Fragment() {
             putBoolean("ON_BOARDING_FINISHED", finished)
             putFloat("HEIGHT",height)
             putFloat("BMI",bmi)
+            putLong("PREGNANCY_START_DATE",pregnancyStartDateLong)
+            putString("NAME",name)
+            putString("SECOND_NAME",secondName)
+            putString("PATRONYMIC",patronymic)
+            putString("ATTENDING_DOCTOR",attendingDoctor)
+            putLong("BIRTH_DATE",birthDateLong)
+            putInt("APP_TYPE",appType)
         }?.apply()
 
     }

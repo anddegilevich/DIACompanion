@@ -85,4 +85,9 @@
         <item name="android:textColor">?attr/button_color</item>
     </style>
 
+    <style name="OptionsNavMenu">
+        <item name="android:textSize">22sp</item>
+        <item name="fontFamily">@font/open_sans</item>
+    </style>
+
 </resources>

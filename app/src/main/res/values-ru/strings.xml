@@ -194,4 +194,7 @@
     <string name="SugarLevelPredicted">Прогнозируемый уровень сахара:</string>
     <string name="NoRecommendation">Нет рекомендаций.</string>
     <string name="Duration">Длительность:</string>
+    <string name="ExportData">Экспорт данных</string>
+    <string name="ExportToXLSX">Показать в таблице</string>
+    <string name="ExportToDoctor">Отправить врачу</string>
 </resources>

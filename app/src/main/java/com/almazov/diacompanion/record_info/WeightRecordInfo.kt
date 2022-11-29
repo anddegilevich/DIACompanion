@@ -16,6 +16,7 @@ import com.almazov.diacompanion.R
 import com.almazov.diacompanion.base.setTwoDigits
 import com.almazov.diacompanion.data.AppDatabaseViewModel
 import kotlinx.android.synthetic.main.fragment_weight_record_info.*
+import java.text.NumberFormat
 import kotlin.math.pow
 
 class WeightRecordInfo : Fragment() {
@@ -78,25 +79,21 @@ class WeightRecordInfo : Fragment() {
         val sharedPreferences =
         requireContext().getSharedPreferences("SharedPreferences", Context.MODE_PRIVATE)
         val height = sharedPreferences.getFloat("HEIGHT", 1f)
-        val bmi = setTwoDigits(weight / height.pow(2))
+        var bmi = setTwoDigits(weight / height.pow(2))
         tv_bmi.text = bmi.toString()
-        var sliderValue: Float? = null
         if (bmi < 18.5) {
             tv_bmi_decryption.setText(R.string.BMILow)
-            sliderValue = 0f
+            bmi = 18.5
         } else
         if (bmi < 25) tv_bmi_decryption.setText(R.string.BMINormal) else
         if (bmi < 30) tv_bmi_decryption.setText(R.string.BMIHigh) else
         if (bmi < 35) tv_bmi_decryption.setText(R.string.Obesity1) else
         if (bmi < 40) tv_bmi_decryption.setText(R.string.Obesity2) else {
             tv_bmi_decryption.setText(R.string.Obesity3)
-            sliderValue = 1f
-        }
-        if (sliderValue == null){
-            sliderValue = ((bmi - 18.5) / 21.5).toFloat()
+            bmi = 40.0
         }
 
-        slider_bmi.value = sliderValue
+        slider_bmi.value = bmi.toFloat()
     }
 
 }

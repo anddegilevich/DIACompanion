@@ -85,22 +85,31 @@
                     style="@style/SecondaryText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/Insulin"/>
+                    android:text="@string/Insulin"
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/tv_insulin"
                     android:textColor="@color/blue_dark"
                     style="@style/SecondaryText"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:textColor="@color/blue_dark"
                     style="@style/SecondaryText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/units"/>
+                    android:text="@string/units"
+                    android:textStyle="bold"/>
             </LinearLayout>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:dividerThickness="2dp"
+                app:dividerColor="@color/blue_dark"/>
 
             <TextView
                 android:textColor="@color/blue_dark"
@@ -115,14 +124,22 @@
                 android:textColor="@color/blue_dark"
                 style="@style/SecondaryText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/tv_pref2"
                 android:textColor="@color/blue_dark"
                 style="@style/SecondaryText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:textStyle="bold"/>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:dividerThickness="2dp"
+                app:dividerColor="@color/blue_dark"/>
 
             <TextView
                 android:layout_width="match_parent"

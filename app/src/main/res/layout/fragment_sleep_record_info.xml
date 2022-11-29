@@ -58,7 +58,7 @@
         app:dividerThickness="2dp"
         app:dividerColor="@color/pink_dark"/>
 
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
@@ -85,22 +85,47 @@
                     style="@style/SecondaryText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/Duration"/>
+                    android:text="@string/Duration"
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/tv_duration"
                     android:textColor="@color/pink_dark"
                     style="@style/SecondaryText"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:textColor="@color/pink_dark"
                     style="@style/SecondaryText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/hours"/>
+                    android:text="@string/hours"
+                    android:textStyle="bold"/>
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_duration_decryption"
+                android:textColor="@color/pink_dark"
+                style="@style/SmallText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/SleepDurationDistribution"
+                android:textStyle="bold"
+                android:textAlignment="center"/>
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/line_chart"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginBottom="10dp"/>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:dividerThickness="2dp"
+                app:dividerColor="@color/pink_dark"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -123,6 +148,6 @@
                 android:gravity="center"/>
         </LinearLayout>
 
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 
 </LinearLayout>

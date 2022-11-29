@@ -80,26 +80,38 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-                    <TextView
-                        android:textColor="@color/red_dark"
-                        style="@style/SecondaryText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/SugarLevel"/>
 
-                    <TextView
-                        android:id="@+id/tv_sugar_level"
-                        android:textColor="@color/red_dark"
-                        style="@style/SecondaryText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
                 <TextView
                     android:textColor="@color/red_dark"
                     style="@style/SecondaryText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/mmoll"/>
+                    android:text="@string/SugarLevel"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/tv_sugar_level"
+                    android:textColor="@color/red_dark"
+                    style="@style/SecondaryText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:textColor="@color/red_dark"
+                    style="@style/SecondaryText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mmoll"
+                    android:textStyle="bold"/>
+
             </LinearLayout>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:dividerThickness="2dp"
+                app:dividerColor="@color/red_dark"/>
 
             <TextView
                 android:textColor="@color/red_dark"
@@ -114,7 +126,8 @@
                 android:textColor="@color/red_dark"
                 style="@style/SecondaryText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:textStyle="bold"/>
 
             <CheckBox
                 android:buttonTint="@color/red_dark"
@@ -123,7 +136,14 @@
                 style="@style/SecondaryText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/WasWorkout"/>
+                android:text="@string/WasWorkout"
+                android:textStyle="bold"/>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:dividerThickness="2dp"
+                app:dividerColor="@color/red_dark"/>
 
             <TextView
                 android:layout_width="match_parent"

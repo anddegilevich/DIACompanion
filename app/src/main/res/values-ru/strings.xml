@@ -204,4 +204,5 @@
     <string name="Obesity1">Ожирение 1-й степени</string>
     <string name="Obesity2">Ожирение 2-й степени</string>
     <string name="Obesity3">Ожирение 3-й степени</string>
+    <string name="SleepDurationDistribution">Распределение средней продолжительности сна</string>
 </resources>

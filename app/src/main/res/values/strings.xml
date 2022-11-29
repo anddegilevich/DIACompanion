@@ -253,12 +253,18 @@
 
     // Weight record info
     <string name="BMI">BMI</string>
+    <string name="MinBMI" translatable="false">18.5</string>
+    <string name="MaxBMI" translatable="false">40</string>
     <string name="BMILow">Lack of weight</string>
     <string name="BMINormal">Normal Weight</string>
     <string name="BMIHigh">Overweight</string>
     <string name="Obesity1">Obesity of the 1st degree</string>
     <string name="Obesity2">Obesity of the 2st degree</string>
     <string name="Obesity3">Obesity of the 3st degree</string>
+
+    // Sleep record info
+    <string name="SleepDurationDistribution">Sleep Duration Distribution</string>
+
 
 
 </resources>

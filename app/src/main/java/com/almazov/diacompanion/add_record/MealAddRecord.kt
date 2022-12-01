@@ -31,7 +31,13 @@ import com.almazov.diacompanion.data.FoodEntity
 import com.almazov.diacompanion.data.MealEntity
 import com.almazov.diacompanion.data.RecordEntity
 import com.almazov.diacompanion.meal.*
+import kotlinx.android.synthetic.main.fragment_insulin_add_record.*
 import kotlinx.android.synthetic.main.fragment_meal_add_record.*
+import kotlinx.android.synthetic.main.fragment_meal_add_record.btn_delete
+import kotlinx.android.synthetic.main.fragment_meal_add_record.btn_save
+import kotlinx.android.synthetic.main.fragment_meal_add_record.tv_Date
+import kotlinx.android.synthetic.main.fragment_meal_add_record.tv_Time
+import kotlinx.android.synthetic.main.fragment_meal_add_record.tv_title
 import kotlinx.android.synthetic.main.fragment_meal_add_record.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -56,7 +62,8 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
     private var protein: Double? = null
     private var glCarbsKr: List<Double?> = emptyList()
 
-
+    private lateinit var spinnerAdapter: CustomStringAdapter
+    private lateinit var spinnerStringArray: Array<String>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -76,10 +83,12 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
 
         appDatabaseViewModel = ViewModelProvider(this)[AppDatabaseViewModel::class.java]
 
-        spinner_meal.adapter = ArrayAdapter.createFromResource(requireContext(),
-            R.array.MealSpinner,
-            R.layout.spinner_item
+        spinnerStringArray = resources.getStringArray(R.array.MealSpinner)
+        spinnerAdapter = CustomStringAdapter(requireContext(),
+            R.layout.spinner_item, spinnerStringArray
         )
+
+        spinner_meal.adapter = spinnerAdapter
         spinner_meal.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parentView: AdapterView<*>?,
@@ -96,7 +105,17 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
             }
         }
 
-        dateSubmit = timeDateSelectSetup(childFragmentManager, tv_Time, tv_Date)
+        tv_Date.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                setupSpinnerPreferences(s.toString())
+            }
+        })
 
         val textWatcher = object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -112,6 +131,8 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
                 getProteinDate(dateInMilli)
             }
         }
+        dateSubmit = timeDateSelectSetup(childFragmentManager, tv_Time, tv_Date)
+
         tv_Time.addTextChangedListener(textWatcher)
         tv_Date.addTextChangedListener(textWatcher)
         val recyclerView = view.recycler_view_food_in_meal
@@ -372,5 +393,20 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
         ) {
             updateRecommendation()
         }
+    }
+
+    private fun setupSpinnerPreferences(date: String) {
+        val id = if (updateBool) args.selectedRecord?.id else 0
+        appDatabaseViewModel.checkMealType(date,id).
+        observe(viewLifecycleOwner, Observer { types ->
+            val items = mutableListOf<Int>()
+            for (pref in types) {
+                if ((pref != spinnerStringArray[3]))
+                    items.add(spinnerStringArray.indexOf(pref))
+            }
+            spinnerAdapter.setItemsToHide(items)
+            if (spinner_meal.selectedItem.toString() in types) spinner_meal.setSelection(3)
+        })
+
     }
 }

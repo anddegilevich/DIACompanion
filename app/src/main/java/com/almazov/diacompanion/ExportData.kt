@@ -2,7 +2,6 @@ package com.almazov.diacompanion
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.graphics.Color.parseColor
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -63,21 +62,18 @@ class ExportData : Fragment() {
 
         val xlWb = XSSFWorkbook()
         styleRed = xlWb.createCellStyle().apply {
-            setFillBackgroundColor(IndexedColors.RED.getIndex())
-            setFillPattern(FillPatternType.LESS_DOTS)
+            fillForegroundColor = IndexedColors.RED.getIndex()
+            fillPattern = FillPatternType.SOLID_FOREGROUND
         }
 
-        val yellowColor = XSSFColor(xlWb.stylesSource.indexedColors)
-        yellowColor.argbHex = "ffff00"
-
         styleYellow = xlWb.createCellStyle().apply {
-            setFillBackgroundColor(yellowColor)
-            setFillPattern(FillPatternType.DIAMONDS)
+            fillForegroundColor = IndexedColors.YELLOW.getIndex()
+            fillPattern = FillPatternType.SOLID_FOREGROUND
         }
 
         styleBlue = xlWb.createCellStyle().apply {
-            fillBackgroundColor = IndexedColors.BLUE.getIndex()
-            fillPattern = FillPatternType.DIAMONDS
+            fillForegroundColor = IndexedColors.BLUE.getIndex()
+            fillPattern = FillPatternType.SOLID_FOREGROUND
         }
 
         val name = sharedPreferences.getString("NAME","Имя")

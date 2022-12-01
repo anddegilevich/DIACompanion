@@ -54,6 +54,11 @@ interface AppDao {
     @Query("SELECT * FROM sugar_level_table WHERE id = :id LIMIT 1")
     fun readSugarLevelRecord(id: Int?): LiveData<SugarLevelEntity>
 
+    @Query("SELECT DISTINCT preferences FROM sugar_level_table WHERE id IN (SELECT id FROM " +
+            "record_table WHERE (date = :date) AND (category = 'sugar_level_table') " +
+            "AND (id != :id))")
+    fun checkSugarLevelPrefs(date: String, id: Int?): LiveData<List<String>>
+
     // Insulin
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
@@ -68,6 +73,11 @@ interface AppDao {
     @Query("SELECT * FROM insulin_table WHERE id = :id LIMIT 1")
     fun readInsulinRecord(id: Int?): LiveData<InsulinEntity>
 
+    @Query("SELECT DISTINCT preferences FROM insulin_table WHERE id IN (SELECT id FROM " +
+            "record_table WHERE (date = :date) AND (category = 'insulin_table') " +
+            "AND (id != :id))")
+    fun checkInsulinPrefs(date: String, id: Int?): LiveData<List<String>>
+
     // Meal
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
@@ -81,6 +91,11 @@ interface AppDao {
 
     @Query("SELECT * FROM meal_table WHERE idMeal = :id LIMIT 1")
     fun readMealRecord(id: Int?): LiveData<MealEntity>
+
+    @Query("SELECT DISTINCT type FROM meal_table WHERE idMeal IN (SELECT id FROM " +
+            "record_table WHERE (date = :date) AND (category = 'meal_table') " +
+            "AND (id != :id))")
+    fun checkMealType(date: String, id: Int?): LiveData<List<String>>
 
     // Workout
 

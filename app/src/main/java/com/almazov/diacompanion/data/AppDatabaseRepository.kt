@@ -68,6 +68,10 @@ class AppDatabaseRepository(private val appDao: AppDao) {
         appDao.deleteSugarLevelRecord(id)
     }
 
+    fun checkSugarLevelPrefs(date: String, id: Int?): LiveData<List<String>> {
+        return appDao.checkSugarLevelPrefs(date, id)
+    }
+
     // Insulin
 
     suspend fun addRecord(insulinEntity: InsulinEntity){
@@ -85,6 +89,10 @@ class AppDatabaseRepository(private val appDao: AppDao) {
         appDao.deleteInsulinRecord(id)
     }
 
+    fun checkInsulinPrefs(date: String, id: Int?): LiveData<List<String>> {
+        return appDao.checkInsulinPrefs(date, id)
+    }
+
     // Meal
 
     suspend fun addRecord(mealEntity: MealEntity){
@@ -96,6 +104,10 @@ class AppDatabaseRepository(private val appDao: AppDao) {
     }
     suspend fun deleteMealRecord(id: Int?){
         appDao.deleteMealRecord(id)
+    }
+
+    fun checkMealType(date: String, id: Int?): LiveData<List<String>> {
+        return appDao.checkMealType(date, id)
     }
 
     // Workout

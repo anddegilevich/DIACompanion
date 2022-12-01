@@ -4,6 +4,8 @@ import android.app.AlertDialog
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.ContextThemeWrapper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -17,6 +19,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.almazov.diacompanion.R
+import com.almazov.diacompanion.base.CustomStringAdapter
 import com.almazov.diacompanion.base.convertDateToMils
 import com.almazov.diacompanion.base.editTextSeekBarSetup
 import com.almazov.diacompanion.base.timeDateSelectSetup
@@ -24,6 +27,10 @@ import com.almazov.diacompanion.data.AppDatabaseViewModel
 import com.almazov.diacompanion.data.InsulinEntity
 import com.almazov.diacompanion.data.RecordEntity
 import kotlinx.android.synthetic.main.fragment_insulin_add_record.*
+import kotlinx.android.synthetic.main.fragment_insulin_add_record.btn_delete
+import kotlinx.android.synthetic.main.fragment_insulin_add_record.btn_save
+import kotlinx.android.synthetic.main.fragment_insulin_add_record.tv_Date
+import kotlinx.android.synthetic.main.fragment_insulin_add_record.tv_Time
 import kotlinx.android.synthetic.main.fragment_insulin_add_record.tv_title
 
 class InsulinAddRecord : Fragment() {
@@ -32,6 +39,8 @@ class InsulinAddRecord : Fragment() {
     private var dateSubmit: Long? = null
     var updateBool: Boolean = false
     private val args by navArgs<InsulinAddRecordArgs>()
+    private lateinit var spinnerAdapter: CustomStringAdapter
+    private lateinit var spinnerStringArray: Array<String>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,11 +67,23 @@ class InsulinAddRecord : Fragment() {
             R.layout.spinner_item
         )
 
-        spinner2_insulin.adapter = ArrayAdapter.createFromResource(requireContext(),
-            R.array.InsulinSpinner2,
-            R.layout.spinner_item
+        spinnerStringArray = resources.getStringArray(R.array.InsulinSpinner2)
+        spinnerAdapter = CustomStringAdapter(requireContext(),
+            R.layout.spinner_item, spinnerStringArray
         )
+        spinner2_insulin.adapter = spinnerAdapter
 
+        tv_Date.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                setupSpinnerPreferences(s.toString())
+            }
+        })
         dateSubmit = timeDateSelectSetup(childFragmentManager, tv_Time, tv_Date)
 
         if (updateBool)
@@ -155,6 +176,19 @@ class InsulinAddRecord : Fragment() {
         return inflater.cloneInContext(contextThemeWrapper)
     }
 
+    private fun setupSpinnerPreferences(date: String) {
+        val id = if (updateBool) args.selectedRecord?.id else 0
+        appDatabaseViewModel.checkInsulinPrefs(date,id).
+        observe(viewLifecycleOwner, Observer { prefs ->
+            val items = mutableListOf<Int>()
+            for (pref in prefs) {
+                if ((pref != spinnerStringArray[3]))
+                    items.add(spinnerStringArray.indexOf(pref))
+            }
+            spinnerAdapter.setItemsToHide(items)
+            if (spinner2_insulin.selectedItem.toString() in prefs) spinner2_insulin.setSelection(3)
+        })
 
+    }
 
 }

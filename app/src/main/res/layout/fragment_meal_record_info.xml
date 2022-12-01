@@ -162,7 +162,7 @@
 
                 <ImageView
                     android:layout_width="0dp"
-                    android:layout_columnWeight="1"
+                    android:layout_columnWeight="2"
                     style="@style/ImageButton"
                     android:layout_height="40dp"
                     android:src="@drawable/kkal"

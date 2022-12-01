@@ -97,6 +97,10 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
         }
     }
 
+    fun checkSugarLevelPrefs(date: String, id: Int?): LiveData<List<String>> {
+        return repository.checkSugarLevelPrefs(date, id)
+    }
+
     // Insulin
 
     fun addRecord(recordEntity: RecordEntity, insulinEntity: InsulinEntity) {
@@ -122,6 +126,10 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteInsulinRecord(id)
         }
+    }
+
+    fun checkInsulinPrefs(date: String, id: Int?): LiveData<List<String>> {
+        return repository.checkInsulinPrefs(date, id)
     }
 
     // Meal
@@ -155,6 +163,10 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
             repository.deleteMealRecord(id)
             repository.deleteMealWithFoodsRecord(id)
         }
+    }
+
+    fun checkMealType(date: String, id: Int?): LiveData<List<String>> {
+        return repository.checkMealType(date, id)
     }
 
     // Workout

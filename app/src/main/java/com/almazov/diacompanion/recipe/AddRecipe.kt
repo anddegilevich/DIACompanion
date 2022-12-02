@@ -291,9 +291,9 @@ class AddRecipe : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
             if (food.foodEntity.mzhk != null) mzhk += food.foodEntity.mzhk * food.weight
             if (food.foodEntity.pzhk != null) pzhk += food.foodEntity.pzhk * food.weight
             if (food.foodEntity.w_1ed != null) w_1ed += food.foodEntity.w_1ed * food.weight
-            if (food.foodEntity.op_1ed != null) op_1ed += food.foodEntity.op_1ed * food.weight
+           /* if (food.foodEntity.op_1ed != null) op_1ed += food.foodEntity.op_1ed * food.weight
             if (food.foodEntity.w_2ed != null) w_2ed += food.foodEntity.w_2ed * food.weight
-            if (food.foodEntity.op_2ed != null) op_2ed += food.foodEntity.op_2ed * food.weight
+            if (food.foodEntity.op_2ed != null) op_2ed += food.foodEntity.op_2ed * food.weight*/
             if (food.foodEntity.proc_pot != null) proc_pot += food.foodEntity.proc_pot * food.weight
         }
 
@@ -301,7 +301,7 @@ class AddRecipe : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
         prot = BigDecimal(prot / weightSum).setScale(2, BigDecimal.ROUND_HALF_DOWN).toDouble()
         fat = BigDecimal(fat / weightSum).setScale(2, BigDecimal.ROUND_HALF_DOWN).toDouble()
         ec = BigDecimal(ec / weightSum).setScale(2, BigDecimal.ROUND_HALF_DOWN).toDouble()
-        gi = BigDecimal(gi / (carbo * weightSum)).setScale(2, BigDecimal.ROUND_HALF_DOWN).toDouble()
+        if (carbo!=0.0) gi = BigDecimal(gi / (carbo * weightSum)).setScale(2, BigDecimal.ROUND_HALF_DOWN).toDouble()
         water = BigDecimal(water / weightSum).setScale(2, BigDecimal.ROUND_HALF_DOWN).toDouble()
         nzhk = BigDecimal(nzhk / weightSum).setScale(2, BigDecimal.ROUND_HALF_DOWN).toDouble()
         hol = BigDecimal(hol / weightSum).setScale(2, BigDecimal.ROUND_HALF_DOWN).toDouble()
@@ -348,9 +348,9 @@ class AddRecipe : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
         mzhk = BigDecimal(mzhk / weightSum).setScale(2, BigDecimal.ROUND_HALF_DOWN).toDouble()
         pzhk = BigDecimal(pzhk / weightSum).setScale(2, BigDecimal.ROUND_HALF_DOWN).toDouble()
         w_1ed = BigDecimal(w_1ed / weightSum).setScale(2, BigDecimal.ROUND_HALF_DOWN).toDouble()
-        op_1ed = BigDecimal(op_1ed / weightSum).setScale(2, BigDecimal.ROUND_HALF_DOWN).toDouble()
+        /*op_1ed = BigDecimal(op_1ed / weightSum).setScale(2, BigDecimal.ROUND_HALF_DOWN).toDouble()
         w_2ed = BigDecimal(w_2ed / weightSum).setScale(2, BigDecimal.ROUND_HALF_DOWN).toDouble()
-        op_2ed = BigDecimal(op_2ed / weightSum).setScale(2, BigDecimal.ROUND_HALF_DOWN).toDouble()
+        op_2ed = BigDecimal(op_2ed / weightSum).setScale(2, BigDecimal.ROUND_HALF_DOWN).toDouble()*/
         proc_pot = BigDecimal(proc_pot / weightSum).setScale(2, BigDecimal.ROUND_HALF_DOWN).toDouble()
 
         return FoodEntity(idFood,name, category, carbo,prot,fat,ec,gi,water,nzhk,hol,pv,zola,

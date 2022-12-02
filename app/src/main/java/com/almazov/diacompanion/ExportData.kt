@@ -14,12 +14,14 @@ import org.apache.poi.ss.usermodel.FillPatternType
 import org.apache.poi.ss.usermodel.IndexedColors
 import org.apache.poi.ss.util.CellRangeAddress
 import org.apache.poi.xssf.usermodel.XSSFCellStyle
-import org.apache.poi.xssf.usermodel.XSSFColor
 import org.apache.poi.xssf.usermodel.XSSFSheet
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import java.io.FileOutputStream
 import java.sql.Date
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 
 class ExportData : Fragment() {
@@ -69,12 +71,16 @@ class ExportData : Fragment() {
         styleYellow = xlWb.createCellStyle().apply {
             fillForegroundColor = IndexedColors.YELLOW.getIndex()
             fillPattern = FillPatternType.SOLID_FOREGROUND
+            font.bold = true
+
         }
 
         styleBlue = xlWb.createCellStyle().apply {
             fillForegroundColor = IndexedColors.BLUE.getIndex()
             fillPattern = FillPatternType.SOLID_FOREGROUND
         }
+
+        val dates = getDates("20.01.2000","28.01.2000")
 
         val name = sharedPreferences.getString("NAME","Имя")
         val secondName = sharedPreferences.getString("SECOND_NAME","Фамилия")
@@ -102,16 +108,22 @@ class ExportData : Fragment() {
         sheet.addMergedRegion(CellRangeAddress(0, 0, 0, 13))
         sheet.createRow(0).createCell(0).setCellValue(globalInfoString)
         sheet.addMergedRegion(CellRangeAddress(1, 1, 0, 13))
-        sheet.createRow(1).createCell(0).apply {
-            setCellValue("Измерение сахара")
-            cellStyle = styleYellow}
-        sheet.createRow(2).createCell(1).apply {
+        sheet.addMergedRegion(CellRangeAddress(1, 1, 15, 32))
+        sheet.createRow(1).apply {
+            createCell(0).apply {
+                setCellValue("Измерение сахара")
+                cellStyle = styleYellow}
+            createCell(15).apply {
+                setCellValue("Инъекции инсулина")
+                cellStyle = styleYellow}
+        }
+
+        val listRowNames = mutableListOf("Натощак", "После завтрака", "После обеда", "После ужина",
+            "Дополнительно", "При родах")
+        sheet.createRow(2).apply {
+            createCell(1).apply {
             setCellValue("Дата")
             cellStyle = styleYellow}
-        val listRowNames = listOf("Натощак", "После завтрака", "После обеда", "После ужина",
-            "Дополнительно", "При родах")
-
-        sheet.createRow(2).apply {
             var i = 1
             for (rowName in listRowNames) {
                 sheet.addMergedRegion(CellRangeAddress(2, 2, i*2, i*2+1))
@@ -121,7 +133,39 @@ class ExportData : Fragment() {
                 }
                 i += 1
             }
+            listRowNames.removeLast()
+            listRowNames.add("Левемир")
+            i = 1
+            for (rowName in listRowNames) {
+                sheet.addMergedRegion(CellRangeAddress(2, 2, 12+i*3, 12+i*3+2))
+                createCell(12+3*i).apply {
+                    setCellValue(rowName)
+                    cellStyle = styleYellow
+                }
+                i += 1
+            }
         }
+
+    }
+
+    private fun getDates(firstDate: String, lastDate: String): MutableList<String> {
+        val dates = mutableListOf<String>()
+        val formatter = SimpleDateFormat("dd.MM.yyyy")
+        val date1 = formatter.parse(firstDate)
+        val date2 = formatter.parse(lastDate)
+
+        val cal1 = Calendar.getInstance()
+        cal1.time = date1!!
+
+        val cal2 = Calendar.getInstance()
+        cal2.time = date2!!
+
+        while(!cal1.after(cal2))
+        {
+            dates.add(formatter.format(cal1.time))
+            cal1.add(Calendar.DATE, 1)
+        }
+        return dates
     }
 
 }

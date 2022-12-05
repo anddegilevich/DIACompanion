@@ -101,6 +101,10 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
         return repository.checkSugarLevelPrefs(date, id)
     }
 
+    suspend fun readAllSugarLevelRecords(): Map<RecordEntity, SugarLevelEntity> {
+        return repository.readAllSugarLevelRecords()
+    }
+
     // Insulin
 
     fun addRecord(recordEntity: RecordEntity, insulinEntity: InsulinEntity) {
@@ -130,6 +134,10 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
 
     fun checkInsulinPrefs(date: String, id: Int?): LiveData<List<String>> {
         return repository.checkInsulinPrefs(date, id)
+    }
+
+    suspend fun readAllInsulinRecords(): Map<RecordEntity, InsulinEntity> {
+        return repository.readAllInsulinRecords()
     }
 
     // Meal

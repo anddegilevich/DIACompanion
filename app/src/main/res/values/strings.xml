@@ -120,6 +120,7 @@
         <item>Short</item>
     </string-array>
     <string-array name="InsulinSpinner2">
+        <item>On an empty stomach</item>
         <item>After breakfast</item>
         <item>After lunch</item>
         <item>After dinner</item>

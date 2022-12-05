@@ -72,6 +72,10 @@ class AppDatabaseRepository(private val appDao: AppDao) {
         return appDao.checkSugarLevelPrefs(date, id)
     }
 
+    suspend fun readAllSugarLevelRecords(): Map<RecordEntity, SugarLevelEntity> {
+        return appDao.readAllSugarLevelRecords()
+    }
+
     // Insulin
 
     suspend fun addRecord(insulinEntity: InsulinEntity){
@@ -91,6 +95,10 @@ class AppDatabaseRepository(private val appDao: AppDao) {
 
     fun checkInsulinPrefs(date: String, id: Int?): LiveData<List<String>> {
         return appDao.checkInsulinPrefs(date, id)
+    }
+
+    suspend fun readAllInsulinRecords(): Map<RecordEntity, InsulinEntity> {
+        return appDao.readAllInsulinRecords()
     }
 
     // Meal

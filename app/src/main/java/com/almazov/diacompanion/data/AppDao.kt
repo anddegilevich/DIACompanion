@@ -59,6 +59,11 @@ interface AppDao {
             "AND (id != :id))")
     fun checkSugarLevelPrefs(date: String, id: Int?): LiveData<List<String>>
 
+    @Query("SELECT * FROM record_table " +
+            "JOIN sugar_level_table ON record_table.id = sugar_level_table.id " +
+            "ORDER BY dateInMilli ASC")
+    suspend fun readAllSugarLevelRecords(): Map<RecordEntity,SugarLevelEntity>
+
     // Insulin
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
@@ -77,6 +82,11 @@ interface AppDao {
             "record_table WHERE (date = :date) AND (category = 'insulin_table') " +
             "AND (id != :id))")
     fun checkInsulinPrefs(date: String, id: Int?): LiveData<List<String>>
+
+    @Query("SELECT * FROM record_table " +
+            "JOIN insulin_table ON record_table.id = insulin_table.id " +
+            "ORDER BY dateInMilli ASC")
+    suspend fun readAllInsulinRecords(): Map<RecordEntity,InsulinEntity>
 
     // Meal
 

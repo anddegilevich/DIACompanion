@@ -182,11 +182,11 @@ class InsulinAddRecord : Fragment() {
         observe(viewLifecycleOwner, Observer { prefs ->
             val items = mutableListOf<Int>()
             for (pref in prefs) {
-                if ((pref != spinnerStringArray[3]))
+                if ((pref != spinnerStringArray[0]) and (pref != spinnerStringArray[4]))
                     items.add(spinnerStringArray.indexOf(pref))
             }
             spinnerAdapter.setItemsToHide(items)
-            if (spinner2_insulin.selectedItem.toString() in prefs) spinner2_insulin.setSelection(3)
+            if (spinner2_insulin.selectedItem.toString() in prefs) spinner2_insulin.setSelection(4)
         })
 
     }

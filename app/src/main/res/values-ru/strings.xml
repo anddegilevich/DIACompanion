@@ -79,7 +79,7 @@
     <string name="Next">Вперед</string>
 
     <string-array name="SugarLevelSpinner">
-        <item>На голодный желудок</item>
+        <item>Натощак</item>
         <item>После завтрака</item>
         <item>После обеда</item>
         <item>После ужина</item>
@@ -94,6 +94,7 @@
     </string-array>
 
     <string-array name="InsulinSpinner2">
+        <item>Натощак</item>
         <item>После завтрака</item>
         <item>После обеда</item>
         <item>После ужина</item>

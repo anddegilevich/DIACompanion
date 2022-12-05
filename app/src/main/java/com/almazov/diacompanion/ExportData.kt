@@ -112,22 +112,32 @@ class ExportData : Fragment() {
                 "Дата рождения: $birthDateString;   Лечащий врач: $attendingDoctor;   " +
                 "Программа: DiaCompanion Android $appTypeString"
 
-        val xlWsSugarLevel = xlWb.createSheet("Уровень сахара и инсулин")
+        val xlWsSugarLevelInsulin = xlWb.createSheet("Уровень сахара и инсулин")
+        val xlWsWorkoutSleep = xlWb.createSheet("Физическая нагрузка и сон")
+        val xlWsWeight = xlWb.createSheet("Масса тела")
+        val xlWsKetone = xlWb.createSheet("Кетоны в моче")
         GlobalScope.launch(Dispatchers.Main) {
-            val sugarLevelSheetCompleted = GlobalScope.async(Dispatchers.Default) {
-                getSugarLevelAndInsulinTable(xlWsSugarLevel)
+            val sugarLevelInsulinSheetCompleted = GlobalScope.async(Dispatchers.Default) {
+                getSugarLevelAndInsulinTable(xlWsSugarLevelInsulin)
             }
-            if (sugarLevelSheetCompleted.await()) {
+            val workoutSleepSheetCompleted = GlobalScope.async(Dispatchers.Default) {
+                getWorkoutAndSleepTable(xlWsWorkoutSleep)
+            }
+            val weightSheetCompleted = GlobalScope.async(Dispatchers.Default) {
+                getWeightTable(xlWsWeight)
+            }
+            val ketoneSheetCompleted = GlobalScope.async(Dispatchers.Default) {
+                getKetoneTable(xlWsKetone)
+            }
+            if (sugarLevelInsulinSheetCompleted.await() and workoutSleepSheetCompleted.await() and
+                weightSheetCompleted.await() and ketoneSheetCompleted.await()) {
                 val path = requireContext().getDatabasePath("exportTest.xlsx").path
                 val table = FileOutputStream(path)
 
                 xlWb.write(table)
                 xlWb.close()
 
-                val uriPath = Uri.parse(path)
-
-
-                // Show Excel file
+                /*val uriPath = Uri.parse(path)
                 val excelIntent = Intent()
                 excelIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 excelIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
@@ -143,11 +153,297 @@ class ExportData : Fragment() {
                         "No Application available to view Excel",
                         Toast.LENGTH_SHORT
                     ).show()
-                }
+                }*/
                 findNavController().popBackStack()
             }
         }
 
+    }
+
+    private suspend fun getKetoneTable(sheet: XSSFSheet): Boolean {
+        sheet.defaultColumnWidth = 10
+
+        val ketoneRecords = GlobalScope.async(Dispatchers.Default) {
+            appDatabaseViewModel.readAllKetoneRecords()
+        }
+
+        sheet.addMergedRegion(CellRangeAddress(0, 0, 0, 13))
+        sheet.createRow(0).createCell(0).setCellValue(globalInfoString)
+        sheet.addMergedRegion(CellRangeAddress(1, 1, 0, 3))
+        sheet.createRow(1).createCell(0).apply {
+            setCellValue("Кетоны в моче")
+            cellStyle = styleYellow
+        }
+        sheet.createRow(2).apply {
+            createCell(1).apply {
+                setCellValue("Дата")
+                cellStyle = styleYellow
+            }
+            createCell(2).apply {
+                setCellValue("Время")
+                cellStyle = styleYellow
+            }
+            createCell(3).apply {
+                setCellValue("Уровень, ммол/л")
+                cellStyle = styleYellow
+            }
+        }
+
+        val ketoneList = ketoneRecords.await().toList()
+        if (ketoneList.isNullOrEmpty()) return true
+        val dates = getDates(ketoneList[0].first.date!!, ketoneList.last().first.date!!)
+
+        var i = 3
+        var j = 0
+        for (date in dates) {
+            sheet.createRow(i).apply {
+                createCell(1).apply {
+                    setCellValue(date)
+                    cellStyle = styleNormal
+                }
+                try {
+                    while (ketoneList[j].first.date == date) {
+                        var cellTime: String
+                        var cellLevel: String
+                        if (getCell(2) != null) {
+                            cellTime = getCell(2).stringCellValue + "\n" + ketoneList[j].first.time
+                            cellLevel = getCell(3).stringCellValue + "\n" + ketoneList[j].second.ketone.toString()
+                        } else {
+                            cellTime = ketoneList[j].first.time!!
+                            cellLevel = ketoneList[j].second.ketone.toString()
+                        }
+                        createCell(2).apply {
+                            setCellValue(cellTime)
+                            cellStyle = styleNormal
+                        }
+                        createCell(3).apply {
+                            setCellValue(cellLevel)
+                            cellStyle = styleNormal
+                        }
+                        j += 1
+                    }
+                } catch (e: java.lang.IndexOutOfBoundsException) { }
+            }
+            i += 1
+        }
+
+        setBordersToMergedCells(sheet)
+
+        return true
+    }
+
+    private suspend fun getWeightTable(sheet: XSSFSheet): Boolean {
+        sheet.defaultColumnWidth = 10
+
+        val weightRecords = GlobalScope.async(Dispatchers.Default) {
+            appDatabaseViewModel.readAllWeightRecords()
+        }
+
+        sheet.addMergedRegion(CellRangeAddress(0, 0, 0, 13))
+        sheet.createRow(0).createCell(0).setCellValue(globalInfoString)
+        sheet.addMergedRegion(CellRangeAddress(1, 1, 0, 3))
+        sheet.createRow(1).createCell(0).apply {
+            setCellValue("Физическая нагрузка")
+            cellStyle = styleYellow
+        }
+        sheet.createRow(2).apply {
+            createCell(1).apply {
+                setCellValue("Дата")
+                cellStyle = styleYellow
+            }
+            createCell(2).apply {
+                setCellValue("Время")
+                cellStyle = styleYellow
+            }
+            createCell(3).apply {
+                setCellValue("Вес, кг")
+                cellStyle = styleYellow
+            }
+        }
+
+        val weightList = weightRecords.await().toList()
+        if (weightList.isNullOrEmpty()) return true
+        val dates = getDates(weightList[0].first.date!!, weightList.last().first.date!!)
+
+        var i = 3
+        var j = 0
+        for (date in dates) {
+            sheet.createRow(i).apply {
+                createCell(1).apply {
+                    setCellValue(date)
+                    cellStyle = styleNormal
+                }
+                try {
+                    while (weightList[j].first.date == date) {
+                        var cellTime: String
+                        var cellWeight: String
+                        if (getCell(2) != null) {
+                            cellTime = getCell(2).stringCellValue + "\n" + weightList[j].first.time
+                            cellWeight = getCell(3).stringCellValue + "\n" + weightList[j].second.weight.toString()
+                        } else {
+                            cellTime = weightList[j].first.time!!
+                            cellWeight = weightList[j].second.weight.toString()
+                        }
+                        createCell(2).apply {
+                            setCellValue(cellTime)
+                            cellStyle = styleNormal
+                        }
+                        createCell(3).apply {
+                            setCellValue(cellWeight)
+                            cellStyle = styleNormal
+                        }
+                        j += 1
+                    }
+                } catch (e: java.lang.IndexOutOfBoundsException) { }
+            }
+            i += 1
+        }
+
+        setBordersToMergedCells(sheet)
+
+        return true
+    }
+
+    private suspend fun getWorkoutAndSleepTable(sheet: XSSFSheet): Boolean {
+
+        sheet.defaultColumnWidth = 16
+
+        val workoutRecords = GlobalScope.async(Dispatchers.Default) {
+            appDatabaseViewModel.readAllWorkoutRecords()
+        }
+        val sleepRecords = GlobalScope.async(Dispatchers.Default) {
+            appDatabaseViewModel.readAllSleepRecords()
+        }
+
+        sheet.addMergedRegion(CellRangeAddress(0, 0, 0, 13))
+        sheet.createRow(0).createCell(0).setCellValue(globalInfoString)
+        sheet.addMergedRegion(CellRangeAddress(1, 1, 0, 4))
+        sheet.addMergedRegion(CellRangeAddress(1, 1, 6, 7))
+        sheet.createRow(1).apply {
+            createCell(0).apply {
+                setCellValue("Физическая нагрузка")
+                cellStyle = styleYellow
+            }
+            createCell(6).apply {
+                setCellValue("Сон")
+                cellStyle = styleYellow
+            }
+        }
+        sheet.createRow(2).apply {
+            createCell(1).apply {
+                setCellValue("Дата")
+                cellStyle = styleYellow
+            }
+            createCell(2).apply {
+                setCellValue("Время")
+                cellStyle = styleYellow
+            }
+            createCell(3).apply {
+                setCellValue("Длительность, мин.")
+                cellStyle = styleYellow
+            }
+            createCell(4).apply {
+                setCellValue("Тип нагрузки")
+                cellStyle = styleYellow
+            }
+
+            createCell(6).apply {
+                setCellValue("Время")
+                cellStyle = styleYellow
+            }
+            createCell(7).apply {
+                setCellValue("Длительность, ч.")
+                cellStyle = styleYellow
+            }
+        }
+        val workoutList = workoutRecords.await().toList()
+        val sleepList = sleepRecords.await().toList()
+        if (workoutList.isNullOrEmpty() and sleepList.isNullOrEmpty()) return true
+
+        var minDate: String
+        var maxDate: String
+
+        if (workoutList.isNullOrEmpty() and !sleepList.isNullOrEmpty()) {
+            minDate = sleepList[0].first.date!!
+            maxDate = sleepList.last().first.date!!
+        } else if (!workoutList.isNullOrEmpty() and sleepList.isNullOrEmpty()) {
+            minDate = workoutList[0].first.date!!
+            maxDate = workoutList.last().first.date!!
+        } else
+        {
+            minDate = if (workoutList[0].first.dateInMilli!! < sleepList[0].first.dateInMilli!!)
+                workoutList[0].first.date!! else sleepList[0].first.date!!
+            maxDate = if (workoutList.last().first.dateInMilli!! > sleepList.last().first.dateInMilli!!)
+                workoutList.last().first.date!! else sleepList.last().first.date!!
+        }
+
+        val dates = getDates(minDate, maxDate)
+        var i = 3
+        var j = 0
+        var k = 0
+        for (date in dates) {
+            sheet.createRow(i).apply {
+                createCell(1).apply {
+                    setCellValue(date)
+                    cellStyle = styleNormal
+                }
+                try {
+                    while (workoutList[j].first.date == date) {
+                        var cellTime: String
+                        var cellDuration: String
+                        var cellType: String
+                        if (getCell(2) != null){
+                            cellTime = getCell(2).stringCellValue + "\n" + workoutList[j].first.time
+                            cellDuration = getCell(3).stringCellValue + "\n" + workoutList[j].second.duration.toString()
+                            cellType = getCell(4).stringCellValue + "\n" + workoutList[j].second.type.toString()
+                        } else {
+                            cellTime = workoutList[j].first.time!!
+                            cellDuration = workoutList[j].second.duration.toString()
+                            cellType = workoutList[j].second.type.toString()
+                        }
+                        createCell(2).apply {
+                            setCellValue(cellTime)
+                            cellStyle = styleNormal
+                        }
+                        createCell(3).apply {
+                            setCellValue(cellDuration)
+                            cellStyle = styleNormal
+                        }
+                        createCell(4).apply {
+                            setCellValue(cellType)
+                            cellStyle = styleNormal
+                        }
+                        j += 1
+                    }
+                } catch (e: java.lang.IndexOutOfBoundsException) { }
+                try {
+                    while (sleepList[k].first.date == date) {
+                        var cellTime: String
+                        var cellDuration: String
+                        if (getCell(2) != null){
+                            cellTime = getCell(2).stringCellValue + "\n" + sleepList[k].first.time
+                            cellDuration = getCell(3).stringCellValue + "\n" + sleepList[k].second.duration.toString()
+                        } else {
+                            cellTime = sleepList[k].first.time!!
+                            cellDuration = sleepList[k].second.duration.toString()
+                        }
+                        createCell(6).apply {
+                            setCellValue(cellTime)
+                            cellStyle = styleNormal
+                        }
+                        createCell(7).apply {
+                            setCellValue(cellDuration)
+                            cellStyle = styleNormal
+                        }
+                        k += 1
+                    }
+                } catch (e: java.lang.IndexOutOfBoundsException) { }
+            }
+            i += 1
+        }
+
+        setBordersToMergedCells(sheet)
+        return true
     }
 
     private suspend fun getSugarLevelAndInsulinTable(sheet: XSSFSheet): Boolean{

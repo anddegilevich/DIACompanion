@@ -204,6 +204,10 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
         }
     }
 
+    suspend fun readAllWorkoutRecords(): Map<RecordEntity, WorkoutEntity> {
+        return repository.readAllWorkoutRecords()
+    }
+
     // Sleep
 
     fun addRecord(recordEntity: RecordEntity, sleepEntity: SleepEntity) {
@@ -229,6 +233,10 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteSleepRecord(id)
         }
+    }
+
+    suspend fun readAllSleepRecords(): Map<RecordEntity, SleepEntity> {
+        return repository.readAllSleepRecords()
     }
 
     // Weight
@@ -262,6 +270,10 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
         return repository.readLastWeightRecordDate()
     }
 
+    suspend fun readAllWeightRecords(): Map<RecordEntity, WeightEntity> {
+        return repository.readAllWeightRecords()
+    }
+
     // Ketone
 
     fun addRecord(recordEntity: RecordEntity, ketoneEntity: KetoneEntity) {
@@ -287,6 +299,10 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteKetoneRecord(id)
         }
+    }
+
+    suspend fun readAllKetoneRecords(): Map<RecordEntity, KetoneEntity> {
+        return repository.readAllKetoneRecords()
     }
 
     // Food

@@ -121,6 +121,11 @@ interface AppDao {
     @Query("SELECT * FROM workout_table WHERE id = :id LIMIT 1")
     fun readWorkoutRecord(id: Int?): LiveData<WorkoutEntity>
 
+    @Query("SELECT * FROM record_table " +
+            "JOIN workout_table ON record_table.id = workout_table.id " +
+            "ORDER BY dateInMilli ASC")
+    suspend fun readAllWorkoutRecords(): Map<RecordEntity,WorkoutEntity>
+
     // Sleep
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
@@ -134,6 +139,11 @@ interface AppDao {
 
     @Query("SELECT * FROM sleep_table WHERE id = :id LIMIT 1")
     fun readSleepRecord(id: Int?): LiveData<SleepEntity>
+
+    @Query("SELECT * FROM record_table " +
+            "JOIN sleep_table ON record_table.id = sleep_table.id " +
+            "ORDER BY dateInMilli ASC")
+    suspend fun readAllSleepRecords(): Map<RecordEntity,SleepEntity>
 
     // Weight
 
@@ -152,6 +162,11 @@ interface AppDao {
     @Query("SELECT dateInMilli FROM record_table WHERE category = 'weight_table' ORDER BY dateInMilli DESC LIMIT 1")
     fun readLastWeightRecordDate(): LiveData<Long?>
 
+    @Query("SELECT * FROM record_table " +
+            "JOIN weight_table ON record_table.id = weight_table.id " +
+            "ORDER BY dateInMilli ASC")
+    suspend fun readAllWeightRecords(): Map<RecordEntity,WeightEntity>
+
     // Ketone
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
@@ -165,6 +180,11 @@ interface AppDao {
 
     @Query("SELECT * FROM ketone_table WHERE id = :id LIMIT 1")
     fun readKetoneRecord(id: Int?): LiveData<KetoneEntity>
+
+    @Query("SELECT * FROM record_table " +
+            "JOIN ketone_table ON record_table.id = ketone_table.id " +
+            "ORDER BY dateInMilli ASC")
+    suspend fun readAllKetoneRecords(): Map<RecordEntity,KetoneEntity>
 
     // Food
 

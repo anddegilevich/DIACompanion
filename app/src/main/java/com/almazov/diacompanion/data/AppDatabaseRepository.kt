@@ -135,6 +135,10 @@ class AppDatabaseRepository(private val appDao: AppDao) {
         appDao.deleteWorkoutRecord(id)
     }
 
+    suspend fun readAllWorkoutRecords(): Map<RecordEntity, WorkoutEntity> {
+        return appDao.readAllWorkoutRecords()
+    }
+
     // Sleep
 
     suspend fun addRecord(sleepEntity: SleepEntity){
@@ -150,6 +154,10 @@ class AppDatabaseRepository(private val appDao: AppDao) {
     }
     suspend fun deleteSleepRecord(id: Int?){
         appDao.deleteSleepRecord(id)
+    }
+
+    suspend fun readAllSleepRecords(): Map<RecordEntity, SleepEntity> {
+        return appDao.readAllSleepRecords()
     }
 
     // Weight
@@ -173,6 +181,10 @@ class AppDatabaseRepository(private val appDao: AppDao) {
         return appDao.readLastWeightRecordDate()
     }
 
+    suspend fun readAllWeightRecords(): Map<RecordEntity, WeightEntity> {
+        return appDao.readAllWeightRecords()
+    }
+
     // Ketone
 
     suspend fun addRecord(ketoneEntity: KetoneEntity){
@@ -188,6 +200,10 @@ class AppDatabaseRepository(private val appDao: AppDao) {
     }
     suspend fun deleteKetoneRecord(id: Int?){
         appDao.deleteKetoneRecord(id)
+    }
+
+    suspend fun readAllKetoneRecords(): Map<RecordEntity, KetoneEntity> {
+        return appDao.readAllKetoneRecords()
     }
 
     // Food

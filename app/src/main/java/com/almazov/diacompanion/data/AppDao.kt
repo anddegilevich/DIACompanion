@@ -40,6 +40,9 @@ interface AppDao {
     @Query("SELECT DISTINCT fullDay FROM record_table WHERE date LIKE :date")
     fun checkFullDays(date: String?): List<Boolean>
 
+    @Query("SELECT DISTINCT date FROM record_table WHERE fullDay = 1 ORDER BY dateInMilli ASC")
+    suspend fun readAllFullDays(): List<String>
+
     // SugarLevel
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)

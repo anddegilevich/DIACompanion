@@ -33,7 +33,6 @@ import java.sql.Date
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 class ExportData : Fragment() {
 
     private lateinit var sharedPreferences: SharedPreferences
@@ -116,6 +115,7 @@ class ExportData : Fragment() {
         val xlWsWorkoutSleep = xlWb.createSheet("Физическая нагрузка и сон")
         val xlWsWeight = xlWb.createSheet("Масса тела")
         val xlWsKetone = xlWb.createSheet("Кетоны в моче")
+        val xlWsFullDay = xlWb.createSheet("Полные дни")
         GlobalScope.launch(Dispatchers.Main) {
             val sugarLevelInsulinSheetCompleted = GlobalScope.async(Dispatchers.Default) {
                 getSugarLevelAndInsulinTable(xlWsSugarLevelInsulin)
@@ -128,6 +128,9 @@ class ExportData : Fragment() {
             }
             val ketoneSheetCompleted = GlobalScope.async(Dispatchers.Default) {
                 getKetoneTable(xlWsKetone)
+            }
+            val fullDaysSheetCompleted = GlobalScope.async(Dispatchers.Default) {
+                getFullDaysTable(xlWsFullDay)
             }
             if (sugarLevelInsulinSheetCompleted.await() and workoutSleepSheetCompleted.await() and
                 weightSheetCompleted.await() and ketoneSheetCompleted.await()) {
@@ -158,6 +161,41 @@ class ExportData : Fragment() {
             }
         }
 
+    }
+
+    private suspend fun getFullDaysTable(sheet: XSSFSheet): Boolean {
+        sheet.defaultColumnWidth = 10
+
+        val fullDays = GlobalScope.async(Dispatchers.Default) {
+            appDatabaseViewModel.readAllFullDays()
+        }
+
+        sheet.addMergedRegion(CellRangeAddress(0, 0, 0, 13))
+        sheet.createRow(0).createCell(0).setCellValue(globalInfoString)
+
+        sheet.createRow(1).createCell(0).apply {
+            setCellValue("Список полных дней")
+            cellStyle = styleYellow
+        }
+        sheet.createRow(2).createCell(0).apply {
+            setCellValue("Дата")
+            cellStyle = styleYellow
+        }
+
+        val fullDayList = fullDays.await()
+
+        var i = 1
+        for (date in fullDayList) {
+            sheet.getRow(2).createCell(i).apply {
+                setCellValue(date)
+                cellStyle = styleNormal
+            }
+            i += 1
+        }
+
+        setBordersToMergedCells(sheet)
+
+        return true
     }
 
     private suspend fun getKetoneTable(sheet: XSSFSheet): Boolean {

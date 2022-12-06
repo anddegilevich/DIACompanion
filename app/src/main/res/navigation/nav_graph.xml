@@ -66,6 +66,13 @@
         <action
             android:id="@+id/action_homePage_to_ketoneRecordInfo"
             app:destination="@id/ketoneRecordInfo" />
+        <action
+            android:id="@+id/action_homePage_to_accountSettings"
+            app:destination="@id/accountSettings"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"/>
 
     </fragment>
     <fragment
@@ -502,4 +509,8 @@
             android:name="selectedRecord"
             app:argType="com.almazov.diacompanion.data.RecordEntity" />
     </fragment>
+    <fragment
+        android:id="@+id/accountSettings"
+        android:name="com.almazov.diacompanion.settings.AccountSettings"
+        android:label="AccountSettings" />
 </navigation>

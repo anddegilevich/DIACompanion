@@ -50,6 +50,9 @@ class AppDatabaseRepository(private val appDao: AppDao) {
     fun updateFullDays(date: String?, fullDays: Boolean?){
         appDao.updateFullDays(date, fullDays)
     }
+    suspend fun readAllFullDays(): List<String> {
+        return appDao.readAllFullDays()
+    }
 
     // SugarLevel
 

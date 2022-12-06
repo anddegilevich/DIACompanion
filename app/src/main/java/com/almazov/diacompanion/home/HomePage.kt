@@ -100,8 +100,8 @@ class HomePage : Fragment(), InterfaceRecordsInfo {
         nav_view.itemIconTintList = null
         nav_view.setNavigationItemSelectedListener {
             when(it.itemId){
-                R.id.nav_view_account -> {/*deleteAllRecords()*/}
-                R.id.nav_view_app_type -> {/*Navigation.findNavController(view).navigate(R.id.action_homePage_to_mealList)*/ }
+                R.id.nav_view_account -> {findNavController().navigate(R.id.action_homePage_to_accountSettings) }
+                R.id.nav_view_app_type -> {}
             }
 
             drawer_layout.closeDrawer(GravityCompat.START)

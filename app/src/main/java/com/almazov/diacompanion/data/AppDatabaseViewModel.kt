@@ -70,6 +70,10 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
         }
     }
 
+    suspend fun readAllFullDays(): List<String> {
+        return repository.readAllFullDays()
+    }
+
     // SugarLevel
 
     fun addRecord(recordEntity: RecordEntity, sugarLevelEntity: SugarLevelEntity) {

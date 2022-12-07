@@ -21,6 +21,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -61,6 +62,7 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
     private var bmi: Double? = null
     private var protein: Double? = null
     private var glCarbsKr: List<Double?> = emptyList()
+    private var sugarLevelPredicted: Double? = null
 
     private lateinit var spinnerAdapter: CustomStringAdapter
     private lateinit var spinnerStringArray: Array<String>
@@ -70,7 +72,7 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
         savedInstanceState: Bundle?
     ): View? {
 
-        val sharedPreferences = context?.getSharedPreferences("SharedPreferences", Context.MODE_PRIVATE)
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         bmi = sharedPreferences!!.getFloat("BMI", 20f).toDouble()
 
         updateBool = args.selectedRecord != null
@@ -209,10 +211,8 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
             if (finalBool) {
                 if (updateBool) {
                     updateRecord(sugarLevelSubmit)
-                    findNavController().popBackStack()
                 } else {
                     addRecord(sugarLevelSubmit)
-                    Navigation.findNavController(view).navigate(R.id.action_mealAddRecord_to_homePage)
                 }
             }
         }
@@ -304,33 +304,43 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
     }
 
     private fun addRecord(sugarLevelSubmit: Boolean) {
-        val category = "meal_table"
 
-        val type = spinner_meal.selectedItem.toString()
-        val mainInfo = type
+        GlobalScope.launch(Dispatchers.Main) {
 
-        val sugarLevel = if (sugarLevelSubmit) {
-            edit_text_sugar_level.text.toString().toDouble()
-        } else {
-            null
+            val category = "meal_table"
+
+            val type = spinner_meal.selectedItem.toString()
+            val mainInfo = type
+
+            val sugarLevel = if (sugarLevelSubmit) {
+                getRecommendation()
+                edit_text_sugar_level.text.toString().toDouble()
+            } else {
+                null
+            }
+
+            val time = tv_Time.text.toString()
+            val date = tv_Date.text.toString()
+            val dateInMilli = convertDateToMils("$time $date")
+
+            val recordEntity = RecordEntity(
+                null, category, mainInfo, dateInMilli, time, date,
+                dateSubmit, false
+            )
+            val mealEntity = MealEntity(null, type, sugarLevel, sugarLevelPredicted)
+
+            appDatabaseViewModel.addRecord(recordEntity, mealEntity, foodList)
+            findNavController().navigate(R.id.action_mealAddRecord_to_homePage)
         }
-
-        val time = tv_Time.text.toString()
-        val date = tv_Date.text.toString()
-        val dateInMilli = convertDateToMils("$time $date")
-
-        val recordEntity = RecordEntity(null, category, mainInfo,dateInMilli, time, date,
-            dateSubmit,false)
-        val mealEntity = MealEntity(null,type, sugarLevel)
-
-        appDatabaseViewModel.addRecord(recordEntity,mealEntity,foodList)
     }
 
     private fun updateRecord(sugarLevelSubmit: Boolean) {
+        GlobalScope.launch(Dispatchers.Main) {
         val type = spinner_meal.selectedItem.toString()
         val mainInfo = type
 
         val sugarLevel = if (sugarLevelSubmit) {
+            getRecommendation()
             edit_text_sugar_level.text.toString().toDouble()
         } else {
             null
@@ -342,9 +352,11 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
 
         val recordEntity = RecordEntity(args.selectedRecord?.id, args.selectedRecord?.category, mainInfo,dateInMilli, time, date,
             args.selectedRecord?.dateSubmit,args.selectedRecord?.fullDay)
-        val mealEntity = MealEntity(args.selectedRecord?.id,type, sugarLevel)
+        val mealEntity = MealEntity(args.selectedRecord?.id,type, sugarLevel, sugarLevelPredicted)
 
         appDatabaseViewModel.updateRecord(recordEntity,mealEntity,foodList)
+        findNavController().popBackStack()
+        }
     }
 
     private fun updateRecommendation() {
@@ -355,16 +367,16 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
             getRecommendation()
         }
         if (vf_recommendation != null) vf_recommendation.displayedChild = result.await()
-    }
-
+        }
     }
     private suspend fun getRecommendation(): Int {
         return if ((edit_text_sugar_level != null) and (spinner_meal != null)) {
-            val predict = predictSL(
+            sugarLevelPredicted = setTwoDigits(predictSL(
                 requireContext(), edit_text_sugar_level.text.toString().toDouble(),
                 glCarbsKr, protein, spinner_meal.selectedItem.toString(), bmi
-            )
-            val result = if (predict > 6.8) {
+            ))
+
+            val result = if (sugarLevelPredicted!! > 6.8) {
                 2
             } else
                 1

@@ -206,4 +206,8 @@
     <string name="Obesity2">Ожирение 2-й степени</string>
     <string name="Obesity3">Ожирение 3-й степени</string>
     <string name="SleepDurationDistribution">Распределение средней продолжительности сна</string>
+    <string name="Contacts">Контакты</string>
+    <string name="PersonalData">Персональные данные</string>
+    <string name="AccountData">Данные аккаунта</string>
+    <string name="Pregnancy">Беременность</string>
 </resources>

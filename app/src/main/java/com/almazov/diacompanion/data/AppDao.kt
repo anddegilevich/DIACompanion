@@ -110,6 +110,15 @@ interface AppDao {
             "AND (id != :id))")
     fun checkMealType(date: String, id: Int?): LiveData<List<String>>
 
+    @Query("""
+        SELECT * FROM record_table
+        INNER JOIN meal_table ON (meal_table.idMeal = record_table.id) 
+        INNER JOIN food_in_meal_table ON (meal_table.idMeal = food_in_meal_table.idMeal)
+        INNER JOIN food_table ON (food_table.idFood = food_in_meal_table.idFood)
+        ORDER BY dateInMilli ASC
+        """)
+    suspend fun readAllMealRecords(): List<MealFullInfo>
+
     // Workout
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
@@ -223,9 +232,7 @@ interface AppDao {
         INNER JOIN food_table ON (food_table.idFood = food_in_meal_table.idFood)
         """)
     fun getMealWithFoods6HoursAgo(timeInMilli: Long): LiveData<List<MealWithFood>>
-    /*WHERE idMeal = (SELECT id FROM record_table WHERE (dateInMilli < :timeInMilli) AND (dateInMilli > :timeInMilli - 21600000))
 
-*/
     @Query("DELETE FROM food_in_meal_table WHERE idMeal = :id")
     suspend fun deleteMealWithFoodsRecord(id: Int?)
 

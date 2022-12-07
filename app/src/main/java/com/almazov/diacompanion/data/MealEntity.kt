@@ -8,5 +8,6 @@ data class MealEntity (
     @PrimaryKey(autoGenerate = true)
     var idMeal: Int?,
     val type: String?,
-    val sugarLevel: Double?
+    val sugarLevel: Double?,
+    val sugarLevelPredicted: Double?
     )

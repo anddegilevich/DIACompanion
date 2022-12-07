@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.preference.PreferenceManager
 import com.almazov.diacompanion.R
 import com.almazov.diacompanion.base.setTwoDigits
 import com.almazov.diacompanion.data.AppDatabaseViewModel
@@ -76,8 +77,7 @@ class WeightRecordInfo : Fragment() {
     }
 
     private fun showBMI(weight: Double) {
-        val sharedPreferences =
-        requireContext().getSharedPreferences("SharedPreferences", Context.MODE_PRIVATE)
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         val height = sharedPreferences.getFloat("HEIGHT", 1f)
         var bmi = setTwoDigits(weight / height.pow(2))
         tv_bmi.text = bmi.toString()

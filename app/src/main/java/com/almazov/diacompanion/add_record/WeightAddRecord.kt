@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.preference.PreferenceManager
 import com.almazov.diacompanion.R
 import com.almazov.diacompanion.base.convertDateToMils
 import com.almazov.diacompanion.base.editTextSeekBarSetup
@@ -93,7 +94,7 @@ class WeightAddRecord : Fragment() {
             }
             if (changeWeight) {
                 val sharedPreferences =
-                    requireContext().getSharedPreferences("SharedPreferences", Context.MODE_PRIVATE)
+                    PreferenceManager.getDefaultSharedPreferences(requireContext())
                 val editor = sharedPreferences.edit()
                 val height = sharedPreferences.getFloat("HEIGHT", 1f)
                 val bmi = weight / height.pow(2)

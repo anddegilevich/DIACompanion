@@ -49,7 +49,6 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
-    implementation 'androidx.preference:preference:1.1.1'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
@@ -95,8 +94,10 @@ dependencies {
     // Charts
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
-
+    // Excel
     implementation 'org.apache.poi:poi:5.2.2'
     implementation 'org.apache.poi:poi-ooxml:5.2.2'
-    //implementation 'io.github.evanrupert:excelkt:1.0.2'
+
+    // Preferences
+    implementation "androidx.preference:preference:1.2.0"
 }

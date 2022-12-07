@@ -15,6 +15,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.almazov.diacompanion.R
 import com.almazov.diacompanion.base.*
@@ -57,7 +58,7 @@ class MealRecordInfo : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
         savedInstanceState: Bundle?
     ): View? {
 
-        val sharedPreferences = context?.getSharedPreferences("SharedPreferences", Context.MODE_PRIVATE)
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         bmi = sharedPreferences!!.getFloat("BMI", 20f).toDouble()
 
         return inflater.inflate(R.layout.fragment_meal_record_info, container, false)
@@ -82,7 +83,8 @@ class MealRecordInfo : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
                 tv_weight.text = mealInfo[6].toInt().toString() + " гр."
 
                 if (record[0].meal.sugarLevel != null) {
-                    displayPredictedSugarLevelAndRecommendation(record)
+                    tv_sugar_level_before.text = record[0].meal.sugarLevel.toString()
+                    tv_sugar_level_predict.text = record[0].meal.sugarLevelPredicted.toString()
                 }
             }
         })
@@ -103,7 +105,7 @@ class MealRecordInfo : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
             val builder = AlertDialog.Builder(requireContext())
             builder.setPositiveButton(this.resources.getString(R.string.Yes)) {_, _ ->
                 appDatabaseViewModel.deleteMealRecord(args.selectedRecord?.id)
-                args.selectedRecord?.let { appDatabaseViewModel.deleteRecord(it) }
+                args.selectedRecord.let { appDatabaseViewModel.deleteRecord(it) }
                 findNavController().popBackStack()
             }
             builder.setNegativeButton(this.resources.getString(R.string.No)) {_, _ ->
@@ -116,7 +118,7 @@ class MealRecordInfo : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
         super.onViewCreated(view, savedInstanceState)
     }
 
-    private fun displayPredictedSugarLevelAndRecommendation(record: List<MealWithFood>) {
+    /*private fun displayPredictedSugarLevelAndRecommendation(record: List<MealWithFood>) {
         tv_sugar_level_before.text = record[0].meal.sugarLevel.toString()
 
         val time = args.selectedRecord.time
@@ -142,7 +144,7 @@ class MealRecordInfo : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
 
                 }
             })
-    }
+    }*/
 
     private fun setPieChart() {
         mealInfo = getMealInfo(foodList)

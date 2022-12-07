@@ -7,12 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.Navigation
+import androidx.preference.PreferenceManager
 import androidx.viewpager2.widget.ViewPager2
 import com.almazov.diacompanion.R
 import com.almazov.diacompanion.base.convertDateToMils
 import kotlinx.android.synthetic.main.fragment_setup_complete_page.view.*
 import kotlinx.android.synthetic.main.fragment_setup_page1.view.btn_back
 import java.io.*
+import java.util.prefs.Preferences
 import kotlin.math.pow
 
 
@@ -79,7 +81,7 @@ class SetupCompletePage : Fragment() {
         val appType = 1
 
 
-        val sharedPreferences = context?.getSharedPreferences("SharedPreferences", Context.MODE_PRIVATE)
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         val editor = sharedPreferences?.edit()
         editor?.apply{
             putBoolean("ON_BOARDING_FINISHED", finished)

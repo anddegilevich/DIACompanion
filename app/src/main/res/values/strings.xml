@@ -67,6 +67,10 @@
     <string name="Height">Height</string>
     <string name="AttendingDoctor">Attending doctor</string>
     <string name="PregnancyStart">Date of the beginning of pregnancy</string>
+    <string name="PersonalData">Personal data</string>
+    <string name="AccountData">Account data</string>
+    <string name="Contacts">Contacts</string>
+    <string name="Pregnancy">Pregnancy</string>
 
     //----------------------------------------------------------------------------------------------
     //Fragments

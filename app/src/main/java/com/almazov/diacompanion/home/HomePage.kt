@@ -18,6 +18,7 @@ import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.almazov.diacompanion.R
 import com.almazov.diacompanion.data.AppDatabaseViewModel
@@ -117,7 +118,7 @@ class HomePage : Fragment(), InterfaceRecordsInfo {
     }
 
     private fun ifOnBoardingFinished(view: View){
-        val sharedPreferences = context?.getSharedPreferences("SharedPreferences", Context.MODE_PRIVATE)
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         val finished: Boolean = sharedPreferences!!.getBoolean("ON_BOARDING_FINISHED", false)
         if (!finished) {Navigation.findNavController(view).navigate(R.id.action_homePage_to_onBoardingViewPager)}
     }

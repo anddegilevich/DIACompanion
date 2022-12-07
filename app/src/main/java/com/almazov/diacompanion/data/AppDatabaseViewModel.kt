@@ -181,6 +181,10 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
         return repository.checkMealType(date, id)
     }
 
+    suspend fun readAllMealRecords(): List<MealFullInfo> {
+        return repository.readAllMealRecords()
+    }
+
     // Workout
 
     fun addRecord(recordEntity: RecordEntity, workoutEntity: WorkoutEntity) {

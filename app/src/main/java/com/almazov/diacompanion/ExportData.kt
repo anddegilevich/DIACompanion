@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.preference.PreferenceManager
 import com.almazov.diacompanion.data.AppDatabaseViewModel
 import kotlinx.android.synthetic.main.fragment_export_data.*
 import kotlinx.coroutines.Dispatchers
@@ -57,8 +58,7 @@ class ExportData : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         appDatabaseViewModel = ViewModelProvider(this)[AppDatabaseViewModel::class.java]
-        sharedPreferences = requireContext().getSharedPreferences("SharedPreferences",
-            Context.MODE_PRIVATE)
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         btn_export_to_slxs.setOnClickListener{
             createXmlFile()
         }
@@ -112,6 +112,7 @@ class ExportData : Fragment() {
                 "Программа: DiaCompanion Android $appTypeString"
 
         val xlWsSugarLevelInsulin = xlWb.createSheet("Уровень сахара и инсулин")
+        val xlWsMeal = xlWb.createSheet("Приемы пищи")
         val xlWsWorkoutSleep = xlWb.createSheet("Физическая нагрузка и сон")
         val xlWsWeight = xlWb.createSheet("Масса тела")
         val xlWsKetone = xlWb.createSheet("Кетоны в моче")
@@ -119,6 +120,9 @@ class ExportData : Fragment() {
         GlobalScope.launch(Dispatchers.Main) {
             val sugarLevelInsulinSheetCompleted = GlobalScope.async(Dispatchers.Default) {
                 getSugarLevelAndInsulinTable(xlWsSugarLevelInsulin)
+            }
+            val mealSheetCompleted = GlobalScope.async(Dispatchers.Default) {
+                getMealTable(xlWsMeal)
             }
             val workoutSleepSheetCompleted = GlobalScope.async(Dispatchers.Default) {
                 getWorkoutAndSleepTable(xlWsWorkoutSleep)
@@ -133,7 +137,9 @@ class ExportData : Fragment() {
                 getFullDaysTable(xlWsFullDay)
             }
             if (sugarLevelInsulinSheetCompleted.await() and workoutSleepSheetCompleted.await() and
-                weightSheetCompleted.await() and ketoneSheetCompleted.await()) {
+                weightSheetCompleted.await() and ketoneSheetCompleted.await() and
+                fullDaysSheetCompleted.await() and mealSheetCompleted.await()) {
+
                 val path = requireContext().getDatabasePath("exportTest.xlsx").path
                 val table = FileOutputStream(path)
 
@@ -163,8 +169,59 @@ class ExportData : Fragment() {
 
     }
 
+    private suspend fun getMealTable(sheet: XSSFSheet): Boolean {
+        sheet.defaultColumnWidth = 16
+
+        val mealRecords = GlobalScope.async(Dispatchers.Default) {
+            appDatabaseViewModel.readAllMealRecords()
+        }
+
+        sheet.addMergedRegion(CellRangeAddress(0, 0, 0, 13))
+        sheet.createRow(0).createCell(0).setCellValue(globalInfoString)
+        sheet.addMergedRegion(CellRangeAddress(1, 1, 0, 67))
+        sheet.createRow(1).createCell(0).apply {
+            setCellValue("Приемы пищи")
+            cellStyle = styleYellow
+        }
+
+        val columnNames = listOf("Дата", "Время", "Прием пищи", "Продукт", "Масса (г)",
+            "Углеводы (г)", "Белки (г)", "Жиры (г)", "Энерг. ценность (Ккал)",
+            "Пищевые волокна (г)", "ГИ", "ГН","", "Вода (г)", "НЖК (г)", "Холестерин (мг)",
+            "Зола (г)", "Натрий (мг)", "Калий (мг)", "Кальций (мг)", "Магний (мг)", "Фосфор (мг)",
+            "Железо (мг)", "Ретинол (мкг)", "Тиамин (мг)", "Рибофлавин (мг)", "Ниацин (мг)",
+            "Витамин C (мг)", "Ретиновый эквивалент (мкг)", "", "Бета-каротин (мкг)",
+            "Сахар, общее содержание (г)", "Крахмал (г)", "Токоферолэквивалент (мг)",
+            "Органические кислоты (г)", "Ниациновый эквивалент (мг)", "Цинк (мг)", "Медь (мг)",
+            "Марганец (мг)", "Селен (мкг)", "Пантотеновая кислота (мг)", "Витамин B6 (мг)",
+            "Фолаты общ. (мкг)", "Фолиевая кислота (мкг)", "Фолаты ДФЭ (мкг)", "Холин общ. (мкг)",
+            "Витамин B12 (мг)", "Витамин A (ЭАР)", "Альфа-каротин (мкг)",
+            "Криптоксантин бета (мкг)", "Ликопин (мкг)", "Лютеин + Гексаксантин (мкг)",
+            "Витамин E (мг)", "Витамин D (мкг)", "Витамин D (межд.ед.)", "Витамин K (мкг)",
+            "Мононенасыщенные жирные кислоты (г)", "Полиненасыщенные жирные кислоты (г)", "",
+            "Вес перв. ед. изм.", "Описание перв. ед. изм.", "Вес второй ед. изм",
+            "Опис. второй ед. изм.", "Процент потерь, %", "", "УСК до еды", "Прогноз УСК"
+        )
+        sheet.createRow(2).apply {
+            var i = 1
+            for (columnName in columnNames) {
+                createCell(i).apply {
+                    setCellValue(columnName)
+                    cellStyle = styleYellow
+                }
+                i += 1
+            }
+        }
+
+        val mealList = mealRecords.await().toList()
+
+        setBordersToMergedCells(sheet)
+
+        return true
+    }
+
     private suspend fun getFullDaysTable(sheet: XSSFSheet): Boolean {
         sheet.defaultColumnWidth = 10
+        sheet.setColumnWidth(0, 5000)
 
         val fullDays = GlobalScope.async(Dispatchers.Default) {
             appDatabaseViewModel.readAllFullDays()
@@ -184,6 +241,8 @@ class ExportData : Fragment() {
 
         val fullDayList = fullDays.await()
 
+        if (fullDayList.isNullOrEmpty()) return true
+
         var i = 1
         for (date in fullDayList) {
             sheet.getRow(2).createCell(i).apply {
@@ -199,7 +258,7 @@ class ExportData : Fragment() {
     }
 
     private suspend fun getKetoneTable(sheet: XSSFSheet): Boolean {
-        sheet.defaultColumnWidth = 10
+        sheet.defaultColumnWidth = 18
 
         val ketoneRecords = GlobalScope.async(Dispatchers.Default) {
             appDatabaseViewModel.readAllKetoneRecords()
@@ -344,7 +403,7 @@ class ExportData : Fragment() {
 
     private suspend fun getWorkoutAndSleepTable(sheet: XSSFSheet): Boolean {
 
-        sheet.defaultColumnWidth = 16
+        sheet.defaultColumnWidth = 18
 
         val workoutRecords = GlobalScope.async(Dispatchers.Default) {
             appDatabaseViewModel.readAllWorkoutRecords()
@@ -487,6 +546,11 @@ class ExportData : Fragment() {
     private suspend fun getSugarLevelAndInsulinTable(sheet: XSSFSheet): Boolean{
 
         sheet.defaultColumnWidth = 9
+        sheet.setColumnWidth(16, 5000)
+        sheet.setColumnWidth(19, 5000)
+        sheet.setColumnWidth(22, 5000)
+        sheet.setColumnWidth(25, 5000)
+        sheet.setColumnWidth(28, 5000)
 
         val sugarLevelRecords = GlobalScope.async(Dispatchers.Default) {
             appDatabaseViewModel.readAllSugarLevelRecords()
@@ -648,11 +712,6 @@ class ExportData : Fragment() {
         }
 
         setBordersToMergedCells(sheet)
-        sheet.setColumnWidth(16, 5000)
-        sheet.setColumnWidth(19, 5000)
-        sheet.setColumnWidth(22, 5000)
-        sheet.setColumnWidth(25, 5000)
-        sheet.setColumnWidth(28, 5000)
         return true
     }
 

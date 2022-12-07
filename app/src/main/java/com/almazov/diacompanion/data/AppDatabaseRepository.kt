@@ -121,6 +121,10 @@ class AppDatabaseRepository(private val appDao: AppDao) {
         return appDao.checkMealType(date, id)
     }
 
+    suspend fun readAllMealRecords(): List<MealFullInfo> {
+        return appDao.readAllMealRecords()
+    }
+
     // Workout
 
     suspend fun addRecord(workoutEntity: WorkoutEntity){

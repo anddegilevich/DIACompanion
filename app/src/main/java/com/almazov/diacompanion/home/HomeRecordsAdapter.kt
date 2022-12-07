@@ -65,6 +65,7 @@ class HomeRecordsAdapter(private val mListener: InterfaceRecordsInfo): RecyclerV
 
     override fun onBindViewHolder(holder: HomeRecordsViewHolder, position: Int) {
         val record = recordsList[position]
+        val id = record.id
 
         val primaryColor = categoriesAndPrimaryColors.get(record.category)
         val secondaryColor = categoriesAndSecondaryColors.get(record.category)
@@ -81,15 +82,10 @@ class HomeRecordsAdapter(private val mListener: InterfaceRecordsInfo): RecyclerV
 
         holder.itemView.img_category.setImageResource(imageCategory!!)
 
-        holder.itemView.card_view.transitionName = "$position record_card"
-        holder.itemView.img_category.transitionName = "$position img_category"
-        holder.itemView.main_info.transitionName = "$position main_info"
-        holder.itemView.date.transitionName = "$position date"
-        holder.itemView.time.transitionName = "$position time"
-
+        holder.itemView.card_view.transitionName = "$id record_card"
+        holder.itemView.img_category.transitionName = "$id img_category"
 
         holder.itemView.card_view.setBackgroundResource(primaryColor!!)
-        //holder.itemView.card_view.backgroundTintList = ContextCompat.getColorStateList(context!!, primaryColor!!)
         holder.itemView.card_view.setOnClickListener{
             holder.mListener.transitionToRecordInfo(holder.itemView, record)
         }

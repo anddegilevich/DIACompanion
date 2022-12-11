@@ -213,6 +213,22 @@ class ExportData : Fragment() {
         }
 
         val mealList = mealRecords.await().toList()
+        if (mealList.isNullOrEmpty()) return true
+        val dates = getDates(mealList[0].record.date!!, mealList.last().record.date!!)
+
+        var i = 3
+        var j = 0
+        for (date in dates) {
+            while (mealList[j].record.date == date) {
+                sheet.createRow(i).apply {
+                    createCell(1).apply {
+                        setCellValue(date)
+                        cellStyle = styleNormal
+                    }
+                }
+            }
+            i += 1
+        }
 
         setBordersToMergedCells(sheet)
 

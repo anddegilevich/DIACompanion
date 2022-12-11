@@ -210,4 +210,5 @@
     <string name="PersonalData">Персональные данные</string>
     <string name="AccountData">Данные аккаунта</string>
     <string name="Pregnancy">Беременность</string>
+    <string name="Calories">Калории</string>
 </resources>

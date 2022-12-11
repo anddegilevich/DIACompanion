@@ -11,7 +11,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.preference.PreferenceManager
 import com.almazov.diacompanion.R
+import com.almazov.diacompanion.base.setTwoDigits
 import com.almazov.diacompanion.data.AppDatabaseViewModel
 import kotlinx.android.synthetic.main.fragment_workout_record_info.*
 
@@ -19,6 +21,14 @@ class WorkoutRecordInfo : Fragment() {
 
     private val args by navArgs<WorkoutRecordInfoArgs>()
     private lateinit var appDatabaseViewModel: AppDatabaseViewModel
+
+    val workoutCoefs = mutableMapOf(
+        "Ходьба" to 4.5f,
+        "Зарядка" to 6f,
+        "Спорт" to 8.5f,
+        "Уборка" to 3f,
+        "Садовые работы" to 5f
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val animation = TransitionInflater.from(requireContext()).inflateTransition(
@@ -38,11 +48,17 @@ class WorkoutRecordInfo : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val weight = sharedPreferences.getFloat("WEIGHT", 60f)
         appDatabaseViewModel = ViewModelProvider(this)[AppDatabaseViewModel::class.java]
         appDatabaseViewModel.readWorkoutRecord(args.selectedRecord.id).observe(viewLifecycleOwner, Observer { record ->
 
             tv_duration.text = record.duration.toString()
             tv_type.text = record.type
+
+            val calories = workoutCoefs[record.type]!! * record.duration!!.toFloat() / 60 * weight
+
+            tv_kkal.text = setTwoDigits(calories.toDouble()).toString()
 
         })
 

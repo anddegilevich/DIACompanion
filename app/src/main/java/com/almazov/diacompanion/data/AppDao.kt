@@ -22,8 +22,8 @@ interface AppDao {
     @Query("DELETE FROM record_table")
     suspend fun deleteAllRecords()
 
-    @Query("SELECT * FROM record_table ORDER BY dateInMilli DESC, id DESC LIMIT 10")
-    fun readLastRecords(): LiveData<List<RecordEntity>>
+        @Query("SELECT * FROM record_table ORDER BY dateInMilli DESC, id DESC LIMIT 10")
+        fun readLastRecords(): LiveData<List<RecordEntity>>
 
     @Query("SELECT DISTINCT date, fullDay FROM record_table ORDER BY dateInMilli DESC")
     fun readDatesPaged(): PagingSource<Int, DateClass>

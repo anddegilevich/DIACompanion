@@ -125,7 +125,7 @@
                             android:layout_height="280dp"/>
 
                     </FrameLayout>
-                    <LinearLayout
+                    <!--<LinearLayout
                         style="@style/Content"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -148,7 +148,7 @@
                             android:drawablePadding="2dp"
                             app:drawableEndCompat="@drawable/arrow" />
 
-                    </LinearLayout>
+                    </LinearLayout>-->
 
 
                 </LinearLayout>

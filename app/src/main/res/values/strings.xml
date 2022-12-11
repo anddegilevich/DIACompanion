@@ -249,6 +249,7 @@
 
     // Workout record info
     <string name="Duration">Duration</string>
+    <string name="Calories">Calories</string>
 
     // Export data
 

@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.preference.PreferenceManager
@@ -20,7 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.almazov.diacompanion.R
 import com.almazov.diacompanion.base.*
 import com.almazov.diacompanion.data.AppDatabaseViewModel
-import com.almazov.diacompanion.data.MealWithFood
+import com.almazov.diacompanion.data.FoodEntity
 import com.almazov.diacompanion.meal.FoodInMealItem
 import com.almazov.diacompanion.meal.FoodInMealListAdapter
 import com.github.mikephil.charting.animation.Easing
@@ -29,12 +30,15 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
 import kotlinx.android.synthetic.main.fragment_meal_record_info.*
+import kotlinx.android.synthetic.main.fragment_meal_record_info.btn_delete
 import kotlinx.android.synthetic.main.fragment_meal_record_info.recycler_view_food_in_meal
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import java.math.BigDecimal
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MealRecordInfo : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
     private val args by navArgs<MealRecordInfoArgs>()
@@ -53,6 +57,11 @@ class MealRecordInfo : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
         super.onCreate(savedInstanceState)
     }
 
+    override fun onResume() {
+        foodList.clear()
+        super.onResume()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -66,6 +75,13 @@ class MealRecordInfo : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        findNavController().currentBackStackEntry?.savedStateHandle
+            ?.getLiveData<String>("mealTypeKey")?.observe(viewLifecycleOwner) {
+                if (it != null) {
+                    args.selectedRecord.mainInfo = it
+                }
+            }
 
         appDatabaseViewModel = ViewModelProvider(this)[AppDatabaseViewModel::class.java]
 
@@ -85,6 +101,25 @@ class MealRecordInfo : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
                 if (record[0].meal.sugarLevel != null) {
                     tv_sugar_level_before.text = record[0].meal.sugarLevel.toString()
                     tv_sugar_level_predict.text = record[0].meal.sugarLevelPredicted.toString()
+
+                    GlobalScope.launch(Dispatchers.Main) {
+                        val today = args.selectedRecord.date!!
+                        val yesterday = getYesterdayDate(today)
+                        val todayRecords = GlobalScope.async(Dispatchers.Default) {
+                            appDatabaseViewModel.getMealWithFoodsThisDay(today)
+                        }
+                        val yesterdayRecords = GlobalScope.async(Dispatchers.Default) {
+                            appDatabaseViewModel.getMealWithFoodsThisDay(yesterday)
+                        }
+
+                        val highGI = checkGI(record)
+                        val manyCarbs = checkCarbs(record[0].meal.type!!,record)
+                        val highBGBefore = checkSLBefore(record[0].meal.sugarLevel!!)
+                        val lowPV = checkPV(record,todayRecords.await(), yesterdayRecords.await())
+
+                        val recommendationMessage = getMessage(highGI, manyCarbs, highBGBefore, lowPV, record[0].meal.sugarLevelPredicted!!, resources)
+                        tv_recommendation.text = recommendationMessage
+                    }
                 }
             }
         })
@@ -104,7 +139,7 @@ class MealRecordInfo : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
         btn_delete.setOnClickListener{
             val builder = AlertDialog.Builder(requireContext())
             builder.setPositiveButton(this.resources.getString(R.string.Yes)) {_, _ ->
-                appDatabaseViewModel.deleteMealRecord(args.selectedRecord?.id)
+                appDatabaseViewModel.deleteMealRecord(args.selectedRecord.id)
                 args.selectedRecord.let { appDatabaseViewModel.deleteRecord(it) }
                 findNavController().popBackStack()
             }
@@ -117,34 +152,6 @@ class MealRecordInfo : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
 
         super.onViewCreated(view, savedInstanceState)
     }
-
-    /*private fun displayPredictedSugarLevelAndRecommendation(record: List<MealWithFood>) {
-        tv_sugar_level_before.text = record[0].meal.sugarLevel.toString()
-
-        val time = args.selectedRecord.time
-        val date = args.selectedRecord.date
-        val timeInMilli = convertDateToMils("$time $date")
-
-        appDatabaseViewModel.getMealWithFoods6HoursAgo(timeInMilli)
-            .observe(viewLifecycleOwner, Observer { proteinRecord ->
-                val protein = getProtein(proteinRecord)
-                GlobalScope.launch(Dispatchers.Main) {
-                    val predict = GlobalScope.async(Dispatchers.Default) {
-                        val glCarbsKr = getGLCarbsKr(foodList)
-                        return@async predictSL(
-                            requireContext(), record[0].meal.sugarLevel,
-                            glCarbsKr, protein, record[0].meal.type, bmi
-                        )
-                    }
-                    val highGi = GlobalScope.async((Dispatchers.Default)) {
-//                        checkGI(record)
-                    }
-//                    val recommendation = getMessage(predict.await())
-                    tv_sugar_level_predict.text = setTwoDigits(predict.await()).toString()
-
-                }
-            })
-    }*/
 
     private fun setPieChart() {
         mealInfo = getMealInfo(foodList)
@@ -197,6 +204,18 @@ class MealRecordInfo : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
         val inflater = super.onGetLayoutInflater(savedInstanceState)
         val contextThemeWrapper: Context = ContextThemeWrapper(requireContext(), R.style.MealTheme)
         return inflater.cloneInContext(contextThemeWrapper)
+    }
+
+    private fun getYesterdayDate(today: String): String {
+        val formatter = SimpleDateFormat("dd.MM.yyyy")
+        val date1 = formatter.parse(today)
+
+        val calendar = Calendar.getInstance()
+        calendar.time = date1
+
+        calendar.add(Calendar.DATE, -1)
+
+        return formatter.format(calendar.time)
     }
 
     override fun updateRecommendationWeight(position: Int, weight: Double) {

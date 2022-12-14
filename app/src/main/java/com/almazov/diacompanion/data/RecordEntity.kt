@@ -11,7 +11,7 @@ data class RecordEntity (
     @PrimaryKey(autoGenerate = true)
     val id: Int?,
     val category: String?,
-    val mainInfo: String?,
+    var mainInfo: String?,
     val dateInMilli: Long?,
     val time: String?,
     val date: String?,

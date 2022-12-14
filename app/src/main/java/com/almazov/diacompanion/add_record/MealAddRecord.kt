@@ -355,6 +355,7 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
         val mealEntity = MealEntity(args.selectedRecord?.id,type, sugarLevel, sugarLevelPredicted)
 
         appDatabaseViewModel.updateRecord(recordEntity,mealEntity,foodList)
+        findNavController().previousBackStackEntry?.savedStateHandle?.set("mealTypeKey", type)
         findNavController().popBackStack()
         }
     }
@@ -369,6 +370,7 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
         if (vf_recommendation != null) vf_recommendation.displayedChild = result.await()
         }
     }
+
     private suspend fun getRecommendation(): Int {
         return if ((edit_text_sugar_level != null) and (spinner_meal != null)) {
             sugarLevelPredicted = setTwoDigits(predictSL(

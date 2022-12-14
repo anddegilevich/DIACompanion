@@ -355,6 +355,10 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
         return repository.getMealWithFoods6HoursAgo(timeInMilli)
     }
 
+    suspend fun getMealWithFoodsThisDay(day: String): List<MealWithFood> {
+        return repository.getMealWithFoodsThisDay(day)
+    }
+
     // Recipe
 
     fun addRecord(foodEntity: FoodEntity, foodList: MutableList<FoodInMealItem>) {

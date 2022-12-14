@@ -270,6 +270,10 @@ class AppDatabaseRepository(private val appDao: AppDao) {
         return appDao.getMealWithFoods6HoursAgo(timeInMilli)
     }
 
+    suspend fun getMealWithFoodsThisDay(day: String): List<MealWithFood> {
+        return appDao.getMealWithFoodsThisDay(day)
+    }
+
     suspend fun deleteMealWithFoodsRecord(id: Int?){
         appDao.deleteMealWithFoodsRecord(id)
     }

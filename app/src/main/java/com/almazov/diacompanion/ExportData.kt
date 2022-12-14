@@ -225,9 +225,21 @@ class ExportData : Fragment() {
                         setCellValue(date)
                         cellStyle = styleNormal
                     }
+                   /* createCell(2).apply {
+                        setCellValue(mealList[j].record.time)
+                        cellStyle = styleNormal
+                    }
+                    createCell(3).apply {
+                        setCellValue(mealList[j].meal.type)
+                        cellStyle = styleNormal
+                    }
+                    createCell(4).apply {
+                        setCellValue(mealList[j].food.name)
+                        cellStyle = styleNormal
+                    }*/
                 }
+                i += 1
             }
-            i += 1
         }
 
         setBordersToMergedCells(sheet)

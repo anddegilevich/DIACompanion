@@ -12,20 +12,20 @@ import java.io.FileInputStream
 import java.io.IOException
 
 
-fun checkGI(listOfFood: List<FoodInMealItem>): Boolean {
+fun checkGI(listOfFood: List<MealWithFood>): Boolean {
     for (food in listOfFood) {
-        if (food.foodEntity.gi!! > 55) {
+        if (food.food.gi!! > 55) {
             return true
         }
     }
     return false
 }
 
-fun checkCarbs(mealType: String, listOfFood: List<FoodInMealItem>): Boolean {
+fun checkCarbs(mealType: String, listOfFood: List<MealWithFood>): Boolean {
     var sumCarbs = 0.0
-    val  breakfastString = Resources.getSystem().getString(R.string.Breakfast)
+    val  breakfastString = "Завтрак"
     for (food in listOfFood) {
-        sumCarbs += food.foodEntity.carbo!! * food.weight /100
+        sumCarbs += food.food.carbo!! * food.weight!! /100
     }
     if (sumCarbs > 30 && mealType == breakfastString) {
         return true
@@ -42,11 +42,21 @@ fun checkSLBefore(sugarLevel: Double): Boolean {
     return false
 }
 
-fun checkPV(listOfFood: List<FoodInMealItem>, sumPVToday: Double, sumPVYesterday: Double): Boolean {
+fun checkPV(listOfFood: List<MealWithFood>, listOfFoodToday: List<MealWithFood>, listOfFoodYesterday: List<MealWithFood>): Boolean {
     var sumPV = 0.0
+    var sumPVToday = 0.0
+    var sumPVYesterday = 0.0
     for (food in listOfFood) {
-        sumPV += food.foodEntity.pv!! * food.weight / 100
+        sumPV += food.food.pv!! * food.weight!! / 100
     }
+    for (food in listOfFoodToday) {
+        sumPVToday += food.food.pv!! * food.weight!! / 100
+    }
+    for (food in listOfFoodYesterday) {
+        sumPVYesterday += food.food.pv!! * food.weight!! / 100
+    }
+
+
     if (sumPV < 8) {
         return true
     } else if (sumPV + sumPVToday < 20)
@@ -149,8 +159,10 @@ fun getMealInfo(listOfFood: List<FoodInMealItem>): List<Double> {
         weight)
 }
 
-fun getMessage(highGI: Boolean, manyCarbs: Boolean, highBGBefore: Boolean,
-               lowPV: Boolean, bgPredict: Double): String {
+fun getMessage(
+    highGI: Boolean, manyCarbs: Boolean, highBGBefore: Boolean,
+    lowPV: Boolean, bgPredict: Double, resources: Resources
+): String {
     var txtInt: Int? = null
     if (highGI && bgPredict > 6.8) {
         txtInt = R.string.HighGI
@@ -164,8 +176,8 @@ fun getMessage(highGI: Boolean, manyCarbs: Boolean, highBGBefore: Boolean,
         txtInt = R.string.BGPredict
     }
     return if (txtInt != null)
-        Resources.getSystem().getString(txtInt)
-    else ""
+        resources.getString(txtInt)
+    else "Нет рекоммендаций"
 }
 
 @Throws(IOException::class)

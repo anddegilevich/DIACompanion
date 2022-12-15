@@ -5,41 +5,41 @@
     android:viewportHeight="178.11">
   <path
       android:pathData="M229.21,0L267.71,0A10.63,10.63 0,0 1,278.34 10.63L278.34,167.41A10.63,10.63 0,0 1,267.71 178.04L229.21,178.04A10.63,10.63 0,0 1,218.58 167.41L218.58,10.63A10.63,10.63 0,0 1,229.21 0z"
-      android:fillColor="@color/green_dark"/>
+      android:fillColor="@color/blue"/>
   <path
       android:pathData="M288.69,26.15L312.81,26.15A10.35,10.35 0,0 1,323.16 36.5L323.16,141.55A10.35,10.35 0,0 1,312.81 151.9L288.69,151.9A10.35,10.35 0,0 1,278.34 141.55L278.34,36.5A10.35,10.35 0,0 1,288.69 26.15z"
-      android:fillColor="@color/green_dark"/>
+      android:fillColor="@color/blue"/>
   <path
       android:pathData="M235.75,12.45L261.17,12.45A4.72,4.72 0,0 1,265.89 17.17L265.89,160.87A4.72,4.72 0,0 1,261.17 165.59L235.75,165.59A4.72,4.72 0,0 1,231.03 160.87L231.03,17.17A4.72,4.72 0,0 1,235.75 12.45z"
-      android:fillColor="@color/green"/>
+      android:fillColor="?attr/panel_color"/>
   <path
       android:pathData="M292.48,37.35L309.02,37.35A4.62,4.62 0,0 1,313.64 41.97L313.64,136.07A4.62,4.62 0,0 1,309.02 140.69L292.48,140.69A4.62,4.62 0,0 1,287.86 136.07L287.86,41.97A4.62,4.62 0,0 1,292.48 37.35z"
-      android:fillColor="@color/green"/>
+      android:fillColor="?attr/panel_color"/>
   <path
       android:pathData="M131.42,70.97h87.15v36.11h-87.15z"
-      android:fillColor="@color/green_dark"/>
+      android:fillColor="@color/blue"/>
   <path
       android:pathData="M121.35,178.11L82.85,178.11A10.63,10.63 0,0 1,72.22 167.48L72.22,10.7A10.63,10.63 45,0 1,82.85 0.07L121.35,0.07A10.63,10.63 0,0 1,131.98 10.7L131.98,167.48A10.63,10.63 0,0 1,121.35 178.11z"
-      android:fillColor="@color/green_dark"/>
+      android:fillColor="@color/blue"/>
   <path
       android:pathData="M61.86,151.96L37.74,151.96A10.35,10.35 0,0 1,27.39 141.61L27.39,36.56A10.35,10.35 0,0 1,37.74 26.21L61.86,26.21A10.35,10.35 0,0 1,72.21 36.56L72.21,141.61A10.35,10.35 0,0 1,61.86 151.96z"
-      android:fillColor="@color/green_dark"/>
+      android:fillColor="@color/blue"/>
   <path
       android:pathData="M27.39,107.18L10.39,107.18A10.36,10.36 0,0 1,0 96.78L0,81.4A10.36,10.36 0,0 1,10.39 71.04L27.39,71.04a0,0 0,0 1,-0 -0L27.39,107.18A0,0 0,0 1,27.39 107.18Z"
-      android:fillColor="@color/green_dark"/>
+      android:fillColor="@color/blue"/>
   <path
       android:pathData="M114.81,165.66L89.39,165.66A4.72,4.72 0,0 1,84.67 160.94L84.67,17.24A4.72,4.72 0,0 1,89.39 12.52L114.81,12.52A4.72,4.72 0,0 1,119.53 17.24L119.53,160.94A4.72,4.72 0,0 1,114.81 165.66z"
-      android:fillColor="@color/green"/>
+      android:fillColor="?attr/panel_color"/>
   <path
       android:pathData="M58.07,140.76L41.53,140.76A4.62,4.62 0,0 1,36.91 136.14L36.91,42.04A4.62,4.62 0,0 1,41.53 37.42L58.07,37.42A4.62,4.62 0,0 1,62.69 42.04L62.69,136.14A4.62,4.62 0,0 1,58.07 140.76z"
-      android:fillColor="@color/green"/>
+      android:fillColor="?attr/panel_color"/>
   <path
       android:pathData="M27.39,99.74l-13,-0a6.2,6.2 0,0 1,-6.2 -6.2l-0,-8.9a6.2,6.2 0,0 1,6.2 -6.2l13,-0a0,0 0,0 1,-0 -0L27.39,99.74A0,0 0,0 1,27.39 99.74Z"
-      android:fillColor="@color/green"/>
+      android:fillColor="?attr/panel_color"/>
   <path
       android:pathData="M322.61,71.18h17A10.36,10.36 0,0 1,350 81.54V96.92a10.36,10.36 0,0 1,-10.36 10.36h-17a0,0 0,0 1,0 0V71.18a0,0 0,0 1,0 0Z"
-      android:fillColor="@color/green_dark"/>
+      android:fillColor="@color/blue"/>
   <path
       android:pathData="M322.61,78.58h13a6.2,6.2 0,0 1,6.2 6.2v8.9a6.2,6.2 0,0 1,-6.2 6.2h-13a0,0 0,0 1,0 0V78.58a0,0 0,0 1,0 0Z"
-      android:fillColor="@color/green"/>
+      android:fillColor="?attr/panel_color"/>
 </vector>

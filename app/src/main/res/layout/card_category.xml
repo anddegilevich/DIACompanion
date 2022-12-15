@@ -10,7 +10,7 @@
     app:cardElevation="7dp">
 
     <LinearLayout
-        android:background="@color/red"
+        android:background="?attr/panel_color"
         android:id="@+id/Content"
         style="@style/Content"
         android:layout_width="match_parent"
@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/SugarLevel"
-            android:textColor="@color/red_dark"
+            android:textColor="?attr/main_text_color"
             android:maxLines="2"
             android:textStyle="bold"
             android:layout_weight="0"/>

@@ -40,7 +40,7 @@ class FoodList : Fragment() {
 
         recipe = args.recipeBool
 
-        if (!recipe) requireContext().setTheme(R.style.MealTheme)
+        if (!recipe) requireContext().setTheme(R.style.InsulinTheme)
 
         val view = inflater.inflate(R.layout.fragment_food_list, container, false)
         val recyclerView = view.recycler_view_food

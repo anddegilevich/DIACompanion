@@ -11,8 +11,7 @@
     android:clickable="true"
     android:orientation="vertical"
     android:padding="10dp"
-    android:background="@drawable/round_layout_bg"
-    android:backgroundTint="@color/green">
+    android:background="@drawable/round_layout_bg">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,8 +24,7 @@
             android:layout_height="40dp"
             android:id="@+id/btn_edit"
             style="@style/ImageButton"
-            app:srcCompat="@drawable/edit"
-            app:tint="@color/green_dark" />
+            app:srcCompat="@drawable/edit" />
 
         <ImageView
             android:layout_weight="1"
@@ -46,8 +44,7 @@
             android:layout_height="40dp"
             android:id="@+id/btn_delete"
             style="@style/ImageButton"
-            app:srcCompat="@drawable/delete_icon"
-            app:tint="@color/green_dark" />
+            app:srcCompat="@drawable/delete_icon"/>
 
 
     </LinearLayout>
@@ -56,7 +53,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:dividerThickness="2dp"
-        app:dividerColor="@color/green_dark"/>
+        app:dividerColor="?attr/category_color"/>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -69,40 +66,32 @@
             android:orientation="vertical" >
 
             <TextView
-                android:textColor="@color/green_dark"
                 style="@style/MainText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/Workout"
-                android:textStyle="bold"/>
+                android:text="@string/Workout"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <TextView
-                    android:textColor="@color/green_dark"
                     style="@style/SecondaryText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/Duration"
-                    android:textStyle="bold"/>
+                    android:text="@string/Duration"/>
 
                 <TextView
                     android:id="@+id/tv_duration"
-                    android:textColor="@color/green_dark"
                     style="@style/SecondaryText"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"/>
+                    android:layout_height="wrap_content"/>
 
                 <TextView
-                    android:textColor="@color/green_dark"
                     style="@style/SecondaryText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/min"
-                    android:textStyle="bold"/>
+                    android:text="@string/min"/>
             </LinearLayout>
 
             <LinearLayout
@@ -110,57 +99,47 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <TextView
-                    android:textColor="@color/green_dark"
                     style="@style/SecondaryText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/Calories"
-                    android:textStyle="bold"/>
+                    android:text="@string/Calories"/>
 
                 <TextView
                     android:id="@+id/tv_kkal"
-                    android:textColor="@color/green_dark"
                     style="@style/SecondaryText"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"/>
+                    android:layout_height="wrap_content"/>
 
                 <TextView
-                    android:textColor="@color/green_dark"
                     style="@style/SecondaryText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/kkal"
-                    android:textStyle="bold"/>
+                    android:text="@string/kkal"/>
             </LinearLayout>
 
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:dividerThickness="2dp"
-                app:dividerColor="@color/green_dark"/>
+                app:dividerColor="?attr/category_color"/>
 
             <TextView
-                android:textColor="@color/green_dark"
                 style="@style/MainText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/Preferences"
-                android:textStyle="bold"/>
+                android:text="@string/Preferences"/>
 
             <TextView
                 android:id="@+id/tv_type"
-                android:textColor="@color/green_dark"
                 style="@style/SecondaryText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"/>
+                android:layout_height="wrap_content"/>
 
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:dividerThickness="2dp"
-                app:dividerColor="@color/green_dark"/>
+                app:dividerColor="?attr/category_color"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -168,8 +147,6 @@
                 android:id="@+id/time"
                 android:transitionName="time_info"
                 style="@style/SmallText"
-                android:textColor="@color/green_dark"
-                android:textStyle="bold"
                 android:gravity="center"/>
 
             <TextView
@@ -178,8 +155,6 @@
                 android:id="@+id/date"
                 android:transitionName="date_info"
                 style="@style/SmallText"
-                android:textColor="@color/green_dark"
-                android:textStyle="bold"
                 android:gravity="center"/>
         </LinearLayout>
 

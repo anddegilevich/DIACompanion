@@ -1,12 +1,15 @@
 package com.almazov.diacompanion.record_info
 
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.transition.TransitionInflater
+import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.marginBottom
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -19,7 +22,6 @@ import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.model.GradientColor
 import kotlinx.android.synthetic.main.fragment_sleep_record_info.*
 import kotlin.math.exp
 import kotlin.math.pow
@@ -92,8 +94,7 @@ class SleepRecordInfo : Fragment() {
 
         for (xy in xys) lineEntries.add(Entry(xy.first, xy.second))
 
-        val firstColor = ContextCompat.getColor(requireContext(), R.color.pink_dark)
-//        val transparentColor = ContextCompat.getColor(requireContext(), R.color.transparent)
+        val firstColor = ContextCompat.getColor(requireContext(), R.color.blue)
         val lineDataSet = LineDataSet(lineEntries,"")
         lineDataSet.apply {
             axisDependency = YAxis.AxisDependency.LEFT
@@ -105,15 +106,14 @@ class SleepRecordInfo : Fragment() {
             setDrawValues(false)
             setDrawCircles(false)
 //            fillAlpha = 255
-//            fillColor = firstColor
-            fillDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.fade_pink)
+            fillDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.fade)
             setDrawFilled(true)
         }
         val lineData = LineData(lineDataSet)
         line_chart.apply {
             description.isEnabled = false
             xAxis.apply {
-                position = XAxis.XAxisPosition.BOTTOM
+                position = XAxis.XAxisPosition.BOTTOM_INSIDE
                 axisLineColor = firstColor
                 isGranularityEnabled = true
                 granularity = 1.0f
@@ -144,6 +144,14 @@ class SleepRecordInfo : Fragment() {
             xMin += step
         }
         return xy
+    }
+
+    override fun onGetLayoutInflater(savedInstanceState: Bundle?): LayoutInflater {
+        val inflater = super.onGetLayoutInflater(savedInstanceState)
+        val contextThemeWrapper: Context = ContextThemeWrapper(requireContext(),
+            R.style.InsulinTheme
+        )
+        return inflater.cloneInContext(contextThemeWrapper)
     }
 
 }

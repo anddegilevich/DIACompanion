@@ -56,12 +56,6 @@ class MealRecordInfo : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
         sharedElementReturnTransition = animation
         super.onCreate(savedInstanceState)
     }
-
-    override fun onResume() {
-        foodList.clear()
-        super.onResume()
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -124,6 +118,7 @@ class MealRecordInfo : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
             }
         })
 
+        foodList.clear()
         adapter = FoodInMealInfoAdapter(foodList, this)
         recycler_view_food_in_meal.adapter = adapter
         recycler_view_food_in_meal.layoutManager = LinearLayoutManager(requireContext())
@@ -177,9 +172,9 @@ class MealRecordInfo : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
         pieData.setValueFormatter(PercentFormatter(meal_pie_chart))
         pieData.setValueTextSize(18f)
 
-        val textColor = ContextCompat.getColor(requireContext(), R.color.purple_dark)
-        val backgroundColor = ContextCompat.getColor(requireContext(), R.color.purple)
-        pieData.setValueTextColors(darkPieColors)
+        val textColor = ContextCompat.getColor(requireContext(), R.color.black)
+        val backgroundColor = ContextCompat.getColor(requireContext(), R.color.transparent)
+        pieData.setValueTextColor(textColor)
 
         meal_pie_chart.apply{
             isDrawHoleEnabled = true
@@ -202,7 +197,9 @@ class MealRecordInfo : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
 
     override fun onGetLayoutInflater(savedInstanceState: Bundle?): LayoutInflater {
         val inflater = super.onGetLayoutInflater(savedInstanceState)
-        val contextThemeWrapper: Context = ContextThemeWrapper(requireContext(), R.style.MealTheme)
+        val contextThemeWrapper: Context = ContextThemeWrapper(requireContext(),
+            R.style.InsulinTheme
+        )
         return inflater.cloneInContext(contextThemeWrapper)
     }
 

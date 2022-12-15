@@ -17,7 +17,8 @@
         android:layout_height="match_parent"
         android:clickable="true"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:padding="10dp"
+        android:background="?attr/panel_color">
 
         <ImageView
             android:id="@+id/img_category"
@@ -37,8 +38,6 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:textAlignment="center"
-            android:textColor="?attr/button_color"
-            android:textStyle="bold"
             android:singleLine="false"/>
 
         <TextView

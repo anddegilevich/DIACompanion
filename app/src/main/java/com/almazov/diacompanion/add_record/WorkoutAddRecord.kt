@@ -143,7 +143,7 @@ class WorkoutAddRecord : Fragment() {
     override fun onGetLayoutInflater(savedInstanceState: Bundle?): LayoutInflater {
         val inflater = super.onGetLayoutInflater(savedInstanceState)
         val contextThemeWrapper: Context = ContextThemeWrapper(requireContext(),
-            R.style.WorkoutTheme
+            R.style.InsulinTheme
         )
         return inflater.cloneInContext(contextThemeWrapper)
     }

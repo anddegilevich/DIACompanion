@@ -140,7 +140,7 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
         val recyclerView = view.recycler_view_food_in_meal
         adapter = FoodInMealListAdapter(foodList, this)
 
-        val swipeDeleteFood = object : SwipeDeleteFood(requireContext(), R.color.purple_dark) {
+        val swipeDeleteFood = object : SwipeDeleteFood(requireContext(), R.color.blue_dark) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 when (direction) {
                     ItemTouchHelper.LEFT -> {
@@ -395,7 +395,7 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
 
     override fun onGetLayoutInflater(savedInstanceState: Bundle?): LayoutInflater {
         val inflater = super.onGetLayoutInflater(savedInstanceState)
-        val contextThemeWrapper: Context = ContextThemeWrapper(requireContext(), R.style.MealTheme)
+        val contextThemeWrapper: Context = ContextThemeWrapper(requireContext(), R.style.InsulinTheme)
         return inflater.cloneInContext(contextThemeWrapper)
     }
 

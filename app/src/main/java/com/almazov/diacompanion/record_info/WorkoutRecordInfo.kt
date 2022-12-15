@@ -1,8 +1,10 @@
 package com.almazov.diacompanion.record_info
 
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.transition.TransitionInflater
+import android.view.ContextThemeWrapper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -86,5 +88,13 @@ class WorkoutRecordInfo : Fragment() {
 
         super.onViewCreated(view, savedInstanceState)
 
+    }
+
+    override fun onGetLayoutInflater(savedInstanceState: Bundle?): LayoutInflater {
+        val inflater = super.onGetLayoutInflater(savedInstanceState)
+        val contextThemeWrapper: Context = ContextThemeWrapper(requireContext(),
+            R.style.InsulinTheme
+        )
+        return inflater.cloneInContext(contextThemeWrapper)
     }
 }

@@ -11,8 +11,7 @@
     android:clickable="true"
     android:orientation="vertical"
     android:padding="10dp"
-    android:background="@drawable/round_layout_bg"
-    android:backgroundTint="@color/red">
+    android:background="@drawable/round_layout_bg">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,8 +24,7 @@
             android:layout_height="40dp"
             android:id="@+id/btn_edit"
             style="@style/ImageButton"
-            app:srcCompat="@drawable/edit"
-            app:tint="@color/red_dark" />
+            app:srcCompat="@drawable/edit"/>
 
         <ImageView
             android:layout_weight="1"
@@ -46,8 +44,7 @@
             android:layout_height="40dp"
             android:id="@+id/btn_delete"
             style="@style/ImageButton"
-            app:srcCompat="@drawable/delete_icon"
-            app:tint="@color/red_dark" />
+            app:srcCompat="@drawable/delete_icon"/>
 
 
     </LinearLayout>
@@ -56,7 +53,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:dividerThickness="2dp"
-        app:dividerColor="@color/red_dark"/>
+        app:dividerColor="?attr/category_color"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -69,12 +66,10 @@
             android:orientation="vertical" >
 
             <TextView
-                android:textColor="@color/red_dark"
                 style="@style/MainText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/SugarLevel"
-                android:textStyle="bold"/>
+                android:text="@string/SugarLevel"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -82,28 +77,22 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:textColor="@color/red_dark"
                     style="@style/SecondaryText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/SugarLevel"
-                    android:textStyle="bold"/>
+                    android:text="@string/SugarLevel"/>
 
                 <TextView
                     android:id="@+id/tv_sugar_level"
-                    android:textColor="@color/red_dark"
                     style="@style/SecondaryText"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"/>
+                    android:layout_height="wrap_content"/>
 
                 <TextView
-                    android:textColor="@color/red_dark"
                     style="@style/SecondaryText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/mmoll"
-                    android:textStyle="bold"/>
+                    android:text="@string/mmoll"/>
 
             </LinearLayout>
 
@@ -111,39 +100,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:dividerThickness="2dp"
-                app:dividerColor="@color/red_dark"/>
+                app:dividerColor="?attr/category_color"/>
 
             <TextView
-                android:textColor="@color/red_dark"
                 style="@style/MainText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/Preferences"
-                android:textStyle="bold"/>
+                android:text="@string/Preferences"/>
 
             <TextView
                 android:id="@+id/tv_pref"
-                android:textColor="@color/red_dark"
                 style="@style/SecondaryText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"/>
+                android:layout_height="wrap_content"/>
 
             <CheckBox
-                android:buttonTint="@color/red_dark"
-                android:textColor="@color/red_dark"
                 android:id="@+id/checkbox_physical_act"
                 style="@style/SecondaryText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/WasWorkout"
-                android:textStyle="bold"/>
+                android:text="@string/WasWorkout"/>
 
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:dividerThickness="2dp"
-                app:dividerColor="@color/red_dark"/>
+                app:dividerColor="?attr/category_color"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -151,8 +133,6 @@
                 android:id="@+id/time"
                 android:transitionName="time_info"
                 style="@style/SmallText"
-                android:textColor="@color/red_dark"
-                android:textStyle="bold"
                 android:gravity="center"/>
 
             <TextView
@@ -161,8 +141,6 @@
                 android:id="@+id/date"
                 android:transitionName="date_info"
                 style="@style/SmallText"
-                android:textColor="@color/red_dark"
-                android:textStyle="bold"
                 android:gravity="center"/>
         </LinearLayout>
 

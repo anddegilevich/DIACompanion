@@ -14,8 +14,8 @@ class CardCategoryViewHolder(
     {
         cardCategoryBinding.CategoryIcon.setImageResource(category.icon)
         cardCategoryBinding.CategoryName.setText(category.name)
-        cardCategoryBinding.CategoryName.setTextColor(category.secondary_color)
-        cardCategoryBinding.Content.setBackgroundColor(category.primary_color)
+        //cardCategoryBinding.CategoryName.setTextColor(category.secondary_color)
+        //cardCategoryBinding.Content.setBackgroundColor(category.primary_color)
 
         cardCategoryBinding.CardView.setOnClickListener{
             categoryClickListener.onClick(category)

@@ -11,7 +11,7 @@
     android:layout_marginRight="5dp"
     android:clickable="true"
     app:cardElevation="7dp"
-    android:backgroundTint="@color/red">
+    android:backgroundTint="?attr/panel_color">
 
     <LinearLayout
         android:id="@+id/card_view"
@@ -36,8 +36,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:textColor="?attr/button_color"
-            android:textStyle="bold" />
+            android:textColor="?attr/main_text_color"/>
 
         <TextView
             android:textStyle="bold"
@@ -46,8 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             style="@style/SmallerText"
-            android:gravity="center"
-            android:textColor="?attr/button_color"/>
+            android:gravity="center"/>
         <TextView
             android:textStyle="bold"
             android:layout_weight="0"
@@ -56,7 +54,6 @@
             android:layout_height="match_parent"
             style="@style/SmallerText"
             android:gravity="center"
-            android:textColor="?attr/button_color"
             android:layout_margin="10dp"/>
     </LinearLayout>
 

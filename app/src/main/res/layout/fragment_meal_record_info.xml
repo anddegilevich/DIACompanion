@@ -11,8 +11,7 @@
     android:clickable="true"
     android:orientation="vertical"
     android:padding="10dp"
-    android:background="@drawable/round_layout_bg"
-    android:backgroundTint="@color/purple">
+    android:background="@drawable/round_layout_bg">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,8 +24,7 @@
             android:layout_height="40dp"
             android:id="@+id/btn_edit"
             style="@style/ImageButton"
-            app:srcCompat="@drawable/edit"
-            app:tint="@color/purple_dark" />
+            app:srcCompat="@drawable/edit"/>
 
         <ImageView
             android:layout_weight="1"
@@ -46,8 +44,7 @@
             android:layout_height="40dp"
             android:id="@+id/btn_delete"
             style="@style/ImageButton"
-            app:srcCompat="@drawable/delete_icon"
-            app:tint="@color/purple_dark" />
+            app:srcCompat="@drawable/delete_icon"/>
 
 
     </LinearLayout>
@@ -56,7 +53,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:dividerThickness="2dp"
-        app:dividerColor="@color/purple_dark"/>
+        app:dividerColor="?attr/category_color"/>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -69,12 +66,10 @@
             android:orientation="vertical" >
 
             <TextView
-                android:textColor="@color/purple_dark"
                 style="@style/MainText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/Meal"
-                android:textStyle="bold"/>
+                android:text="@string/Meal"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -94,7 +89,6 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:src="@drawable/weight"
-                        app:tint="@color/purple_dark"
                         />
 
                     <ImageView
@@ -118,25 +112,17 @@
 
                     <TextView
                         android:id="@+id/tv_weight"
-                        style="@style/SecondaryText"
-                        android:textColor="@color/purple_dark"
-                        android:textStyle="bold"/>
+                        style="@style/MainText"/>
 
                     <TextView
                         android:id="@+id/tv_protein"
-                        style="@style/SecondaryText"
-                        android:textColor="@color/green"
-                        android:textStyle="bold"/>
+                        style="@style/MainText"/>
                     <TextView
                         android:id="@+id/tv_fats"
-                        style="@style/SecondaryText"
-                        android:textColor="@color/yellow"
-                        android:textStyle="bold"/>
+                        style="@style/MainText"/>
                     <TextView
                         android:id="@+id/tv_carbs"
-                        style="@style/SecondaryText"
-                        android:textColor="@color/orange"
-                        android:textStyle="bold"/>
+                        style="@style/MainText"/>
 
                 </GridLayout>
 
@@ -155,7 +141,7 @@
                 android:rowCount="2"
                 android:columnCount="3"
                 android:background="@drawable/round_layout_bg"
-                android:backgroundTint="@color/purple_dark"
+                android:backgroundTint="@color/blue"
                 android:orientation="horizontal"
                 android:alignmentMode="alignBounds"
                 android:layout_margin="10dp">
@@ -187,26 +173,23 @@
                     android:layout_width="0dp"
                     android:id="@+id/tv_kkal"
                     style="@style/SecondaryText"
-                    android:textColor="@color/red"
-                    android:textAlignment="center"
-                    android:textStyle="bold"/>
+                    android:textColor="?attr/button_color"
+                    android:textAlignment="center"/>
 
                 <TextView
                     android:layout_columnWeight="1"
                     android:layout_width="0dp"
                     android:id="@+id/tv_gi"
                     style="@style/SecondaryText"
-                    android:textColor="@color/blue"
-                    android:textAlignment="center"
-                    android:textStyle="bold"/>
+                    android:textColor="?attr/button_color"
+                    android:textAlignment="center"/>
                 <TextView
                     android:layout_columnWeight="1"
                     android:layout_width="0dp"
                     android:id="@+id/tv_gl"
                     style="@style/SecondaryText"
-                    android:textColor="@color/pink"
-                    android:textAlignment="center"
-                    android:textStyle="bold"/>
+                    android:textColor="?attr/button_color"
+                    android:textAlignment="center"/>
 
             </GridLayout>
 
@@ -214,36 +197,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:dividerThickness="2dp"
-                app:dividerColor="@color/purple_dark"/>
+                app:dividerColor="?attr/category_color"/>
 
             <TextView
-                android:textColor="@color/purple_dark"
                 style="@style/MainText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/Recommendation"
-                android:textStyle="bold"/>
+                android:text="@string/Recommendation"/>
 
             <TextView
                 android:id="@+id/tv_recommendation"
-                android:textColor="@color/purple_dark"
                 style="@style/SmallText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"/>
+                android:layout_height="wrap_content"/>
+
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:dividerThickness="2dp"
-                app:dividerColor="@color/purple_dark"/>
+                app:dividerColor="?attr/category_color"/>
 
             <TextView
-                android:textColor="@color/purple_dark"
                 style="@style/MainText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/FoodList"
-                android:textStyle="bold"/>
+                android:text="@string/FoodList"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_food_in_meal"
@@ -251,12 +229,10 @@
                 android:layout_height="wrap_content"/>
 
             <TextView
-                android:textColor="@color/purple_dark"
                 style="@style/MainText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/SugarLevel"
-                android:textStyle="bold"/>
+                android:text="@string/SugarLevel"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -264,20 +240,16 @@
 
                 <TextView
                     android:layout_weight="1"
-                    android:textColor="@color/purple_dark"
                     style="@style/SmallText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/SugarLevelBeforeMeal"
-                    android:textStyle="bold"/>
+                    android:text="@string/SugarLevelBeforeMeal" />
 
                 <TextView
                     android:id="@+id/tv_sugar_level_before"
-                    android:textColor="@color/purple_dark"
                     style="@style/SmallText"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"/>
+                    android:layout_height="wrap_content"/>
 
             </LinearLayout>
 
@@ -287,22 +259,24 @@
 
                 <TextView
                     android:layout_weight="1"
-                    android:textColor="@color/purple_dark"
                     style="@style/SmallText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/SugarLevelPredicted"
-                    android:textStyle="bold"/>
+                    android:text="@string/SugarLevelPredicted"/>
 
                 <TextView
                     android:id="@+id/tv_sugar_level_predict"
-                    android:textColor="@color/purple_dark"
                     style="@style/SmallText"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"/>
+                    android:layout_height="wrap_content"/>
 
             </LinearLayout>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:dividerThickness="2dp"
+                app:dividerColor="?attr/category_color"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -310,8 +284,6 @@
                 android:id="@+id/time"
                 android:transitionName="time_info"
                 style="@style/SmallText"
-                android:textColor="@color/purple_dark"
-                android:textStyle="bold"
                 android:gravity="center"/>
 
             <TextView
@@ -320,8 +292,6 @@
                 android:id="@+id/date"
                 android:transitionName="date_info"
                 style="@style/SmallText"
-                android:textColor="@color/purple_dark"
-                android:textStyle="bold"
                 android:gravity="center"/>
         </LinearLayout>
 

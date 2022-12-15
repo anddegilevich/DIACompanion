@@ -22,26 +22,6 @@ class HomeRecordsAdapter(private val mListener: InterfaceRecordsInfo): RecyclerV
     var context: Context? = null
     private var recordsList = emptyList<RecordEntity>()
 
-    var categoriesAndPrimaryColors = mutableMapOf(
-        "sugar_level_table" to R.color.red,
-        "insulin_table" to R.color.blue,
-        "meal_table" to R.color.purple,
-        "workout_table" to R.color.green,
-        "sleep_table" to R.color.pink,
-        "weight_table" to R.color.yellow,
-        "ketone_table" to R.color.orange
-    )
-
-    var categoriesAndSecondaryColors = mutableMapOf(
-        "sugar_level_table" to R.color.red_dark,
-        "insulin_table" to R.color.blue_dark,
-        "meal_table" to R.color.purple_dark,
-        "workout_table" to R.color.green_dark,
-        "sleep_table" to R.color.pink_dark,
-        "weight_table" to R.color.yellow_dark,
-        "ketone_table" to R.color.orange_dark
-    )
-
     var categoriesAndImages = mutableMapOf(
         "sugar_level_table" to R.drawable.sugar_level,
         "insulin_table" to R.drawable.insulin,
@@ -67,25 +47,20 @@ class HomeRecordsAdapter(private val mListener: InterfaceRecordsInfo): RecyclerV
         val record = recordsList[position]
         val id = record.id
 
-        val primaryColor = categoriesAndPrimaryColors.get(record.category)
-        val secondaryColor = categoriesAndSecondaryColors.get(record.category)
         val imageCategory = categoriesAndImages.get(record.category)
 
         holder.itemView.main_info.text = record.mainInfo
-        holder.itemView.main_info.setTextColor(ContextCompat.getColor(context!!, secondaryColor!!))
 
         holder.itemView.time.text = record.time
-        holder.itemView.time.setTextColor(ContextCompat.getColor(context!!, secondaryColor))
 
         holder.itemView.date.text = record.date
-        holder.itemView.date.setTextColor(ContextCompat.getColor(context!!, secondaryColor))
 
         holder.itemView.img_category.setImageResource(imageCategory!!)
 
         holder.itemView.card_view.transitionName = "$id record_card"
         holder.itemView.img_category.transitionName = "$id img_category"
 
-        holder.itemView.card_view.setBackgroundResource(primaryColor!!)
+        //holder.itemView.card_view.setBackgroundResource(primaryColor!!)
         holder.itemView.card_view.setOnClickListener{
             holder.mListener.transitionToRecordInfo(holder.itemView, record)
         }

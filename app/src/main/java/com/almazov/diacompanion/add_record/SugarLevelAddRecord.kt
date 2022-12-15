@@ -1,10 +1,12 @@
 package com.almazov.diacompanion.add_record
 
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -173,6 +175,12 @@ class SugarLevelAddRecord : Fragment() {
             if (spinner_sugar_level.selectedItem.toString() in prefs) spinner_sugar_level.setSelection(0)
         })
 
+    }
+
+    override fun onGetLayoutInflater(savedInstanceState: Bundle?): LayoutInflater {
+        val inflater = super.onGetLayoutInflater(savedInstanceState)
+        val contextThemeWrapper: Context = ContextThemeWrapper(requireContext(), R.style.InsulinTheme)
+        return inflater.cloneInContext(contextThemeWrapper)
     }
 
 }

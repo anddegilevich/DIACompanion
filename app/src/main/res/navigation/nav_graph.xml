@@ -308,49 +308,49 @@
         android:label="RecordHistory" >
         <action
             android:id="@+id/action_recordHistory_to_sugarLevelAddRecord"
-            app:destination="@id/sugarLevelAddRecord"
+            app:destination="@id/sugarLevelRecordInfo"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"/>
         <action
             android:id="@+id/action_recordHistory_to_insulinAddRecord"
-            app:destination="@id/insulinAddRecord"
+            app:destination="@id/insulinRecordInfo"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"/>
         <action
             android:id="@+id/action_recordHistory_to_mealAddRecord"
-            app:destination="@id/mealAddRecord"
+            app:destination="@id/mealRecordInfo"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"/>
         <action
             android:id="@+id/action_recordHistory_to_workoutAddRecord"
-            app:destination="@id/workoutAddRecord"
+            app:destination="@id/workoutRecordInfo"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"/>
         <action
             android:id="@+id/action_recordHistory_to_sleepAddRecord"
-            app:destination="@id/sleepAddRecord"
+            app:destination="@id/sleepRecordInfo"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"/>
         <action
             android:id="@+id/action_recordHistory_to_ketoneAddRecord"
-            app:destination="@id/ketoneAddRecord"
+            app:destination="@id/ketoneRecordInfo"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"/>
         <action
             android:id="@+id/action_recordHistory_to_weightAddRecord"
-            app:destination="@id/weightAddRecord"
+            app:destination="@id/weightRecordInfo"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"

@@ -97,6 +97,7 @@
 
     //RecordHistory
     <string name="AllRecords">All Records</string>
+    <string name="Update">Update</string>
 
     //RecordsCategories
     <string name="ChooseCategory">ChooseCategory</string>

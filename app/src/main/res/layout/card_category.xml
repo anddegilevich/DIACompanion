@@ -36,7 +36,6 @@
             android:text="@string/SugarLevel"
             android:textColor="?attr/main_text_color"
             android:maxLines="2"
-            android:textStyle="bold"
             android:layout_weight="0"/>
 
 

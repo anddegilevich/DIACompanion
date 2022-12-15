@@ -9,7 +9,13 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.almazov.diacompanion.R
 import com.almazov.diacompanion.data.RecordEntity
+import kotlinx.android.synthetic.main.record_card.view.*
 import kotlinx.android.synthetic.main.record_row.view.*
+import kotlinx.android.synthetic.main.record_row.view.card_view
+import kotlinx.android.synthetic.main.record_row.view.date
+import kotlinx.android.synthetic.main.record_row.view.img_category
+import kotlinx.android.synthetic.main.record_row.view.main_info
+import kotlinx.android.synthetic.main.record_row.view.time
 
 class RecordListAdapter(): RecyclerView.Adapter<RecordListAdapter.HomeRecordsViewHolder>()  {
     var context: Context? = null

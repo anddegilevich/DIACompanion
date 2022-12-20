@@ -153,7 +153,7 @@ class SugarLevelAddRecord : Fragment() {
         builder.setPositiveButton(this.resources.getString(R.string.Yes)) {_, _ ->
             appDatabaseViewModel.deleteSugarLevelRecord(args.selectedRecord?.id)
             args.selectedRecord?.let { appDatabaseViewModel.deleteRecord(it) }
-            findNavController().popBackStack()
+            findNavController().navigate(R.id.action_sugarLevelAddRecord_to_homePage)
         }
         builder.setNegativeButton(this.resources.getString(R.string.No)) {_, _ ->
         }

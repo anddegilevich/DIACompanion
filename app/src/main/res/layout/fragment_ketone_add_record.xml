@@ -6,40 +6,38 @@
     android:orientation="vertical"
     style="@style/ControlPanel">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_gravity="center"
             android:src="@drawable/ketone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_margin="2dp"/>
+
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/NewRecord"
+            style="@style/MainText"
+            android:layout_gravity="center"/>
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="50dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             android:id="@+id/btn_delete"
             style="@style/ImageButton"
             app:srcCompat="@drawable/delete_icon"
+            android:layout_gravity="center"
             android:visibility="gone"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/NewRecord"
-        style="@style/MainText"
-        android:gravity="center"/>
     <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

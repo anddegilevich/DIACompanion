@@ -131,7 +131,7 @@ class WorkoutAddRecord : Fragment() {
         builder.setPositiveButton(this.resources.getString(R.string.Yes)) {_, _ ->
             appDatabaseViewModel.deleteWorkoutRecord(args.selectedRecord?.id)
             args.selectedRecord?.let { appDatabaseViewModel.deleteRecord(it) }
-            findNavController().popBackStack()
+            findNavController().navigate(R.id.action_workoutAddRecord_to_homePage)
         }
         builder.setNegativeButton(this.resources.getString(R.string.No)) {_, _ ->
         }

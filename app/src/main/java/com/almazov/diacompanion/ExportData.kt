@@ -1,5 +1,6 @@
 package com.almazov.diacompanion
 
+import android.animation.LayoutTransition
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
@@ -64,7 +65,7 @@ class ExportData : Fragment() {
         }
 
         btn_export_to_doctor.setOnClickListener{
-            findNavController().popBackStack()
+//            findNavController().popBackStack()
         }
 
         super.onViewCreated(view, savedInstanceState)

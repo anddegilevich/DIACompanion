@@ -147,7 +147,7 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
                         foodList.removeAt(viewHolder.adapterPosition)
                         adapter.notifyItemRemoved(viewHolder.adapterPosition)
                         if (foodList.isNullOrEmpty()) {
-                            slideView(vf_recommendation,160, 0)} else
+                            slideView(vf_recommendation)} else
                         if (checkbox_sugar_level.isChecked
                             and !edit_text_sugar_level.text.isNullOrEmpty()) {
                             glCarbsKr = getGLCarbsKr(foodList)
@@ -195,7 +195,7 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
                 }
             }
         btn_add_food.setOnClickListener {
-            if (vf_recommendation.height != 0) slideView(vf_recommendation,160, 0)
+            if (vf_recommendation.height != 0) slideView(vf_recommendation)
             Navigation.findNavController(view).navigate(R.id.action_mealAddRecord_to_foodList)
         }
 
@@ -219,11 +219,11 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
 
         checkbox_sugar_level.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                slideView(sugar_level_layout,0,200)
+                slideView(sugar_level_layout)
                 if (!foodList.isNullOrEmpty() and !edit_text_sugar_level.text.isNullOrEmpty()) updateRecommendation()
             } else {
-                slideView(vf_recommendation,160,0)
-                slideView(sugar_level_layout,200,0)
+                if (!foodList.isNullOrEmpty() and !edit_text_sugar_level.text.isNullOrEmpty()) slideView(vf_recommendation)
+                slideView(sugar_level_layout)
             }
         }
         editTextSeekBarSetup(1, 20, edit_text_sugar_level, seek_bar_sugar_level )
@@ -235,7 +235,7 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                if ((s.isNullOrEmpty()) and (vf_recommendation.height != 0)) slideView(vf_recommendation,160,0)
+                if ((s.isNullOrEmpty()) and (vf_recommendation.height != 0)) slideView(vf_recommendation)
                 if (!foodList.isNullOrEmpty() and !s.isNullOrEmpty()) {
                     updateRecommendation()
                 }
@@ -294,7 +294,7 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
         builder.setPositiveButton(this.resources.getString(R.string.Yes)) {_, _ ->
             appDatabaseViewModel.deleteMealRecord(args.selectedRecord?.id)
             args.selectedRecord?.let { appDatabaseViewModel.deleteRecord(it) }
-            findNavController().popBackStack()
+            findNavController().navigate(R.id.action_mealAddRecord_to_homePage)
         }
         builder.setNegativeButton(this.resources.getString(R.string.No)) {_, _ ->
         }
@@ -362,7 +362,7 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
 
     private fun updateRecommendation() {
         vf_recommendation.displayedChild = 0
-        if (vf_recommendation.height == 0) slideView(vf_recommendation,0, 160)
+        if (vf_recommendation.height == 0) slideView(vf_recommendation)
         GlobalScope.launch(Dispatchers.Main) {
             val result = GlobalScope.async(Dispatchers.Default) {
             getRecommendation()

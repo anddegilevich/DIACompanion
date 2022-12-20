@@ -110,9 +110,11 @@ class MealRecordInfo : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
                         val manyCarbs = checkCarbs(record[0].meal.type!!,record)
                         val highBGBefore = checkSLBefore(record[0].meal.sugarLevel!!)
                         val lowPV = checkPV(record,todayRecords.await(), yesterdayRecords.await())
-
-                        val recommendationMessage = getMessage(highGI, manyCarbs, highBGBefore, lowPV, record[0].meal.sugarLevelPredicted!!, resources)
-                        tv_recommendation.text = recommendationMessage
+                        try {
+                            val recommendationMessage = getMessage(highGI, manyCarbs, highBGBefore, lowPV, record[0].meal.sugarLevelPredicted!!, resources)
+                            tv_recommendation.text = recommendationMessage
+                        } catch (e: java.lang.IllegalStateException) {
+                        }
                     }
                 }
             }

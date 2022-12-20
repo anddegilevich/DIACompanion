@@ -46,6 +46,28 @@
             android:layout_height="match_parent"/>
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/recipe_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:animateLayoutChanges="true">
+        <TextView
+            style="@style/SmallText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/Recipe">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_recipe"
+            style="@style/SmallerText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/Recipe">
+        </TextView>
+
+    </LinearLayout>
 
     <com.google.android.material.divider.MaterialDivider
         android:id="@+id/food_divider"

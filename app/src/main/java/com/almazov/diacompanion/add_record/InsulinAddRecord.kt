@@ -158,7 +158,7 @@ class InsulinAddRecord : Fragment() {
         builder.setPositiveButton(this.resources.getString(R.string.Yes)) {_, _ ->
             appDatabaseViewModel.deleteInsulinRecord(args.selectedRecord?.id)
             args.selectedRecord?.let { appDatabaseViewModel.deleteRecord(it) }
-            findNavController().popBackStack()
+            findNavController().navigate(R.id.action_insulinAddRecord_to_homePage)
         }
         builder.setNegativeButton(this.resources.getString(R.string.No)) {_, _ ->
         }

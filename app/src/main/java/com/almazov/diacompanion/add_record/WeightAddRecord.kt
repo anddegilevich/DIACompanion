@@ -148,7 +148,7 @@ class WeightAddRecord : Fragment() {
         builder.setPositiveButton(this.resources.getString(R.string.Yes)) {_, _ ->
             appDatabaseViewModel.deleteWeightRecord(args.selectedRecord?.id)
             args.selectedRecord?.let { appDatabaseViewModel.deleteRecord(it) }
-            findNavController().popBackStack()
+            findNavController().navigate(R.id.action_weightAddRecord_to_homePage)
         }
         builder.setNegativeButton(this.resources.getString(R.string.No)) {_, _ ->
         }

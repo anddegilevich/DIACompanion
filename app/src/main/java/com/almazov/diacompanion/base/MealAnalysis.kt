@@ -25,7 +25,7 @@ fun checkCarbs(mealType: String, listOfFood: List<MealWithFood>): Boolean {
     var sumCarbs = 0.0
     val  breakfastString = "Завтрак"
     for (food in listOfFood) {
-        sumCarbs += food.food.carbo!! * food.weight!! /100
+        sumCarbs += food.food.carbo!! * food.weight!! / 100
     }
     if (sumCarbs > 30 && mealType == breakfastString) {
         return true
@@ -56,13 +56,12 @@ fun checkPV(listOfFood: List<MealWithFood>, listOfFoodToday: List<MealWithFood>,
         sumPVYesterday += food.food.pv!! * food.weight!! / 100
     }
 
-
     if (sumPV < 8) {
         return true
     } else if (sumPV + sumPVToday < 20)
     {
         return true
-    } else if (sumPV + sumPVYesterday < 28) return true
+    } else if (sumPV + sumPVToday  + sumPVYesterday < 28) return true
     return false
 }
 

@@ -10,7 +10,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="?attr/panel_color">
         <TextView
             android:layout_weight="1"
             style="@style/SmallText"
@@ -46,34 +47,35 @@
             android:layout_height="match_parent"/>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/recipe_layout"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        android:animateLayoutChanges="true">
-        <TextView
-            style="@style/SmallText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/Recipe">
-        </TextView>
-
-        <TextView
-            android:id="@+id/tv_recipe"
-            style="@style/SmallerText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/Recipe">
-        </TextView>
-
-    </LinearLayout>
-
     <com.google.android.material.divider.MaterialDivider
         android:id="@+id/food_divider"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:dividerThickness="2dp"
     app:dividerColor="?attr/category_color"/>
+
+    <LinearLayout
+        android:id="@+id/recipe_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:animateLayoutChanges="true"
+        android:background="?attr/panel_color"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp">
+        <TextView
+            style="@style/SmallText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/Recipe"/>
+
+        <TextView
+            android:id="@+id/tv_recipe"
+            style="@style/SmallerText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/Recipe"/>
+
+    </LinearLayout>
 
 </LinearLayout>

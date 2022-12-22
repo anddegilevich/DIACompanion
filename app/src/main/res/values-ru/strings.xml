@@ -213,4 +213,9 @@
     <string name="Calories">Калории</string>
     <string name="Update">Редактировать</string>
     <string name="Recipe">Рецепт</string>
+    <string name="Sorting">Сортировка</string>
+    <string-array name="FoodSort">
+        <item>По названию</item>
+        <item>По ГИ</item>
+    </string-array>
 </resources>

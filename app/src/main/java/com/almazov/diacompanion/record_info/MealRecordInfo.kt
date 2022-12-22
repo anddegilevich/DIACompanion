@@ -45,7 +45,7 @@ class MealRecordInfo : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
     private lateinit var appDatabaseViewModel: AppDatabaseViewModel
     var mealInfo = listOf<Double>()
     var foodList = mutableListOf<FoodInMealItem>()
-    lateinit var adapter: FoodInMealListAdapter
+    lateinit var adapter: FoodInMealInfoAdapter
     private var bmi: Double? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {

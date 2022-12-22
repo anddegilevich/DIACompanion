@@ -1,19 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_weight="1">
 
-    <EditText
-        android:id="@+id/edit_text_search_food"
-        style="@style/EditText"
+    <LinearLayout
+        android:animateLayoutChanges="true"
+        android:id="@+id/sort_layout"
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/MainText"
+            android:text="@string/Sorting"/>
+
+            <Spinner
+                style="@style/SecondaryText"
+                android:id="@+id/spinner_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dropdown"
+                android:background="@null"
+                android:layout_gravity="center"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Spinner
+                    style="@style/SecondaryText"
+                    android:id="@+id/spinner_sort"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:spinnerMode="dropdown"
+                    android:background="@null"
+                    android:layout_gravity="center"/>
+
+                <ImageButton
+                    android:id="@+id/btn_sort"
+                    style="@style/ImageButton"
+                    android:layout_width="24dp"
+                    android:layout_height="36dp"
+                    app:srcCompat="@drawable/arrow"
+                    android:rotation="-90"
+                    android:layout_gravity="center"
+                    />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:lines="1"
-        android:hint="@string/EnterFoodName"
-        android:inputType="textShortMessage"/>
+        android:orientation="horizontal">
+
+        <EditText
+            android:layout_margin="8dp"
+            android:id="@+id/edit_text_search_food"
+            style="@style/EditText"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:hint="@string/EnterFoodName"
+            android:inputType="textShortMessage"/>
+
+        <ImageButton
+            android:id="@+id/btn_options"
+            style="@style/ImageButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:srcCompat="@drawable/options_group"
+            android:layout_gravity="center"
+            android:layout_marginRight="8dp"
+            />
+
+    </LinearLayout>
+
 
     <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"

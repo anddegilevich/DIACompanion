@@ -5,19 +5,20 @@ import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.ContextThemeWrapper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.almazov.diacompanion.R
-import com.almazov.diacompanion.add_record.MealAddRecordArgs
+import com.almazov.diacompanion.base.slideView
 import com.almazov.diacompanion.data.AppDatabaseViewModel
+import kotlinx.android.synthetic.main.fragment_add_recipe.view.*
+import kotlinx.android.synthetic.main.fragment_food_list.*
 import kotlinx.android.synthetic.main.fragment_food_list.view.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.collectLatest
@@ -71,6 +72,18 @@ class FoodList : Fragment() {
 
             }
         })
+
+        view.btn_options.setOnClickListener {
+            slideView(sort_layout)
+        }
+        view.spinner_category.adapter = ArrayAdapter.createFromResource(requireContext(),
+            R.array.RecipeSpinner,
+            R.layout.spinner_item
+        )
+        view.spinner_sort.adapter = ArrayAdapter.createFromResource(requireContext(),
+            R.array.FoodSort,
+            R.layout.spinner_item
+        )
 
         return view
     }

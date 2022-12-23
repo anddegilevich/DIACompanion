@@ -17,6 +17,7 @@
             android:layout_height="wrap_content"
             android:text="@string/EnterFoodWeight"/>
         <LinearLayout
+            android:layout_marginTop="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -40,7 +41,8 @@
         <SeekBar
             android:id="@+id/seek_bar_weight"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:padding="8dp"/>
 
         <Button
             android:layout_gravity="center"

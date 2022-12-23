@@ -21,7 +21,7 @@
             style="@style/ImageButton"
             android:id="@+id/CategoryIcon"
             android:layout_width="wrap_content"
-            android:layout_height="222dp"
+            android:layout_height="140dp"
             android:src="@drawable/sugar_level"
             android:adjustViewBounds="true"
             android:layout_gravity="center"

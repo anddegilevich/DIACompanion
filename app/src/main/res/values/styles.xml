@@ -3,7 +3,7 @@
 
     <!--Buttons-->
     <style name="Button">
-        <item name="android:textSize">26sp</item>
+        <item name="android:textSize">22sp</item>
         <item name="android:backgroundTint">?attr/category_color</item>
         <item name="android:textAllCaps">false</item>
         <item name="fontFamily">@font/open_sans</item>
@@ -33,60 +33,52 @@
 
     <style name="MainText">
         <item name="android:padding">6dp</item>
-        <item name="android:textSize">26sp</item>
+        <item name="android:textSize">20sp</item>
         <item name="android:textColor">?main_text_color</item>
         <item name="fontFamily">@font/open_sans</item>
     </style>
 
     <style name="SecondaryText" parent="MainText">
-        <item name="android:textSize">22sp</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:textColor">?secondary_text_color</item>
     </style>
 
-    <style name="EditText" parent="SecondaryText">
+    <style name="EditText" parent="MainText">
         <item name="android:background">@drawable/edit_text</item>
-        <item name="android:padding">3dp</item>
     </style>
 
      <style name="SmallText" parent="SecondaryText">
-         <item name="android:textSize">18sp</item>
+         <item name="android:textSize">16sp</item>
      </style>
 
-    <style name="SmallerText" parent="SecondaryText">
-        <item name="android:textSize">16sp</item>
-    </style>
-
-    <style name="LinkText" parent="MainText">
-        <item name="android:textSize">20sp</item>
+    <style name="LinkText" parent="SecondaryText">
         <item name="android:textColor">?link_text_color</item>
     </style>
 
     <style name="FoodRowVarText">
         <item name="android:layout_marginLeft">10dp</item>
         <item name="android:layout_marginTop">4dp</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">18sp</item>
         <item name="fontFamily">@font/open_sans</item>
-        <item name="android:textStyle">bold</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textAlignment">center</item>
         <item name="android:layout_gravity">center</item>
     </style>
 
-    <style name="RecordPanelDataText">
+    <!--<style name="RecordPanelDataText">
         <item name="android:layout_marginTop">5dp</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">18sp</item>
         <item name="fontFamily">@font/open_sans</item>
-        <item name="android:textStyle">bold</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textAlignment">center</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:textColor">?secondary_text_color</item>
-    </style>
+    </style>-->
 
     <style name="OptionsNavMenu">
-        <item name="android:textSize">22sp</item>
+        <item name="android:textSize">20sp</item>
         <item name="fontFamily">@font/open_sans</item>
     </style>
 

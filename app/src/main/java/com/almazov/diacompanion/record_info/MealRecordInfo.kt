@@ -182,7 +182,7 @@ class MealRecordInfo : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
             isDrawHoleEnabled = true
             setUsePercentValues(true)
             centerText = args.selectedRecord.mainInfo
-            setCenterTextSize(22f)
+            setCenterTextSize(20f)
             setCenterTextColor(textColor)
             description.isEnabled = false
             legend.isEnabled = false

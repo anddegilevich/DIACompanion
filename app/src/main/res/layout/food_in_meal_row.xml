@@ -14,32 +14,29 @@
         android:background="?attr/panel_color">
         <TextView
             android:layout_weight="1"
-            style="@style/SmallText"
+            style="@style/SecondaryText"
             android:id="@+id/tv_food_in_meal_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textStyle="bold"
             />
 
         <EditText
-            style="@style/SmallText"
+            style="@style/SecondaryText"
             android:id="@+id/edit_text_food_in_meal_weight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:inputType="numberDecimal"
             android:lines="1"
-            android:textStyle="bold"
             />
         <TextView
             android:id="@+id/tv_weight_units"
-            style="@style/SmallText"
+            style="@style/SecondaryText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/g"
-            android:layout_gravity="center"
-            android:textStyle="bold"/>
+            android:layout_gravity="center"/>
 
         <View
             android:id="@+id/gi_indexer"
@@ -64,14 +61,14 @@
         android:layout_marginRight="8dp"
         android:layout_marginLeft="8dp">
         <TextView
-            style="@style/SmallText"
+            style="@style/SecondaryText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/Recipe"/>
 
         <TextView
             android:id="@+id/tv_recipe"
-            style="@style/SmallerText"
+            style="@style/SecondaryText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/Recipe"/>

@@ -85,7 +85,8 @@
             <SeekBar
                 android:id="@+id/seek_bar_insulin"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:padding="8dp"/>
 
             <TextView
                 style="@style/MainText"

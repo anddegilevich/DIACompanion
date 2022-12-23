@@ -2,8 +2,8 @@
 
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:transitionName="card_view_home"
-    android:layout_width="180dp"
-    android:layout_height="268dp"
+    android:layout_width="160dp"
+    android:layout_height="240dp"
     android:layout_margin="10dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="15dp"
@@ -23,7 +23,7 @@
         <ImageView
             android:id="@+id/img_category"
             android:layout_width="wrap_content"
-            android:layout_height="100dp"
+            android:layout_height="70dp"
             style="@style/ImageButton"
             android:gravity="center"
             android:layout_marginTop="3dp"
@@ -42,12 +42,21 @@
 
         <TextView
             android:id="@+id/time"
-            style="@style/RecordPanelDataText"/>
+            style="@style/SecondaryText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            />
 
 
         <TextView
             android:id="@+id/date"
-            style="@style/RecordPanelDataText"/>
+            style="@style/SecondaryText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textAlignment="center"/>
 
     </LinearLayout>
 

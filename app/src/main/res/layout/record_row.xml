@@ -31,7 +31,7 @@
 
         <TextView
             android:id="@+id/main_info"
-            style="@style/SmallText"
+            style="@style/SecondaryText"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -39,20 +39,18 @@
             android:textColor="?attr/main_text_color"/>
 
         <TextView
-            android:textStyle="bold"
             android:layout_weight="0"
             android:id="@+id/time"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            style="@style/SmallerText"
+            style="@style/SmallText"
             android:gravity="center"/>
         <TextView
-            android:textStyle="bold"
             android:layout_weight="0"
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            style="@style/SmallerText"
+            style="@style/SmallText"
             android:gravity="center"
             android:layout_margin="10dp"/>
     </LinearLayout>

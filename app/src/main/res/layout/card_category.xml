@@ -2,12 +2,12 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/CardView"
     android:layout_width="match_parent"
-    android:layout_height="180dp"
+    android:layout_height="200dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="15dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="7dp"
     android:layout_margin="10dp"
-    android:clickable="true"
-    app:cardElevation="7dp">
+    android:clickable="true">
 
     <LinearLayout
         android:background="?attr/panel_color"
@@ -18,13 +18,15 @@
         android:orientation="vertical">
 
         <ImageView
+            android:layout_weight="10"
             android:id="@+id/CategoryIcon"
             android:layout_width="wrap_content"
-            android:layout_height="130dp"
+            android:layout_height="0dp"
             android:layout_gravity="center"
-            android:src="@drawable/sugar_level" />
+            android:src="@drawable/sugar_level"/>
 
         <TextView
+            android:layout_weight="2"
             android:id="@+id/CategoryName"
             style="@style/MainText"
             android:layout_width="match_parent"
@@ -32,8 +34,7 @@
             android:gravity="center"
             android:text="@string/SugarLevel"
             android:textColor="?attr/main_text_color"
-            android:maxLines="2"
-            android:layout_weight="0"/>
+            android:maxLines="2"/>
 
 
     </LinearLayout>

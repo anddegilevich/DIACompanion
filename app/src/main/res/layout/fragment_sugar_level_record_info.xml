@@ -63,7 +63,7 @@
             android:orientation="vertical" >
 
             <TextView
-                style="@style/MainText"
+                style="@style/Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/SugarLevel"/>
@@ -74,19 +74,19 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    style="@style/SecondaryText"
+                    style="@style/MainText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/SugarLevel"/>
 
                 <TextView
                     android:id="@+id/tv_sugar_level"
-                    style="@style/SecondaryText"
+                    style="@style/MainText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
                 <TextView
-                    style="@style/SecondaryText"
+                    style="@style/MainText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/mmoll"/>
@@ -100,20 +100,20 @@
                 app:dividerColor="?attr/category_color"/>
 
             <TextView
-                style="@style/MainText"
+                style="@style/Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/Preferences"/>
 
             <TextView
                 android:id="@+id/tv_pref"
-                style="@style/SecondaryText"
+                style="@style/MainText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
             <CheckBox
                 android:id="@+id/checkbox_physical_act"
-                style="@style/SecondaryText"
+                style="@style/MainText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/WasWorkout"/>
@@ -129,7 +129,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/time"
                 android:transitionName="time_info"
-                style="@style/SmallText"
+                style="@style/MainText"
                 android:gravity="center"/>
 
             <TextView
@@ -137,7 +137,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/date"
                 android:transitionName="date_info"
-                style="@style/SmallText"
+                style="@style/MainText"
                 android:gravity="center"/>
         </LinearLayout>
 

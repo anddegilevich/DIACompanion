@@ -24,7 +24,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/NewRecord"
-            style="@style/MainText"
+            style="@style/Title"
             android:layout_gravity="center"/>
 
         <ImageButton
@@ -55,7 +55,7 @@
             android:orientation="vertical" >
 
             <TextView
-                style="@style/MainText"
+                style="@style/Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/Workout" />
@@ -74,7 +74,7 @@
                     android:inputType="number" />
 
                 <TextView
-                    style="@style/SecondaryText"
+                    style="@style/MainText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -89,13 +89,13 @@
                 android:padding="8dp"/>
 
             <TextView
-                style="@style/MainText"
+                style="@style/Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/Preferences" />
 
             <Spinner
-                style="@style/SecondaryText"
+                style="@style/MainText"
                 android:id="@+id/spinner_workout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -104,7 +104,7 @@
 
 
             <TextView
-                style="@style/MainText"
+                style="@style/Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/TimeDate" />
@@ -115,7 +115,7 @@
 
                 <TextView
                     android:id="@+id/tv_Time"
-                    style="@style/SecondaryText"
+                    style="@style/MainText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/Time"
@@ -123,7 +123,7 @@
 
                 <TextView
                     android:id="@+id/tv_Date"
-                    style="@style/SecondaryText"
+                    style="@style/MainText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/Date" />

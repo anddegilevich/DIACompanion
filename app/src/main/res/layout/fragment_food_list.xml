@@ -17,11 +17,11 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/MainText"
+            style="@style/Title"
             android:text="@string/Sorting"/>
 
             <Spinner
-                style="@style/SecondaryText"
+                style="@style/MainText"
                 android:id="@+id/spinner_category"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
                 android:orientation="horizontal">
 
                 <Spinner
-                    style="@style/SecondaryText"
+                    style="@style/MainText"
                     android:id="@+id/spinner_sort"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -93,7 +93,6 @@
         app:dividerColor="?attr/category_color"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:background="?attr/background_image"
         android:id="@+id/recycler_view_food"
         android:layout_height="0dp"
         android:layout_width="match_parent"

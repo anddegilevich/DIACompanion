@@ -22,8 +22,8 @@
 
         <ImageView
             android:id="@+id/img_category"
-            android:layout_width="wrap_content"
-            android:layout_height="70dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             style="@style/ImageButton"
             android:gravity="center"
             android:layout_marginTop="3dp"
@@ -42,17 +42,16 @@
 
         <TextView
             android:id="@+id/time"
-            style="@style/SecondaryText"
+            style="@style/MainText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textAlignment="center"
             />
 
-
         <TextView
             android:id="@+id/date"
-            style="@style/SecondaryText"
+            style="@style/MainText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

@@ -24,7 +24,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/NewRecord"
-            style="@style/MainText"
+            style="@style/Title"
             android:layout_gravity="center"/>
 
         <ImageButton
@@ -55,7 +55,7 @@
             android:orientation="vertical" >
 
             <TextView
-                style="@style/MainText"
+                style="@style/Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/Ketone" />
@@ -66,7 +66,7 @@
 
                 <Spinner
                     android:id="@+id/spinner_ketone"
-                    style="@style/SecondaryText"
+                    style="@style/MainText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:spinnerMode="dropdown"
@@ -75,7 +75,7 @@
                     android:background="@null"/>
 
                 <TextView
-                    style="@style/SecondaryText"
+                    style="@style/MainText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -87,7 +87,7 @@
 
 
             <TextView
-                style="@style/MainText"
+                style="@style/Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/TimeDate" />
@@ -98,7 +98,7 @@
 
                 <TextView
                     android:id="@+id/tv_Time"
-                    style="@style/SecondaryText"
+                    style="@style/MainText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/Time"
@@ -106,7 +106,7 @@
 
                 <TextView
                     android:id="@+id/tv_Date"
-                    style="@style/SecondaryText"
+                    style="@style/MainText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/Date" />

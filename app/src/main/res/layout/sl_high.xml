@@ -13,12 +13,12 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:text="@string/PredictedSLHigh"
-        android:layout_marginStart="30dp"/>
+        android:layout_marginStart="40dp"/>
 
     <ImageView
         style="@style/ImageButton"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:src="@drawable/notice"
         android:layout_gravity="center"/>
 

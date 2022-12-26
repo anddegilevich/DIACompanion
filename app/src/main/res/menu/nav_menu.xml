@@ -7,15 +7,20 @@
     <item android:title="@string/Options" >
         <menu>
             <item android:title="@string/Account"
-                android:icon="@drawable/acc_options" android:id="@+id/nav_view_account"/>
+                android:icon="@drawable/acc_options"
+                android:id="@+id/nav_view_account"/>
             <item android:title="@string/AppType"
-                android:icon="@drawable/target_options" android:id="@+id/nav_view_app_type"/>
+                android:icon="@drawable/target_options"
+                android:id="@+id/nav_view_app_type"/>
             <item android:title="@string/Audio"
-                android:icon="@drawable/audio_options" android:id="@+id/nav_view_audio"/>
+                android:icon="@drawable/audio_options"
+                android:id="@+id/nav_view_audio"/>
             <item android:title="@string/Notifications"
-                android:icon="@drawable/notification_option" android:id="@+id/nav_view_notifications"/>
+                android:icon="@drawable/notification_option"
+                android:id="@+id/nav_view_notifications"/>
             <item android:title="@string/Help"
-                android:icon="@drawable/info_options" android:id="@+id/nav_view_help"/>
+                android:icon="@drawable/info_options"
+                android:id="@+id/nav_view_help"/>
         </menu>
 
     </item>

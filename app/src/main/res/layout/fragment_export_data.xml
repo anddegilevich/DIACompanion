@@ -15,7 +15,7 @@
 
         <TextView
             android:id="@+id/textView"
-            style="@style/MainText"
+            style="@style/Title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/ExportData"

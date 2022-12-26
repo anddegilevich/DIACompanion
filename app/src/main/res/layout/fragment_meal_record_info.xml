@@ -63,7 +63,7 @@
             android:orientation="vertical" >
 
             <TextView
-                style="@style/MainText"
+                style="@style/Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/Meal"/>
@@ -169,7 +169,7 @@
                     android:layout_columnWeight="1"
                     android:layout_width="0dp"
                     android:id="@+id/tv_kkal"
-                    style="@style/SecondaryText"
+                    style="@style/MainText"
                     android:textColor="?attr/button_color"
                     android:textAlignment="center"
                     android:textStyle="bold"/>
@@ -178,7 +178,7 @@
                     android:layout_columnWeight="1"
                     android:layout_width="0dp"
                     android:id="@+id/tv_gi"
-                    style="@style/SecondaryText"
+                    style="@style/MainText"
                     android:textColor="?attr/button_color"
                     android:textAlignment="center"
                     android:textStyle="bold"/>
@@ -186,7 +186,7 @@
                     android:layout_columnWeight="1"
                     android:layout_width="0dp"
                     android:id="@+id/tv_gl"
-                    style="@style/SecondaryText"
+                    style="@style/MainText"
                     android:textColor="?attr/button_color"
                     android:textAlignment="center"
                     android:textStyle="bold"/>
@@ -200,14 +200,14 @@
                 app:dividerColor="?attr/category_color"/>
 
             <TextView
-                style="@style/MainText"
+                style="@style/Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/Recommendation"/>
 
             <TextView
                 android:id="@+id/tv_recommendation"
-                style="@style/SmallText"
+                style="@style/MainText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
@@ -218,7 +218,7 @@
                 app:dividerColor="?attr/category_color"/>
 
             <TextView
-                style="@style/MainText"
+                style="@style/Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/FoodList"/>
@@ -230,7 +230,7 @@
                 android:background="?attr/background_image"/>
 
             <TextView
-                style="@style/MainText"
+                style="@style/Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/SugarLevel"/>
@@ -241,14 +241,14 @@
 
                 <TextView
                     android:layout_weight="1"
-                    style="@style/SmallText"
+                    style="@style/MainText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/SugarLevelBeforeMeal" />
 
                 <TextView
                     android:id="@+id/tv_sugar_level_before"
-                    style="@style/SmallText"
+                    style="@style/MainText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -260,14 +260,14 @@
 
                 <TextView
                     android:layout_weight="1"
-                    style="@style/SmallText"
+                    style="@style/MainText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/SugarLevelPredicted"/>
 
                 <TextView
                     android:id="@+id/tv_sugar_level_predict"
-                    style="@style/SmallText"
+                    style="@style/MainText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -284,7 +284,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/time"
                 android:transitionName="time_info"
-                style="@style/SmallText"
+                style="@style/MainText"
                 android:gravity="center"/>
 
             <TextView
@@ -292,7 +292,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/date"
                 android:transitionName="date_info"
-                style="@style/SmallText"
+                style="@style/MainText"
                 android:gravity="center"/>
         </LinearLayout>
 

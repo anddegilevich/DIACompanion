@@ -14,7 +14,7 @@
         android:background="?attr/panel_color">
         <TextView
             android:layout_weight="1"
-            style="@style/SecondaryText"
+            style="@style/MainText"
             android:id="@+id/tv_food_in_meal_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -22,7 +22,7 @@
             />
 
         <EditText
-            style="@style/SecondaryText"
+            style="@style/MainText"
             android:id="@+id/edit_text_food_in_meal_weight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
             />
         <TextView
             android:id="@+id/tv_weight_units"
-            style="@style/SecondaryText"
+            style="@style/MainText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/g"
@@ -61,7 +61,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginLeft="8dp">
         <TextView
-            style="@style/SecondaryText"
+            style="@style/MainText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/Recipe"/>

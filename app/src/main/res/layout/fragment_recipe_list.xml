@@ -6,19 +6,20 @@
     android:orientation="vertical">
 
         <LinearLayout
-            style="@style/Content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <TextView
-                style="@style/MainText"
-                android:layout_weight="0.5"
+                style="@style/Title"
+                android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/RecipeList"/>
+                android:text="@string/RecipeList"
+                android:layout_gravity="center"/>
 
             <ImageButton
+                android:layout_margin="6dp"
                 android:id="@+id/btn_add_recipe"
                 style="@style/ImageButton"
                 android:layout_width="40dp"
@@ -39,7 +40,6 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:background="?attr/background_image"
         android:id="@+id/recycler_view_recipes"
         android:layout_height="0dp"
         android:layout_width="match_parent"

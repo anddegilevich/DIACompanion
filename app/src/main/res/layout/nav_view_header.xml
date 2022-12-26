@@ -24,7 +24,7 @@
         <TextView
             android:layout_weight="1"
             android:id="@+id/nav_view_user_name"
-            style="@style/SmallText"
+            style="@style/MainText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/Username"
@@ -35,7 +35,7 @@
         <TextView
             android:layout_weight="1"
             android:id="@+id/nav_view_user_ID"
-            style="@style/SmallText"
+            style="@style/MainText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/UserID"

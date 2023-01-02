@@ -18,7 +18,7 @@
         android:orientation="vertical">
 
         <ImageView
-            android:layout_weight="10"
+            android:layout_weight="7"
             android:id="@+id/CategoryIcon"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
@@ -26,11 +26,11 @@
             android:src="@drawable/sugar_level"/>
 
         <TextView
-            android:layout_weight="2"
+            android:layout_weight="3"
             android:id="@+id/CategoryName"
             style="@style/MainText"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:gravity="center"
             android:text="@string/SugarLevel"
             android:textColor="?attr/main_text_color"

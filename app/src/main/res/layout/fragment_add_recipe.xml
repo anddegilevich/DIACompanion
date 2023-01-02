@@ -57,7 +57,7 @@
             android:orientation="vertical" >
 
             <TextView
-                style="@style/MainText"
+                style="@style/Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/RecipeName" />
@@ -70,7 +70,7 @@
                 android:inputType="textShortMessage"/>
 
             <TextView
-                style="@style/MainText"
+                style="@style/Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/RecipeCategory" />
@@ -84,7 +84,7 @@
                 android:background="@null"/>
 
             <TextView
-                style="@style/MainText"
+                style="@style/Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/Ingredients" />
@@ -99,7 +99,7 @@
                 android:id="@+id/btn_add_food"
                 style="@style/ImageButton"
                 android:layout_width="match_parent"
-                android:layout_height="32dp"
+                android:layout_height="40dp"
                 android:src="@drawable/plus"
                 android:background="?attr/category_color"/>
 

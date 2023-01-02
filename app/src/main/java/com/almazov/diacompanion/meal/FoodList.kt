@@ -1,6 +1,5 @@
 package com.almazov.diacompanion.meal
 
-import android.content.Context
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.text.Editable
@@ -9,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -30,7 +30,11 @@ class FoodList : Fragment() {
     private lateinit var adapter: FoodListAdapter
 
     private val args by navArgs<FoodListArgs>()
+    private var filter: String = ""
     private var recipe: Boolean = false
+    private var category: String = ""
+    private var sortVar: String = "name"
+    private var direction: String = "ASC"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,15 +56,13 @@ class FoodList : Fragment() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        readFood(recipe)
+        filterFood()
 
         view.edit_text_search_food.addTextChangedListener(object : TextWatcher {
 
             override fun afterTextChanged(string: Editable) {
-                if (string.isNullOrBlank()) readFood(recipe)
-                else {
-                    filterFood(string.toString().trim(), recipe)
-                }
+                filter = string.toString()
+                filterFood()
             }
 
             override fun beforeTextChanged(string: CharSequence, start: Int,
@@ -76,33 +78,64 @@ class FoodList : Fragment() {
         view.btn_options.setOnClickListener {
             slideView(sort_layout)
         }
-        view.spinner_category.adapter = ArrayAdapter.createFromResource(requireContext(),
-            R.array.RecipeSpinner,
-            R.layout.spinner_item
-        )
+
+        val categoryArray = resources.getStringArray(R.array.RecipeSpinner)
+        val categoryList = categoryArray.toMutableList()
+        categoryList.add(0, "Все категории")
+        view.spinner_category.adapter = ArrayAdapter(requireContext(),R.layout.spinner_item,categoryList)
+
+        view.spinner_category.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parentView: AdapterView<*>?,
+                selectedItemView: View?,
+                position: Int,
+                id: Long
+            ) {
+                category = if (position == 0) "" else view.spinner_category.selectedItem.toString()
+                filterFood()
+            }
+            override fun onNothingSelected(parentView: AdapterView<*>?) {}
+        }
+
         view.spinner_sort.adapter = ArrayAdapter.createFromResource(requireContext(),
             R.array.FoodSort,
             R.layout.spinner_item
         )
+        view.spinner_sort.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parentView: AdapterView<*>?,
+                selectedItemView: View?,
+                position: Int,
+                id: Long
+            ) {
+                sortVar = if (position == 0) "name" else "gi"
+                filterFood()
+            }
+            override fun onNothingSelected(parentView: AdapterView<*>?) {}
+        }
+
+        view.btn_sort.setOnClickListener {
+
+            direction = if (direction == "DESC") {
+                view.btn_sort.rotation = -90F
+                "ASC"
+            } else {
+                view.btn_sort.rotation = 90F
+                "DESC"
+            }
+            filterFood()
+        }
 
         return view
     }
 
 
-    private fun filterFood(filter: String, recipe: Boolean) {
+    private fun filterFood() {
         lifecycleScope.launch{
-            appDatabaseViewModel.readFoodPagedFilter(filter,recipe).collectLatest {
+            appDatabaseViewModel.readFoodPagedFilter(filter,recipe,category,sortVar,direction).collectLatest {
                 view?.recycler_view_food?.smoothScrollToPosition(0)
                 adapter.submitData(it)
-            }
-        }
-    }
-
-    private fun readFood(recipe: Boolean) {
-        lifecycleScope.launch{
-            appDatabaseViewModel.readFoodPaged(recipe).collectLatest {
-                view?.recycler_view_food?.smoothScrollToPosition(0)
-                adapter.submitData(it)
+                adapter.notifyDataSetChanged()
             }
         }
     }

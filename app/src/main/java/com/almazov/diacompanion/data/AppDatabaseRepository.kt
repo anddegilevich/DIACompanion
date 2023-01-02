@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingSource
 import androidx.sqlite.db.SimpleSQLiteQuery
+import com.almazov.diacompanion.categories.Category
 import com.almazov.diacompanion.meal.FoodInMealItem
 
 class AppDatabaseRepository(private val appDao: AppDao) {
@@ -226,27 +227,35 @@ class AppDatabaseRepository(private val appDao: AppDao) {
         return x
     }
 
-    fun readFoodPagedFilter(filter: String, recipe:Boolean): PagingSource<Int, FoodEntity> {
+    fun readFoodPagedFilter(filter: String, recipe: Boolean,
+                            category: String, sortVar: String,
+                            direction: String): PagingSource<Int, FoodEntity> {
 
         var queryWords = ""
-        var firstWord = ""
+        var firstWord: String
         var stringQuery = ""
-        val words = filter.split(" ")
-        for (i in 0 until words.count()){
-            val word = words[i]
-            when (i) {
-                0 -> {
-                    firstWord =
-                        """SELECT * FROM (SELECT *, 1 AS filter FROM food_table WHERE name LIKE '$word%' ORDER BY name ASC)
+
+        if (filter.isEmpty()) {
+            stringQuery = "SELECT * FROM food_table ORDER BY favourite DESC, recipe DESC, $sortVar $direction"
+        } else {
+            val words = filter.split(" ")
+            for (i in 0 until words.count()){
+                val word = words[i]
+                when (i) {
+                    0 -> {
+                        firstWord =
+                            """SELECT * FROM (SELECT *, 1 AS filter FROM food_table WHERE name LIKE '$word%' ORDER BY name ASC)
                         UNION
                         SELECT * FROM (SELECT *, 2 AS filter FROM food_table WHERE name LIKE '_%$word%' ORDER BY name ASC)"""
-                    stringQuery = """SELECT * FROM ($firstWord)"""
+                        stringQuery = "SELECT * FROM ($firstWord)"
+                    }
+                    1 -> queryWords += " WHERE name LIKE '%$word%'"
+                    else -> queryWords += " AND name LIKE '%$word%'"
                 }
-                1 -> queryWords += """ WHERE name LIKE '%$word%'"""
-                else -> queryWords += """ AND name LIKE '%$word%'"""
             }
+            stringQuery += "$queryWords ORDER BY filter, favourite DESC, recipe DESC, $sortVar $direction"
         }
-        stringQuery += "$queryWords ORDER BY filter, favourite DESC, recipe DESC"
+        if (category.isNotEmpty()) stringQuery ="SELECT * FROM ($stringQuery) WHERE category LIKE '$category'"
         if (recipe) stringQuery ="SELECT * FROM ($stringQuery) WHERE recipe NOT LIKE 1"
         val query = SimpleSQLiteQuery(stringQuery)
         return appDao.readFoodPagedFilter(query)

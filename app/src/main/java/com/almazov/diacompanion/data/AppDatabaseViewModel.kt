@@ -327,7 +327,8 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
         }.flow
     }
 
-    fun readFoodPagedFilter(filter: String, recipe: Boolean): Flow<PagingData<FoodEntity>> {
+    fun readFoodPagedFilter(filter: String, recipe: Boolean, category: String, sortVar: String,
+                            direction: String): Flow<PagingData<FoodEntity>> {
         return Pager(
             PagingConfig(
                 pageSize = 10,
@@ -335,7 +336,7 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
                 maxSize = 200
             )
         ){
-            repository.readFoodPagedFilter(filter,recipe)
+            repository.readFoodPagedFilter(filter,recipe, category, sortVar, direction)
         }.flow
     }
 

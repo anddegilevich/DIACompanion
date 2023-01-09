@@ -12,20 +12,23 @@ class AppDatabaseRepository(private val appDao: AppDao) {
 
     // Records
 
-    fun readLastRecords(): LiveData<List<RecordEntity>> {
-        return appDao.readLastRecords()
+    fun readLastRecords(appType: String): LiveData<List<RecordEntity>> {
+        return if (appType == "PCOS") appDao.readLastRecordsPCOS()
+        else appDao.readLastRecords()
     }
 
     fun readDatesPaged(): PagingSource<Int, DateClass> {
         return appDao.readDatesPaged()
     }
 
-    fun readDayRecords(date: String?): LiveData<List<RecordEntity>> {
-        return appDao.readDayRecords(date)
+    fun readDayRecords(date: String?, appType: String): LiveData<List<RecordEntity>> {
+        return if (appType == "PCOS") appDao.readDayRecordsPCOS(date)
+        else appDao.readDayRecords(date)
     }
 
-    fun readDayRecords(date: String?, filter: String): LiveData<List<RecordEntity>> {
-        return appDao.readDayRecords(date, filter)
+    fun readDayRecords(date: String?, appType: String, filter: String): LiveData<List<RecordEntity>> {
+        return if (appType == "PCOS") appDao.readDayRecordsPCOS(date, filter)
+        else appDao.readDayRecords(date, filter)
     }
 
     suspend fun addRecord(recordEntity: RecordEntity): Long {

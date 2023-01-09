@@ -34,8 +34,8 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
 
     // Records
 
-    fun readLastRecords(): LiveData<List<RecordEntity>> {
-        return repository.readLastRecords()
+    fun readLastRecords(appType: String): LiveData<List<RecordEntity>> {
+        return repository.readLastRecords(appType)
     }
 
     fun updateRecord(recordEntity: RecordEntity) {
@@ -56,12 +56,12 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
         }
     }
 
-    fun readDayRecords(date: String?): LiveData<List<RecordEntity>> {
-        return repository.readDayRecords(date)
+    fun readDayRecords(date: String?, appType: String): LiveData<List<RecordEntity>> {
+        return repository.readDayRecords(date, appType)
     }
 
-    fun readDayRecords(date: String?, filter: String): LiveData<List<RecordEntity>> {
-        return repository.readDayRecords(date, filter)
+    fun readDayRecords(date: String?, appType: String, filter: String): LiveData<List<RecordEntity>> {
+        return repository.readDayRecords(date, appType,  filter)
     }
 
     fun updateFullDays(date: String?, fullDay: Boolean?) {

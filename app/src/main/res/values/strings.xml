@@ -72,6 +72,21 @@
     <string name="Contacts">Contacts</string>
     <string name="Pregnancy">Pregnancy</string>
 
+    //AppType
+    <string name="GDMRCT" translatable="false">ГСД, диета (с прогнозированием)</string>
+    <string name="GDM" translatable="false">ГСД, диета + инсулинотерапия</string>
+    <string name="MS" translatable="false">Дневник питания и самоконтроля</string>
+    <string name="PCOS" translatable="false">Дневник питания</string>
+    <string-array name="AttendingDoctors">
+        <item>Анопова Анна Дмитриевна</item>
+        <item>Болотько Яна Алексеевна</item>
+        <item>Дронова Александра Владимировна</item>
+        <item>Попова Полина Викторовна</item>
+        <item>Ткачук Александра Сергеевна</item>
+        <item>Васюкова Елена Андреевна</item>
+        <item>Без врача</item>
+    </string-array>
+
     //----------------------------------------------------------------------------------------------
     //Fragments
 

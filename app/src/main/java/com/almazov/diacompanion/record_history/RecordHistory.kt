@@ -1,5 +1,6 @@
 package com.almazov.diacompanion.record_history
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -11,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.PagingData
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.almazov.diacompanion.R
 import com.almazov.diacompanion.data.AppDatabaseViewModel
@@ -25,11 +27,13 @@ class RecordHistory : Fragment() {
 
     private lateinit var appDatabaseViewModel: AppDatabaseViewModel
     private lateinit var adapter: DateListAdapter
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_record_history, container, false)
 
@@ -54,6 +58,11 @@ class RecordHistory : Fragment() {
         val popup = PopupMenu(requireContext(), view)
         popup.inflate(R.menu.record_history_menu)
 
+        val appType = sharedPreferences.getString("APP_TYPE","")!!
+        if (appType == "PCOS"){
+            popup.menu.removeItem(R.id.sugar_level)
+            popup.menu.removeItem(R.id.insulin)
+        }
         popup.setOnMenuItemClickListener { item: MenuItem? ->
 
             when (item!!.itemId) {

@@ -1,12 +1,14 @@
 package com.almazov.diacompanion.record_history
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.paging.PagingDataAdapter
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -59,7 +61,6 @@ class DateListAdapter(
 
         holder.itemView.date.text = date?.date
 
-
         var second = false
         if (dateChanges.contains(date?.date))
         {
@@ -85,12 +86,14 @@ class DateListAdapter(
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
 
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context!!)
+        val appType = sharedPreferences.getString("APP_TYPE","")!!
         if (filter.isBlank()){
-            appDatabaseViewModel.readDayRecords(date?.date).observe(viewLifecycleOwner , Observer { records ->
+            appDatabaseViewModel.readDayRecords(date?.date, appType).observe(viewLifecycleOwner , Observer { records ->
                 adapter.setData(records)
             })
         } else {
-            appDatabaseViewModel.readDayRecords(date?.date,filter).observe(viewLifecycleOwner , Observer { records ->
+            appDatabaseViewModel.readDayRecords(date?.date, appType, filter).observe(viewLifecycleOwner , Observer { records ->
                 adapter.setData(records)
             })
         }

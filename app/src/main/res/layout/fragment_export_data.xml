@@ -31,14 +31,14 @@
                 android:id="@+id/btn_export_to_slxs"
                 android:layout_gravity="center"
                 style="@style/Button"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/ExportToXLSX"/>
             <Button
                 android:id="@+id/btn_export_to_doctor"
                 android:layout_gravity="center"
                 style="@style/Button"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/ExportToDoctor"/>
 

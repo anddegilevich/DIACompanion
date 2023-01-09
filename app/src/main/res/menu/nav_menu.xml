@@ -12,9 +12,9 @@
             <item android:title="@string/AppType"
                 android:icon="@drawable/target_options"
                 android:id="@+id/nav_view_app_type"/>
-            <item android:title="@string/Audio"
+            <!--<item android:title="@string/Audio"
                 android:icon="@drawable/audio_options"
-                android:id="@+id/nav_view_audio"/>
+                android:id="@+id/nav_view_audio"/>-->
             <item android:title="@string/Notifications"
                 android:icon="@drawable/notification_option"
                 android:id="@+id/nav_view_notifications"/>

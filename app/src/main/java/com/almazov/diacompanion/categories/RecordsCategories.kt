@@ -1,11 +1,13 @@
 package com.almazov.diacompanion.categories
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.Navigation
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import com.almazov.diacompanion.R
 import com.almazov.diacompanion.databinding.FragmentRecordsCategoriesBinding
@@ -13,19 +15,23 @@ import com.almazov.diacompanion.databinding.FragmentRecordsCategoriesBinding
 
 class RecordsCategories : Fragment(), CategoryClickListener {
 
+    private lateinit var sharedPreferences: SharedPreferences
     private lateinit var binding: FragmentRecordsCategoriesBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val appType = sharedPreferences.getString("APP_TYPE","")!!
+
         binding = FragmentRecordsCategoriesBinding.inflate(layoutInflater)
         val view = binding.root
 
         val main = this
 
         categoryList.clear()
-        populateCategories()
+        populateCategories(appType)
 
         binding.RecyclerView.apply {
             layoutManager = GridLayoutManager(context,2)
@@ -40,24 +46,28 @@ class RecordsCategories : Fragment(), CategoryClickListener {
         Navigation.findNavController(requireView()).navigate(category.action)
     }
 
-    private fun populateCategories() {
-        val sugarLevel = Category(
-            R.drawable.sugar_level,
-            R.string.SugarLevel,
-            resources.getColor(R.color.red),
-            resources.getColor(R.color.red_dark),
-            R.id.action_recordsCategories_to_sugarLevelAddRecord
-        )
-        categoryList.add(sugarLevel)
+    private fun populateCategories(appType: String) {
+        if (appType != "PCOS") {
 
-        val insulin = Category(
-            R.drawable.insulin,
-            R.string.Insulin,
-            resources.getColor(R.color.blue),
-            resources.getColor(R.color.blue_dark),
-            R.id.action_recordsCategories_to_insulinAddRecord
-        )
-        categoryList.add(insulin)
+            val sugarLevel = Category(
+                R.drawable.sugar_level,
+                R.string.SugarLevel,
+                resources.getColor(R.color.red),
+                resources.getColor(R.color.red_dark),
+                R.id.action_recordsCategories_to_sugarLevelAddRecord
+            )
+            categoryList.add(sugarLevel)
+
+            val insulin = Category(
+                R.drawable.insulin,
+                R.string.Insulin,
+                resources.getColor(R.color.blue),
+                resources.getColor(R.color.blue_dark),
+                R.id.action_recordsCategories_to_insulinAddRecord
+            )
+            categoryList.add(insulin)
+
+        }
 
         val meal = Category(
             R.drawable.meal,

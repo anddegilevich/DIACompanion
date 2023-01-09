@@ -98,7 +98,7 @@ fun timeDateSelectSetup(fragmentManager: FragmentManager, tvTime: TextView, tvDa
 
 @SuppressLint("SimpleDateFormat")
 @RequiresApi(Build.VERSION_CODES.O)
-private fun openDatePicker(fragmentManager: FragmentManager, tvDate: TextView) {
+fun openDatePicker(fragmentManager: FragmentManager, tvDate: TextView) {
 
     val myFormat = "dd.MM.yyyy"
     val date = tvDate.text.toString()

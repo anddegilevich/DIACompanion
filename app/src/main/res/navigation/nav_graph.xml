@@ -67,8 +67,29 @@
             android:id="@+id/action_homePage_to_ketoneRecordInfo"
             app:destination="@id/ketoneRecordInfo" />
         <action
-            android:id="@+id/action_homePage_to_accountSettings"
-            app:destination="@id/accountSettings"
+            android:id="@+id/action_homePage_to_settingsAccount"
+            app:destination="@id/settingsAccount"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"/>
+        <action
+            android:id="@+id/action_homePage_to_settingsAppType"
+            app:destination="@id/settingsAppType"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"/>
+        <action
+            android:id="@+id/action_homePage_to_settingsNotifications"
+            app:destination="@id/settingsNotifications"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"/>
+        <action
+            android:id="@+id/action_homePage_to_settingsHelp"
+            app:destination="@id/settingsHelp"
             app:enterAnim="@anim/slide_in_left"
             app:exitAnim="@anim/slide_out_right"
             app:popEnterAnim="@anim/slide_in_right"
@@ -510,7 +531,23 @@
             app:argType="com.almazov.diacompanion.data.RecordEntity" />
     </fragment>
     <fragment
-        android:id="@+id/accountSettings"
-        android:name="com.almazov.diacompanion.settings.AccountSettings"
-        android:label="AccountSettings" />
+        android:id="@+id/settingsAccount"
+        android:name="com.almazov.diacompanion.settings.SettingsAccount"
+        android:label="fragment_settings_account"
+        tools:layout="@layout/fragment_settings_account" />
+    <fragment
+        android:id="@+id/settingsAppType"
+        android:name="com.almazov.diacompanion.settings.SettingsAppType"
+        android:label="fragment_settings_app_type"
+        tools:layout="@layout/fragment_settings_app_type" />
+    <fragment
+        android:id="@+id/settingsNotifications"
+        android:name="com.almazov.diacompanion.settings.SettingsNotifications"
+        android:label="fragment_settings_notifications"
+        tools:layout="@layout/fragment_settings_notifications" />
+    <fragment
+        android:id="@+id/settingsHelp"
+        android:name="com.almazov.diacompanion.settings.SettingsHelp"
+        android:label="fragment_settings_help"
+        tools:layout="@layout/fragment_settings_help" />
 </navigation>

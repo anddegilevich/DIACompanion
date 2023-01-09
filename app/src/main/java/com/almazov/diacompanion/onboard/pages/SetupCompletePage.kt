@@ -74,12 +74,10 @@ class SetupCompletePage : Fragment() {
         val secondName = "Фамилия"
         val patronymic = "Отчество"
 
-        val attendingDoctor = "Лечащий врач"
-        val birthDate = "00:00 01.01.2000"
-        val birthDateLong = convertDateToMils(birthDate)
+        val attendingDoctor = "Без врача"
+        val birthDate = "01.01.2000"
 
         val appType = 1
-
 
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         val editor = sharedPreferences?.edit()
@@ -93,8 +91,10 @@ class SetupCompletePage : Fragment() {
             putString("SECOND_NAME",secondName)
             putString("PATRONYMIC",patronymic)
             putString("ATTENDING_DOCTOR",attendingDoctor)
-            putLong("BIRTH_DATE",birthDateLong)
-            putInt("APP_TYPE",appType)
+            putString("BIRTH_DATE",birthDate)
+            putString("APP_TYPE","GDM RCT")
+            putString("EMAIL","email@gmail.com")
+            putLong("PHONE",8921888888)
         }?.apply()
 
     }

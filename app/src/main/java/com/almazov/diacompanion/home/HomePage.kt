@@ -2,6 +2,7 @@ package com.almazov.diacompanion.home
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.os.Parcelable
@@ -33,6 +34,7 @@ class HomePage : Fragment(), InterfaceRecordsInfo {
     private lateinit var appDatabaseViewModel: AppDatabaseViewModel
     private lateinit var adapterRecords: HomeRecordsAdapter
     private var mBundleRecyclerViewState = Bundle()
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onPause() {
         mBundleRecyclerViewState = Bundle()
@@ -46,6 +48,7 @@ class HomePage : Fragment(), InterfaceRecordsInfo {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
 
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_home_page, container, false)
@@ -67,7 +70,8 @@ class HomePage : Fragment(), InterfaceRecordsInfo {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         }
 
-        appDatabaseViewModel.readLastRecords().observe(viewLifecycleOwner, Observer { records ->
+        val appType = sharedPreferences.getString("APP_TYPE","")!!
+        appDatabaseViewModel.readLastRecords(appType).observe(viewLifecycleOwner, Observer { records ->
             if (records.isNullOrEmpty()) {
                 tv_no_records.isVisible = true
             } else adapterRecords.setData(records)
@@ -101,8 +105,10 @@ class HomePage : Fragment(), InterfaceRecordsInfo {
         nav_view.itemIconTintList = null
         nav_view.setNavigationItemSelectedListener {
             when(it.itemId){
-                R.id.nav_view_account -> {findNavController().navigate(R.id.action_homePage_to_accountSettings) }
-                R.id.nav_view_app_type -> {}
+                R.id.nav_view_account -> {findNavController().navigate(R.id.action_homePage_to_settingsAccount)}
+                R.id.nav_view_app_type -> {findNavController().navigate(R.id.action_homePage_to_settingsAppType)}
+                R.id.nav_view_notifications -> {findNavController().navigate(R.id.action_homePage_to_settingsNotifications)}
+                R.id.nav_view_help -> {findNavController().navigate(R.id.action_homePage_to_settingsHelp)}
             }
 
             drawer_layout.closeDrawer(GravityCompat.START)

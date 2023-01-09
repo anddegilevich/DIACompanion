@@ -103,14 +103,13 @@ class ExportData : Fragment() {
         val secondName = sharedPreferences.getString("SECOND_NAME","Фамилия")
         val patronymic = sharedPreferences.getString("PATRONYMIC","Отчество")
         val attendingDoctor = sharedPreferences.getString("ATTENDING_DOCTOR","Лечащий врач")
-        val birthDate = sharedPreferences.getLong("BIRTH_DATE",0)
-        val appType = sharedPreferences.getInt("APP_TYPE",1)
-        val appTypeString = appType.toString()
+        val birthDate = sharedPreferences.getString("BIRTH_DATE","0")
+        val appType = sharedPreferences.getString("APP_TYPE","GDM RCT")
         val formatter = SimpleDateFormat("dd.MM.yyyy")
         val birthDateString = formatter.format(Date(birthDate))
         globalInfoString = "Пациент: $secondName $name $patronymic;   " +
                 "Дата рождения: $birthDateString;   Лечащий врач: $attendingDoctor;   " +
-                "Программа: DiaCompanion Android $appTypeString"
+                "Программа: DiaCompanion Android $appType"
 
         val xlWsSugarLevelInsulin = xlWb.createSheet("Уровень сахара и инсулин")
         val xlWsMeal = xlWb.createSheet("Приемы пищи")

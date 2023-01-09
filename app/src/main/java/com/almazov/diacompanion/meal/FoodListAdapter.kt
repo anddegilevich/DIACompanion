@@ -57,7 +57,8 @@ open class FoodListAdapter() : PagingDataAdapter<FoodEntity, FoodListAdapter.Foo
         holder.itemView.tv_protein.text = food?.prot.toString()
         holder.itemView.tv_fats.text = food?.fat.toString()
         holder.itemView.tv_kkal.text = food?.ec.toString()
-        holder.itemView.tv_gi.text = food?.gi.toString()
+        val giString = if (food?.gi == null) "0" else food.gi.toString()
+        holder.itemView.tv_gi.text = giString
 
         setItemViewClickListener(holder, food)
 

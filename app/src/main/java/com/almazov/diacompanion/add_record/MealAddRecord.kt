@@ -192,6 +192,10 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
                             }
                         }
                     }
+                } else {
+                    if (!foodList.isNullOrEmpty() and checkbox_sugar_level.isChecked and !edit_text_sugar_level.text.isNullOrEmpty()) {
+                        updateRecommendation()
+                    }
                 }
             }
         btn_add_food.setOnClickListener {
@@ -236,7 +240,7 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
 
             override fun afterTextChanged(s: Editable?) {
                 if ((s.isNullOrEmpty()) and (vf_recommendation.height != 0)) slideView(vf_recommendation)
-                if (!foodList.isNullOrEmpty() and !s.isNullOrEmpty()) {
+                if (!foodList.isNullOrEmpty() and checkbox_sugar_level.isChecked and !s.isNullOrEmpty()) {
                     updateRecommendation()
                 }
             }

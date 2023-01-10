@@ -235,7 +235,7 @@ class AppDatabaseRepository(private val appDao: AppDao) {
                             direction: String): PagingSource<Int, FoodEntity> {
 
         var queryWords = ""
-        var firstWord: String
+        var firstWord = ""
         var stringQuery = ""
 
         if (filter.isEmpty()) {
@@ -247,16 +247,17 @@ class AppDatabaseRepository(private val appDao: AppDao) {
                 when (i) {
                     0 -> {
                         firstWord =
-                            """SELECT * FROM (SELECT *, 1 AS filter FROM food_table WHERE name LIKE '$word%' ORDER BY name ASC)
-                        UNION
-                        SELECT * FROM (SELECT *, 2 AS filter FROM food_table WHERE name LIKE '_%$word%' ORDER BY name ASC)"""
-                        stringQuery = "SELECT * FROM ($firstWord)"
+                            "SELECT *, 1 AS sort FROM food_table " +
+                                    "WHERE name LIKE '$word%' " +
+                                    "UNION SELECT *, 2 FROM food_table " +
+                                    "WHERE name LIKE '_%$word%' ORDER BY sort ASC, " +
+                                    "favourite DESC, recipe DESC, $sortVar $direction"
                     }
-                    1 -> queryWords += " WHERE name LIKE '%$word%'"
+                    1 -> queryWords += "WHERE name LIKE '%$word%'"
                     else -> queryWords += " AND name LIKE '%$word%'"
                 }
             }
-            stringQuery += "$queryWords ORDER BY filter, favourite DESC, recipe DESC, $sortVar $direction"
+            stringQuery += "SELECT DISTINCT * FROM ($firstWord) $queryWords "
         }
         if (category.isNotEmpty()) stringQuery ="SELECT * FROM ($stringQuery) WHERE category LIKE '$category'"
         if (recipe) stringQuery ="SELECT * FROM ($stringQuery) WHERE recipe NOT LIKE 1"

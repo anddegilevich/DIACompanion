@@ -105,7 +105,8 @@
                 android:id="@+id/layout_pcos"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:animateLayoutChanges="true">
+                android:animateLayoutChanges="true"
+                android:orientation="vertical">
 
                 <CheckBox
                     android:id="@+id/checkbox_sugar_level"

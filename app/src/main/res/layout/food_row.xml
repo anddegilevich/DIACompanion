@@ -32,22 +32,27 @@
             <ImageView
                 style="@style/FoodRowVarText"
                 android:src="@drawable/protein"
+                android:layout_width="36dp"
                 />
             <ImageView
                 style="@style/FoodRowVarText"
                 android:src="@drawable/fat"
+                android:layout_width="36dp"
                 />
             <ImageView
                 style="@style/FoodRowVarText"
                 android:src="@drawable/carb"
+                android:layout_width="36dp"
                 />
             <ImageView
                 style="@style/FoodRowVarText"
                 android:src="@drawable/kkal"
+                android:layout_width="36dp"
                 />
             <ImageView
                 style="@style/FoodRowVarText"
                 android:src="@drawable/gi"
+                android:layout_width="36dp"
                 />
 
             <TextView

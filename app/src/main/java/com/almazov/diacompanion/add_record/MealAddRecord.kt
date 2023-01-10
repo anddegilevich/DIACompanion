@@ -66,6 +66,7 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
 
     private lateinit var spinnerAdapter: CustomStringAdapter
     private lateinit var spinnerStringArray: Array<String>
+    private lateinit var appType: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -74,9 +75,16 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
 
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         bmi = sharedPreferences!!.getFloat("BMI", 20f).toDouble()
+        appType = sharedPreferences.getString("APP_TYPE", "")!!
+
+        val view = inflater.inflate(R.layout.fragment_meal_add_record, container, false)
+
+        if (appType != "PCOS"){
+            slideView(view.layout_pcos)
+        }
 
         updateBool = args.selectedRecord != null
-        return inflater.inflate(R.layout.fragment_meal_add_record, container, false)
+        return view
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -226,7 +234,7 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
                 slideView(sugar_level_layout)
                 if (!foodList.isNullOrEmpty() and !edit_text_sugar_level.text.isNullOrEmpty()) updateRecommendation()
             } else {
-                if (!foodList.isNullOrEmpty() and !edit_text_sugar_level.text.isNullOrEmpty()) slideView(vf_recommendation)
+                if (vf_recommendation.height != 0) slideView(vf_recommendation)
                 slideView(sugar_level_layout)
             }
         }
@@ -365,13 +373,15 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
     }
 
     private fun updateRecommendation() {
-        vf_recommendation.displayedChild = 0
-        if (vf_recommendation.height == 0) slideView(vf_recommendation)
-        GlobalScope.launch(Dispatchers.Main) {
-            val result = GlobalScope.async(Dispatchers.Default) {
-            getRecommendation()
-        }
-        if (vf_recommendation != null) vf_recommendation.displayedChild = result.await()
+        if (appType == "GDMRCT") {
+            vf_recommendation.displayedChild = 0
+            if (vf_recommendation.height == 0) slideView(vf_recommendation)
+            GlobalScope.launch(Dispatchers.Main) {
+                val result = GlobalScope.async(Dispatchers.Default) {
+                    getRecommendation()
+                }
+                if (vf_recommendation != null) vf_recommendation.displayedChild = result.await()
+            }
         }
     }
 

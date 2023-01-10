@@ -3,6 +3,7 @@ package com.almazov.diacompanion.record_info
 import FoodInMealInfoAdapter
 import android.app.AlertDialog
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.transition.TransitionInflater
 import android.view.ContextThemeWrapper
@@ -47,6 +48,7 @@ class MealRecordInfo : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
     var foodList = mutableListOf<FoodInMealItem>()
     lateinit var adapter: FoodInMealInfoAdapter
     private var bmi: Double? = null
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val animation = TransitionInflater.from(requireContext()).inflateTransition(
@@ -61,8 +63,7 @@ class MealRecordInfo : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
         savedInstanceState: Bundle?
     ): View? {
 
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        bmi = sharedPreferences!!.getFloat("BMI", 20f).toDouble()
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
 
         return inflater.inflate(R.layout.fragment_meal_record_info, container, false)
     }
@@ -92,7 +93,10 @@ class MealRecordInfo : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
                 tv_gl.text = mealInfo[5].toInt().toString()
                 tv_weight.text = mealInfo[6].toInt().toString() + " гр."
 
-                if (record[0].meal.sugarLevel != null) {
+                val appType = sharedPreferences.getString("APP_TYPE", "")!!
+                if ((record[0].meal.sugarLevel != null) and (appType == "GDMRCT")) {
+                    slideView(layout_recommendation)
+                    slideView(layout_sugar_level)
                     tv_sugar_level_before.text = record[0].meal.sugarLevel.toString()
                     tv_sugar_level_predict.text = record[0].meal.sugarLevelPredicted.toString()
 

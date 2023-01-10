@@ -101,53 +101,61 @@
                 android:src="@drawable/plus"
                 android:background="?attr/category_color"/>
 
-            <CheckBox
-                android:id="@+id/checkbox_sugar_level"
-                style="@style/Title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/SugarLevelBeforeFood"
-                android:button="@null"
-                android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"/>
-
             <LinearLayout
-                android:id="@+id/sugar_level_layout"
+                android:id="@+id/layout_pcos"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:orientation="vertical"
-                android:animateLayoutChanges="true"
-                >
+                android:animateLayoutChanges="true">
+
+                <CheckBox
+                    android:id="@+id/checkbox_sugar_level"
+                    style="@style/Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/SugarLevelBeforeFood"
+                    android:button="@null"
+                    android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"/>
 
                 <LinearLayout
+                    android:id="@+id/sugar_level_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="0dp"
+                    android:orientation="vertical"
+                    android:animateLayoutChanges="true"
+                    >
 
-                    <EditText
-                        android:id="@+id/edit_text_sugar_level"
-                        style="@style/EditText"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:inputType="numberDecimal"
-                        android:freezesText="true"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-                    <TextView
-                        style="@style/MainText"
-                        android:layout_width="0dp"
+                        <EditText
+                            android:id="@+id/edit_text_sugar_level"
+                            style="@style/EditText"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:inputType="numberDecimal"
+                            android:freezesText="true"/>
+
+                        <TextView
+                            style="@style/MainText"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/mmoll" />
+                    </LinearLayout>
+
+                    <SeekBar
+                        android:id="@+id/seek_bar_sugar_level"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/mmoll" />
+                        android:padding="8dp"/>
+
                 </LinearLayout>
-
-                <SeekBar
-                    android:id="@+id/seek_bar_sugar_level"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp"/>
-
             </LinearLayout>
+
 
             <TextView
                 style="@style/Title"

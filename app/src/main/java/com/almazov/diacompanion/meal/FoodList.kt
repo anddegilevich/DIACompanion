@@ -17,10 +17,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.almazov.diacompanion.R
 import com.almazov.diacompanion.base.slideView
 import com.almazov.diacompanion.data.AppDatabaseViewModel
-import kotlinx.android.synthetic.main.fragment_add_recipe.view.*
 import kotlinx.android.synthetic.main.fragment_food_list.*
 import kotlinx.android.synthetic.main.fragment_food_list.view.*
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -133,9 +133,10 @@ class FoodList : Fragment() {
     private fun filterFood() {
         lifecycleScope.launch{
             appDatabaseViewModel.readFoodPagedFilter(filter,recipe,category,sortVar,direction).collectLatest {
-                view?.recycler_view_food?.smoothScrollToPosition(0)
                 adapter.submitData(it)
                 adapter.notifyDataSetChanged()
+                delay(200)
+                view?.recycler_view_food?.scrollToPosition(0)
             }
         }
     }

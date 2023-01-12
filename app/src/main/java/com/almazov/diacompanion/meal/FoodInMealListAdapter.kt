@@ -42,13 +42,14 @@ open class FoodInMealListAdapter(private val foodItemList:MutableList<FoodInMeal
         else if (foodItem.foodEntity.gi!! > 25) R.color.orange
         else R.color.green
         val itemColor = ContextCompat.getColor(context!!,intColor)
+
 //        holder.itemView.tv_recipe.text = ""
         holder.itemView.setOnClickListener {
             slideView(holder.itemView.recipe_layout)
-
         }
 
         holder.itemView.gi_indexer.setBackgroundColor(itemColor)
+        holder.itemView.gi.text = foodItem.foodEntity.gi.toString()
 
         changeWeight(holder, position)
 

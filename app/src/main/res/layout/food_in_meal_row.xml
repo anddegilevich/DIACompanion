@@ -38,6 +38,14 @@
             android:text="@string/g"
             android:layout_gravity="center"/>
 
+        <TextView
+            style="@style/MainText"
+            android:id="@+id/gi"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"/>
+
         <View
             android:id="@+id/gi_indexer"
             android:layout_width="8dp"

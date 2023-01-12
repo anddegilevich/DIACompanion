@@ -18,11 +18,11 @@
         <!-- Customize your theme here. -->
 
         <item name="panel_color">@color/grey_darker</item>
-        <item name="button_color">@color/grey_darker</item>
+        <item name="button_color">@color/white</item>
         <item name="background_image">@drawable/background_dark</item>
 
-        <item name="main_text_color">@color/grey</item>
-        <item name="secondary_text_color">@color/grey_dark</item>
+        <item name="main_text_color">@color/white</item>
+        <item name="secondary_text_color">@color/grey</item>
         <item name="link_text_color">@color/blue</item>
     </style>
 

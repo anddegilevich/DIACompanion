@@ -4,6 +4,7 @@ import FoodInMealInfoAdapter
 import android.app.AlertDialog
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Color
 import android.os.Bundle
 import android.transition.TransitionInflater
 import android.view.ContextThemeWrapper
@@ -30,6 +31,7 @@ import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
+import com.google.android.material.color.MaterialColors
 import kotlinx.android.synthetic.main.fragment_meal_record_info.*
 import kotlinx.android.synthetic.main.fragment_meal_record_info.btn_delete
 import kotlinx.android.synthetic.main.fragment_meal_record_info.recycler_view_food_in_meal
@@ -82,6 +84,8 @@ class MealRecordInfo : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
 
         appDatabaseViewModel.getMealWithFoods(args.selectedRecord.id).observe(viewLifecycleOwner, Observer{record ->
             if (!record.isNullOrEmpty()) {
+                foodList.clear()
+                adapter.notifyDataSetChanged()
                 for (food in record) {
                     foodList.add(FoodInMealItem(food.food, food.weight!!))
                     adapter.notifyItemInserted(foodList.size)
@@ -124,7 +128,7 @@ class MealRecordInfo : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
             }
         })
 
-        foodList.clear()
+
         adapter = FoodInMealInfoAdapter(foodList, this)
         recycler_view_food_in_meal.adapter = adapter
         recycler_view_food_in_meal.layoutManager = LinearLayoutManager(requireContext())
@@ -178,7 +182,7 @@ class MealRecordInfo : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
         pieData.setValueFormatter(PercentFormatter(meal_pie_chart))
         pieData.setValueTextSize(18f)
 
-        val textColor = ContextCompat.getColor(requireContext(), R.color.black)
+        val textColor = MaterialColors.getColor(requireContext(), R.attr.main_text_color, Color.BLACK)
         val backgroundColor = ContextCompat.getColor(requireContext(), R.color.transparent)
         pieData.setValueTextColor(textColor)
 

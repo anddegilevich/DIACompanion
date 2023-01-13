@@ -24,6 +24,9 @@
         <item name="main_text_color">@color/white</item>
         <item name="secondary_text_color">@color/grey</item>
         <item name="link_text_color">@color/blue</item>
+
+        <item name="shadow_color">@color/white</item>
+
     </style>
 
     <style name="InsulinTheme" parent="Theme.DIACompanion">

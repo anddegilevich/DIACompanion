@@ -11,8 +11,6 @@ import kotlinx.coroutines.launch
 
 class AppDatabaseViewModel(application: Application): AndroidViewModel(application) {
 
-
-
     fun readDatesPaged(): Flow<PagingData<DateClass>> {
         return Pager(
             PagingConfig(

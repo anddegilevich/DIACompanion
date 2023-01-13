@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/food_row_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -11,7 +12,9 @@
     android:layout_marginRight="5dp"
     android:clickable="true"
     app:cardElevation="7dp"
-    android:background="?attr/panel_color">
+    android:backgroundTint="?attr/panel_color"
+    android:outlineSpotShadowColor="?attr/shadow_color"
+    tools:targetApi="p">
 
 <LinearLayout
     android:layout_width="match_parent"

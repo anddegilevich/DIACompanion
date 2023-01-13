@@ -218,4 +218,6 @@
         <item>По названию</item>
         <item>По ГИ</item>
     </string-array>
+    <string name="NotificationRemember">Не забудьте ввести информацию о своей активности за день</string>
+    <string name="EnableNotifications">Включить уведомления</string>
 </resources>

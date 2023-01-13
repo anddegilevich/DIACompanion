@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/CardView"
     android:layout_width="match_parent"
     android:layout_height="220dp"
@@ -7,7 +8,9 @@
     app:cardCornerRadius="16dp"
     app:cardElevation="7dp"
     android:layout_margin="10dp"
-    android:clickable="true">
+    android:clickable="true"
+    android:outlineSpotShadowColor="?attr/shadow_color"
+    tools:targetApi="p">
 
     <LinearLayout
         android:background="?attr/panel_color"

@@ -11,4 +11,5 @@
 
     <attr name="category_color" format="reference|color" />
     <attr name="category_color_dark" format="reference|color" />
+    <attr name="shadow_color" format="reference|color" />
 </resources>

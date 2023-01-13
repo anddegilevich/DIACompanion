@@ -64,7 +64,7 @@ class SetupCompletePage : Fragment() {
             e.printStackTrace()
         }
 
-        createNotificationChanel()
+//        createNotificationChanel()
 
         val finished = true
         val height  = 1.81f
@@ -80,7 +80,10 @@ class SetupCompletePage : Fragment() {
         val attendingDoctor = "Без врача"
         val birthDate = "01.01.2000"
 
-        val appType = 1
+        val appType = "GDMRCT"
+
+        val email = "email@gmail.com"
+        val phone = 8921888888
 
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         val editor = sharedPreferences?.edit()
@@ -95,9 +98,9 @@ class SetupCompletePage : Fragment() {
             putString("PATRONYMIC",patronymic)
             putString("ATTENDING_DOCTOR",attendingDoctor)
             putString("BIRTH_DATE",birthDate)
-            putString("APP_TYPE","GDM RCT")
-            putString("EMAIL","email@gmail.com")
-            putLong("PHONE",8921888888)
+            putString("APP_TYPE",appType)
+            putString("EMAIL","email")
+            putLong("PHONE",phone)
         }?.apply()
 
     }

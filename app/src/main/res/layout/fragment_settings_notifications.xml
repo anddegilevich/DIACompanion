@@ -31,6 +31,7 @@
             android:orientation="vertical">
 
             <androidx.appcompat.widget.SwitchCompat
+                style="@style/MainText"
                 android:id="@+id/switch_notification"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

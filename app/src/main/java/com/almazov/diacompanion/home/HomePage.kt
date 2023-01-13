@@ -107,7 +107,7 @@ class HomePage : Fragment(), InterfaceRecordsInfo {
             when(it.itemId){
                 R.id.nav_view_account -> {findNavController().navigate(R.id.action_homePage_to_settingsAccount)}
                 R.id.nav_view_app_type -> {findNavController().navigate(R.id.action_homePage_to_settingsAppType)}
-                R.id.nav_view_notifications -> {findNavController().navigate(R.id.action_homePage_to_settingsNotifications)}
+//                R.id.nav_view_notifications -> {findNavController().navigate(R.id.action_homePage_to_settingsNotifications)}
                 R.id.nav_view_help -> {findNavController().navigate(R.id.action_homePage_to_settingsHelp)}
             }
 

@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="0"
-        android:text="@string/PersonalData"/>
+        android:text="@string/Account"/>
 
     <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"
@@ -35,6 +35,13 @@
                 style="@style/Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/PersonalData"/>
+
+            <TextView
+                android:textAlignment="center"
+                style="@style/MainText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="@string/FirstName"/>
 
             <EditText
@@ -48,7 +55,7 @@
 
             <TextView
                 android:textAlignment="center"
-                style="@style/Title"
+                style="@style/MainText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/LastName"/>
@@ -64,7 +71,7 @@
 
             <TextView
                 android:textAlignment="center"
-                style="@style/Title"
+                style="@style/MainText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/Patronymic"/>
@@ -80,7 +87,7 @@
 
             <TextView
                 android:textAlignment="center"
-                style="@style/Title"
+                style="@style/MainText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/BirthDate"/>
@@ -95,7 +102,7 @@
 
             <TextView
                 android:textAlignment="center"
-                style="@style/Title"
+                style="@style/MainText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/Weight"/>
@@ -111,7 +118,7 @@
 
             <TextView
                 android:textAlignment="center"
-                style="@style/Title"
+                style="@style/MainText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/Height"/>
@@ -125,9 +132,23 @@
                 android:inputType="numberDecimal"
                 android:hint="@string/Height" />
 
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:dividerThickness="2dp"
+                app:dividerColor="?attr/category_color"
+                android:layout_marginTop="10dp"/>
+
             <TextView
                 android:textAlignment="center"
                 style="@style/Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Contacts"/>
+
+            <TextView
+                android:textAlignment="center"
+                style="@style/MainText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/Phone"/>
@@ -143,7 +164,7 @@
 
             <TextView
                 android:textAlignment="center"
-                style="@style/Title"
+                style="@style/MainText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/Email"/>
@@ -158,6 +179,13 @@
                 android:ems="10"
                 android:inputType="textWebEmailAddress"
                 android:hint="@string/Email" />
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:dividerThickness="2dp"
+                app:dividerColor="?attr/category_color"
+                android:layout_marginTop="10dp"/>
 
             <TextView
                 style="@style/Title"

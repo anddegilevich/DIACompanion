@@ -34,9 +34,9 @@ class SettingsNotifications : Fragment() {
     private fun sendNotification() {
 
         val builder = NotificationCompat.Builder(requireContext(),"channel_dia_reminder").apply {
-            setSmallIcon(R.drawable.logo)
-            setContentTitle("Example")
-            setContentText("Example")
+            setSmallIcon(R.drawable.logo_mono)
+            setContentTitle("Напоминание")
+            setContentText("Не забудьте ввести данные о своих активностях за сегодня")
             setPriority(NotificationCompat.PRIORITY_DEFAULT)
         }
         with(NotificationManagerCompat.from(requireContext())) {

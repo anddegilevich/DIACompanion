@@ -1,26 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="7dp"
+        android:layout_margin="10dp"
+        android:outlineSpotShadowColor="?attr/shadow_color"
+        tools:targetApi="p">
 
-        <TextView
-            android:id="@+id/info_block_title"
-            style="@style/MainText"
-            android:text="@string/Info"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="match_parent"
+            android:background="?attr/panel_color"
+            android:padding="4dp">
+
+            <TextView
+                android:id="@+id/info_block_title"
+                style="@style/MainText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </FrameLayout>
 
     </androidx.cardview.widget.CardView>
 
-    <include
-        layout="@layout/food_row"
-        android:id="@+id/info_block_include"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+    <ViewFlipper android:id="@+id/vf_info_block"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:animateLayoutChanges="true"
+        android:padding="4dp">
+
+        <include layout="@layout/info_block_gsd" />
+        <include layout="@layout/info_block_gsd" />
+        <include layout="@layout/info_block_gsd" />
+
+    </ViewFlipper>
 
 </LinearLayout>

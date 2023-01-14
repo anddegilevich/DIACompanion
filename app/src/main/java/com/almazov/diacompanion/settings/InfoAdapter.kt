@@ -1,8 +1,10 @@
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.almazov.diacompanion.base.slideView
 import com.almazov.diacompanion.databinding.InfoBlockBinding
 import com.almazov.diacompanion.settings.InfoBlock
+import kotlinx.android.synthetic.main.fragment_meal_add_record.*
 
 class InfoAdapter(private val infoBlocks: List<InfoBlock>)
     : RecyclerView.Adapter<InfoAdapter.InfoViewHolder>() {
@@ -24,7 +26,10 @@ class InfoAdapter(private val infoBlocks: List<InfoBlock>)
     ) : RecyclerView.ViewHolder(infoBlockBinding.root) {
         fun bind(infoBlock: InfoBlock) {
             infoBlockBinding.infoBlockTitle.text = infoBlock.title
-//            infoBlockBinding.infoBlockInclude
+            infoBlockBinding.vfInfoBlock.displayedChild = infoBlock.infoBlockId
+                infoBlockBinding.infoBlockTitle.setOnClickListener{
+                slideView(infoBlockBinding.vfInfoBlock)
+            }
         }
     }
 }

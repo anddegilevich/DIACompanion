@@ -172,7 +172,7 @@ fun slideView(
     view.layoutTransition.enableTransitionType(LayoutTransition.APPEARING)
     val layoutParams = view.layoutParams
     if (layoutParams.height == 0){
-        layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
     } else {
         layoutParams.height = 0
     }

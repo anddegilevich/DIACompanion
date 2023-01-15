@@ -1,27 +1,151 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="vertical">
+
+<androidx.cardview.widget.CardView
+    android:id="@+id/card_gsd"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="7dp"
+    android:clickable="true"
+    android:layout_margin="10dp"
+    android:outlineSpotShadowColor="?attr/shadow_color"
+    tools:targetApi="p">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/panel_color"
+        android:padding="4dp">
+
+        <TextView
+            android:text = "1.1 Гестационный сахарный диабет (ГСД)"
+            android:id="@+id/info_block_title"
+            style="@style/MainText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </FrameLayout>
+
+</androidx.cardview.widget.CardView>
+
+<LinearLayout
+    android:animateLayoutChanges="true"
+    android:id="@+id/info_gsd"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
     android:orientation="vertical">
 
     <TextView
-        style="@style/SmallText"
+        style="@style/MainText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="\t Гестационный сахарный диабет (ГСД) – это склонность к повышению уровня глюкозы в крови во время беременности. ГСД развивается во время беременности и заканчивается после родов. При ГСД уровень глюкозы выше, чем у здоровых женщин, но еще не такой высокий как у людей с постоянным сахарным диабетом."
+        android:text="\tОпределение:"
         android:justificationMode="inter_word"/>
 
     <TextView
         style="@style/SmallText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="\t Во время беременности у женщины повышается уровень гормонов, необходимых для правильного формирования и развития малыша. В тоже время, гормоны беременности ухудшают чувствительность организма беременной к инсулину, заставляя поджелудочную железу вырабатывать инсулин все активнее. Чем больше срок беременности, тем больше инсулина требуется и тем более интенсивной становится работа поджелудочной железы. У женщин, предрасположенных к избыточному весу и сахарному диабету 2 типа в будущем, поджелудочная железа может не справиться с возрастающей во время беременности нагрузкой, и уровень глюкозы в крови начнет повышаться, развивается ГСД. Но бывает ГСД и у женщин без известных факторов риска."
+        android:text="\tГестационный сахарный диабет (ГСД) – это склонность к повышению уровня глюкозы в крови во время беременности. ГСД развивается во время беременности и заканчивается после родов. При ГСД уровень глюкозы выше, чем у здоровых женщин, но еще не такой высокий как у людей с постоянным сахарным диабетом."
         android:justificationMode="inter_word"/>
 
     <TextView
         style="@style/SmallText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="\t Для выявления ГСД достаточно одного повышения уровня глюкозы венозной плазмы во время беременности. При этом никаких симптомов или неприятных ощущений такое повышение уровня глюкозы вызывать не будет. Зачем же мы тогда уделяем столько внимания ГСД? Повышение глюкозы в крови во время беременности негативно влияет на малыша и увеличивает риск осложнений беременности у мамы!"
+        android:text="\tВо время беременности у женщины повышается уровень гормонов, необходимых для правильного формирования и развития малыша. В тоже время, гормоны беременности ухудшают чувствительность организма беременной к инсулину, заставляя поджелудочную железу вырабатывать инсулин все активнее. Чем больше срок беременности, тем больше инсулина требуется и тем более интенсивной становится работа поджелудочной железы. У женщин, предрасположенных к избыточному весу и сахарному диабету 2 типа в будущем, поджелудочная железа может не справиться с возрастающей во время беременности нагрузкой, и уровень глюкозы в крови начнет повышаться, развивается ГСД. Но бывает ГСД и у женщин без известных факторов риска."
         android:justificationMode="inter_word"/>
+
+    <TextView
+        style="@style/SmallText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="\tДля выявления ГСД достаточно одного повышения уровня глюкозы венозной плазмы во время беременности. При этом никаких симптомов или неприятных ощущений такое повышение уровня глюкозы вызывать не будет. Зачем же мы тогда уделяем столько внимания ГСД? Повышение глюкозы в крови во время беременности негативно влияет на малыша и увеличивает риск осложнений беременности у мамы!"
+        android:justificationMode="inter_word"/>
+
+    <TextView
+        style="@style/MainText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="\tРиски ГСД для ребенка:"
+        android:justificationMode="inter_word"/>
+
+    <TextView
+        style="@style/SmallText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="\t- крупные размеры (более 4000 кг) и риск получения травмы в родах\n\t- низкий уровень глюкозы в первые часы или дни после рождения\n\t- трудности с дыханием при рождении\n\t- крупные внутренние органы у ребенка\n\t- больший риск ожирения, СД 2 типа в будущем"
+        android:justificationMode="inter_word"/>
+
+    <TextView
+        style="@style/MainText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="\tРиски ГСД для мамы:"
+        android:justificationMode="inter_word"/>
+
+    <TextView
+        style="@style/SmallText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="\t- риск получения травмы в родах\n\t- больший риск осложнений поздних сроков беременности: повышение артериального давления, отеки, обнаружение белка в моче\n\t- риск СД 2 типа в будущем"
+        android:justificationMode="inter_word"/>
+
+    <TextView
+        style="@style/MainText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="\tЧто делать?"
+        android:justificationMode="inter_word"/>
+
+    <TextView
+        style="@style/SmallText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="\tЕсли ГСД вовремя обнаружен, проводится подходящее лечение и уровень глюкозы в крови остается в пределах нормы, большинство рисков ГСД удается предотвратить!"
+        android:justificationMode="inter_word"/>
+
+    <TextView
+        style="@style/SmallText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="\tЧтобы поддерживать нормальные значения уровня глюкозы и убедиться в этом, женщине с ГСД необходимо:"
+        android:justificationMode="inter_word"/>
+
+    <TextView
+        style="@style/SmallText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="\t- Придерживаться диеты (переход к разделу «Принципы питания при ГСД») с исключением продуктов с высоким гликимиечским индексом и ограничение продуктов со средним гликемическим индексом"
+        android:justificationMode="inter_word"/>
+
+    <TextView
+        style="@style/SmallText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="\t- Увеличить физическую активность (переход к разделу «Физическая активность при ГСД») при отсутствии противопоказаний"
+        android:justificationMode="inter_word"/>
+
+    <TextView
+        style="@style/SmallText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="\t- Измерять уровень глюкозы в крови глюкометром (переход к разделу «Измерения глюкозы при ГСД»)"
+        android:justificationMode="inter_word"/>
+
+    <TextView
+        style="@style/SmallText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="\tЕсли диета недостаточно эффективна и повышения глюкозы в крови сохраняются, женщине с ГСД может потребоваться временное лечение инсулином, которое обязательно завершится после родов."
+        android:justificationMode="inter_word"/>
+
+</LinearLayout>
+
 </LinearLayout>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_about_app"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="7dp"
+        android:clickable="true"
+        android:layout_margin="10dp"
+        android:outlineSpotShadowColor="?attr/shadow_color"
+        tools:targetApi="p">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?attr/panel_color"
+            android:padding="4dp">
+
+            <TextView
+                android:text = "О приложении"
+                android:id="@+id/info_block_title"
+                style="@style/MainText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </FrameLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:animateLayoutChanges="true"
+        android:id="@+id/info_about_app"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:src="@drawable/logo"/>
+
+        <TextView
+            style="@style/SmallText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\tDiaCompanion Android v.1.08 – приложение, используемое для систематического сбора и хранения информации о течении гестационного сахарного диабета. Приложение предназначено для работы на устройствах с ОС Android версии 3.0 и выше."
+            android:justificationMode="inter_word"/>
+
+    </LinearLayout>
+
+</LinearLayout>

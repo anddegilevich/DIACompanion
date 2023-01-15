@@ -33,8 +33,10 @@
             android:orientation="vertical">
 
             <include layout="@layout/info_block_about_app" />
-
             <include layout="@layout/info_block_gsd" />
+            <include layout="@layout/info_block_eating_habits" />
+            <include layout="@layout/info_block_pv" />
+            <include layout="@layout/info_block_sugar" />
 
         </LinearLayout>
 

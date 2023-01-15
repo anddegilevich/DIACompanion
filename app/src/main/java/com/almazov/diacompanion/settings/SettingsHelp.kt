@@ -8,7 +8,10 @@ import androidx.fragment.app.Fragment
 import com.almazov.diacompanion.R
 import com.almazov.diacompanion.base.slideView
 import kotlinx.android.synthetic.main.info_block_about_app.view.*
+import kotlinx.android.synthetic.main.info_block_eating_habits.view.*
 import kotlinx.android.synthetic.main.info_block_gsd.view.*
+import kotlinx.android.synthetic.main.info_block_pv.view.*
+import kotlinx.android.synthetic.main.info_block_sugar.view.*
 
 
 class SettingsHelp : Fragment() {
@@ -26,6 +29,18 @@ class SettingsHelp : Fragment() {
 
         view.card_gsd.setOnClickListener{
             slideView(view.info_gsd)
+        }
+
+        view.card_eating_habits.setOnClickListener{
+            slideView(view.info_eating_habits)
+        }
+
+        view.card_pv.setOnClickListener{
+            slideView(view.info_pv)
+        }
+
+        view.card_sugar.setOnClickListener{
+            slideView(view.info_sugar)
         }
 
         return view

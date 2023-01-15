@@ -42,13 +42,6 @@ android:orientation="vertical">
     android:orientation="vertical">
 
     <TextView
-        style="@style/MainText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="\tОпределение:"
-        android:justificationMode="inter_word"/>
-
-    <TextView
         style="@style/SmallText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

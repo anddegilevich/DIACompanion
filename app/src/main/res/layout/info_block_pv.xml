@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_pv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="7dp"
+        android:clickable="true"
+        android:layout_margin="10dp"
+        android:outlineSpotShadowColor="?attr/shadow_color"
+        tools:targetApi="p">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?attr/panel_color"
+            android:padding="4dp">
+
+            <TextView
+                android:text = "1.3 Пищевые волокна"
+                android:id="@+id/info_block_title"
+                style="@style/MainText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </FrameLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:animateLayoutChanges="true"
+        android:id="@+id/info_pv"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/SmallText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\tЗдоровая диета должна содержать большое количество пищевых волокон. Самые полезные пищевые волокна содержатся в цельных не шлифованных крупах и овощах, не содержащих крахмал."
+            android:justificationMode="inter_word"/>
+
+        <TextView
+            style="@style/SmallText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\tНапример, люди, употребляющие традиционную средиземноморскую диету, потребляют не менее 45 граммов пищевых волокон в день, особенно нерастворимых. Это более чем в три раза больше, чем в обычной западной диете (в среднем 14 г/день). Чашка вареного бурого риса, например, содержит 3 г волокон, в то время как такое же количество белого риса - всего 1 г. Сто грамм вареной чечевицы содержит 8 г волокон, в то время как 100 г говядины вообще не содержит волокон."
+            android:justificationMode="inter_word"/>
+
+        <TextView
+            style="@style/SmallText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\tЕсли съесть 2 стакана бурого риса, 1 стакан чечевицы, 20 миндальных орехов, 1 стакан зеленого салата или капусты, 1 стакан шпината, 2 средних моркови, 1 яблоко, 1 апельсин, 2 столовые ложки оливкового масла, сок из 1 лимона и 1 столовую ложку семян льна, то за сутки Вы получите 73 г клетчатки, 1886 ккал, 76 г белков, 64 г жира (при этом, лишь 4% насыщенных жиров) и более 100% рекомендованного количества большинства витаминов и полезных микроэлементов."
+            android:justificationMode="inter_word"/>
+
+        <TextView
+            style="@style/SmallText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\tПищевые волокна замедляют всасывание глюкозы в кишечнике, а следовательно, снижают уровень сахара в крови."
+            android:justificationMode="inter_word"/>
+
+    </LinearLayout>
+
+</LinearLayout>

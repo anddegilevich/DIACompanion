@@ -22,7 +22,7 @@
 
     <TextView
         android:id="@+id/textView3"
-        style="@style/MainText"
+        style="@style/Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/OnBWelcome"
@@ -35,7 +35,7 @@
 
     <TextView
         android:id="@+id/textView4"
-        style="@style/SmallText"
+        style="@style/MainText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"

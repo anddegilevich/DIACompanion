@@ -1,13 +1,8 @@
 package com.almazov.diacompanion
 
-import android.content.Context
-import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import androidx.navigation.Navigation
-import com.almazov.diacompanion.onboard.OnBoardingViewPager
 import java.util.*
 
 class MainActivity : AppCompatActivity() {

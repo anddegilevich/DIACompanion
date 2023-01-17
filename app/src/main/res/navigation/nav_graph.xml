@@ -18,11 +18,6 @@
             app:popEnterAnim="@anim/slide_in_down"
             app:popExitAnim="@anim/slide_out_down" />
         <action
-            android:id="@+id/action_homePage_to_onBoardingViewPager"
-            app:destination="@id/onBoardingViewPager"
-            app:popUpTo="@id/onBoardingViewPager"
-            app:popUpToInclusive="true" />
-        <action
             android:id="@+id/action_homePage_to_exportData"
             app:destination="@id/exportData"
             app:enterAnim="@anim/slide_in_up"
@@ -94,6 +89,11 @@
             app:exitAnim="@anim/slide_out_right"
             app:popEnterAnim="@anim/slide_in_right"
             app:popExitAnim="@anim/slide_out_left"/>
+        <action
+            android:id="@+id/action_homePage_to_greetingsPage"
+            app:destination="@id/greetingsPage"
+            app:popUpTo="@id/greetingsPage"
+            app:popUpToInclusive="true"/>
 
     </fragment>
     <fragment
@@ -207,21 +207,6 @@
             app:argType="com.almazov.diacompanion.data.FoodEntity"
             app:nullable="true"
             android:defaultValue="@null" />
-    </fragment>
-    <fragment
-        android:id="@+id/onBoardingViewPager"
-        android:name="com.almazov.diacompanion.onboard.OnBoardingViewPager"
-        android:label="fragment_on_boarding_view_pager"
-        tools:layout="@layout/fragment_on_boarding_view_pager" >
-        <action
-            android:id="@+id/action_onBoardingViewPager_to_homePage"
-            app:destination="@id/homePage"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            app:popUpTo="@id/homePage"
-            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/insulinAddRecord"
@@ -534,12 +519,20 @@
         android:id="@+id/settingsAccount"
         android:name="com.almazov.diacompanion.settings.SettingsAccount"
         android:label="fragment_settings_account"
-        tools:layout="@layout/fragment_settings_account" />
+        tools:layout="@layout/fragment_settings_account" >
+        <action
+            android:id="@+id/action_settingsAccount_to_settingsAppType"
+            app:destination="@id/settingsAppType" />
+    </fragment>
     <fragment
         android:id="@+id/settingsAppType"
         android:name="com.almazov.diacompanion.settings.SettingsAppType"
         android:label="fragment_settings_app_type"
-        tools:layout="@layout/fragment_settings_app_type" />
+        tools:layout="@layout/fragment_settings_app_type" >
+        <action
+            android:id="@+id/action_settingsAppType_to_setupCompletePage"
+            app:destination="@id/setupCompletePage" />
+    </fragment>
     <fragment
         android:id="@+id/settingsNotifications"
         android:name="com.almazov.diacompanion.settings.SettingsNotifications"
@@ -550,4 +543,28 @@
         android:name="com.almazov.diacompanion.settings.SettingsHelp"
         android:label="fragment_settings_help"
         tools:layout="@layout/fragment_settings_help" />
+    <fragment
+        android:id="@+id/greetingsPage"
+        android:name="com.almazov.diacompanion.onboard.pages.GreetingsPage"
+        android:label="fragment_greetings_page"
+        tools:layout="@layout/fragment_greetings_page" >
+        <action
+            android:id="@+id/action_greetingsPage_to_settingsAccount"
+            app:destination="@id/settingsAccount" />
+    </fragment>
+    <fragment
+        android:id="@+id/setupCompletePage"
+        android:name="com.almazov.diacompanion.onboard.pages.SetupCompletePage"
+        android:label="fragment_setup_complete_page"
+        tools:layout="@layout/fragment_setup_complete_page" >
+        <action
+            android:id="@+id/action_setupCompletePage_to_homePage"
+            app:destination="@id/homePage"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/homePage"
+            app:popUpToInclusive="true"/>
+    </fragment>
 </navigation>

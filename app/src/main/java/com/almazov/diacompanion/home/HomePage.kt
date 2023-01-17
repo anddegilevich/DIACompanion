@@ -126,7 +126,7 @@ class HomePage : Fragment(), InterfaceRecordsInfo {
     private fun ifOnBoardingFinished(view: View){
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         val finished: Boolean = sharedPreferences!!.getBoolean("ON_BOARDING_FINISHED", false)
-        if (!finished) {Navigation.findNavController(view).navigate(R.id.action_homePage_to_onBoardingViewPager)}
+        if (!finished) {Navigation.findNavController(view).navigate(R.id.action_homePage_to_greetingsPage)}
     }
 
     private fun deleteAllRecords(){

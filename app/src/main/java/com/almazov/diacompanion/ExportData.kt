@@ -61,7 +61,7 @@ class ExportData : Fragment() {
         appDatabaseViewModel = ViewModelProvider(this)[AppDatabaseViewModel::class.java]
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         btn_export_to_slxs.setOnClickListener{
-            createXmlFile()
+//            createXmlFile()
         }
 
         btn_export_to_doctor.setOnClickListener{

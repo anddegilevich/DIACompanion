@@ -60,7 +60,7 @@ class WorkoutRecordInfo : Fragment() {
 
             val calories = workoutCoefs[record.type]!! * record.duration!!.toFloat() / 60 * weight
 
-            tv_kkal.text = setTwoDigits(calories.toDouble()).toString()
+//            tv_kkal.text = setTwoDigits(calories.toDouble()).toString()
 
         })
 

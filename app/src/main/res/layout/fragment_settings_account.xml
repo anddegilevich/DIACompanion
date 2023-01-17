@@ -13,6 +13,32 @@
         android:layout_weight="0"
         android:text="@string/Account"/>
 
+    <LinearLayout
+        android:id="@+id/layout_notification"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:padding="4dp"
+        android:animateLayoutChanges="true">
+
+        <TextView
+            style="@style/MainText"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/red"
+            android:text="@string/NotificationFillAllFields"
+            android:layout_gravity="center"/>
+
+        <ImageView
+            style="@style/ImageButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/notice"
+            android:layout_gravity="center"/>
+
+    </LinearLayout>
+
     <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -50,7 +76,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textPersonName"
+                android:inputType="textCapSentences"
                 android:hint="@string/FirstName" />
 
             <TextView
@@ -66,7 +92,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textPersonName"
+                android:inputType="textCapSentences"
                 android:hint="@string/LastName" />
 
             <TextView
@@ -82,7 +108,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textPersonName"
+                android:inputType="textCapSentences"
                 android:hint="@string/Patronymic" />
 
             <TextView
@@ -97,7 +123,7 @@
                 style="@style/EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="00.00.2000"
+                android:text="01.01.2000"
                 />
 
             <TextView
@@ -105,7 +131,7 @@
                 style="@style/MainText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/Weight"/>
+                android:text="@string/WeightKg"/>
 
             <EditText
                 style="@style/EditText"
@@ -121,7 +147,7 @@
                 style="@style/MainText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/Height"/>
+                android:text="@string/HeightSm"/>
 
             <EditText
                 style="@style/EditText"
@@ -160,6 +186,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="phone"
+                android:digits="0123456789+"
                 android:hint="@string/Phone" />
 
             <TextView
@@ -204,5 +231,12 @@
         </LinearLayout>
 
     </ScrollView>
+
+    <Button
+        android:id="@+id/btn_save"
+        style="@style/Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/Save"/>
 
 </LinearLayout>

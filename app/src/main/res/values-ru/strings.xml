@@ -220,4 +220,10 @@
     </string-array>
     <string name="NotificationRemember">Не забудьте ввести информацию о своей активности за день</string>
     <string name="EnableNotifications">Включить уведомления</string>
+    <string name="HeightSm">Рост, см</string>
+    <string name="WeightKg">Вес, кг</string>
+    <string name="NotificationFillAllFields">Пожалуйста заполните все обязательные поля, чтобы продолжить</string>
+    <string name="MealName">Название</string>
+    <string name="WeightG">Вес, гр.</string>
+    <string name="GL">ГН</string>
 </resources>

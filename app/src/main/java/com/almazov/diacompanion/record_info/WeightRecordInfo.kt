@@ -48,7 +48,7 @@ class WeightRecordInfo : Fragment() {
         appDatabaseViewModel.readWeightRecord(args.selectedRecord.id).observe(viewLifecycleOwner, Observer { record ->
 
             tv_weight.text = record.weight.toString()
-            showBMI(record.weight!!)
+//            showBMI(record.weight!!)
         })
 
         date.text = args.selectedRecord.date
@@ -77,7 +77,7 @@ class WeightRecordInfo : Fragment() {
 
     }
 
-    private fun showBMI(weight: Double) {
+    /*private fun showBMI(weight: Double) {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         val height = sharedPreferences.getFloat("HEIGHT", 1f)
         var bmi = setTwoDigits(weight / height.pow(2))
@@ -95,7 +95,7 @@ class WeightRecordInfo : Fragment() {
         }
 
         slider_bmi.value = bmi.toFloat()
-    }
+    }*/
 
     override fun onGetLayoutInflater(savedInstanceState: Bundle?): LayoutInflater {
         val inflater = super.onGetLayoutInflater(savedInstanceState)

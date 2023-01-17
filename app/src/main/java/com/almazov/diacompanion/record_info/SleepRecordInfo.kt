@@ -54,7 +54,7 @@ class SleepRecordInfo : Fragment() {
         appDatabaseViewModel.readSleepRecord(args.selectedRecord.id).observe(viewLifecycleOwner, Observer { record ->
 
             tv_duration.text = record.duration.toString()
-            sleepLineChartSetup(record.duration!!)
+//            sleepLineChartSetup(record.duration!!)
 
         })
 
@@ -84,7 +84,7 @@ class SleepRecordInfo : Fragment() {
 
     }
 
-    private fun sleepLineChartSetup(duration: Double) {
+    /*private fun sleepLineChartSetup(duration: Double) {
         val lineEntries = ArrayList<Entry>()
 
         val m = 6f
@@ -131,7 +131,7 @@ class SleepRecordInfo : Fragment() {
             isHighlightPerDragEnabled = false
         }
 
-    }
+    }*/
 
     private fun createNormalDistribution(m: Float, s: Float, step: Float): MutableList<Pair<Float, Float>> {
         var xMin = m - 3 * s

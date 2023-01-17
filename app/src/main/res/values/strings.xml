@@ -40,6 +40,7 @@
     <string name="Protein">P</string>
     <string name="Fats">F</string>
     <string name="GI">GI</string>
+    <string name="GL">GL</string>
 
     //----------------------------------------------------------------------------------------------
     //Options
@@ -65,6 +66,8 @@
     <string name="BirthDate">Birth date</string>
     <string name="Gender">Gender</string>
     <string name="Height">Height</string>
+    <string name="HeightSm">Height, sm</string>
+    <string name="WeightKg">Weight, kg</string>
     <string name="AttendingDoctor">Attending doctor</string>
     <string name="PregnancyStart">Date of the beginning of pregnancy</string>
     <string name="PersonalData">Personal data</string>
@@ -80,6 +83,7 @@
         <item>Васюкова Елена Андреевна</item>
         <item>Без врача</item>
     </string-array>
+    <string name="NotificationFillAllFields">Please fill all required fields to continue</string>
 
     //AppType
     <string name="GDMRCT" translatable="false">ГСД, диета (с прогнозированием)</string>
@@ -172,6 +176,9 @@
         <item>GI</item>
     </string-array>
     <string name="EnterFoodWeight">Enter food weight:</string>
+    <string name="MealName">Meal Name</string>
+    <string name="WeightG">Weight, g</string>
+
 
     //WorkoutAddRecord
     <string-array name="WorkoutSpinner">

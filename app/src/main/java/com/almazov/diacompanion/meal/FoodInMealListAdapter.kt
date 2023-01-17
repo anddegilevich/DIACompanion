@@ -48,7 +48,7 @@ open class FoodInMealListAdapter(private val foodItemList:MutableList<FoodInMeal
             slideView(holder.itemView.recipe_layout)
         }
 
-        holder.itemView.gi_indexer.setBackgroundColor(itemColor)
+//        holder.itemView.gi_indexer.setBackgroundColor(itemColor)
         holder.itemView.gi.text = foodItem.foodEntity.gi.toString()
 
         changeWeight(holder, position)

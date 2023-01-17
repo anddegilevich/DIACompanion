@@ -9,11 +9,14 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import com.almazov.diacompanion.R
+import kotlinx.android.synthetic.main.fragment_settings_account.view.*
 import kotlinx.android.synthetic.main.fragment_settings_app_type.view.*
+import kotlinx.android.synthetic.main.fragment_settings_app_type.view.btn_save
 
 class SettingsAppType : Fragment() {
 
     private lateinit var sharedPreferences: SharedPreferences
+    private var appType: String = "PCOS"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,30 +26,42 @@ class SettingsAppType : Fragment() {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         val view = inflater.inflate(R.layout.fragment_settings_app_type, container, false)
 
+        val finished: Boolean = sharedPreferences.getBoolean("ON_BOARDING_FINISHED", false)
+        if (finished) {
+            view.btn_save.setOnClickListener {
+                saveChanges()
+                findNavController().popBackStack()
+            }
+        } else {
+            view.btn_save.setOnClickListener {
+                saveChanges()
+                findNavController().navigate(R.id.action_settingsAppType_to_setupCompletePage)
+            }
+        }
+
         view.btn_GDMRCT.setOnClickListener {
-            changeAppType("GDMRCT")
+            appType = "GDMRCT"
         }
 
         view.btn_GDM.setOnClickListener {
-            changeAppType("GDM")
+            appType = "GDM"
         }
 
         view.btn_MS.setOnClickListener {
-            changeAppType("MS")
+            appType = "MS"
         }
 
         view.btn_PCOS.setOnClickListener {
-            changeAppType("PCOS")
+            appType = "PCOS"
         }
 
         return view
     }
 
-    private fun changeAppType(appType: String) {
+    private fun saveChanges() {
         sharedPreferences.edit().apply{
             putString("APP_TYPE",appType)
         }?.apply()
-        findNavController().popBackStack()
     }
 
 }

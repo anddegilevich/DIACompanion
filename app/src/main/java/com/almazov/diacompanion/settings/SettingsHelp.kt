@@ -9,7 +9,10 @@ import com.almazov.diacompanion.R
 import com.almazov.diacompanion.base.slideView
 import kotlinx.android.synthetic.main.info_block_about_app.view.*
 import kotlinx.android.synthetic.main.info_block_eating_habits.view.*
+import kotlinx.android.synthetic.main.info_block_gi.view.*
 import kotlinx.android.synthetic.main.info_block_gsd.view.*
+import kotlinx.android.synthetic.main.info_block_help.view.*
+import kotlinx.android.synthetic.main.info_block_physical_act.view.*
 import kotlinx.android.synthetic.main.info_block_pv.view.*
 import kotlinx.android.synthetic.main.info_block_sugar.view.*
 
@@ -41,6 +44,18 @@ class SettingsHelp : Fragment() {
 
         view.card_sugar.setOnClickListener{
             slideView(view.info_sugar)
+        }
+
+        view.card_physical_act.setOnClickListener{
+            slideView(view.info_physical_act)
+        }
+
+        view.card_gi.setOnClickListener{
+            slideView(view.info_gi)
+        }
+
+        view.card_help.setOnClickListener{
+            slideView(view.info_help)
         }
 
         return view

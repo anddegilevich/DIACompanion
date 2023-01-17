@@ -223,6 +223,45 @@
                 android:layout_height="wrap_content"
                 android:text="@string/FoodList"/>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/MainText"
+                    android:layout_width="0dp"
+                    android:layout_weight="4"
+                    android:layout_height="wrap_content"
+                    android:text="@string/MealName"
+                    android:gravity="center"/>
+
+                <TextView
+                    style="@style/MainText"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:layout_height="wrap_content"
+                    android:text="@string/WeightG"
+                    android:gravity="center"/>
+
+                <TextView
+                    style="@style/MainText"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
+                    android:text="@string/GI"
+                    android:gravity="center"/>
+
+                <TextView
+                    style="@style/MainText"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
+                    android:text="@string/GL"
+                    android:gravity="center"/>
+
+            </LinearLayout>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_food_in_meal"
                 android:layout_width="match_parent"

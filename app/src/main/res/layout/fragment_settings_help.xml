@@ -37,6 +37,9 @@
             <include layout="@layout/info_block_eating_habits" />
             <include layout="@layout/info_block_pv" />
             <include layout="@layout/info_block_sugar" />
+            <include layout="@layout/info_block_physical_act" />
+            <include layout="@layout/info_block_gi" />
+            <include layout="@layout/info_block_help" />
 
         </LinearLayout>
 

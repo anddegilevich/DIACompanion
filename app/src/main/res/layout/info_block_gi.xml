@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_gi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="7dp"
+        android:clickable="true"
+        android:layout_margin="10dp"
+        android:outlineSpotShadowColor="?attr/shadow_color"
+        tools:targetApi="p">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?attr/panel_color"
+            android:padding="4dp">
+
+            <TextView
+                android:text="1.6 Гликемический индекс продуктов"
+                android:id="@+id/info_block_title"
+                style="@style/MainText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </FrameLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:animateLayoutChanges="true"
+        android:id="@+id/info_gi"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/SmallText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\tВ зависимости от своего строения, продукты, содержащие углеводы, имеют разный гликемический индекс (ГИ)."
+            android:justificationMode="inter_word"/>
+
+        <TextView
+            style="@style/MainText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\t- Продукты с высоким ГИ"
+            android:justificationMode="inter_word"/>
+
+        <TextView
+            style="@style/SmallText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\tБыстрее усваиваются, быстрее и сильнее повышают уровень глюкозы в крови. Женщины с ГСД должны исключить продукты с высоким ГИ из своего рациона."
+            android:justificationMode="inter_word"/>
+
+        <TextView
+            style="@style/SmallText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\tПродукты с высоким ГИ: хлопья; мюсли; каши быстрого приготовления; белый рис; сахар; мед; варенье; выпечка из белой пшеничной муки; конфеты."
+            android:justificationMode="inter_word"/>
+
+        <TextView
+            style="@style/MainText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\t- Продукты со средним ГИ"
+            android:justificationMode="inter_word"/>
+
+        <TextView
+            style="@style/SmallText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\tТребуют больше времени на усвоение организмом, а значит медленнее и меньше повышают уровень глюкозы. При употреблении в больших количествах продукты со средним ГИ также могут приводить к чрезмерному повышению уровню глюкозы в крови. Женщины с ГСД должны обязательно включать эти продукты в свое меню, но ограничивать их по количеству."
+            android:justificationMode="inter_word"/>
+
+        <TextView
+            style="@style/SmallText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\tПродукты со средним ГИ: фрукты; ягоды; вареный, запеченный или жареный картофель; свекла; тыква; крупы (гречневая, овсяная, перловка, ячмень, булгур, бурый или дикий рис); бобовые (фасоль, горох, нут, маш); цельнозерновой хлеб; кефир; ряженка; молоко."
+            android:justificationMode="inter_word"/>
+
+        <TextView
+            style="@style/MainText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\t- Продукты с низким ГИ "
+            android:justificationMode="inter_word"/>
+
+        <TextView
+            style="@style/SmallText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\tМеньше всего влияют на уровень глюкозы крови. Женщинам с ГСД рекомендуется отдавать предпочтение именно этим продуктам."
+            android:justificationMode="inter_word"/>
+
+        <TextView
+            style="@style/SmallText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\tПродукты с низким ГИ: некрахмалистые овощи (помидоры, огурцы, перец, капуста, баклажаны, кабачки, зелень и т.п.), творог."
+            android:justificationMode="inter_word"/>
+
+    </LinearLayout>
+
+</LinearLayout>

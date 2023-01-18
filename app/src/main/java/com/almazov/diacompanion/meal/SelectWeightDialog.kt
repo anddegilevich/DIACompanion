@@ -13,7 +13,7 @@ import com.almazov.diacompanion.base.editTextSeekBarSetup
 import kotlinx.android.synthetic.main.fragment_sugar_level_add_record.*
 import kotlinx.android.synthetic.main.select_weight_dialog.view.*
 
-open class SelectWeightDialog(context: Context): DialogFragment() {
+open class SelectWeightDialog(context: Context, val weight: Double?): DialogFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,6 +40,8 @@ open class SelectWeightDialog(context: Context): DialogFragment() {
             dialog!!.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
             dialog!!.window?.requestFeature(Window.FEATURE_NO_TITLE);
         }
+
+        if (weight != null) view.edit_text_weight.setText(weight.toString())
 
         return view
     }

@@ -6,8 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:layout_weight="1"
-    android:background="?attr/panel_color"
-    style="@style/Content">
+    style="@style/ControlPanel">
 
     <LinearLayout
         android:animateLayoutChanges="true"

@@ -58,7 +58,7 @@ class AddRecipe : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
         )
 
         val recyclerView = view.recycler_view_food_in_recipe
-        adapter = FoodInMealListAdapter(foodList, this)
+        adapter = FoodInMealListAdapter(this)
 
         val swipeDeleteFood = object : SwipeDeleteFood(requireContext(),R.color.red_dark) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
@@ -359,7 +359,7 @@ class AddRecipe : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
             w_2ed,op_2ed,proc_pot.toInt(),additional,favourite,recipe)
     }
 
-    override fun updateRecommendationWeight(position: Int, toDouble: Double) {
+    override fun updateRecommendationWeight(position: Int) {
 
     }
 

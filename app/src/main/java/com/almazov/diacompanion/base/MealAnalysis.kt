@@ -10,26 +10,28 @@ import kotlinx.android.synthetic.main.fragment_meal_add_record.*
 import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
+import kotlin.math.floor
+import kotlin.math.round
 
 
-fun checkGI(listOfFood: List<MealWithFood>): Boolean {
+fun checkGI(listOfFood: MutableList<FoodInMealItem>): Boolean {
     for (food in listOfFood) {
-        if (food.food.gi!! > 55) {
+        if (food.foodEntity.gi!! > 55) {
             return true
         }
     }
     return false
 }
 
-fun checkCarbs(mealType: String, listOfFood: List<MealWithFood>): Boolean {
+fun checkCarbs(mealType: String, listOfFood: MutableList<FoodInMealItem>): Boolean {
     var sumCarbs = 0.0
     val  breakfastString = "Завтрак"
     for (food in listOfFood) {
-        sumCarbs += food.food.carbo!! * food.weight!! / 100
+        sumCarbs += food.foodEntity.carbo!! * food.weight!! / 100
     }
-    if (sumCarbs > 30 && mealType == breakfastString) {
+    if (sumCarbs > 15 && mealType == breakfastString) {
         return true
-    } else if (sumCarbs > 60) {
+    } else if (sumCarbs > 30) {
         return true
     }
     return false
@@ -117,20 +119,28 @@ fun getProtein(listOfFood: List<MealWithFood>): Double {
     return protein
 }
 
-fun getGLCarbsKr(listOfFood: List<FoodInMealItem>): List<Double> {
-    var gl = 0.0
+fun getGLCarbsKr(listOfFood: List<FoodInMealItem>): Pair<List<Double>, Boolean> {
+    var gl = mutableListOf<Double>()
     var carbs = 0.0
     var krs = 0.0
     for (food in listOfFood) {
         val gi = food.foodEntity.gi ?: 0.0
         val carb = food.foodEntity.carbo ?: 0.0
         val kr = food.foodEntity.kr ?: 0.0
-        gl += gi * carb * food.weight / 100
+        gl.add(gi * carb * food.weight / 100)
         carbs += carb * food.weight / 100
         krs += kr * food.weight / 100
     }
-    gl /= 100
-    return listOf(gl, carbs, krs)
+    var glSum = gl.sum() / 100
+    gl.sortDescending()
+    var glMax = 0.0
+    for (i in 0 until floor(gl.size.toDouble()/2).toInt()){
+        gl[i] = gl[i] / glSum * 100
+        glMax += gl[i]
+    }
+    val glDistribution = glMax > 60
+    glSum /= 100
+    return Pair(listOf(glSum, carbs, krs),glDistribution)
 }
 
 fun getMealInfo(listOfFood: List<FoodInMealItem>): List<Double> {
@@ -158,28 +168,7 @@ fun getMealInfo(listOfFood: List<FoodInMealItem>): List<Double> {
         weight)
 }
 
-fun getMessage(
-    highGI: Boolean, manyCarbs: Boolean, highBGBefore: Boolean,
-    lowPV: Boolean, bgPredict: Double, resources: Resources
-): String {
-    var txtInt: Int? = null
-    if (highGI && bgPredict > 6.8) {
-        txtInt = R.string.HighGI
-    } else if (manyCarbs && bgPredict > 6.8) {
-        txtInt = R.string.ManyCarbs
-    } else if (highBGBefore && bgPredict > 6.8) {
-        txtInt = R.string.HighBGBefore
-    } else if (lowPV && bgPredict > 6.8) {
-        txtInt = R.string.LowPV
-    } else if (bgPredict > 6.8) {
-        txtInt = R.string.BGPredict
-    }
-    return if (txtInt != null)
-        resources.getString(txtInt)
-    else "Нет рекоммендаций"
-}
-
-@Throws(IOException::class)
+/*@Throws(IOException::class)
 fun getFileFromAssets(context: Context, fileName: String): File = File(context.cacheDir, fileName)
     .also {
         if (!it.exists()) {
@@ -189,4 +178,32 @@ fun getFileFromAssets(context: Context, fileName: String): File = File(context.c
                 }
             }
         }
+    }*/
+
+fun getMessage(
+    highGI: Boolean, manyCarbs: Boolean, highBGBefore: Boolean,
+    glDistribution: Boolean, highBGPredict: Boolean, resources: Resources
+): String {
+    var txtInt: Int = 1
+    if (highBGPredict) {
+        if (highBGBefore) {
+            txtInt = R.string.HighBGBefore
+        } else if (manyCarbs) {
+            if (glDistribution) {
+                txtInt = R.string.GLDestribution
+            } else if (highGI) {
+                txtInt = R.string.HighGI
+            }
+        } else {
+            txtInt = R.string.BGPredict
+        }
+    }  else txtInt = R.string.NoRecommendation
+    return resources.getString(txtInt)
+}
+
+fun checkSLPredict(sugarLevel: Double): Boolean {
+    if (sugarLevel > 6.8) {
+        return true
     }
+    return false
+}

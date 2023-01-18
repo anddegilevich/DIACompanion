@@ -85,11 +85,10 @@ class MealRecordInfo : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
         appDatabaseViewModel.getMealWithFoods(args.selectedRecord.id).observe(viewLifecycleOwner, Observer{record ->
             if (!record.isNullOrEmpty()) {
                 foodList.clear()
-                adapter.notifyDataSetChanged()
                 for (food in record) {
                     foodList.add(FoodInMealItem(food.food, food.weight!!))
-                    adapter.notifyItemInserted(foodList.size)
                 }
+                adapter.updateItems(foodList)
 
                 setPieChart()
                 tv_kkal.text = mealInfo[3].toInt().toString() + " ККал"
@@ -103,33 +102,27 @@ class MealRecordInfo : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
                     slideView(layout_sugar_level)
                     tv_sugar_level_before.text = record[0].meal.sugarLevel.toString()
                     tv_sugar_level_predict.text = record[0].meal.sugarLevelPredicted.toString()
-
-                    GlobalScope.launch(Dispatchers.Main) {
+/*
                         val today = args.selectedRecord.date!!
-                        val yesterday = getYesterdayDate(today)
-                        val todayRecords = GlobalScope.async(Dispatchers.Default) {
-                            appDatabaseViewModel.getMealWithFoodsThisDay(today)
-                        }
-                        val yesterdayRecords = GlobalScope.async(Dispatchers.Default) {
-                            appDatabaseViewModel.getMealWithFoodsThisDay(yesterday)
-                        }
+                        val yesterday = getYesterdayDate(today)*/
 
-                        val highGI = checkGI(record)
-                        val manyCarbs = checkCarbs(record[0].meal.type!!,record)
-                        val highBGBefore = checkSLBefore(record[0].meal.sugarLevel!!)
-                        val lowPV = checkPV(record,todayRecords.await(), yesterdayRecords.await())
-                        try {
-                            val recommendationMessage = getMessage(highGI, manyCarbs, highBGBefore, lowPV, record[0].meal.sugarLevelPredicted!!, resources)
-                            tv_recommendation.text = recommendationMessage
-                        } catch (e: java.lang.IllegalStateException) {
-                        }
+                    val glCarbsKr = getGLCarbsKr(foodList)
+                    val highGI = checkGI(foodList)
+                    val manyCarbs = checkCarbs(record[0].meal.type!!,foodList)
+                    val highBGBefore = checkSLBefore(record[0].meal.sugarLevel!!)
+                    val highBGPredict = checkSLPredict(record[0].meal.sugarLevelPredicted!!)
+                    try {
+                        val recommendationMessage = getMessage(highGI, manyCarbs, highBGBefore,
+                            glCarbsKr.second,highBGPredict,resources)
+                        tv_recommendation.text = recommendationMessage
+                    } catch (e: java.lang.IllegalStateException) {
                     }
                 }
             }
         })
 
 
-        adapter = FoodInMealInfoAdapter(foodList, this)
+        adapter = FoodInMealInfoAdapter(this)
         recycler_view_food_in_meal.adapter = adapter
         recycler_view_food_in_meal.layoutManager = LinearLayoutManager(requireContext())
 
@@ -225,7 +218,7 @@ class MealRecordInfo : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
         return formatter.format(calendar.time)
     }
 
-    override fun updateRecommendationWeight(position: Int, weight: Double) {
+    override fun updateRecommendationWeight(position: Int) {
 
     }
 

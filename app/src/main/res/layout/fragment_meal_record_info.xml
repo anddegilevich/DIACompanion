@@ -206,9 +206,11 @@
 
                 <TextView
                     android:id="@+id/tv_recommendation"
-                    style="@style/MainText"
+                    style="@style/SmallText"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:justificationMode="inter_word"/>
+
                 <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

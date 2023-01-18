@@ -2,8 +2,6 @@ package com.almazov.diacompanion.meal
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,13 +11,12 @@ import com.almazov.diacompanion.R
 import com.almazov.diacompanion.base.slideView
 import kotlinx.android.synthetic.main.food_in_meal_row.view.*
 
-open class FoodInMealListAdapter(private val foodItemList:MutableList<FoodInMealItem>, private val mListener: InterfaceFoodInMeal)
+open class FoodInMealListAdapter(private val mListener: InterfaceFoodInMeal)
     : RecyclerView.Adapter<FoodInMealListAdapter.FoodInMealItemViewHolder>() {
 
-
+    var foodItemList = mutableListOf<FoodInMealItem>()
     var context: Context? = null
-    val minWeight = 0
-    val maxWeight = 500
+    var glList = mutableListOf<Double>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FoodInMealItemViewHolder {
         context=parent.context
@@ -34,65 +31,65 @@ open class FoodInMealListAdapter(private val foodItemList:MutableList<FoodInMeal
 
 
     override fun onBindViewHolder(holder: FoodInMealItemViewHolder, @SuppressLint("RecyclerView") position: Int) {
-        var foodItem = foodItemList[position]
+        val foodItem = foodItemList[position]
+        val gl = glList[position]
         holder.itemView.tv_food_in_meal_name.text = foodItem.foodEntity.name
-        val editText = holder.itemView.edit_text_food_in_meal_weight
+        val editText = holder.itemView.tv_food_in_meal_weight
         editText.setText(foodItem.weight.toString())
+
         val intColor = if (foodItem.foodEntity.gi!! > 55) R.color.red
-        else if (foodItem.foodEntity.gi!! > 25) R.color.orange
+        else if (foodItem.foodEntity.gi > 25) R.color.orange
         else R.color.green
         val itemColor = ContextCompat.getColor(context!!,intColor)
 
-//        holder.itemView.tv_recipe.text = ""
         holder.itemView.setOnClickListener {
             slideView(holder.itemView.recipe_layout)
         }
 
 //        holder.itemView.gi_indexer.setBackgroundColor(itemColor)
         holder.itemView.gi.text = foodItem.foodEntity.gi.toString()
+        holder.itemView.gi.setTextColor(itemColor)
+        holder.itemView.gl.text = gl.toInt().toString()
+        holder.itemView.tv_food_in_meal_weight.text = foodItem.weight.toString()
 
         changeWeight(holder, position)
-
     }
 
     open fun changeWeight(holder: FoodInMealItemViewHolder, position: Int) {
-        val editText = holder.itemView.edit_text_food_in_meal_weight
-        editText.addTextChangedListener(object : TextWatcher {
+        val editText = holder.itemView.tv_food_in_meal_weight
+        editText.setOnClickListener {
+            holder.mListener.updateRecommendationWeight(position)
+        }
+    }
 
-            override fun onTextChanged(string: CharSequence, start: Int,
-                                       before: Int, count: Int) {
-                if (string.toString() != "") {
-                    if (string.toString().toBigDecimal().toInt() > maxWeight) {
-                        editText.setText(maxWeight.toString())
-                        editText.setSelection(editText.length())
-                    }
+    private fun calculateGL(){
+        glList.clear()
+        for (food in foodItemList){
 
-                    if (string.toString().toBigDecimal().toInt() < minWeight) {
-                        editText.setText(minWeight.toString())
-                        editText.setSelection(editText.length())
-                    }
-                    holder.mListener.updateRecommendationWeight(position,editText.text.toString().toDouble())
-                }
-            }
-
-            override fun afterTextChanged(string: Editable) {
-
-            }
-
-            override fun beforeTextChanged(string: CharSequence, start: Int,
-                                           count: Int, after: Int) {
-            }
-
-        })
+            val gi = food.foodEntity.gi ?: 0.0
+            val carb = food.foodEntity.carbo ?: 0.0
+            val gl = gi * carb * food.weight / 100
+            glList.add(gl)
+        }
+        val glSum = glList.sum()
+        for (i in 0 until glList.size){
+            glList[i] = glList[i] / glSum * 100
+        }
     }
 
     override fun getItemCount(): Int {
         return foodItemList.size
     }
 
+    fun updateItems(updatedItems: MutableList<FoodInMealItem>) {
+        foodItemList = updatedItems
+        calculateGL()
+        notifyDataSetChanged()
+    }
+
     class FoodInMealItemViewHolder(itemView: View, val mListener: InterfaceFoodInMeal): RecyclerView.ViewHolder(itemView)
 
     interface InterfaceFoodInMeal{
-        fun updateRecommendationWeight(position: Int, weight: Double)
+        fun updateRecommendationWeight(position: Int)
     }
 }

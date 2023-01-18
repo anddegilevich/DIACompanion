@@ -17,19 +17,14 @@
         <item name="android:scaleType">fitCenter</item>
     </style>
 
-    <style name="ControlPanel">
-        <item name="android:padding">10dp</item>
-        <item name="android:paddingStart">20dp</item>
-        <item name="android:paddingEnd">20dp</item>
-        <item name="android:background">?panel_color</item>
-    </style>
 
     <style name="Content">
-        <item name="android:paddingLeft">10dp</item>
-        <item name="android:paddingRight">10dp</item>
-        <item name="android:paddingTop">10dp</item>
+        <item name="android:padding">10dp</item>
     </style>
 
+    <style name="ControlPanel" parent="Content">
+        <item name="android:background">?panel_color</item>
+    </style>
     <!--Text-->
 
     <style name="MainText">

@@ -40,7 +40,7 @@
     <string name="Protein">P</string>
     <string name="Fats">F</string>
     <string name="GI">GI</string>
-    <string name="GL">GL</string>
+    <string name="GL">GL, %</string>
 
     //----------------------------------------------------------------------------------------------
     //Options
@@ -264,13 +264,14 @@
     <string name="HighGI" translatable="false">Рекомендуется исключить из рациона или уменьшить количество
         продуктов с высоким гликемическим индексом (более 55)</string>
     <string name="ManyCarbs" translatable="false">Рекомендовано уменьшить количество углеводов в приеме пищи</string>
-    <string name="HighBGBefore" translatable="false">Высокий уровень глюкозы до еды.
-        Рекомендовано уменьшить количество углеводов во время перекусов.
-        Если перекусов не было, проконсультируитесь с врачом.</string>
+    <string name="HighBGBefore" translatable="false">Высокий уровень глюкозы до еды
+        Рекомендовано уменьшить количество углеводов во время перекусов
+        Если перекусов не было, проконсультируитесь с врачом</string>
     <string name="LowPV" translatable="false">В последнее время в Вашем рационе было недостаточно
         пищевых волокон. Добавьте в рацион разрешённые овощи, фрукты, злаковые, отруби
-        (см. обучающие материалы).</string>
-    <string name="BGPredict" translatable="false">Вероятно, уровень глюкозы после еды будет высоким, рекомендована прогулка после приема пищи.</string>
+        (см. обучающие материалы)</string>
+    <string name="BGPredict" translatable="false">Вероятно, уровень глюкозы после еды будет высоким, рекомендована прогулка после приема пищи</string>
+    <string name="GLDestribution" translatable="false">Уменьшите количество продуктов с высокой гликемической нагрузкой (ГН)</string>
     <string name="EnterFullData">Enter full data</string>
     <string name="PredictedSLHigh">Predicted SL is high</string>
     <string name="PredictedSLLow">Predicted SL is normal</string>

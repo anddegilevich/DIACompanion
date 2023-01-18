@@ -11,9 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.Observer
@@ -32,7 +30,6 @@ import com.almazov.diacompanion.data.FoodEntity
 import com.almazov.diacompanion.data.MealEntity
 import com.almazov.diacompanion.data.RecordEntity
 import com.almazov.diacompanion.meal.*
-import kotlinx.android.synthetic.main.fragment_insulin_add_record.*
 import kotlinx.android.synthetic.main.fragment_meal_add_record.*
 import kotlinx.android.synthetic.main.fragment_meal_add_record.btn_delete
 import kotlinx.android.synthetic.main.fragment_meal_add_record.btn_save
@@ -40,11 +37,11 @@ import kotlinx.android.synthetic.main.fragment_meal_add_record.tv_Date
 import kotlinx.android.synthetic.main.fragment_meal_add_record.tv_Time
 import kotlinx.android.synthetic.main.fragment_meal_add_record.tv_title
 import kotlinx.android.synthetic.main.fragment_meal_add_record.view.*
+import kotlinx.android.synthetic.main.sl_high.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import java.io.*
 
 
 class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
@@ -61,12 +58,13 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
 
     private var bmi: Double? = null
     private var protein: Double? = null
-    private var glCarbsKr: List<Double?> = emptyList()
+    private var glCarbsKr: Pair<List<Double>, Boolean> = Pair(emptyList(),false)
     private var sugarLevelPredicted: Double? = null
 
     private lateinit var spinnerAdapter: CustomStringAdapter
     private lateinit var spinnerStringArray: Array<String>
     private lateinit var appType: String
+    private lateinit var recommendationMessage: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -146,15 +144,15 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
         tv_Time.addTextChangedListener(textWatcher)
         tv_Date.addTextChangedListener(textWatcher)
         val recyclerView = view.recycler_view_food_in_meal
-        adapter = FoodInMealListAdapter(foodList, this)
+        adapter = FoodInMealListAdapter(this)
 
         val swipeDeleteFood = object : SwipeDeleteFood(requireContext(), R.color.blue_dark) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 when (direction) {
                     ItemTouchHelper.LEFT -> {
                         foodList.removeAt(viewHolder.adapterPosition)
-                        adapter.notifyItemRemoved(viewHolder.adapterPosition)
-                        if (foodList.isNullOrEmpty()) {
+                        adapter.updateItems(foodList)
+                        if ( foodList.isNullOrEmpty() and (vf_recommendation.height != 0)) {
                             slideView(vf_recommendation)} else
                         if (checkbox_sugar_level.isChecked
                             and !edit_text_sugar_level.text.isNullOrEmpty()) {
@@ -171,6 +169,7 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
 
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        adapter.updateItems(foodList)
 
         Navigation.findNavController(view).currentBackStackEntry?.savedStateHandle
             ?.getLiveData<FoodEntity>("foodKey")?.observe(viewLifecycleOwner) {
@@ -184,14 +183,14 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
 
                     if (!foodAlreadyInList) {
                         lastFood = it.idFood!!
-                        val selectWeightDialog = SelectWeightDialog(requireContext())
+                        val selectWeightDialog = SelectWeightDialog(requireContext(),null)
                         selectWeightDialog.isCancelable = false
                         selectWeightDialog.show(requireFragmentManager(), "weight select dialog")
 
                         setFragmentResultListener("requestKey") { _, bundle ->
                             val result = bundle.getString("resultKey")
                             foodList.add(FoodInMealItem(it, result!!.toDouble()))
-                            adapter.notifyItemInserted(foodList.size)
+                            adapter.updateItems(foodList)
                             glCarbsKr = getGLCarbsKr(foodList)
                             if (checkbox_sugar_level.isChecked and
                                 !edit_text_sugar_level.text.isNullOrEmpty()
@@ -265,8 +264,8 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
                     if (foodList.isNullOrEmpty()) {
                         for (food in record) {
                             foodList.add(FoodInMealItem(food.food, food.weight!!))
-                            adapter.notifyItemInserted(foodList.size)
                         }
+                        adapter.updateItems(foodList)
                         glCarbsKr = getGLCarbsKr(foodList)
                     }
                     if (record[0].meal.sugarLevel != null) {
@@ -380,19 +379,36 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
                 val result = GlobalScope.async(Dispatchers.Default) {
                     getRecommendation()
                 }
-                if (vf_recommendation != null) vf_recommendation.displayedChild = result.await()
+                if (vf_recommendation != null) {
+                    vf_recommendation.displayedChild = result.await()
+                    tv_recommendation.text = recommendationMessage
+                }
             }
         }
     }
 
     private suspend fun getRecommendation(): Int {
         return if ((edit_text_sugar_level != null) and (spinner_meal != null)) {
+
+            val slBefore = edit_text_sugar_level.text.toString().toDouble()
+            val mealType = spinner_meal.selectedItem.toString()
+
             sugarLevelPredicted = setTwoDigits(predictSL(
-                requireContext(), edit_text_sugar_level.text.toString().toDouble(),
-                glCarbsKr, protein, spinner_meal.selectedItem.toString(), bmi
+                requireContext(), slBefore,
+                glCarbsKr.first, protein, mealType, bmi
             ))
 
-            val result = if (sugarLevelPredicted!! > 6.8) {
+            val highGI = checkGI(foodList)
+            val manyCarbs = checkCarbs(mealType,foodList)
+            val highBGBefore = checkSLBefore(slBefore)
+            val highBGPredict = checkSLPredict(sugarLevelPredicted!!)
+            try {
+                recommendationMessage = getMessage(highGI, manyCarbs, highBGBefore,
+                    glCarbsKr.second,highBGPredict,resources)
+            } catch (e: java.lang.IllegalStateException) {
+            }
+
+            val result = if (highBGPredict) {
                 2
             } else
                 1
@@ -413,13 +429,21 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
         return inflater.cloneInContext(contextThemeWrapper)
     }
 
-    override fun updateRecommendationWeight(position: Int, weight: Double) {
-        foodList[position].weight = weight
-        glCarbsKr = getGLCarbsKr(foodList)
-        if (checkbox_sugar_level.isChecked and
-            !edit_text_sugar_level.text.isNullOrEmpty()
-        ) {
-            updateRecommendation()
+    override fun updateRecommendationWeight(position: Int) {
+
+        val selectWeightDialog = SelectWeightDialog(requireContext(), foodList[position].weight)
+        selectWeightDialog.show(requireFragmentManager(), "weight select dialog")
+
+        setFragmentResultListener("requestKey") { _, bundle ->
+            val result = bundle.getString("resultKey")
+            foodList[position].weight = result!!.toDouble()
+            adapter.updateItems(foodList)
+            glCarbsKr = getGLCarbsKr(foodList)
+            if (checkbox_sugar_level.isChecked and
+                !edit_text_sugar_level.text.isNullOrEmpty()
+            ) {
+                updateRecommendation()
+            }
         }
     }
 
@@ -437,4 +461,5 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
         })
 
     }
+
 }

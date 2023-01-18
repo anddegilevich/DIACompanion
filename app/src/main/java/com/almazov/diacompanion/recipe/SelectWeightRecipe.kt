@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import com.almazov.diacompanion.R
 import com.almazov.diacompanion.meal.SelectWeightDialog
 
-class SelectWeightRecipe(context: Context) : SelectWeightDialog(context) {
+class SelectWeightRecipe(context: Context) : SelectWeightDialog(context, null) {
     override fun onGetLayoutInflater(savedInstanceState: Bundle?): LayoutInflater {
         val inflater = super.onGetLayoutInflater(savedInstanceState)
         val contextThemeWrapper: Context = ContextThemeWrapper(requireContext(), R.style.Theme_DIACompanion)

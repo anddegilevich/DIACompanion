@@ -11,7 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="?attr/panel_color">
+        android:background="?attr/panel_color"
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp">
         <TextView
             android:layout_weight="4"
             style="@style/SmallText"
@@ -21,15 +23,14 @@
             android:gravity="center"
             />
 
-        <EditText
+        <TextView
             android:layout_weight="3"
-            style="@style/MainText"
-            android:id="@+id/edit_text_food_in_meal_weight"
+            style="@style/EditText"
+            android:id="@+id/tv_food_in_meal_weight"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_gravity="center"
-            android:inputType="numberDecimal"
             android:lines="1"
             />
 

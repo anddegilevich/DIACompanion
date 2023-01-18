@@ -379,10 +379,10 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
                 val result = GlobalScope.async(Dispatchers.Default) {
                     getRecommendation()
                 }
-                if (vf_recommendation != null) {
+                try {
                     vf_recommendation.displayedChild = result.await()
                     tv_recommendation.text = recommendationMessage
-                }
+                } catch (e: Exception) {}
             }
         }
     }

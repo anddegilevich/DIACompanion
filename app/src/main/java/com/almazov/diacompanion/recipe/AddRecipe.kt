@@ -18,15 +18,18 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.almazov.diacompanion.R
+import com.almazov.diacompanion.base.getGLCarbsKr
 import com.almazov.diacompanion.data.AppDatabaseViewModel
 import com.almazov.diacompanion.data.FoodEntity
 import com.almazov.diacompanion.meal.FoodInMealItem
 import com.almazov.diacompanion.meal.FoodInMealListAdapter
+import com.almazov.diacompanion.meal.SelectWeightDialog
 import com.almazov.diacompanion.meal.SwipeDeleteFood
 import kotlinx.android.synthetic.main.fragment_add_recipe.*
 import kotlinx.android.synthetic.main.fragment_add_recipe.view.*
 import kotlinx.android.synthetic.main.fragment_add_recipe.view.btn_add_food
 import kotlinx.android.synthetic.main.fragment_add_recipe.view.btn_save
+import kotlinx.android.synthetic.main.fragment_meal_add_record.*
 import java.math.BigDecimal
 
 class AddRecipe : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
@@ -65,7 +68,7 @@ class AddRecipe : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
                 when (direction) {
                     ItemTouchHelper.LEFT -> {
                         foodList.removeAt(viewHolder.adapterPosition)
-                        adapter.notifyItemRemoved(viewHolder.adapterPosition)
+                        adapter.updateItems(foodList)
                     }
                 }
             }
@@ -76,6 +79,7 @@ class AddRecipe : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
 
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        adapter.updateItems(foodList)
 
         view.btn_add_food.setOnClickListener {
             val action = AddRecipeDirections.actionAddRecipeToFoodList(true)
@@ -94,7 +98,7 @@ class AddRecipe : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
                     if (foodList.isNullOrEmpty()) {
                         for (i in ingredients.indices) {
                             foodList.add(FoodInMealItem(ingredients[i], weights[i]))
-                            adapter.notifyItemInserted(foodList.size)
+                            adapter.updateItems(foodList)
                         }
                     }
 
@@ -163,7 +167,7 @@ class AddRecipe : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
                         setFragmentResultListener("requestKey") { key, bundle ->
                             val result = bundle.getString("resultKey")
                             foodList.add(FoodInMealItem(it, result!!.toDouble()))
-                            adapter.notifyItemInserted(foodList.size)
+                            adapter.updateItems(foodList)
                         }
                     }
                 }
@@ -360,7 +364,14 @@ class AddRecipe : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
     }
 
     override fun updateRecommendationWeight(position: Int) {
+        val selectWeightDialog = SelectWeightDialog(requireContext(), foodList[position].weight)
+        selectWeightDialog.show(requireFragmentManager(), "weight select dialog")
 
+        setFragmentResultListener("requestKey") { _, bundle ->
+            val result = bundle.getString("resultKey")
+            foodList[position].weight = result!!.toDouble()
+            adapter.updateItems(foodList)
+        }
     }
 
 }

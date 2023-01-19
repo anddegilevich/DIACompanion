@@ -158,6 +158,45 @@
                 android:inputType="numberDecimal"
                 android:hint="@string/Height" />
 
+            <LinearLayout
+                android:id="@+id/layout_pregnancy"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                android:animateLayoutChanges="true">
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:dividerThickness="2dp"
+                    app:dividerColor="?attr/category_color"
+                    android:layout_marginTop="10dp"/>
+
+                <TextView
+                    android:textAlignment="center"
+                    style="@style/Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Pregnancy"/>
+
+                <TextView
+                    android:textAlignment="center"
+                    style="@style/MainText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/PregnancyStart"/>
+
+                <TextView
+                    android:id="@+id/tv_pregnancy_date"
+                    style="@style/EditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="01.01.2000"
+                    />
+
+            </LinearLayout>
+
+
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

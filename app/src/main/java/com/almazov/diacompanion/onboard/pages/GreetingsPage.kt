@@ -21,7 +21,7 @@ class GreetingsPage : Fragment() {
         val view = inflater.inflate(R.layout.fragment_greetings_page, container, false)
 
         view.btn_lets_start.setOnClickListener {
-            findNavController().navigate(R.id.action_greetingsPage_to_settingsAccount)
+            findNavController().navigate(R.id.action_greetingsPage_to_settingsAppType)
         }
         return view
     }

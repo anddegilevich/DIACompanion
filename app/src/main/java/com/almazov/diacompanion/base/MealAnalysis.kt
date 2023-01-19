@@ -6,12 +6,8 @@ import com.almazov.diacompanion.R
 import com.almazov.diacompanion.data.MealWithFood
 import com.almazov.diacompanion.meal.FoodInMealItem
 import com.almazov.diacompanion.model.util.FVec
-import kotlinx.android.synthetic.main.fragment_meal_add_record.*
-import java.io.File
 import java.io.FileInputStream
-import java.io.IOException
 import kotlin.math.floor
-import kotlin.math.round
 
 
 fun checkGI(listOfFood: MutableList<FoodInMealItem>): Boolean {
@@ -135,7 +131,7 @@ fun getGLCarbsKr(listOfFood: List<FoodInMealItem>): Pair<List<Double>, Boolean> 
     gl.sortDescending()
     var glMax = 0.0
     for (i in 0 until floor(gl.size.toDouble()/2).toInt()){
-        gl[i] = gl[i] / glSum * 100
+        gl[i] = gl[i] / glSum
         glMax += gl[i]
     }
     val glDistribution = glMax > 60

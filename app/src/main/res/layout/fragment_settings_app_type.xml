@@ -19,39 +19,18 @@
         app:dividerThickness="2dp"
         app:dividerColor="?attr/category_color"/>
 
-
-    <Button
-        android:id="@+id/btn_GDMRCT"
-        style="@style/Button"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_app_type"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/GDMRCT"/>
+        android:layout_height="wrap_content"/>
 
-    <Button
-        android:id="@+id/btn_GDM"
-        style="@style/Button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/GDM"/>
-
-    <Button
-        android:id="@+id/btn_MS"
-        style="@style/Button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/MS"/>
-
-    <Button
-        android:id="@+id/btn_PCOS"
-        style="@style/Button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/PCOS"/>
-
-    <View
+    <TextView
+        android:id="@+id/tv_description"
+        style="@style/MainText"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:gravity="center"/>
 
     <Button
         android:id="@+id/btn_save"

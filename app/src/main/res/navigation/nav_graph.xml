@@ -521,8 +521,12 @@
         android:label="fragment_settings_account"
         tools:layout="@layout/fragment_settings_account" >
         <action
-            android:id="@+id/action_settingsAccount_to_settingsAppType"
-            app:destination="@id/settingsAppType" />
+            android:id="@+id/action_settingsAccount_to_setupCompletePage"
+            app:destination="@id/setupCompletePage"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
     <fragment
         android:id="@+id/settingsAppType"
@@ -530,8 +534,12 @@
         android:label="fragment_settings_app_type"
         tools:layout="@layout/fragment_settings_app_type" >
         <action
-            android:id="@+id/action_settingsAppType_to_setupCompletePage"
-            app:destination="@id/setupCompletePage" />
+            android:id="@+id/action_settingsAppType_to_settingsAccount"
+            app:destination="@id/settingsAccount"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
     <fragment
         android:id="@+id/settingsNotifications"
@@ -549,8 +557,12 @@
         android:label="fragment_greetings_page"
         tools:layout="@layout/fragment_greetings_page" >
         <action
-            android:id="@+id/action_greetingsPage_to_settingsAccount"
-            app:destination="@id/settingsAccount" />
+            android:id="@+id/action_greetingsPage_to_settingsAppType"
+            app:destination="@id/settingsAppType"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
     <fragment
         android:id="@+id/setupCompletePage"

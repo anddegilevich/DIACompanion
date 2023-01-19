@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.almazov.diacompanion.R
-import com.almazov.diacompanion.base.getGLCarbsKr
 import com.almazov.diacompanion.data.AppDatabaseViewModel
 import com.almazov.diacompanion.data.FoodEntity
 import com.almazov.diacompanion.meal.FoodInMealItem
@@ -29,7 +28,6 @@ import kotlinx.android.synthetic.main.fragment_add_recipe.*
 import kotlinx.android.synthetic.main.fragment_add_recipe.view.*
 import kotlinx.android.synthetic.main.fragment_add_recipe.view.btn_add_food
 import kotlinx.android.synthetic.main.fragment_add_recipe.view.btn_save
-import kotlinx.android.synthetic.main.fragment_meal_add_record.*
 import java.math.BigDecimal
 
 class AddRecipe : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {

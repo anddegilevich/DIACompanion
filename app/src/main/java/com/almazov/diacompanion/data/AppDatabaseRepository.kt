@@ -1,12 +1,8 @@
 package com.almazov.diacompanion.data
 
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingSource
 import androidx.sqlite.db.SimpleSQLiteQuery
-import com.almazov.diacompanion.categories.Category
-import com.almazov.diacompanion.meal.FoodInMealItem
 
 class AppDatabaseRepository(private val appDao: AppDao) {
 

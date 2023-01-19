@@ -1,24 +1,17 @@
 package com.almazov.diacompanion.base
 
-import android.animation.AnimatorSet
 import android.animation.LayoutTransition
-import android.animation.ValueAnimator
 import android.annotation.SuppressLint
-import android.content.res.Resources
 import android.os.Build
 import android.text.Editable
-import android.text.Layout
 import android.text.TextWatcher
-import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.EditText
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentManager
 import com.almazov.diacompanion.R
-import com.almazov.diacompanion.meal.FoodInMealItem
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat

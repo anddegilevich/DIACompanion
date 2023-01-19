@@ -15,7 +15,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.preference.PreferenceManager
@@ -23,7 +22,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.almazov.diacompanion.R
 import com.almazov.diacompanion.base.*
 import com.almazov.diacompanion.data.AppDatabaseViewModel
-import com.almazov.diacompanion.data.FoodEntity
 import com.almazov.diacompanion.meal.FoodInMealItem
 import com.almazov.diacompanion.meal.FoodInMealListAdapter
 import com.github.mikephil.charting.animation.Easing
@@ -35,10 +33,6 @@ import com.google.android.material.color.MaterialColors
 import kotlinx.android.synthetic.main.fragment_meal_record_info.*
 import kotlinx.android.synthetic.main.fragment_meal_record_info.btn_delete
 import kotlinx.android.synthetic.main.fragment_meal_record_info.recycler_view_food_in_meal
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -97,25 +91,33 @@ class MealRecordInfo : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
                 tv_weight.text = mealInfo[6].toInt().toString() + " гр."
 
                 val appType = sharedPreferences.getString("APP_TYPE", "")!!
-                if ((record[0].meal.sugarLevel != null) and (appType == "GDMRCT")) {
-                    slideView(layout_recommendation)
-                    slideView(layout_sugar_level)
-                    tv_sugar_level_before.text = record[0].meal.sugarLevel.toString()
-                    tv_sugar_level_predict.text = record[0].meal.sugarLevelPredicted.toString()
+                if ((record[0].meal.sugarLevel != null)) {
+
+                    if (appType != "PCOS") {
+                        slideView(layout_sugar_level)
+                        tv_sugar_level_before.text = record[0].meal.sugarLevel.toString()
+                        tv_sugar_level_predict.text = record[0].meal.sugarLevelPredicted.toString()
+                    }
+
+                    if (appType == "GDMRCT") {
+                        slideView(layout_recommendation)
 /*
                         val today = args.selectedRecord.date!!
                         val yesterday = getYesterdayDate(today)*/
 
-                    val glCarbsKr = getGLCarbsKr(foodList)
-                    val highGI = checkGI(foodList)
-                    val manyCarbs = checkCarbs(record[0].meal.type!!,foodList)
-                    val highBGBefore = checkSLBefore(record[0].meal.sugarLevel!!)
-                    val highBGPredict = checkSLPredict(record[0].meal.sugarLevelPredicted!!)
-                    try {
-                        val recommendationMessage = getMessage(highGI, manyCarbs, highBGBefore,
-                            glCarbsKr.second,highBGPredict,resources)
-                        tv_recommendation.text = recommendationMessage
-                    } catch (e: java.lang.IllegalStateException) {
+                        val glCarbsKr = getGLCarbsKr(foodList)
+                        val highGI = checkGI(foodList)
+                        val manyCarbs = checkCarbs(record[0].meal.type!!, foodList)
+                        val highBGBefore = checkSLBefore(record[0].meal.sugarLevel!!)
+                        val highBGPredict = checkSLPredict(record[0].meal.sugarLevelPredicted!!)
+                        try {
+                            val recommendationMessage = getMessage(
+                                highGI, manyCarbs, highBGBefore,
+                                glCarbsKr.second, highBGPredict, resources
+                            )
+                            tv_recommendation.text = recommendationMessage
+                        } catch (e: java.lang.IllegalStateException) {
+                        }
                     }
                 }
             }

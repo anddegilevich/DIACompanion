@@ -54,7 +54,7 @@
     <string name="AttendingDoctor">Лечащий доктор</string>
     <string name="PregnancyStart">Дата начала беременности</string>
     <string name="OnBWelcome">Добро пожаловать в\nDIA Companion!</string>
-    <string name="OnBAboutApp">Наше приложение - ваш незаменимый помощник в мониторинге состояния здоровья. Пожалуйста, выполните начальные шаги по настройке вашего приложения.</string>
+    <string name="OnBAboutApp">Пожалуйста, выполните начальные шаги по настройке вашего приложения.</string>
     <string name="OnBLetsStart">Начнем!</string>
     <string name="OnBSetupComplete">Настройка завершена!</string>
     <string name="Finish">Завершить</string>

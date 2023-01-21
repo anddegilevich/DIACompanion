@@ -38,8 +38,8 @@ open class AppTypeAdapter(private val mListener: InterfaceAppType, private val a
 
         val intColor = if (appTypeItem.name == currentAppType) {
             holder.mListener.getCurrentAppTypePosition(position)
-            R.color.blue
-        } else R.color.red
+            R.color.red
+        } else R.color.blue
         val itemColor = ContextCompat.getColor(context!!,intColor)
         holder.itemView.btn_app_type.setBackgroundColor(itemColor)
 

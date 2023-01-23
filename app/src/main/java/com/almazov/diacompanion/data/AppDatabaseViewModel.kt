@@ -103,7 +103,7 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
         return repository.checkSugarLevelPrefs(date, id)
     }
 
-    suspend fun readAllSugarLevelRecords(): Map<RecordEntity, SugarLevelEntity> {
+    suspend fun readAllSugarLevelRecords(): List<RecordSugarLevel> {
         return repository.readAllSugarLevelRecords()
     }
 
@@ -138,7 +138,7 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
         return repository.checkInsulinPrefs(date, id)
     }
 
-    suspend fun readAllInsulinRecords(): Map<RecordEntity, InsulinEntity> {
+    suspend fun readAllInsulinRecords(): List<RecordInsulin> {
         return repository.readAllInsulinRecords()
     }
 
@@ -179,7 +179,7 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
         return repository.checkMealType(date, id)
     }
 
-    suspend fun readAllMealRecords(): List<MealFullInfo> {
+    suspend fun readAllMealRecords(): List<RecordWithMealWithFoods> {
         return repository.readAllMealRecords()
     }
 
@@ -210,7 +210,7 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
         }
     }
 
-    suspend fun readAllWorkoutRecords(): Map<RecordEntity, WorkoutEntity> {
+    suspend fun readAllWorkoutRecords(): List<RecordWorkout> {
         return repository.readAllWorkoutRecords()
     }
 
@@ -241,7 +241,7 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
         }
     }
 
-    suspend fun readAllSleepRecords(): Map<RecordEntity, SleepEntity> {
+    suspend fun readAllSleepRecords(): List<RecordSleep> {
         return repository.readAllSleepRecords()
     }
 
@@ -276,7 +276,7 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
         return repository.readLastWeightRecordDate()
     }
 
-    suspend fun readAllWeightRecords(): Map<RecordEntity, WeightEntity> {
+    suspend fun readAllWeightRecords(): List<RecordWeight> {
         return repository.readAllWeightRecords()
     }
 
@@ -307,7 +307,7 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
         }
     }
 
-    suspend fun readAllKetoneRecords(): Map<RecordEntity, KetoneEntity> {
+    suspend fun readAllKetoneRecords(): List<RecordKetone> {
         return repository.readAllKetoneRecords()
     }
 

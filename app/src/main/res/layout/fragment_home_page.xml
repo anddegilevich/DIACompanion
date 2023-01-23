@@ -17,56 +17,58 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:id="@+id/up_control_panel"
             style="@style/ControlPanel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/img_logo"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/logo" />
-
             <ImageButton
                 android:id="@+id/btn_options_group"
                 style="@style/ImageButton"
-                android:layout_width="40dp"
+                android:layout_width="0dp"
                 android:layout_height="40dp"
+                android:layout_gravity="left"
+                android:layout_weight="1"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/options_group" />
 
+            <Space
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="match_parent"/>
+
             <ImageView
-                android:id="@+id/img_user_icon"
-                android:layout_width="40dp"
+                android:layout_weight="1"
+                android:id="@+id/img_logo"
+                android:layout_width="0dp"
                 android:layout_height="40dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/logo" />
+
+            <TextView
+                android:id="@+id/tv_name"
+                style="@style/SmallText"
+                android:layout_weight="2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@string/Username"
+                android:textSize="16sp"
+                android:textAlignment="center"
+                android:layout_gravity="center"/>
+
+            <ImageView
+                android:layout_weight="1"
+                android:id="@+id/img_user_icon"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
                 app:srcCompat="@drawable/user_icon"
                 tools:ignore="ImageContrastCheck" />
 
-            <TextView
-                android:id="@+id/username_tv"
-                style="@style/SecondaryText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="24dp"
-                android:text="@string/Username"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/img_user_icon"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.508" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
         <ScrollView
                 android:id="@+id/Content"

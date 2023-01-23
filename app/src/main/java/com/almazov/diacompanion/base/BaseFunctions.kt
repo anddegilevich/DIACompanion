@@ -21,6 +21,7 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
+import java.util.*
 
 
 fun editTextSeekBarSetup(min: Int, max: Int, editText: EditText, seekBar: SeekBar) {
@@ -73,7 +74,7 @@ fun timeDateSelectSetup(fragmentManager: FragmentManager, tvTime: TextView, tvDa
     val now = LocalDateTime.now()
     val dateSubmit = now.toEpochSecond(ZoneOffset.UTC)
     val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
-    val dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+    val dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy", Locale.ROOT)
 
     tvTime.text = now.format(timeFormatter)
     tvDate.text = now.format(dateFormatter)

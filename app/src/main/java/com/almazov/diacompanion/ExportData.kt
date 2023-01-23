@@ -61,7 +61,8 @@ class ExportData : Fragment() {
         appDatabaseViewModel = ViewModelProvider(this)[AppDatabaseViewModel::class.java]
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         btn_export_to_slxs.setOnClickListener{
-//            createXmlFile()
+            lf_export.displayedChild = 1
+            createXmlFile()
         }
 
         btn_export_to_doctor.setOnClickListener{
@@ -105,10 +106,8 @@ class ExportData : Fragment() {
         val attendingDoctor = sharedPreferences.getString("ATTENDING_DOCTOR","Лечащий врач")
         val birthDate = sharedPreferences.getString("BIRTH_DATE","0")
         val appType = sharedPreferences.getString("APP_TYPE","GDM RCT")
-        val formatter = SimpleDateFormat("dd.MM.yyyy")
-        val birthDateString = formatter.format(Date(birthDate))
         globalInfoString = "Пациент: $secondName $name $patronymic;   " +
-                "Дата рождения: $birthDateString;   Лечащий врач: $attendingDoctor;   " +
+                "Дата рождения: $birthDate;   Лечащий врач: $attendingDoctor;   " +
                 "Программа: DiaCompanion Android $appType"
 
         val xlWsSugarLevelInsulin = xlWb.createSheet("Уровень сахара и инсулин")
@@ -146,7 +145,7 @@ class ExportData : Fragment() {
                 xlWb.write(table)
                 xlWb.close()
 
-                /*val uriPath = Uri.parse(path)
+                val uriPath = Uri.parse(path)
                 val excelIntent = Intent()
                 excelIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 excelIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
@@ -162,7 +161,8 @@ class ExportData : Fragment() {
                         "No Application available to view Excel",
                         Toast.LENGTH_SHORT
                     ).show()
-                }*/
+                }
+                lf_export.displayedChild = 2
                 findNavController().popBackStack()
             }
         }
@@ -214,32 +214,30 @@ class ExportData : Fragment() {
 
         val mealList = mealRecords.await().toList()
         if (mealList.isNullOrEmpty()) return true
-        val dates = getDates(mealList[0].record.date!!, mealList.last().record.date!!)
+        val dates = getDates(mealList[0].recordEntity.date!!, mealList.last().recordEntity.date!!)
 
         var i = 3
         var j = 0
         for (date in dates) {
-            while (mealList[j].record.date == date) {
-                sheet.createRow(i).apply {
-                    createCell(1).apply {
-                        setCellValue(date)
-                        cellStyle = styleNormal
-                    }
-                   /* createCell(2).apply {
-                        setCellValue(mealList[j].record.time)
-                        cellStyle = styleNormal
-                    }
-                    createCell(3).apply {
-                        setCellValue(mealList[j].meal.type)
-                        cellStyle = styleNormal
-                    }
-                    createCell(4).apply {
-                        setCellValue(mealList[j].food.name)
-                        cellStyle = styleNormal
-                    }*/
+            sheet.createRow(i).apply {
+                createCell(1).apply {
+                    setCellValue(date)
+                    cellStyle = styleNormal
                 }
-                i += 1
+               /* createCell(2).apply {
+                    setCellValue(mealList[j].record.time)
+                    cellStyle = styleNormal
+                }
+                createCell(3).apply {
+                    setCellValue(mealList[j].meal.type)
+                    cellStyle = styleNormal
+                }
+                createCell(4).apply {
+                    setCellValue(mealList[j].food.name)
+                    cellStyle = styleNormal
+                }*/
             }
+            i += 1
         }
 
         setBordersToMergedCells(sheet)
@@ -314,9 +312,9 @@ class ExportData : Fragment() {
             }
         }
 
-        val ketoneList = ketoneRecords.await().toList()
-        if (ketoneList.isNullOrEmpty()) return true
-        val dates = getDates(ketoneList[0].first.date!!, ketoneList.last().first.date!!)
+        val ketoneList = ketoneRecords.await()
+        if (ketoneRecords.await().isNullOrEmpty()) return true
+        val dates = getDates(ketoneList[0].recordEntity.date!!, ketoneList.last().recordEntity.date!!)
 
         var i = 3
         var j = 0
@@ -327,15 +325,15 @@ class ExportData : Fragment() {
                     cellStyle = styleNormal
                 }
                 try {
-                    while (ketoneList[j].first.date == date) {
+                    while (ketoneList[j].recordEntity.date == date) {
                         var cellTime: String
                         var cellLevel: String
                         if (getCell(2) != null) {
-                            cellTime = getCell(2).stringCellValue + "\n" + ketoneList[j].first.time
-                            cellLevel = getCell(3).stringCellValue + "\n" + ketoneList[j].second.ketone.toString()
+                            cellTime = getCell(2).stringCellValue + "\n" + ketoneList[j].recordEntity.time
+                            cellLevel = getCell(3).stringCellValue + "\n" + ketoneList[j].ketoneEntity.ketone.toString()
                         } else {
-                            cellTime = ketoneList[j].first.time!!
-                            cellLevel = ketoneList[j].second.ketone.toString()
+                            cellTime = ketoneList[j].recordEntity.time!!
+                            cellLevel = ketoneList[j].ketoneEntity.ketone.toString()
                         }
                         createCell(2).apply {
                             setCellValue(cellTime)
@@ -388,7 +386,7 @@ class ExportData : Fragment() {
 
         val weightList = weightRecords.await().toList()
         if (weightList.isNullOrEmpty()) return true
-        val dates = getDates(weightList[0].first.date!!, weightList.last().first.date!!)
+        val dates = getDates(weightList[0].recordEntity.date!!, weightList.last().recordEntity.date!!)
 
         var i = 3
         var j = 0
@@ -399,15 +397,15 @@ class ExportData : Fragment() {
                     cellStyle = styleNormal
                 }
                 try {
-                    while (weightList[j].first.date == date) {
+                    while (weightList[j].recordEntity.date == date) {
                         var cellTime: String
                         var cellWeight: String
                         if (getCell(2) != null) {
-                            cellTime = getCell(2).stringCellValue + "\n" + weightList[j].first.time
-                            cellWeight = getCell(3).stringCellValue + "\n" + weightList[j].second.weight.toString()
+                            cellTime = getCell(2).stringCellValue + "\n" + weightList[j].recordEntity.time
+                            cellWeight = getCell(3).stringCellValue + "\n" + weightList[j].weightEntity.weight.toString()
                         } else {
-                            cellTime = weightList[j].first.time!!
-                            cellWeight = weightList[j].second.weight.toString()
+                            cellTime = weightList[j].recordEntity.time!!
+                            cellWeight = weightList[j].weightEntity.weight.toString()
                         }
                         createCell(2).apply {
                             setCellValue(cellTime)
@@ -489,17 +487,17 @@ class ExportData : Fragment() {
         var maxDate: String
 
         if (workoutList.isNullOrEmpty() and !sleepList.isNullOrEmpty()) {
-            minDate = sleepList[0].first.date!!
-            maxDate = sleepList.last().first.date!!
+            minDate = sleepList[0].recordEntity.date!!
+            maxDate = sleepList.last().recordEntity.date!!
         } else if (!workoutList.isNullOrEmpty() and sleepList.isNullOrEmpty()) {
-            minDate = workoutList[0].first.date!!
-            maxDate = workoutList.last().first.date!!
+            minDate = workoutList[0].recordEntity.date!!
+            maxDate = workoutList.last().recordEntity.date!!
         } else
         {
-            minDate = if (workoutList[0].first.dateInMilli!! < sleepList[0].first.dateInMilli!!)
-                workoutList[0].first.date!! else sleepList[0].first.date!!
-            maxDate = if (workoutList.last().first.dateInMilli!! > sleepList.last().first.dateInMilli!!)
-                workoutList.last().first.date!! else sleepList.last().first.date!!
+            minDate = if (workoutList[0].recordEntity.dateInMilli!! < sleepList[0].recordEntity.dateInMilli!!)
+                workoutList[0].recordEntity.date!! else sleepList[0].recordEntity.date!!
+            maxDate = if (workoutList.last().recordEntity.dateInMilli!! > sleepList.last().recordEntity.dateInMilli!!)
+                workoutList.last().recordEntity.date!! else sleepList.last().recordEntity.date!!
         }
 
         val dates = getDates(minDate, maxDate)
@@ -513,18 +511,18 @@ class ExportData : Fragment() {
                     cellStyle = styleNormal
                 }
                 try {
-                    while (workoutList[j].first.date == date) {
+                    while (workoutList[j].recordEntity.date == date) {
                         var cellTime: String
                         var cellDuration: String
                         var cellType: String
                         if (getCell(2) != null){
-                            cellTime = getCell(2).stringCellValue + "\n" + workoutList[j].first.time
-                            cellDuration = getCell(3).stringCellValue + "\n" + workoutList[j].second.duration.toString()
-                            cellType = getCell(4).stringCellValue + "\n" + workoutList[j].second.type.toString()
+                            cellTime = getCell(2).stringCellValue + "\n" + workoutList[j].recordEntity.time
+                            cellDuration = getCell(3).stringCellValue + "\n" + workoutList[j].workoutEntity.duration.toString()
+                            cellType = getCell(4).stringCellValue + "\n" + workoutList[j].workoutEntity.type.toString()
                         } else {
-                            cellTime = workoutList[j].first.time!!
-                            cellDuration = workoutList[j].second.duration.toString()
-                            cellType = workoutList[j].second.type.toString()
+                            cellTime = workoutList[j].recordEntity.time!!
+                            cellDuration = workoutList[j].workoutEntity.duration.toString()
+                            cellType = workoutList[j].workoutEntity.type.toString()
                         }
                         createCell(2).apply {
                             setCellValue(cellTime)
@@ -542,15 +540,15 @@ class ExportData : Fragment() {
                     }
                 } catch (e: java.lang.IndexOutOfBoundsException) { }
                 try {
-                    while (sleepList[k].first.date == date) {
+                    while (sleepList[k].recordEntity.date == date) {
                         var cellTime: String
                         var cellDuration: String
                         if (getCell(2) != null){
-                            cellTime = getCell(2).stringCellValue + "\n" + sleepList[k].first.time
-                            cellDuration = getCell(3).stringCellValue + "\n" + sleepList[k].second.duration.toString()
+                            cellTime = getCell(2).stringCellValue + "\n" + sleepList[k].recordEntity.time
+                            cellDuration = getCell(3).stringCellValue + "\n" + sleepList[k].sleepEntity.duration.toString()
                         } else {
-                            cellTime = sleepList[k].first.time!!
-                            cellDuration = sleepList[k].second.duration.toString()
+                            cellTime = sleepList[k].recordEntity.time!!
+                            cellDuration = sleepList[k].sleepEntity.duration.toString()
                         }
                         createCell(6).apply {
                             setCellValue(cellTime)
@@ -656,17 +654,17 @@ class ExportData : Fragment() {
         var maxDate: String
 
         if (sugarLevelList.isNullOrEmpty() and !insulinList.isNullOrEmpty()) {
-            minDate = insulinList[0].first.date!!
-            maxDate = insulinList.last().first.date!!
+            minDate = insulinList[0].recordEntity.date!!
+            maxDate = insulinList.last().recordEntity.date!!
         } else if (!sugarLevelList.isNullOrEmpty() and insulinList.isNullOrEmpty()) {
-            minDate = sugarLevelList[0].first.date!!
-            maxDate = sugarLevelList.last().first.date!!
+            minDate = sugarLevelList[0].recordEntity.date!!
+            maxDate = sugarLevelList.last().recordEntity.date!!
         } else
         {
-            minDate = if (sugarLevelList[0].first.dateInMilli!! < insulinList[0].first.dateInMilli!!)
-                sugarLevelList[0].first.date!! else insulinList[0].first.date!!
-            maxDate = if (sugarLevelList.last().first.dateInMilli!! > insulinList.last().first.dateInMilli!!)
-                sugarLevelList.last().first.date!! else insulinList.last().first.date!!
+            minDate = if (sugarLevelList[0].recordEntity.dateInMilli!! < insulinList[0].recordEntity.dateInMilli!!)
+                sugarLevelList[0].recordEntity.date!! else insulinList[0].recordEntity.date!!
+            maxDate = if (sugarLevelList.last().recordEntity.dateInMilli!! > insulinList.last().recordEntity.dateInMilli!!)
+                sugarLevelList.last().recordEntity.date!! else insulinList.last().recordEntity.date!!
         }
 
         val dates = getDates(minDate, maxDate)
@@ -680,21 +678,21 @@ class ExportData : Fragment() {
                     cellStyle = styleNormal
                 }
                 try {
-                    while (sugarLevelList[j].first.date == date) {
-                        val columnIndex = sugarLevelColumnIndex[sugarLevelList[j].second.preferences]
+                    while (sugarLevelList[j].recordEntity.date == date) {
+                        val columnIndex = sugarLevelColumnIndex[sugarLevelList[j].sugarLevelEntity.preferences]
                         var cellValue: String
                         var cellTime: String
                         if (getCell(columnIndex!!) != null){
-                            cellValue = getCell(columnIndex).stringCellValue + "\n" + sugarLevelList[j].second.sugarLevel.toString()
-                            cellTime = getCell(columnIndex+1).stringCellValue + "\n" + sugarLevelList[j].first.time
+                            cellValue = getCell(columnIndex).stringCellValue + "\n" + sugarLevelList[j].sugarLevelEntity.sugarLevel.toString()
+                            cellTime = getCell(columnIndex+1).stringCellValue + "\n" + sugarLevelList[j].recordEntity.time
                         } else {
-                            cellValue = sugarLevelList[j].second.sugarLevel.toString()
-                            cellTime = sugarLevelList[j].first.time!!
+                            cellValue = sugarLevelList[j].sugarLevelEntity.sugarLevel.toString()
+                            cellTime = sugarLevelList[j].recordEntity.time!!
                         }
                         createCell(columnIndex).apply {
                             setCellValue(cellValue)
-                            cellStyle = if (sugarLevelList[j].second.sugarLevel!! > 6.8) styleRed
-                            else if (sugarLevelList[j].second.sugarLevel!! < 4) styleBlue
+                            cellStyle = if (sugarLevelList[j].sugarLevelEntity.sugarLevel!! > 6.8) styleRed
+                            else if (sugarLevelList[j].sugarLevelEntity.sugarLevel!! < 4) styleBlue
                             else styleNormal
                         }
                         createCell(columnIndex + 1).apply {
@@ -705,19 +703,19 @@ class ExportData : Fragment() {
                     }
                 } catch (e: java.lang.IndexOutOfBoundsException) { }
                 try {
-                    while (insulinList[k].first.date == date) {
-                        val columnIndex = insulinColumnIndex[insulinList[k].second.preferences]
+                    while (insulinList[k].recordEntity.date == date) {
+                        val columnIndex = insulinColumnIndex[insulinList[k].insulinEntity.preferences]
                         var cellValue: String
                         var cellType: String
                         var cellTime: String
                         if (getCell(columnIndex!!) != null){
-                            cellValue = getCell(columnIndex).stringCellValue + "\n" + insulinList[k].second.insulin.toString()
-                            cellType = getCell(columnIndex+1).stringCellValue + "\n" + insulinList[k].second.type
-                            cellTime = getCell(columnIndex+2).stringCellValue + "\n" + insulinList[k].first.time
+                            cellValue = getCell(columnIndex).stringCellValue + "\n" + insulinList[k].insulinEntity.insulin.toString()
+                            cellType = getCell(columnIndex+1).stringCellValue + "\n" + insulinList[k].insulinEntity.type
+                            cellTime = getCell(columnIndex+2).stringCellValue + "\n" + insulinList[k].recordEntity.time
                         } else {
-                            cellValue = insulinList[k].second.insulin.toString()
-                            cellType = insulinList[k].second.type!!
-                            cellTime = insulinList[k].first.time!!
+                            cellValue = insulinList[k].insulinEntity.insulin.toString()
+                            cellType = insulinList[k].insulinEntity.type!!
+                            cellTime = insulinList[k].recordEntity.time!!
                         }
                         createCell(columnIndex).apply {
                             setCellValue(cellValue)

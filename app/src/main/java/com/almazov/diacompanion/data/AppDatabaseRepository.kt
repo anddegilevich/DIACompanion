@@ -75,7 +75,7 @@ class AppDatabaseRepository(private val appDao: AppDao) {
         return appDao.checkSugarLevelPrefs(date, id)
     }
 
-    suspend fun readAllSugarLevelRecords(): Map<RecordEntity, SugarLevelEntity> {
+    suspend fun readAllSugarLevelRecords(): List<RecordSugarLevel> {
         return appDao.readAllSugarLevelRecords()
     }
 
@@ -100,7 +100,7 @@ class AppDatabaseRepository(private val appDao: AppDao) {
         return appDao.checkInsulinPrefs(date, id)
     }
 
-    suspend fun readAllInsulinRecords(): Map<RecordEntity, InsulinEntity> {
+    suspend fun readAllInsulinRecords(): List<RecordInsulin> {
         return appDao.readAllInsulinRecords()
     }
 
@@ -121,7 +121,7 @@ class AppDatabaseRepository(private val appDao: AppDao) {
         return appDao.checkMealType(date, id)
     }
 
-    suspend fun readAllMealRecords(): List<MealFullInfo> {
+    suspend fun readAllMealRecords(): List<RecordWithMealWithFoods> {
         return appDao.readAllMealRecords()
     }
 
@@ -142,7 +142,7 @@ class AppDatabaseRepository(private val appDao: AppDao) {
         appDao.deleteWorkoutRecord(id)
     }
 
-    suspend fun readAllWorkoutRecords(): Map<RecordEntity, WorkoutEntity> {
+    suspend fun readAllWorkoutRecords(): List<RecordWorkout> {
         return appDao.readAllWorkoutRecords()
     }
 
@@ -163,7 +163,7 @@ class AppDatabaseRepository(private val appDao: AppDao) {
         appDao.deleteSleepRecord(id)
     }
 
-    suspend fun readAllSleepRecords(): Map<RecordEntity, SleepEntity> {
+    suspend fun readAllSleepRecords(): List<RecordSleep> {
         return appDao.readAllSleepRecords()
     }
 
@@ -188,7 +188,7 @@ class AppDatabaseRepository(private val appDao: AppDao) {
         return appDao.readLastWeightRecordDate()
     }
 
-    suspend fun readAllWeightRecords(): Map<RecordEntity, WeightEntity> {
+    suspend fun readAllWeightRecords(): List<RecordWeight> {
         return appDao.readAllWeightRecords()
     }
 
@@ -209,7 +209,7 @@ class AppDatabaseRepository(private val appDao: AppDao) {
         appDao.deleteKetoneRecord(id)
     }
 
-    suspend fun readAllKetoneRecords(): Map<RecordEntity, KetoneEntity> {
+    suspend fun readAllKetoneRecords(): List<RecordKetone> {
         return appDao.readAllKetoneRecords()
     }
 

@@ -20,19 +20,42 @@
         app:dividerThickness="2dp"
         app:dividerColor="@color/red"/>
 
-        <Button
-            android:id="@+id/btn_export_to_slxs"
-            android:layout_gravity="center"
-            style="@style/Button"
+        <ViewFlipper
+            android:id="@+id/lf_export"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/ExportToXLSX"/>
-        <Button
-            android:id="@+id/btn_export_to_doctor"
-            android:layout_gravity="center"
-            style="@style/Button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/ExportToDoctor"/>
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/btn_export_to_slxs"
+                    style="@style/Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ExportToXLSX"/>
+                <Button
+                    android:id="@+id/btn_export_to_doctor"
+                    style="@style/Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ExportToDoctor"/>
+            </LinearLayout>
+
+            <ProgressBar android:layout_height="256dp"
+                android:layout_width="256dp"
+                android:layout_gravity="center"/>
+
+            <ImageView
+                android:layout_width="256dp"
+                android:layout_height="256dp"
+                android:src="@drawable/check"
+                android:layout_gravity="center"/>
+        </ViewFlipper>
+
+
 
 </LinearLayout>

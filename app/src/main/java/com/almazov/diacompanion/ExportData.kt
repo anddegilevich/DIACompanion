@@ -1,8 +1,6 @@
 package com.almazov.diacompanion
 
-import android.animation.LayoutTransition
 import android.content.ActivityNotFoundException
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
@@ -15,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
+import com.almazov.diacompanion.base.setTwoDigits
 import com.almazov.diacompanion.data.AppDatabaseViewModel
 import kotlinx.android.synthetic.main.fragment_export_data.*
 import kotlinx.coroutines.Dispatchers
@@ -31,7 +30,6 @@ import org.apache.poi.xssf.usermodel.XSSFCellStyle
 import org.apache.poi.xssf.usermodel.XSSFSheet
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import java.io.FileOutputStream
-import java.sql.Date
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -185,11 +183,11 @@ class ExportData : Fragment() {
         }
 
         val columnNames = listOf("Дата", "Время", "Прием пищи", "Продукт", "Масса (г)",
-            "Углеводы (г)", "Белки (г)", "Жиры (г)", "Энерг. ценность (Ккал)",
-            "Пищевые волокна (г)", "ГИ", "ГН","", "Вода (г)", "НЖК (г)", "Холестерин (мг)",
+            "Углеводы (г)", "Белки (г)", "Жиры (г)", "Энерг. ценность (Ккал)", "ГИ", "ГН","",
+            "Вода (г)", "НЖК (г)", "Холестерин (мг)", "Пищевые волокна (г)",
             "Зола (г)", "Натрий (мг)", "Калий (мг)", "Кальций (мг)", "Магний (мг)", "Фосфор (мг)",
             "Железо (мг)", "Ретинол (мкг)", "Тиамин (мг)", "Рибофлавин (мг)", "Ниацин (мг)",
-            "Витамин C (мг)", "Ретиновый эквивалент (мкг)", "", "Бета-каротин (мкг)",
+            "Витамин C (мг)", "Ретиновый эквивалент (мкг)", "Бета-каротин (мкг)",
             "Сахар, общее содержание (г)", "Крахмал (г)", "Токоферолэквивалент (мг)",
             "Органические кислоты (г)", "Ниациновый эквивалент (мг)", "Цинк (мг)", "Медь (мг)",
             "Марганец (мг)", "Селен (мкг)", "Пантотеновая кислота (мг)", "Витамин B6 (мг)",
@@ -218,24 +216,196 @@ class ExportData : Fragment() {
 
         var i = 3
         var j = 0
+
+        val carbs = mutableListOf<Double>()
+
         for (date in dates) {
-            sheet.createRow(i).apply {
-                createCell(1).apply {
+            if (mealList[j].recordEntity.date == date) {
+                try {
+                    while  (mealList[j].recordEntity.date == date) {
+                        sheet.createRow(i).apply {
+                            createCell(1).apply {
+                                setCellValue(date)
+                                cellStyle = styleNormal
+                            }
+                            createCell(2).apply {
+                                setCellValue(mealList[j].recordEntity.time)
+                                cellStyle = styleNormal
+                            }
+                            createCell(3).apply {
+                                setCellValue(mealList[j].mealWithFoods.mealEntity.type)
+                                cellStyle = styleNormal
+                            }
+                            var cellName = ""
+                            var cellWeight = ""
+                            var cellCarbs = ""
+                            var cellFats = ""
+                            var cellProtein = ""
+                            var cellKCal = ""
+                            var cellGI = ""
+                            var cellGL = ""
+
+                            var cellWater = ""
+                            var cellNzhk = ""
+                            var cellHol = ""
+                            var cellPV = ""
+                            var cellZola = ""
+                            var cellNa = ""
+                            var cellK = ""
+                            var cellCa = ""
+                            var cellMg = ""
+                            var cellP = ""
+                            var cellFe = ""
+                            var cellA = ""
+                            var cellB1 = ""
+                            var cellB2 = ""
+                            var cellRr = ""
+                            var cellC = ""
+                            var cellRe = ""
+                            var cellKar = ""
+                            var cellMds = ""
+                            var cellKr = ""
+                            var cellTe = ""
+                            var cellOk = ""
+                            var cellNe = ""
+                            var cellZn = ""
+                            var cellCu = ""
+                            var cellMn = ""
+                            var cellSe = ""
+                            var cellB5 = ""
+                            var cellB6 = ""
+                            var cellFol = ""
+                            var cellB9 = ""
+                            var cellDfe = ""
+                            var cellHolin = ""
+                            var cellB12 = ""
+                            var cellEar = ""
+                            var cellAKar = ""
+                            var cellBKript = ""
+                            var cellLikopin = ""
+                            var cellLutZ = ""
+                            var cellVitE = ""
+                            var cellVitD = ""
+                            var cellDMezd = ""
+                            var cellVitK = ""
+                            var cellMzhk = ""
+                            var cellPzhk = ""
+
+                            var cellW1Ed = ""
+                            var cellOp1Ed = ""
+                            var cellW2Ed = ""
+                            var cellOp2Ed = ""
+                            var cellProcProt = ""
+
+                            var carboSum = 0.0
+
+                            for (food in mealList[j].mealWithFoods.foods) {
+                                val weight = food.foodInMealEntity.weight!! / 100
+                                cellName += "\n" + food.food.name.toString() + "\n"
+                                cellWeight += setTwoDigits(food.foodInMealEntity.weight).toString() + "\n"
+                                if (food.food.carbo != null) {
+                                    cellCarbs += setTwoDigits(weight * food.food.carbo).toString() + "\n"
+                                    carboSum += weight * food.food.carbo
+                                }
+                                if (food.food.fat != null) cellFats += setTwoDigits(weight*food.food.fat).toString() + "\n"
+                                if (food.food.prot != null) cellProtein += setTwoDigits(weight*food.food.prot).toString() + "\n"
+                                if (food.food.ec != null) cellKCal += setTwoDigits(weight*food.food.ec).toString() + "\n"
+                                if (food.food.gi != null) cellGI += setTwoDigits(weight*food.food.gi).toString() + "\n"
+                                cellGL += setTwoDigits(weight*food.food.carbo!!*food.food.gi!!).toString() + "\n"
+
+                                if (food.food.water != null) cellWater += setTwoDigits(weight*food.food.water).toString() + "\n"
+                                if (food.food.nzhk != null) cellNzhk += setTwoDigits(weight*food.food.nzhk).toString() + "\n"
+                                if (food.food.hol != null) cellHol += setTwoDigits(weight*food.food.hol).toString() + "\n"
+                                if (food.food.pv != null) cellPV += setTwoDigits(weight*food.food.pv).toString() + "\n"
+                                if (food.food.zola != null) cellZola += setTwoDigits(weight*food.food.zola).toString() + "\n"
+                                if (food.food.na != null) cellNa += setTwoDigits(weight*food.food.na).toString() + "\n"
+                                if (food.food.k != null) cellK += setTwoDigits(weight*food.food.k).toString() + "\n"
+                                if (food.food.ca != null) cellCa += setTwoDigits(weight*food.food.ca).toString() + "\n"
+                                if (food.food.mg != null) cellMg += setTwoDigits(weight*food.food.mg).toString() + "\n"
+                                if (food.food.p != null) cellP += setTwoDigits(weight*food.food.p).toString() + "\n"
+                                if (food.food.fe != null) cellFe += setTwoDigits(weight*food.food.fe).toString() + "\n"
+                                if (food.food.a != null) cellA += setTwoDigits(weight*food.food.a).toString() + "\n"
+                                if (food.food.b1 != null) cellB1 += setTwoDigits(weight*food.food.b1).toString() + "\n"
+                                if (food.food.b2 != null) cellB2 += setTwoDigits(weight*food.food.b2).toString() + "\n"
+                                if (food.food.rr != null) cellRr += setTwoDigits(weight*food.food.rr).toString() + "\n"
+                                if (food.food.c != null) cellC += setTwoDigits(weight*food.food.c).toString() + "\n"
+                                if (food.food.re != null) cellRe += setTwoDigits(weight*food.food.re).toString() + "\n"
+                                if (food.food.kar != null) cellKar += setTwoDigits(weight*food.food.kar).toString() + "\n"
+                                if (food.food.mds != null) cellMds += setTwoDigits(weight*food.food.mds).toString() + "\n"
+                                if (food.food.kr != null) cellKr += setTwoDigits(weight*food.food.kr).toString() + "\n"
+                                if (food.food.te != null) cellTe += setTwoDigits(weight*food.food.te).toString() + "\n"
+                                if (food.food.ok != null) cellOk += setTwoDigits(weight*food.food.ok).toString() + "\n"
+                                if (food.food.ne != null) cellNe += setTwoDigits(weight*food.food.ne).toString() + "\n"
+                                if (food.food.zn != null) cellZn += setTwoDigits(weight*food.food.zn).toString() + "\n"
+                                if (food.food.cu != null) cellCu += setTwoDigits(weight*food.food.cu).toString() + "\n"
+                                if (food.food.mn != null) cellMn += setTwoDigits(weight*food.food.mn).toString() + "\n"
+                                if (food.food.se != null) cellSe += setTwoDigits(weight*food.food.se).toString() + "\n"
+                                if (food.food.b5 != null) cellB5 += setTwoDigits(weight*food.food.b5).toString() + "\n"
+                                if (food.food.b6 != null) cellB6 += setTwoDigits(weight*food.food.b6).toString() + "\n"
+                                if (food.food.fol != null) cellFol += setTwoDigits(weight*food.food.fol).toString() + "\n"
+                                if (food.food.b9 != null) cellB9 += setTwoDigits(weight*food.food.b9).toString() + "\n"
+                                if (food.food.dfe != null) cellDfe += setTwoDigits(weight*food.food.dfe).toString() + "\n"
+                                if (food.food.holin != null) cellHolin += setTwoDigits(weight*food.food.holin).toString() + "\n"
+                                if (food.food.b12 != null) cellB12 += setTwoDigits(weight*food.food.b12).toString() + "\n"
+                                if (food.food.ear != null) cellEar += setTwoDigits(weight*food.food.ear).toString() + "\n"
+                                if (food.food.a_kar != null) cellAKar += setTwoDigits(weight*food.food.a_kar).toString() + "\n"
+                                if (food.food.b_kript != null) cellBKript += setTwoDigits(weight*food.food.b_kript).toString() + "\n"
+                                if (food.food.likopin != null) cellLikopin += setTwoDigits(weight*food.food.likopin).toString() + "\n"
+                                if (food.food.lut_z != null) cellLutZ += setTwoDigits(weight*food.food.lut_z).toString() + "\n"
+                                if (food.food.vit_e != null) cellVitE += setTwoDigits(weight*food.food.vit_e).toString() + "\n"
+                                if (food.food.vit_d != null) cellVitD += setTwoDigits(weight*food.food.vit_d).toString() + "\n"
+                                if (food.food.d_mezd != null) cellDMezd += setTwoDigits(weight*food.food.d_mezd).toString() + "\n"
+                                if (food.food.vit_k != null) cellVitK += setTwoDigits(weight*food.food.vit_k).toString() + "\n"
+                                if (food.food.mzhk != null) cellMzhk += setTwoDigits(weight*food.food.mzhk).toString() + "\n"
+                                if (food.food.pzhk != null) cellPzhk += setTwoDigits(weight*food.food.pzhk).toString() + "\n"
+
+                                if (food.food.w_1ed != null) cellW1Ed += setTwoDigits(weight*food.food.w_1ed).toString() + "\n"
+                                if (food.food.op_1ed != null) cellOp1Ed += setTwoDigits(food.food.op_1ed).toString() + "\n"
+                                if (food.food.w_2ed != null) cellW2Ed += setTwoDigits(food.food.w_2ed).toString() + "\n"
+                                if (food.food.op_2ed != null) cellOp2Ed += setTwoDigits(food.food.op_2ed).toString() + "\n"
+                                if (food.food.proc_pot != null) cellProcProt += setTwoDigits(weight*food.food.proc_pot).toString() + "\n"
+                            }
+                            val cellStrings = listOf(cellName, cellWeight, cellCarbs, cellFats,
+                                cellProtein, cellKCal, cellGI, cellGL, "", cellWater, cellNzhk,
+                                cellHol, cellPV, cellZola, cellNa, cellK, cellCa, cellMg, cellP,
+                                cellFe, cellA, cellB1, cellB2, cellRr, cellC, cellRe, cellKar,
+                                cellMds, cellKr, cellTe, cellOk, cellNe, cellZn, cellCu, cellMn,
+                                cellSe, cellB5, cellB6, cellFol, cellB9, cellDfe, cellHolin,
+                                cellB12, cellEar, cellAKar, cellBKript, cellLikopin, cellLutZ,
+                                cellVitE, cellVitD, cellDMezd, cellVitK, cellMzhk, cellPzhk, "",
+                                cellW1Ed, cellOp1Ed, cellW2Ed, cellOp2Ed, cellProcProt)
+                            var k = 4
+                            for (cellString in cellStrings) {
+                                createCell(k).apply {
+                                    setCellValue(cellString)
+                                    cellStyle = styleNormal
+                                }
+                                k += 1
+                            }
+                            createCell(k+1).apply {
+                                setCellValue(mealList[j].mealWithFoods.mealEntity.sugarLevel!!.toString())
+                                cellStyle = styleNormal
+                            }
+                            createCell(k+2).apply {
+                                setCellValue(mealList[j].mealWithFoods.mealEntity.sugarLevelPredicted!!.toString())
+                                cellStyle = styleNormal
+                            }
+
+                        }
+                        j += 1
+                        i += 1
+                    }
+
+                } catch (e: java.lang.IndexOutOfBoundsException) {
+
+                } finally {
+                    i -= 1
+                }
+            } else {
+                sheet.createRow(i).createCell(1).apply {
                     setCellValue(date)
                     cellStyle = styleNormal
                 }
-               /* createCell(2).apply {
-                    setCellValue(mealList[j].record.time)
-                    cellStyle = styleNormal
-                }
-                createCell(3).apply {
-                    setCellValue(mealList[j].meal.type)
-                    cellStyle = styleNormal
-                }
-                createCell(4).apply {
-                    setCellValue(mealList[j].food.name)
-                    cellStyle = styleNormal
-                }*/
             }
             i += 1
         }
@@ -671,6 +841,11 @@ class ExportData : Fragment() {
         var i = 3
         var j = 0
         var k = 0
+        val sl1 = mutableListOf<Double>()
+        val sl2 = mutableListOf<Double>()
+        val sl3 = mutableListOf<Double>()
+        val sl4 = mutableListOf<Double>()
+        val sl5 = mutableListOf<Double>()
         for (date in dates) {
             sheet.createRow(i).apply {
                 createCell(1).apply {
@@ -680,19 +855,28 @@ class ExportData : Fragment() {
                 try {
                     while (sugarLevelList[j].recordEntity.date == date) {
                         val columnIndex = sugarLevelColumnIndex[sugarLevelList[j].sugarLevelEntity.preferences]
+                        val sugarLevel = sugarLevelList[j].sugarLevelEntity.sugarLevel!!
+                        when (columnIndex) {
+                            2 -> sl1.add(sugarLevel)
+                            4 -> sl2.add(sugarLevel)
+                            6 -> sl3.add(sugarLevel)
+                            8 -> sl4.add(sugarLevel)
+                            10 -> sl5.add(sugarLevel)
+                        }
+
                         var cellValue: String
                         var cellTime: String
                         if (getCell(columnIndex!!) != null){
-                            cellValue = getCell(columnIndex).stringCellValue + "\n" + sugarLevelList[j].sugarLevelEntity.sugarLevel.toString()
+                            cellValue = getCell(columnIndex).stringCellValue + "\n" + sugarLevel.toString()
                             cellTime = getCell(columnIndex+1).stringCellValue + "\n" + sugarLevelList[j].recordEntity.time
                         } else {
-                            cellValue = sugarLevelList[j].sugarLevelEntity.sugarLevel.toString()
+                            cellValue = sugarLevel.toString()
                             cellTime = sugarLevelList[j].recordEntity.time!!
                         }
                         createCell(columnIndex).apply {
                             setCellValue(cellValue)
-                            cellStyle = if (sugarLevelList[j].sugarLevelEntity.sugarLevel!! > 6.8) styleRed
-                            else if (sugarLevelList[j].sugarLevelEntity.sugarLevel!! < 4) styleBlue
+                            cellStyle = if (sugarLevel > 6.8) styleRed
+                            else if (sugarLevel < 4) styleBlue
                             else styleNormal
                         }
                         createCell(columnIndex + 1).apply {
@@ -705,15 +889,16 @@ class ExportData : Fragment() {
                 try {
                     while (insulinList[k].recordEntity.date == date) {
                         val columnIndex = insulinColumnIndex[insulinList[k].insulinEntity.preferences]
+                        val insulin = insulinList[k].insulinEntity.insulin
                         var cellValue: String
                         var cellType: String
                         var cellTime: String
                         if (getCell(columnIndex!!) != null){
-                            cellValue = getCell(columnIndex).stringCellValue + "\n" + insulinList[k].insulinEntity.insulin.toString()
+                            cellValue = getCell(columnIndex).stringCellValue + "\n" + insulin.toString()
                             cellType = getCell(columnIndex+1).stringCellValue + "\n" + insulinList[k].insulinEntity.type
                             cellTime = getCell(columnIndex+2).stringCellValue + "\n" + insulinList[k].recordEntity.time
                         } else {
-                            cellValue = insulinList[k].insulinEntity.insulin.toString()
+                            cellValue = insulin.toString()
                             cellType = insulinList[k].insulinEntity.type!!
                             cellTime = insulinList[k].recordEntity.time!!
                         }
@@ -735,6 +920,47 @@ class ExportData : Fragment() {
                 } catch (e: java.lang.IndexOutOfBoundsException) { }
             }
             i += 1
+        }
+
+        sheet.createRow(i).apply {
+            createCell(1).apply {
+                setCellValue("Cреднее значение")
+                cellStyle = styleNormal
+            }
+            if (sl1.isNotEmpty()) {
+                createCell(2).apply {
+                    setCellValue(sl1.average().toString())
+                    cellStyle = styleNormal
+                }
+            }
+
+            if (sl2.isNotEmpty()) {
+                createCell(4).apply {
+                    setCellValue(sl2.average().toString())
+                    cellStyle = styleNormal
+                }
+            }
+
+            if (sl3.isNotEmpty()) {
+                createCell(6).apply {
+                    setCellValue(sl3.average().toString())
+                    cellStyle = styleNormal
+                }
+            }
+
+            if (sl4.isNotEmpty()) {
+                createCell(8).apply {
+                    setCellValue(sl4.average().toString())
+                    cellStyle = styleNormal
+                }
+            }
+
+            if (sl5.isNotEmpty()) {
+                createCell(10).apply {
+                    setCellValue(sl5.average().toString())
+                    cellStyle = styleNormal
+                }
+            }
         }
 
         setBordersToMergedCells(sheet)

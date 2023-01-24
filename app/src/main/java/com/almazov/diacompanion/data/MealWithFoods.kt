@@ -9,8 +9,7 @@ data class MealWithFoods (
     @Relation(
         entity = FoodInMealEntity::class,
         parentColumn = "idMeal",
-        entityColumn = "idFood",
-        associateBy = Junction(FoodInMealEntity::class)
+        entityColumn = "idMeal"
     )
     val foods: List<FoodsWithWeight>
 )

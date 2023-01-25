@@ -187,8 +187,8 @@ class ExportData : Fragment() {
             "Вода (г)", "НЖК (г)", "Холестерин (мг)", "Пищевые волокна (г)",
             "Зола (г)", "Натрий (мг)", "Калий (мг)", "Кальций (мг)", "Магний (мг)", "Фосфор (мг)",
             "Железо (мг)", "Ретинол (мкг)", "Тиамин (мг)", "Рибофлавин (мг)", "Ниацин (мг)",
-            "Витамин C (мг)", "Ретиновый эквивалент (мкг)", "Бета-каротин (мкг)",
-            "Сахар, общее содержание (г)", "Крахмал (г)", "Токоферолэквивалент (мг)",
+            "Аскорбиновая кисл. (мг)", "Ретиновый эквивалент (мкг)", "Бета-каротин (мкг)",
+            "МДС (г)", "Крахмал (г)", "Токоферолэквивалент (мг)",
             "Органические кислоты (г)", "Ниациновый эквивалент (мг)", "Цинк (мг)", "Медь (мг)",
             "Марганец (мг)", "Селен (мкг)", "Пантотеновая кислота (мг)", "Витамин B6 (мг)",
             "Фолаты общ. (мкг)", "Фолиевая кислота (мкг)", "Фолаты ДФЭ (мкг)", "Холин общ. (мкг)",
@@ -197,7 +197,8 @@ class ExportData : Fragment() {
             "Витамин E (мг)", "Витамин D (мкг)", "Витамин D (межд.ед.)", "Витамин K (мкг)",
             "Мононенасыщенные жирные кислоты (г)", "Полиненасыщенные жирные кислоты (г)", "",
             "Вес перв. ед. изм.", "Описание перв. ед. изм.", "Вес второй ед. изм",
-            "Опис. второй ед. изм.", "Процент потерь, %", "", "УСК до еды", "Прогноз УСК"
+            "Опис. второй ед. изм.", "Процент потерь, %", "", "УСК до еды", "Прогноз УСК",
+            "Время добавления записи"
         )
         sheet.createRow(2).apply {
             var i = 1
@@ -217,7 +218,51 @@ class ExportData : Fragment() {
         var i = 3
         var j = 0
 
-        val carbs = mutableListOf<Double>()
+        val carbo = mutableListOf<Pair<Double,String>>()
+        val prot = mutableListOf<Pair<Double,String>>()
+        val fat = mutableListOf<Pair<Double,String>>()
+        val ec = mutableListOf<Pair<Double,String>>()
+        val gi = mutableListOf<Pair<Double,String>>()
+        val water = mutableListOf<Pair<Double,String>>()
+        val nzhk = mutableListOf<Pair<Double,String>>()
+        val hol = mutableListOf<Pair<Double,String>>()
+        val pv = mutableListOf<Pair<Double,String>>()
+        val zola = mutableListOf<Pair<Double,String>>()
+        val na = mutableListOf<Pair<Double,String>>()
+        val k = mutableListOf<Pair<Double,String>>()
+        val ca = mutableListOf<Pair<Double,String>>()
+        val mg = mutableListOf<Pair<Double,String>>()
+        val p = mutableListOf<Pair<Double,String>>()
+        val fe = mutableListOf<Pair<Double,String>>()
+        val a = mutableListOf<Pair<Double,String>>()
+        val b1 = mutableListOf<Pair<Double,String>>()
+        val b2 = mutableListOf<Pair<Double,String>>()
+        val rr = mutableListOf<Pair<Double,String>>()
+        val c = mutableListOf<Pair<Double,String>>()
+        val re = mutableListOf<Pair<Double,String>>()
+
+        val carboMeal = mutableListOf<Double>()
+        val protMeal = mutableListOf<Double>()
+        val fatMeal = mutableListOf<Double>()
+        val ecMeal = mutableListOf<Double>()
+        val giMeal = mutableListOf<Double>()
+        val waterMeal = mutableListOf<Double>()
+        val nzhkMeal = mutableListOf<Double>()
+        val holMeal = mutableListOf<Double>()
+        val pvMeal = mutableListOf<Double>()
+        val zolaMeal = mutableListOf<Double>()
+        val naMeal = mutableListOf<Double>()
+        val kMeal = mutableListOf<Double>()
+        val caMeal = mutableListOf<Double>()
+        val mgMeal = mutableListOf<Double>()
+        val pMeal = mutableListOf<Double>()
+        val feMeal = mutableListOf<Double>()
+        val aMeal = mutableListOf<Double>()
+        val b1Meal = mutableListOf<Double>()
+        val b2Meal = mutableListOf<Double>()
+        val rrMeal = mutableListOf<Double>()
+        val cMeal = mutableListOf<Double>()
+        val reMeal = mutableListOf<Double>()
 
         for (date in dates) {
             if (mealList[j].recordEntity.date == date) {
@@ -297,39 +342,100 @@ class ExportData : Fragment() {
                             var cellOp2Ed = ""
                             var cellProcProt = ""
 
-                            var carboSum = 0.0
-
                             for (food in mealList[j].mealWithFoods.foods) {
                                 val weight = food.foodInMealEntity.weight!! / 100
                                 cellName += "\n" + food.food.name.toString() + "\n"
                                 cellWeight += setTwoDigits(food.foodInMealEntity.weight).toString() + "\n"
                                 if (food.food.carbo != null) {
                                     cellCarbs += setTwoDigits(weight * food.food.carbo).toString() + "\n"
-                                    carboSum += weight * food.food.carbo
+                                    carboMeal.add(weight * food.food.carbo)
                                 }
-                                if (food.food.fat != null) cellFats += setTwoDigits(weight*food.food.fat).toString() + "\n"
-                                if (food.food.prot != null) cellProtein += setTwoDigits(weight*food.food.prot).toString() + "\n"
-                                if (food.food.ec != null) cellKCal += setTwoDigits(weight*food.food.ec).toString() + "\n"
-                                if (food.food.gi != null) cellGI += setTwoDigits(weight*food.food.gi).toString() + "\n"
+                                if (food.food.fat != null) {
+                                    cellFats += setTwoDigits(weight * food.food.fat).toString() + "\n"
+                                    fatMeal.add(weight * food.food.fat)
+                                }
+                                if (food.food.prot != null) {
+                                    cellProtein += setTwoDigits(weight * food.food.prot).toString() + "\n"
+                                    protMeal.add(weight * food.food.prot)
+                                }
+                                if (food.food.ec != null) {
+                                    cellKCal += setTwoDigits(weight * food.food.ec).toString() + "\n"
+                                    ecMeal.add(weight * food.food.ec)
+                                }
+                                if (food.food.gi != null) {
+                                    cellGI += setTwoDigits(weight * food.food.gi).toString() + "\n"
+                                    giMeal.add(weight * food.food.gi)
+                                }
                                 cellGL += setTwoDigits(weight*food.food.carbo!!*food.food.gi!!).toString() + "\n"
 
-                                if (food.food.water != null) cellWater += setTwoDigits(weight*food.food.water).toString() + "\n"
-                                if (food.food.nzhk != null) cellNzhk += setTwoDigits(weight*food.food.nzhk).toString() + "\n"
-                                if (food.food.hol != null) cellHol += setTwoDigits(weight*food.food.hol).toString() + "\n"
-                                if (food.food.pv != null) cellPV += setTwoDigits(weight*food.food.pv).toString() + "\n"
-                                if (food.food.zola != null) cellZola += setTwoDigits(weight*food.food.zola).toString() + "\n"
-                                if (food.food.na != null) cellNa += setTwoDigits(weight*food.food.na).toString() + "\n"
-                                if (food.food.k != null) cellK += setTwoDigits(weight*food.food.k).toString() + "\n"
-                                if (food.food.ca != null) cellCa += setTwoDigits(weight*food.food.ca).toString() + "\n"
-                                if (food.food.mg != null) cellMg += setTwoDigits(weight*food.food.mg).toString() + "\n"
-                                if (food.food.p != null) cellP += setTwoDigits(weight*food.food.p).toString() + "\n"
-                                if (food.food.fe != null) cellFe += setTwoDigits(weight*food.food.fe).toString() + "\n"
-                                if (food.food.a != null) cellA += setTwoDigits(weight*food.food.a).toString() + "\n"
-                                if (food.food.b1 != null) cellB1 += setTwoDigits(weight*food.food.b1).toString() + "\n"
-                                if (food.food.b2 != null) cellB2 += setTwoDigits(weight*food.food.b2).toString() + "\n"
-                                if (food.food.rr != null) cellRr += setTwoDigits(weight*food.food.rr).toString() + "\n"
-                                if (food.food.c != null) cellC += setTwoDigits(weight*food.food.c).toString() + "\n"
-                                if (food.food.re != null) cellRe += setTwoDigits(weight*food.food.re).toString() + "\n"
+                                if (food.food.water != null) {
+                                    cellWater += setTwoDigits(weight * food.food.water).toString() + "\n"
+                                    waterMeal.add(weight * food.food.water)
+                                }
+                                if (food.food.nzhk != null) {
+                                    cellNzhk += setTwoDigits(weight * food.food.nzhk).toString() + "\n"
+                                    nzhkMeal.add(weight * food.food.nzhk)
+                                }
+                                if (food.food.hol != null) {
+                                    cellHol += setTwoDigits(weight * food.food.hol).toString() + "\n"
+                                    holMeal.add(weight * food.food.hol)
+                                }
+                                if (food.food.pv != null) {
+                                    cellPV += setTwoDigits(weight * food.food.pv).toString() + "\n"
+                                    pvMeal.add(weight * food.food.pv)
+                                }
+                                if (food.food.zola != null) {
+                                    cellZola += setTwoDigits(weight * food.food.zola).toString() + "\n"
+                                    zolaMeal.add(weight * food.food.zola)
+                                }
+                                if (food.food.na != null) {
+                                    cellNa += setTwoDigits(weight * food.food.na).toString() + "\n"
+                                    naMeal.add(weight * food.food.na)
+                                }
+                                if (food.food.k != null) {
+                                    cellK += setTwoDigits(weight * food.food.k).toString() + "\n"
+                                    kMeal.add(weight * food.food.k)
+                                }
+                                if (food.food.ca != null) {
+                                    cellCa += setTwoDigits(weight * food.food.ca).toString() + "\n"
+                                    caMeal.add(weight * food.food.ca)
+                                }
+                                if (food.food.mg != null) {
+                                    cellMg += setTwoDigits(weight * food.food.mg).toString() + "\n"
+                                    mgMeal.add(weight * food.food.mg)
+                                }
+                                if (food.food.p != null) {
+                                    cellP += setTwoDigits(weight * food.food.p).toString() + "\n"
+                                    pMeal.add(weight * food.food.p)
+                                }
+                                if (food.food.fe != null) {
+                                    cellFe += setTwoDigits(weight * food.food.fe).toString() + "\n"
+                                    feMeal.add(weight * food.food.fe)
+                                }
+                                if (food.food.a != null) {
+                                    cellA += setTwoDigits(weight * food.food.a).toString() + "\n"
+                                    aMeal.add(weight * food.food.a)
+                                }
+                                if (food.food.b1 != null) {
+                                    cellB1 += setTwoDigits(weight * food.food.b1).toString() + "\n"
+                                    b1Meal.add(weight * food.food.b1)
+                                }
+                                if (food.food.b2 != null) {
+                                    cellB2 += setTwoDigits(weight * food.food.b2).toString() + "\n"
+                                    b2Meal.add(weight * food.food.b2)
+                                }
+                                if (food.food.rr != null) {
+                                    cellRr += setTwoDigits(weight * food.food.rr).toString() + "\n"
+                                    rrMeal.add(weight * food.food.rr)
+                                }
+                                if (food.food.c != null) {
+                                    cellC += setTwoDigits(weight * food.food.c).toString() + "\n"
+                                    cMeal.add(weight * food.food.c)
+                                }
+                                if (food.food.re != null) {
+                                    cellRe += setTwoDigits(weight * food.food.re).toString() + "\n"
+                                    reMeal.add(weight * food.food.re)
+                                }
                                 if (food.food.kar != null) cellKar += setTwoDigits(weight*food.food.kar).toString() + "\n"
                                 if (food.food.mds != null) cellMds += setTwoDigits(weight*food.food.mds).toString() + "\n"
                                 if (food.food.kr != null) cellKr += setTwoDigits(weight*food.food.kr).toString() + "\n"
@@ -391,6 +497,16 @@ class ExportData : Fragment() {
                                 cellStyle = styleNormal
                             }
 
+                            val formatter = SimpleDateFormat("HH:mm dd.MM.yyyy")
+                            val calendar = Calendar.getInstance()
+                            calendar.timeInMillis = mealList[j].recordEntity.dateSubmit!!
+                            val dateString = formatter.format(calendar.time)
+
+                            createCell(k+3).apply {
+                                setCellValue(dateString)
+                                cellStyle = styleNormal
+                            }
+
                         }
                         j += 1
                         i += 1
@@ -400,6 +516,51 @@ class ExportData : Fragment() {
 
                 } finally {
                     i -= 1
+                    carbo.add(Pair(carboMeal.sum(),date))
+                    prot.add(Pair(protMeal.sum(),date))
+                    fat.add(Pair(fatMeal.sum(),date))
+                    ec.add(Pair(ecMeal.sum(),date))
+                    gi.add(Pair(giMeal.sum(),date))
+                    water.add(Pair(waterMeal.sum(),date))
+                    nzhk.add(Pair(nzhkMeal.sum(),date))
+                    hol.add(Pair(holMeal.sum(),date))
+                    pv.add(Pair(pvMeal.sum(),date))
+                    zola.add(Pair(zolaMeal.sum(),date))
+                    na.add(Pair(naMeal.sum(),date))
+                    k.add(Pair(kMeal.sum(),date))
+                    ca.add(Pair(caMeal.sum(),date))
+                    mg.add(Pair(mgMeal.sum(),date))
+                    p.add(Pair(pMeal.sum(),date))
+                    fe.add(Pair(feMeal.sum(),date))
+                    a.add(Pair(aMeal.sum(),date))
+                    b1.add(Pair(b1Meal.sum(),date))
+                    b2.add(Pair(b2Meal.sum(),date))
+                    rr.add(Pair(rrMeal.sum(),date))
+                    c.add(Pair(cMeal.sum(),date))
+                    re.add(Pair(reMeal.sum(),date))
+
+                    carboMeal.clear()
+                    protMeal.clear()
+                    fatMeal.clear()
+                    ecMeal.clear()
+                    giMeal.clear()
+                    waterMeal.clear()
+                    nzhkMeal.clear()
+                    holMeal.clear()
+                    pvMeal.clear()
+                    zolaMeal.clear()
+                    naMeal.clear()
+                    kMeal.clear()
+                    caMeal.clear()
+                    mgMeal.clear()
+                    pMeal.clear()
+                    feMeal.clear()
+                    aMeal.clear()
+                    b1Meal.clear()
+                    b2Meal.clear()
+                    rrMeal.clear()
+                    cMeal.clear()
+                    reMeal.clear()
                 }
             } else {
                 sheet.createRow(i).createCell(1).apply {
@@ -410,6 +571,126 @@ class ExportData : Fragment() {
             i += 1
         }
 
+        i += 1
+        sheet.addMergedRegion(CellRangeAddress(i, i, 0, 67))
+        sheet.createRow(i).createCell(0).apply {
+            setCellValue("Приемы пищи")
+            cellStyle = styleYellow
+        }
+        i += 1
+        sheet.createRow(i).apply {
+            var k = 1
+            for (columnName in columnNames) {
+                createCell(k).apply {
+                    setCellValue(columnName)
+                    cellStyle = styleYellow
+                }
+                k += 1
+            }
+        }
+
+        i += 1
+        j = 0
+        for (date in dates) {
+            sheet.createRow(i).apply {
+                createCell(1).apply {
+                    setCellValue(date)
+                    cellStyle = styleNormal
+                }
+                if (carbo[j].second == date) {
+                    val carboDay = mutableListOf<Double>()
+                    val protDay = mutableListOf<Double>()
+                    val fatDay = mutableListOf<Double>()
+                    val ecDay = mutableListOf<Double>()
+                    val giDay = mutableListOf<Double>()
+                    val waterDay = mutableListOf<Double>()
+                    val nzhkDay = mutableListOf<Double>()
+                    val holDay = mutableListOf<Double>()
+                    val pvDay = mutableListOf<Double>()
+                    val zolaDay = mutableListOf<Double>()
+                    val naDay = mutableListOf<Double>()
+                    val kDay = mutableListOf<Double>()
+                    val caDay = mutableListOf<Double>()
+                    val mgDay = mutableListOf<Double>()
+                    val pDay = mutableListOf<Double>()
+                    val feDay = mutableListOf<Double>()
+                    val aDay = mutableListOf<Double>()
+                    val b1Day = mutableListOf<Double>()
+                    val b2Day = mutableListOf<Double>()
+                    val rrDay = mutableListOf<Double>()
+                    val cDay = mutableListOf<Double>()
+                    val reDay = mutableListOf<Double>()
+
+
+                    try {
+                        while (carbo[j].second == date) {
+                            carboDay.add(carbo[j].first)
+                            protDay.add(prot[j].first)
+                            fatDay.add(fat[j].first)
+                            ecDay.add(ec[j].first)
+                            giDay.add(gi[j].first)
+                            waterDay.add(water[j].first)
+                            nzhkDay.add(nzhk[j].first)
+                            holDay.add(hol[j].first)
+                            pvDay.add(pv[j].first)
+                            zolaDay.add(zola[j].first)
+                            naDay.add(na[j].first)
+                            kDay.add(k[j].first)
+                            caDay.add(ca[j].first)
+                            mgDay.add(mg[j].first)
+                            pDay.add(p[j].first)
+                            feDay.add(fe[j].first)
+                            aDay.add(a[j].first)
+                            b1Day.add(b1[j].first)
+                            b2Day.add(b2[j].first)
+                            rrDay.add(rr[j].first)
+                            cDay.add(c[j].first)
+                            reDay.add(re[j].first)
+                            j += 1
+                        }
+                    }  catch (e: java.lang.IndexOutOfBoundsException) {
+
+                    }
+
+                    val avgs = listOf(
+                        setTwoDigits(carboDay.sum()),
+                        setTwoDigits(protDay.sum()),
+                        setTwoDigits(fatDay.sum()),
+                        setTwoDigits(ecDay.sum()),
+                        setTwoDigits(giDay.sum()),
+                        null,
+                        null,
+                        setTwoDigits(waterDay.sum()),
+                        setTwoDigits(nzhkDay.sum()),
+                        setTwoDigits(holDay.sum()),
+                        setTwoDigits(pvDay.sum()),
+                        setTwoDigits(zolaDay.sum()),
+                        setTwoDigits(naDay.sum()),
+                        setTwoDigits(kDay.sum()),
+                        setTwoDigits(caDay.sum()),
+                        setTwoDigits(mgDay.sum()),
+                        setTwoDigits(pDay.sum()),
+                        setTwoDigits(feDay.sum()),
+                        setTwoDigits(aDay.sum()),
+                        setTwoDigits(b1Day.sum()),
+                        setTwoDigits(b2Day.sum()),
+                        setTwoDigits(rrDay.sum()),
+                        setTwoDigits(cDay.sum()),
+                        setTwoDigits(reDay.sum()))
+                    var k = 6
+                    for (avg in avgs) {
+                        if (avg != null) {
+                            createCell(k).apply {
+                                setCellValue(avg.toString())
+                                cellStyle = styleNormal
+                            }
+                        }
+                        k += 1
+                    }
+                }
+            }
+            i += 1
+        }
         setBordersToMergedCells(sheet)
 
         return true

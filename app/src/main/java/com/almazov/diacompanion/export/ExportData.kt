@@ -1,4 +1,4 @@
-package com.almazov.diacompanion
+package com.almazov.diacompanion.export
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
+import com.almazov.diacompanion.R
 import com.almazov.diacompanion.base.setTwoDigits
 import com.almazov.diacompanion.data.AppDatabaseViewModel
 import kotlinx.android.synthetic.main.fragment_export_data.*
@@ -36,6 +37,7 @@ import java.util.*
 class ExportData : Fragment() {
 
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var appType: String
     private lateinit var appDatabaseViewModel: AppDatabaseViewModel
 
     private lateinit var globalInfoString: String
@@ -43,6 +45,7 @@ class ExportData : Fragment() {
     private lateinit var styleRed: XSSFCellStyle
     private lateinit var styleYellow: XSSFCellStyle
     private lateinit var styleBlue: XSSFCellStyle
+    private lateinit var styleSeaGreen: XSSFCellStyle
     private lateinit var styleNormal: XSSFCellStyle
 
 
@@ -58,6 +61,9 @@ class ExportData : Fragment() {
 
         appDatabaseViewModel = ViewModelProvider(this)[AppDatabaseViewModel::class.java]
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+
+        appType = sharedPreferences.getString("APP_TYPE","GDM RCT")!!
+
         btn_export_to_slxs.setOnClickListener{
             lf_export.displayedChild = 1
             createXmlFile()
@@ -98,12 +104,16 @@ class ExportData : Fragment() {
             fillForegroundColor = IndexedColors.BLUE.getIndex()
         }
 
+        styleSeaGreen = styleNormal.copy()
+        styleSeaGreen.apply {
+            fillForegroundColor = IndexedColors.SEA_GREEN.getIndex()
+        }
+
         val name = sharedPreferences.getString("NAME","Имя")
         val secondName = sharedPreferences.getString("SECOND_NAME","Фамилия")
         val patronymic = sharedPreferences.getString("PATRONYMIC","Отчество")
         val attendingDoctor = sharedPreferences.getString("ATTENDING_DOCTOR","Лечащий врач")
         val birthDate = sharedPreferences.getString("BIRTH_DATE","0")
-        val appType = sharedPreferences.getString("APP_TYPE","GDM RCT")
         globalInfoString = "Пациент: $secondName $name $patronymic;   " +
                 "Дата рождения: $birthDate;   Лечащий врач: $attendingDoctor;   " +
                 "Программа: DiaCompanion Android $appType"
@@ -201,6 +211,14 @@ class ExportData : Fragment() {
             "Время добавления записи"
         )
         sheet.createRow(2).apply {
+
+            if ((appType == "GDMRCT") or (appType == "GDM")) {
+                createCell(0).apply {
+                    setCellValue("Неделя беременности")
+                    cellStyle = styleYellow
+                }
+            }
+
             var i = 1
             for (columnName in columnNames) {
                 createCell(i).apply {
@@ -265,12 +283,12 @@ class ExportData : Fragment() {
         val reMeal = mutableListOf<Double>()
 
         for (date in dates) {
-            if (mealList[j].recordEntity.date == date) {
+            if (mealList[j].recordEntity.date == date.date) {
                 try {
-                    while  (mealList[j].recordEntity.date == date) {
+                    while  (mealList[j].recordEntity.date == date.date) {
                         sheet.createRow(i).apply {
                             createCell(1).apply {
-                                setCellValue(date)
+                                setCellValue(date.date)
                                 cellStyle = styleNormal
                             }
                             createCell(2).apply {
@@ -516,28 +534,28 @@ class ExportData : Fragment() {
 
                 } finally {
                     i -= 1
-                    carbo.add(Pair(carboMeal.sum(),date))
-                    prot.add(Pair(protMeal.sum(),date))
-                    fat.add(Pair(fatMeal.sum(),date))
-                    ec.add(Pair(ecMeal.sum(),date))
-                    gi.add(Pair(giMeal.sum(),date))
-                    water.add(Pair(waterMeal.sum(),date))
-                    nzhk.add(Pair(nzhkMeal.sum(),date))
-                    hol.add(Pair(holMeal.sum(),date))
-                    pv.add(Pair(pvMeal.sum(),date))
-                    zola.add(Pair(zolaMeal.sum(),date))
-                    na.add(Pair(naMeal.sum(),date))
-                    k.add(Pair(kMeal.sum(),date))
-                    ca.add(Pair(caMeal.sum(),date))
-                    mg.add(Pair(mgMeal.sum(),date))
-                    p.add(Pair(pMeal.sum(),date))
-                    fe.add(Pair(feMeal.sum(),date))
-                    a.add(Pair(aMeal.sum(),date))
-                    b1.add(Pair(b1Meal.sum(),date))
-                    b2.add(Pair(b2Meal.sum(),date))
-                    rr.add(Pair(rrMeal.sum(),date))
-                    c.add(Pair(cMeal.sum(),date))
-                    re.add(Pair(reMeal.sum(),date))
+                    carbo.add(Pair(carboMeal.sum(),date.date))
+                    prot.add(Pair(protMeal.sum(),date.date))
+                    fat.add(Pair(fatMeal.sum(),date.date))
+                    ec.add(Pair(ecMeal.sum(),date.date))
+                    gi.add(Pair(giMeal.sum(),date.date))
+                    water.add(Pair(waterMeal.sum(),date.date))
+                    nzhk.add(Pair(nzhkMeal.sum(),date.date))
+                    hol.add(Pair(holMeal.sum(),date.date))
+                    pv.add(Pair(pvMeal.sum(),date.date))
+                    zola.add(Pair(zolaMeal.sum(),date.date))
+                    na.add(Pair(naMeal.sum(),date.date))
+                    k.add(Pair(kMeal.sum(),date.date))
+                    ca.add(Pair(caMeal.sum(),date.date))
+                    mg.add(Pair(mgMeal.sum(),date.date))
+                    p.add(Pair(pMeal.sum(),date.date))
+                    fe.add(Pair(feMeal.sum(),date.date))
+                    a.add(Pair(aMeal.sum(),date.date))
+                    b1.add(Pair(b1Meal.sum(),date.date))
+                    b2.add(Pair(b2Meal.sum(),date.date))
+                    rr.add(Pair(rrMeal.sum(),date.date))
+                    c.add(Pair(cMeal.sum(),date.date))
+                    re.add(Pair(reMeal.sum(),date.date))
 
                     carboMeal.clear()
                     protMeal.clear()
@@ -564,7 +582,7 @@ class ExportData : Fragment() {
                 }
             } else {
                 sheet.createRow(i).createCell(1).apply {
-                    setCellValue(date)
+                    setCellValue(date.date)
                     cellStyle = styleNormal
                 }
             }
@@ -594,10 +612,10 @@ class ExportData : Fragment() {
         for (date in dates) {
             sheet.createRow(i).apply {
                 createCell(1).apply {
-                    setCellValue(date)
+                    setCellValue(date.date)
                     cellStyle = styleNormal
                 }
-                if (carbo[j].second == date) {
+                if (carbo[j].second == date.date) {
                     val carboDay = mutableListOf<Double>()
                     val protDay = mutableListOf<Double>()
                     val fatDay = mutableListOf<Double>()
@@ -623,7 +641,7 @@ class ExportData : Fragment() {
 
 
                     try {
-                        while (carbo[j].second == date) {
+                        while (carbo[j].second == date.date) {
                             carboDay.add(carbo[j].first)
                             protDay.add(prot[j].first)
                             fatDay.add(fat[j].first)
@@ -749,6 +767,12 @@ class ExportData : Fragment() {
             cellStyle = styleYellow
         }
         sheet.createRow(2).apply {
+            if ((appType == "GDMRCT") or (appType == "GDM")) {
+                createCell(0).apply {
+                    setCellValue("Неделя беременности")
+                    cellStyle = styleYellow
+                }
+            }
             createCell(1).apply {
                 setCellValue("Дата")
                 cellStyle = styleYellow
@@ -772,11 +796,11 @@ class ExportData : Fragment() {
         for (date in dates) {
             sheet.createRow(i).apply {
                 createCell(1).apply {
-                    setCellValue(date)
+                    setCellValue(date.date)
                     cellStyle = styleNormal
                 }
                 try {
-                    while (ketoneList[j].recordEntity.date == date) {
+                    while (ketoneList[j].recordEntity.date == date.date) {
                         var cellTime: String
                         var cellLevel: String
                         if (getCell(2) != null) {
@@ -821,6 +845,12 @@ class ExportData : Fragment() {
             cellStyle = styleYellow
         }
         sheet.createRow(2).apply {
+            if ((appType == "GDMRCT") or (appType == "GDM")) {
+                createCell(0).apply {
+                    setCellValue("Неделя беременности")
+                    cellStyle = styleYellow
+                }
+            }
             createCell(1).apply {
                 setCellValue("Дата")
                 cellStyle = styleYellow
@@ -844,11 +874,11 @@ class ExportData : Fragment() {
         for (date in dates) {
             sheet.createRow(i).apply {
                 createCell(1).apply {
-                    setCellValue(date)
+                    setCellValue(date.date)
                     cellStyle = styleNormal
                 }
                 try {
-                    while (weightList[j].recordEntity.date == date) {
+                    while (weightList[j].recordEntity.date == date.date) {
                         var cellTime: String
                         var cellWeight: String
                         if (getCell(2) != null) {
@@ -904,6 +934,12 @@ class ExportData : Fragment() {
             }
         }
         sheet.createRow(2).apply {
+            if ((appType == "GDMRCT") or (appType == "GDM")) {
+                createCell(0).apply {
+                    setCellValue("Неделя беременности")
+                    cellStyle = styleYellow
+                }
+            }
             createCell(1).apply {
                 setCellValue("Дата")
                 cellStyle = styleYellow
@@ -958,11 +994,11 @@ class ExportData : Fragment() {
         for (date in dates) {
             sheet.createRow(i).apply {
                 createCell(1).apply {
-                    setCellValue(date)
+                    setCellValue(date.date)
                     cellStyle = styleNormal
                 }
                 try {
-                    while (workoutList[j].recordEntity.date == date) {
+                    while (workoutList[j].recordEntity.date == date.date) {
                         var cellTime: String
                         var cellDuration: String
                         var cellType: String
@@ -991,7 +1027,7 @@ class ExportData : Fragment() {
                     }
                 } catch (e: java.lang.IndexOutOfBoundsException) { }
                 try {
-                    while (sleepList[k].recordEntity.date == date) {
+                    while (sleepList[k].recordEntity.date == date.date) {
                         var cellTime: String
                         var cellDuration: String
                         if (getCell(2) != null){
@@ -1056,6 +1092,14 @@ class ExportData : Fragment() {
             "Дополнительно", "При родах"
         )
         sheet.createRow(2).apply {
+
+            if ((appType == "GDMRCT") or (appType == "GDM")) {
+                createCell(0).apply {
+                    setCellValue("Неделя беременности")
+                    cellStyle = styleYellow
+                }
+            }
+
             createCell(1).apply {
                 setCellValue("Дата")
                 cellStyle = styleYellow
@@ -1129,12 +1173,20 @@ class ExportData : Fragment() {
         val sl5 = mutableListOf<Double>()
         for (date in dates) {
             sheet.createRow(i).apply {
+
+                if ((appType == "GDMRCT") or (appType == "GDM")) {
+                    createCell(0).apply {
+                        setCellValue(date.week)
+                        cellStyle = if (date.bool) styleBlue else styleSeaGreen
+                    }
+                }
+
                 createCell(1).apply {
-                    setCellValue(date)
+                    setCellValue(date.date)
                     cellStyle = styleNormal
                 }
                 try {
-                    while (sugarLevelList[j].recordEntity.date == date) {
+                    while (sugarLevelList[j].recordEntity.date == date.date) {
                         val columnIndex = sugarLevelColumnIndex[sugarLevelList[j].sugarLevelEntity.preferences]
                         val sugarLevel = sugarLevelList[j].sugarLevelEntity.sugarLevel!!
                         when (columnIndex) {
@@ -1168,7 +1220,7 @@ class ExportData : Fragment() {
                     }
                 } catch (e: java.lang.IndexOutOfBoundsException) { }
                 try {
-                    while (insulinList[k].recordEntity.date == date) {
+                    while (insulinList[k].recordEntity.date == date.date) {
                         val columnIndex = insulinColumnIndex[insulinList[k].insulinEntity.preferences]
                         val insulin = insulinList[k].insulinEntity.insulin
                         var cellValue: String
@@ -1248,8 +1300,8 @@ class ExportData : Fragment() {
         return true
     }
 
-    private fun getDates(firstDate: String, lastDate: String): MutableList<String> {
-        val dates = mutableListOf<String>()
+    private fun getDates(firstDate: String, lastDate: String): MutableList<ExportDate> {
+        val dates = mutableListOf<ExportDate>()
         val formatter = SimpleDateFormat("dd.MM.yyyy")
         val date1 = formatter.parse(firstDate)
         val date2 = formatter.parse(lastDate)
@@ -1260,9 +1312,32 @@ class ExportData : Fragment() {
         val cal2 = Calendar.getInstance()
         cal2.time = date2!!
 
+        var dayOfTheWeek = 0
+        var pregnancyWeek = 0
+        var bool = false
+
+        if ((appType == "GDMRCT") or (appType == "GDM")) {
+            val datePregnancyStart = sharedPreferences.getString("PREGNANCY_DATE","01.01.2000")!!
+
+            val dateP = formatter.parse(datePregnancyStart)
+            val calP = Calendar.getInstance()
+            calP.time = dateP!!
+            val daysBetween = ((cal1.timeInMillis - calP.timeInMillis) / (1000 * 60 * 60 * 24)).toInt()
+            pregnancyWeek = (daysBetween / 7) + 1
+            dayOfTheWeek = daysBetween % 7
+            if (dayOfTheWeek == 0) dayOfTheWeek = -1
+        }
+
         while(!cal1.after(cal2))
         {
-            dates.add(formatter.format(cal1.time))
+            val date = formatter.format(cal1.time)
+            if (dayOfTheWeek == 6) {
+                dayOfTheWeek = -1
+                pregnancyWeek += 1
+                bool = !bool
+            }
+            dayOfTheWeek += 1
+            dates.add(ExportDate(date,pregnancyWeek.toString(),bool))
             cal1.add(Calendar.DATE, 1)
         }
         return dates

@@ -131,6 +131,7 @@
     <string name="LastRecords">Last Records</string>
     <string name="RecordsHistory">Records History</string>
     <string name="NoRecords">No Records</string>
+    <string name="PresentDay">Present Day</string>
 
     //RecordHistory
     <string name="AllRecords">All Records</string>

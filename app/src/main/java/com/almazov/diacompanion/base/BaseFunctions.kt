@@ -72,12 +72,13 @@ fun editTextSeekBarSetup(min: Int, max: Int, editText: EditText, seekBar: SeekBa
 @RequiresApi(Build.VERSION_CODES.O)
 fun timeDateSelectSetup(fragmentManager: FragmentManager, tvTime: TextView, tvDate: TextView): Long {
     val now = LocalDateTime.now()
-    val dateSubmit = now.toEpochSecond(ZoneOffset.UTC)
-    val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
+    val timeFormatter = DateTimeFormatter.ofPattern("HH:mm", Locale.ROOT)
     val dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy", Locale.ROOT)
+    val timeDateFormatter = DateTimeFormatter.ofPattern("HH:mm dd.MM.yyyy", Locale.ROOT)
 
     tvTime.text = now.format(timeFormatter)
     tvDate.text = now.format(dateFormatter)
+    val dateSubmit = convertDateToMils(now.format(timeDateFormatter))
 
     tvTime.setOnClickListener{
         openTimePicker(fragmentManager, tvTime)

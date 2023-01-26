@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="7dp"
+    android:layout_margin="10dp"
+    android:clickable="true"
+    android:outlineSpotShadowColor="?attr/shadow_color"
+    tools:targetApi="p">
+
+    <LinearLayout
+        style="@style/ControlPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_present_date"
+            style="@style/Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"/>
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:dividerThickness="2dp"
+            app:dividerColor="?attr/category_color"/>
+
+        <GridLayout
+            android:paddingTop="10dp"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:rowCount="3"
+            android:columnCount="4"
+            android:orientation="horizontal"
+            android:alignmentMode="alignBounds">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_columnWeight="1"
+                style="@style/ImageButton"
+                android:layout_height="40dp"
+                android:src="@drawable/protein"
+                />
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_columnWeight="1"
+                style="@style/ImageButton"
+                android:layout_height="40dp"
+                android:src="@drawable/fat"
+                />
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_columnWeight="1"
+                style="@style/ImageButton"
+                android:layout_height="40dp"
+                android:src="@drawable/carb"
+                />
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_columnWeight="1"
+                style="@style/ImageButton"
+                android:layout_height="40dp"
+                android:src="@drawable/kkal"
+                />
+
+            <TextView
+                android:text="0"
+                android:layout_columnWeight="1"
+                android:layout_width="0dp"
+                android:id="@+id/tv_protein"
+                style="@style/MainText"
+                android:textAlignment="center"/>
+            <TextView
+                android:text="0"
+                android:layout_columnWeight="1"
+                android:layout_width="0dp"
+                android:id="@+id/tv_fat"
+                style="@style/MainText"
+                android:textAlignment="center"/>
+            <TextView
+                android:text="0"
+                android:layout_columnWeight="1"
+                android:layout_width="0dp"
+                android:id="@+id/tv_carbs"
+                style="@style/MainText"
+                android:textAlignment="center"/>
+            <TextView
+                android:text="0"
+                android:layout_columnWeight="1"
+                android:layout_width="0dp"
+                android:id="@+id/tv_kkal"
+                style="@style/MainText"
+                android:textAlignment="center"/>
+
+            <TextView
+                android:text="@string/g"
+                android:layout_columnWeight="1"
+                android:layout_width="0dp"
+                style="@style/MainText"
+                android:textAlignment="center"/>
+            <TextView
+                android:text="@string/g"
+                android:layout_columnWeight="1"
+                android:layout_width="0dp"
+                style="@style/MainText"
+                android:textAlignment="center"/>
+            <TextView
+                android:text="@string/g"
+                android:layout_columnWeight="1"
+                android:layout_width="0dp"
+                style="@style/MainText"
+                android:textAlignment="center"/>
+            <TextView
+                android:text="@string/kkal"
+                android:layout_columnWeight="1"
+                android:layout_width="0dp"
+                style="@style/MainText"
+                android:textAlignment="center"/>
+
+        </GridLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

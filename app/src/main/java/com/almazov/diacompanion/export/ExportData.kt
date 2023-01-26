@@ -118,16 +118,23 @@ class ExportData : Fragment() {
                 "Дата рождения: $birthDate;   Лечащий врач: $attendingDoctor;   " +
                 "Программа: DiaCompanion Android $appType"
 
-        val xlWsSugarLevelInsulin = xlWb.createSheet("Уровень сахара и инсулин")
+        val xlWsSugarLevelInsulin = if (appType != "PCOS") {
+            xlWb.createSheet("Уровень сахара и инсулин")
+        } else null
         val xlWsMeal = xlWb.createSheet("Приемы пищи")
         val xlWsWorkoutSleep = xlWb.createSheet("Физическая нагрузка и сон")
         val xlWsWeight = xlWb.createSheet("Масса тела")
         val xlWsKetone = xlWb.createSheet("Кетоны в моче")
         val xlWsFullDay = xlWb.createSheet("Полные дни")
+
         GlobalScope.launch(Dispatchers.Main) {
+
             val sugarLevelInsulinSheetCompleted = GlobalScope.async(Dispatchers.Default) {
-                getSugarLevelAndInsulinTable(xlWsSugarLevelInsulin)
+                if (xlWsSugarLevelInsulin != null) {
+                    getSugarLevelAndInsulinTable(xlWsSugarLevelInsulin)
+                } else true
             }
+
             val mealSheetCompleted = GlobalScope.async(Dispatchers.Default) {
                 getMealTable(xlWsMeal)
             }
@@ -179,6 +186,7 @@ class ExportData : Fragment() {
 
     private suspend fun getMealTable(sheet: XSSFSheet): Boolean {
         sheet.defaultColumnWidth = 16
+        sheet.setColumnWidth(4, 10000)
 
         val mealRecords = GlobalScope.async(Dispatchers.Default) {
             appDatabaseViewModel.readAllMealRecords()
@@ -287,6 +295,14 @@ class ExportData : Fragment() {
                 try {
                     while  (mealList[j].recordEntity.date == date.date) {
                         sheet.createRow(i).apply {
+
+                            if ((appType == "GDMRCT") or (appType == "GDM")) {
+                                createCell(0).apply {
+                                    setCellValue(date.week)
+                                    cellStyle = if (date.bool) styleBlue else styleSeaGreen
+                                }
+                            }
+
                             createCell(1).apply {
                                 setCellValue(date.date)
                                 cellStyle = styleNormal
@@ -581,9 +597,18 @@ class ExportData : Fragment() {
                     reMeal.clear()
                 }
             } else {
-                sheet.createRow(i).createCell(1).apply {
-                    setCellValue(date.date)
-                    cellStyle = styleNormal
+
+                sheet.createRow(i).apply {
+                    if ((appType == "GDMRCT") or (appType == "GDM")) {
+                        createCell(0).apply {
+                            setCellValue(date.week)
+                            cellStyle = if (date.bool) styleBlue else styleSeaGreen
+                        }
+                    }
+                    createCell(1).apply {
+                        setCellValue(date.date)
+                        cellStyle = styleNormal
+                    }
                 }
             }
             i += 1
@@ -592,11 +617,17 @@ class ExportData : Fragment() {
         i += 1
         sheet.addMergedRegion(CellRangeAddress(i, i, 0, 67))
         sheet.createRow(i).createCell(0).apply {
-            setCellValue("Приемы пищи")
+            setCellValue("Среднее за день")
             cellStyle = styleYellow
         }
         i += 1
         sheet.createRow(i).apply {
+            if ((appType == "GDMRCT") or (appType == "GDM")) {
+                createCell(0).apply {
+                    setCellValue("Неделя беременности")
+                    cellStyle = styleYellow
+                }
+            }
             var k = 1
             for (columnName in columnNames) {
                 createCell(k).apply {
@@ -611,6 +642,14 @@ class ExportData : Fragment() {
         j = 0
         for (date in dates) {
             sheet.createRow(i).apply {
+
+                if ((appType == "GDMRCT") or (appType == "GDM")) {
+                    createCell(0).apply {
+                        setCellValue(date.week)
+                        cellStyle = if (date.bool) styleBlue else styleSeaGreen
+                    }
+                }
+
                 createCell(1).apply {
                     setCellValue(date.date)
                     cellStyle = styleNormal
@@ -795,6 +834,14 @@ class ExportData : Fragment() {
         var j = 0
         for (date in dates) {
             sheet.createRow(i).apply {
+
+                if ((appType == "GDMRCT") or (appType == "GDM")) {
+                    createCell(0).apply {
+                        setCellValue(date.week)
+                        cellStyle = if (date.bool) styleBlue else styleSeaGreen
+                    }
+                }
+
                 createCell(1).apply {
                     setCellValue(date.date)
                     cellStyle = styleNormal
@@ -832,6 +879,7 @@ class ExportData : Fragment() {
 
     private suspend fun getWeightTable(sheet: XSSFSheet): Boolean {
         sheet.defaultColumnWidth = 10
+        sheet.setColumnWidth(0, 5000)
 
         val weightRecords = GlobalScope.async(Dispatchers.Default) {
             appDatabaseViewModel.readAllWeightRecords()
@@ -873,6 +921,14 @@ class ExportData : Fragment() {
         var j = 0
         for (date in dates) {
             sheet.createRow(i).apply {
+
+                if ((appType == "GDMRCT") or (appType == "GDM")) {
+                    createCell(0).apply {
+                        setCellValue(date.week)
+                        cellStyle = if (date.bool) styleBlue else styleSeaGreen
+                    }
+                }
+
                 createCell(1).apply {
                     setCellValue(date.date)
                     cellStyle = styleNormal
@@ -993,6 +1049,14 @@ class ExportData : Fragment() {
         var k = 0
         for (date in dates) {
             sheet.createRow(i).apply {
+
+                if ((appType == "GDMRCT") or (appType == "GDM")) {
+                    createCell(0).apply {
+                        setCellValue(date.week)
+                        cellStyle = if (date.bool) styleBlue else styleSeaGreen
+                    }
+                }
+
                 createCell(1).apply {
                     setCellValue(date.date)
                     cellStyle = styleNormal
@@ -1059,6 +1123,7 @@ class ExportData : Fragment() {
     private suspend fun getSugarLevelAndInsulinTable(sheet: XSSFSheet): Boolean{
 
         sheet.defaultColumnWidth = 9
+        sheet.setColumnWidth(0, 5000)
         sheet.setColumnWidth(16, 5000)
         sheet.setColumnWidth(19, 5000)
         sheet.setColumnWidth(22, 5000)
@@ -1143,7 +1208,10 @@ class ExportData : Fragment() {
         )
         val sugarLevelList = sugarLevelRecords.await().toList()
         val insulinList = insulinRecords.await().toList()
-        if (sugarLevelList.isNullOrEmpty() and insulinList.isNullOrEmpty()) return true
+        if (sugarLevelList.isNullOrEmpty() and insulinList.isNullOrEmpty()) {
+            setBordersToMergedCells(sheet)
+            return true
+        }
 
         var minDate: String
         var maxDate: String
@@ -1262,35 +1330,35 @@ class ExportData : Fragment() {
             }
             if (sl1.isNotEmpty()) {
                 createCell(2).apply {
-                    setCellValue(sl1.average().toString())
+                    setCellValue(setTwoDigits(sl1.average()).toString())
                     cellStyle = styleNormal
                 }
             }
 
             if (sl2.isNotEmpty()) {
                 createCell(4).apply {
-                    setCellValue(sl2.average().toString())
+                    setCellValue(setTwoDigits(sl2.average()).toString())
                     cellStyle = styleNormal
                 }
             }
 
             if (sl3.isNotEmpty()) {
                 createCell(6).apply {
-                    setCellValue(sl3.average().toString())
+                    setCellValue(setTwoDigits(sl3.average()).toString())
                     cellStyle = styleNormal
                 }
             }
 
             if (sl4.isNotEmpty()) {
                 createCell(8).apply {
-                    setCellValue(sl4.average().toString())
+                    setCellValue(setTwoDigits(sl4.average()).toString())
                     cellStyle = styleNormal
                 }
             }
 
             if (sl5.isNotEmpty()) {
                 createCell(10).apply {
-                    setCellValue(sl5.average().toString())
+                    setCellValue(setTwoDigits(sl5.average()).toString())
                     cellStyle = styleNormal
                 }
             }
@@ -1331,14 +1399,15 @@ class ExportData : Fragment() {
         while(!cal1.after(cal2))
         {
             val date = formatter.format(cal1.time)
+            val pregnancyWeekString = if (pregnancyWeek > 0) pregnancyWeek.toString() else ""
+            dates.add(ExportDate(date,pregnancyWeekString,bool))
+            cal1.add(Calendar.DATE, 1)
             if (dayOfTheWeek == 6) {
                 dayOfTheWeek = -1
                 pregnancyWeek += 1
                 bool = !bool
             }
             dayOfTheWeek += 1
-            dates.add(ExportDate(date,pregnancyWeek.toString(),bool))
-            cal1.add(Calendar.DATE, 1)
         }
         return dates
     }

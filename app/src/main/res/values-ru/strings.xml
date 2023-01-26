@@ -226,4 +226,5 @@
     <string name="MealName">Название</string>
     <string name="WeightG">Вес, гр.</string>
     <string name="GL">ГН, %</string>
+    <string name="PresentDay">Текущий день</string>
 </resources>

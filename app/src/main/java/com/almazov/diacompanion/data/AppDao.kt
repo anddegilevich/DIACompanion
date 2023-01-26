@@ -71,7 +71,7 @@ interface AppDao {
             "AND (id != :id))")
     fun checkSugarLevelPrefs(date: String, id: Int?): LiveData<List<String>>
 
-    @Query("SELECT * FROM record_table WHERE category = 'sugar_level_table'")
+    @Query("SELECT * FROM record_table WHERE category = 'sugar_level_table' ORDER BY dateInMilli ASC")
     suspend fun readAllSugarLevelRecords(): List<RecordSugarLevel>
 
     // Insulin
@@ -93,7 +93,7 @@ interface AppDao {
             "AND (id != :id))")
     fun checkInsulinPrefs(date: String, id: Int?): LiveData<List<String>>
 
-    @Query("SELECT * FROM record_table WHERE category = 'insulin_table'")
+    @Query("SELECT * FROM record_table WHERE category = 'insulin_table' ORDER BY dateInMilli ASC")
     suspend fun readAllInsulinRecords(): List<RecordInsulin>
 
     // Meal
@@ -116,8 +116,12 @@ interface AppDao {
     fun checkMealType(date: String, id: Int?): LiveData<List<String>>
 
     @Transaction
-    @Query("SELECT * FROM record_table WHERE category = 'meal_table'")
+    @Query("SELECT * FROM record_table WHERE category = 'meal_table' ORDER BY dateInMilli ASC")
     fun readAllMealRecords(): List<RecordWithMealWithFoods>
+
+    @Transaction
+    @Query("SELECT * FROM record_table WHERE category = 'meal_table' AND date = :presentDate ORDER BY dateInMilli ASC")
+    fun readPresentDayMealRecords(presentDate: String): List<RecordWithMealWithFoods>
 
     // Workout
 
@@ -133,7 +137,7 @@ interface AppDao {
     @Query("SELECT * FROM workout_table WHERE id = :id LIMIT 1")
     fun readWorkoutRecord(id: Int?): LiveData<WorkoutEntity>
 
-    @Query("SELECT * FROM record_table WHERE category = 'workout_table'")
+    @Query("SELECT * FROM record_table WHERE category = 'workout_table' ORDER BY dateInMilli ASC")
     suspend fun readAllWorkoutRecords(): List<RecordWorkout>
 
     // Sleep
@@ -150,7 +154,7 @@ interface AppDao {
     @Query("SELECT * FROM sleep_table WHERE id = :id LIMIT 1")
     fun readSleepRecord(id: Int?): LiveData<SleepEntity>
 
-    @Query("SELECT * FROM record_table WHERE category = 'sleep_table'")
+    @Query("SELECT * FROM record_table WHERE category = 'sleep_table' ORDER BY dateInMilli ASC")
     suspend fun readAllSleepRecords(): List<RecordSleep>
 
     // Weight
@@ -170,7 +174,7 @@ interface AppDao {
     @Query("SELECT dateInMilli FROM record_table WHERE category = 'weight_table' ORDER BY dateInMilli DESC LIMIT 1")
     fun readLastWeightRecordDate(): LiveData<Long?>
 
-    @Query("SELECT * FROM record_table WHERE category = 'weight_table'")
+    @Query("SELECT * FROM record_table WHERE category = 'weight_table' ORDER BY dateInMilli ASC")
     suspend fun readAllWeightRecords(): List<RecordWeight>
 
     // Ketone
@@ -187,7 +191,7 @@ interface AppDao {
     @Query("SELECT * FROM ketone_table WHERE id = :id LIMIT 1")
     fun readKetoneRecord(id: Int?): LiveData<KetoneEntity>
 
-    @Query("SELECT * FROM record_table WHERE category = 'ketone_table'")
+    @Query("SELECT * FROM record_table WHERE category = 'ketone_table' ORDER BY dateInMilli ASC")
     suspend fun readAllKetoneRecords(): List<RecordKetone>
 
     // Food

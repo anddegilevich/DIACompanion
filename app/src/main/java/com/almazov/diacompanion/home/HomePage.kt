@@ -26,7 +26,15 @@ import com.almazov.diacompanion.data.AppDatabaseViewModel
 import com.almazov.diacompanion.data.RecordEntity
 import kotlinx.android.synthetic.main.fragment_home_page.*
 import kotlinx.android.synthetic.main.fragment_home_page.view.*
+import kotlinx.android.synthetic.main.present_day_info_card.*
 import kotlinx.android.synthetic.main.record_card.view.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 
 class HomePage : Fragment(), InterfaceRecordsInfo {
@@ -124,6 +132,36 @@ class HomePage : Fragment(), InterfaceRecordsInfo {
             Navigation.findNavController(view).navigate(R.id.action_homePage_to_recordHistory)
         }
 
+        val now = LocalDateTime.now()
+        val dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy", Locale.ROOT)
+        val presentDate = now.format(dateFormatter)
+        tv_present_date.text = presentDate
+
+
+        GlobalScope.launch(Dispatchers.Main) {
+            val presentDayMealRecords = GlobalScope.async(Dispatchers.Default) {
+                appDatabaseViewModel.readPresentDayMealRecords(presentDate)
+            }
+
+            val mealList = presentDayMealRecords.await()
+            var proteins = 0.0
+            var fats = 0.0
+            var carbs = 0.0
+            var kkals = 0.0
+            for (meal in mealList) {
+                for (food in meal.mealWithFoods.foods) {
+                    val weight = food.foodInMealEntity.weight!! / 100
+                    proteins += weight * food.food.prot!!
+                    fats += weight * food.food.fat!!
+                    carbs += weight * food.food.carbo!!
+                    kkals += weight * food.food.ec!!
+                }
+            }
+            tv_protein.text = proteins.toInt().toString()
+            tv_fat.text = fats.toInt().toString()
+            tv_carbs.text = carbs.toInt().toString()
+            tv_kkal.text = kkals.toInt().toString()
+        }
         ifOnBoardingFinished(view)
     }
 

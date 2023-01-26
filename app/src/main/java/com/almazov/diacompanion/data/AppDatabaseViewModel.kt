@@ -183,6 +183,12 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
         return repository.readAllMealRecords()
     }
 
+    suspend fun readPresentDayMealRecords(presentDay: String): List<RecordWithMealWithFoods> {
+        return repository.readPresentDayMealRecords(presentDay)
+    }
+
+
+
     // Workout
 
     fun addRecord(recordEntity: RecordEntity, workoutEntity: WorkoutEntity) {

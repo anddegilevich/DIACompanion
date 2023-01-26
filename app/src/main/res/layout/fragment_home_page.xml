@@ -89,7 +89,24 @@
 
                         <TextView
                             style="@style/Title"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/PresentDay" />
+
+                    </LinearLayout>
+
+                    <include layout="@layout/present_day_info_card"/>
+
+                    <LinearLayout
+                        style="@style/Content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/Title"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="@string/LastRecords" />
@@ -99,7 +116,6 @@
                             style="@style/LinkText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0"
                             android:text="@string/RecordsHistory"
                             android:drawablePadding="2dp"
                             app:drawableEndCompat="@drawable/arrow" />

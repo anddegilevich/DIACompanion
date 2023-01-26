@@ -80,10 +80,12 @@ class HomePage : Fragment(), InterfaceRecordsInfo {
 
         val appType = sharedPreferences.getString("APP_TYPE","")!!
         val name = sharedPreferences.getString("NAME","")!!
+        val secondName = sharedPreferences.getString("SECOND_NAME","")!!
+        val patronymic = sharedPreferences.getString("PATRONYMIC","")!!
 
-        tv_name.text = name
+        tv_name.text = secondName + " " + name[0] + ". " + patronymic[0] + "."
 
-        appDatabaseViewModel.readLastRecords(appType).observe(viewLifecycleOwner, Observer { records ->
+                appDatabaseViewModel.readLastRecords(appType).observe(viewLifecycleOwner, Observer { records ->
             if (records.isNullOrEmpty()) {
                 tv_no_records.isVisible = true
             } else adapterRecords.setData(records)

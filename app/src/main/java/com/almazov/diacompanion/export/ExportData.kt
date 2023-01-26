@@ -45,9 +45,7 @@ class ExportData : Fragment() {
     private lateinit var styleRed: XSSFCellStyle
     private lateinit var styleYellow: XSSFCellStyle
     private lateinit var styleBlue: XSSFCellStyle
-    private lateinit var styleSeaGreen: XSSFCellStyle
     private lateinit var styleNormal: XSSFCellStyle
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -102,11 +100,6 @@ class ExportData : Fragment() {
         styleBlue = styleNormal.copy()
         styleBlue.apply {
             fillForegroundColor = IndexedColors.BLUE.getIndex()
-        }
-
-        styleSeaGreen = styleNormal.copy()
-        styleSeaGreen.apply {
-            fillForegroundColor = IndexedColors.SEA_GREEN.getIndex()
         }
 
         val name = sharedPreferences.getString("NAME","Имя")
@@ -201,12 +194,13 @@ class ExportData : Fragment() {
         }
 
         val columnNames = listOf("Дата", "Время", "Прием пищи", "Продукт", "Масса (г)",
-            "Углеводы (г)", "Белки (г)", "Жиры (г)", "Энерг. ценность (Ккал)", "ГИ", "ГН","",
-            "Вода (г)", "НЖК (г)", "Холестерин (мг)", "Пищевые волокна (г)",
+            "Углеводы (г)", "Белки (г)", "Жиры (г)", "Энерг. ценность (Ккал)", "Пищевые волокна (г)",
+            "ГИ", "ГН","",
+            "Вода (г)", "НЖК (г)", "Холестерин (мг)",
             "Зола (г)", "Натрий (мг)", "Калий (мг)", "Кальций (мг)", "Магний (мг)", "Фосфор (мг)",
             "Железо (мг)", "Ретинол (мкг)", "Тиамин (мг)", "Рибофлавин (мг)", "Ниацин (мг)",
-            "Аскорбиновая кисл. (мг)", "Ретиновый эквивалент (мкг)", "Бета-каротин (мкг)",
-            "МДС (г)", "Крахмал (г)", "Токоферолэквивалент (мг)",
+            "Аскорбиновая кисл. (мг)", "Ретиновый эквивалент (мкг)", "", "Бета-каротин (мкг)",
+            "Сахар, общее содержание (г)", "Крахмал (г)", "Токоферолэквивалент (мг)",
             "Органические кислоты (г)", "Ниациновый эквивалент (мг)", "Цинк (мг)", "Медь (мг)",
             "Марганец (мг)", "Селен (мкг)", "Пантотеновая кислота (мг)", "Витамин B6 (мг)",
             "Фолаты общ. (мкг)", "Фолиевая кислота (мкг)", "Фолаты ДФЭ (мкг)", "Холин общ. (мкг)",
@@ -215,7 +209,8 @@ class ExportData : Fragment() {
             "Витамин E (мг)", "Витамин D (мкг)", "Витамин D (межд.ед.)", "Витамин K (мкг)",
             "Мононенасыщенные жирные кислоты (г)", "Полиненасыщенные жирные кислоты (г)", "",
             "Вес перв. ед. изм.", "Описание перв. ед. изм.", "Вес второй ед. изм",
-            "Опис. второй ед. изм.", "Процент потерь, %", "", "УСК до еды", "Прогноз УСК",
+            "Опис. второй ед. изм.", "Процент потерь, %", "", "Углеводы (г)", "ГН", "УСК до еды",
+            "Прогноз УСК",
             "Время добавления записи"
         )
         sheet.createRow(2).apply {
@@ -291,6 +286,17 @@ class ExportData : Fragment() {
         val reMeal = mutableListOf<Double>()
 
         for (date in dates) {
+
+            val style = styleNormal.copy().apply {
+                if ((appType == "GDMRCT") or (appType == "GDM")) {
+                    fillForegroundColor = if (date.bool) {
+                        IndexedColors.SKY_BLUE.getIndex()
+                    } else {
+                        IndexedColors.SEA_GREEN.getIndex()
+                    }
+                }
+            }
+
             if (mealList[j].recordEntity.date == date.date) {
                 try {
                     while  (mealList[j].recordEntity.date == date.date) {
@@ -299,21 +305,21 @@ class ExportData : Fragment() {
                             if ((appType == "GDMRCT") or (appType == "GDM")) {
                                 createCell(0).apply {
                                     setCellValue(date.week)
-                                    cellStyle = if (date.bool) styleBlue else styleSeaGreen
+                                    cellStyle = style
                                 }
                             }
 
                             createCell(1).apply {
                                 setCellValue(date.date)
-                                cellStyle = styleNormal
+                                cellStyle = style
                             }
                             createCell(2).apply {
                                 setCellValue(mealList[j].recordEntity.time)
-                                cellStyle = styleNormal
+                                cellStyle = style
                             }
                             createCell(3).apply {
                                 setCellValue(mealList[j].mealWithFoods.mealEntity.type)
-                                cellStyle = styleNormal
+                                cellStyle = style
                             }
                             var cellName = ""
                             var cellWeight = ""
@@ -399,8 +405,8 @@ class ExportData : Fragment() {
                                 if (food.food.gi != null) {
                                     cellGI += setTwoDigits(weight * food.food.gi).toString() + "\n"
                                     giMeal.add(weight * food.food.gi)
+                                    cellGL += setTwoDigits(weight*food.food.carbo!!*food.food.gi).toString() + "\n"
                                 }
-                                cellGL += setTwoDigits(weight*food.food.carbo!!*food.food.gi!!).toString() + "\n"
 
                                 if (food.food.water != null) {
                                     cellWater += setTwoDigits(weight * food.food.water).toString() + "\n"
@@ -506,29 +512,38 @@ class ExportData : Fragment() {
                                 if (food.food.proc_pot != null) cellProcProt += setTwoDigits(weight*food.food.proc_pot).toString() + "\n"
                             }
                             val cellStrings = listOf(cellName, cellWeight, cellCarbs, cellFats,
-                                cellProtein, cellKCal, cellGI, cellGL, "", cellWater, cellNzhk,
-                                cellHol, cellPV, cellZola, cellNa, cellK, cellCa, cellMg, cellP,
-                                cellFe, cellA, cellB1, cellB2, cellRr, cellC, cellRe, cellKar,
+                                cellProtein, cellKCal, cellPV, cellGI, cellGL, "", cellWater, cellNzhk,
+                                cellHol, cellZola, cellNa, cellK, cellCa, cellMg, cellP,
+                                cellFe, cellA, cellB1, cellB2, cellRr, cellC, cellRe, "", cellKar,
                                 cellMds, cellKr, cellTe, cellOk, cellNe, cellZn, cellCu, cellMn,
                                 cellSe, cellB5, cellB6, cellFol, cellB9, cellDfe, cellHolin,
                                 cellB12, cellEar, cellAKar, cellBKript, cellLikopin, cellLutZ,
                                 cellVitE, cellVitD, cellDMezd, cellVitK, cellMzhk, cellPzhk, "",
-                                cellW1Ed, cellOp1Ed, cellW2Ed, cellOp2Ed, cellProcProt)
+                                cellW1Ed, cellOp1Ed, cellW2Ed, cellOp2Ed, cellProcProt, "",
+                                cellCarbs, cellGL)
                             var k = 4
                             for (cellString in cellStrings) {
                                 createCell(k).apply {
                                     setCellValue(cellString)
-                                    cellStyle = styleNormal
+                                    cellStyle = style
                                 }
                                 k += 1
                             }
-                            createCell(k+1).apply {
-                                setCellValue(mealList[j].mealWithFoods.mealEntity.sugarLevel!!.toString())
-                                cellStyle = styleNormal
+                            createCell(k).apply {
+                                val slString = if
+                                        (mealList[j].mealWithFoods.mealEntity.sugarLevel != null)
+                                    mealList[j].mealWithFoods.mealEntity.sugarLevel.toString()
+                                else ""
+                                setCellValue(slString)
+                                cellStyle = style
                             }
-                            createCell(k+2).apply {
-                                setCellValue(mealList[j].mealWithFoods.mealEntity.sugarLevelPredicted!!.toString())
-                                cellStyle = styleNormal
+                            createCell(k+1).apply {
+                                val slString = if
+                                                       (mealList[j].mealWithFoods.mealEntity.sugarLevelPredicted != null)
+                                    mealList[j].mealWithFoods.mealEntity.sugarLevelPredicted.toString()
+                                else ""
+                                setCellValue(slString)
+                                cellStyle = style
                             }
 
                             val formatter = SimpleDateFormat("HH:mm dd.MM.yyyy")
@@ -536,9 +551,9 @@ class ExportData : Fragment() {
                             calendar.timeInMillis = mealList[j].recordEntity.dateSubmit!!
                             val dateString = formatter.format(calendar.time)
 
-                            createCell(k+3).apply {
+                            createCell(k+2).apply {
                                 setCellValue(dateString)
-                                cellStyle = styleNormal
+                                cellStyle = style
                             }
 
                         }
@@ -602,12 +617,12 @@ class ExportData : Fragment() {
                     if ((appType == "GDMRCT") or (appType == "GDM")) {
                         createCell(0).apply {
                             setCellValue(date.week)
-                            cellStyle = if (date.bool) styleBlue else styleSeaGreen
+                            cellStyle = style
                         }
                     }
                     createCell(1).apply {
                         setCellValue(date.date)
-                        cellStyle = styleNormal
+                        cellStyle = style
                     }
                 }
             }
@@ -643,10 +658,20 @@ class ExportData : Fragment() {
         for (date in dates) {
             sheet.createRow(i).apply {
 
+                val style = styleNormal.copy().apply {
+                    if ((appType == "GDMRCT") or (appType == "GDM")) {
+                        fillForegroundColor = if (date.bool) {
+                            IndexedColors.SKY_BLUE.getIndex()
+                        } else {
+                            IndexedColors.SEA_GREEN.getIndex()
+                        }
+                    }
+                }
+
                 if ((appType == "GDMRCT") or (appType == "GDM")) {
                     createCell(0).apply {
                         setCellValue(date.week)
-                        cellStyle = if (date.bool) styleBlue else styleSeaGreen
+                        cellStyle = style
                     }
                 }
 
@@ -714,13 +739,13 @@ class ExportData : Fragment() {
                         setTwoDigits(protDay.sum()),
                         setTwoDigits(fatDay.sum()),
                         setTwoDigits(ecDay.sum()),
+                        setTwoDigits(pvDay.sum()),
                         setTwoDigits(giDay.sum()),
                         null,
                         null,
                         setTwoDigits(waterDay.sum()),
                         setTwoDigits(nzhkDay.sum()),
                         setTwoDigits(holDay.sum()),
-                        setTwoDigits(pvDay.sum()),
                         setTwoDigits(zolaDay.sum()),
                         setTwoDigits(naDay.sum()),
                         setTwoDigits(kDay.sum()),
@@ -739,7 +764,7 @@ class ExportData : Fragment() {
                         if (avg != null) {
                             createCell(k).apply {
                                 setCellValue(avg.toString())
-                                cellStyle = styleNormal
+                                cellStyle = style
                             }
                         }
                         k += 1
@@ -835,16 +860,26 @@ class ExportData : Fragment() {
         for (date in dates) {
             sheet.createRow(i).apply {
 
+                val style = styleNormal.copy().apply {
+                    if ((appType == "GDMRCT") or (appType == "GDM")) {
+                        fillForegroundColor = if (date.bool) {
+                            IndexedColors.SKY_BLUE.getIndex()
+                        } else {
+                            IndexedColors.SEA_GREEN.getIndex()
+                        }
+                    }
+                }
+
                 if ((appType == "GDMRCT") or (appType == "GDM")) {
                     createCell(0).apply {
                         setCellValue(date.week)
-                        cellStyle = if (date.bool) styleBlue else styleSeaGreen
+                        cellStyle = style
                     }
                 }
 
                 createCell(1).apply {
                     setCellValue(date.date)
-                    cellStyle = styleNormal
+                    cellStyle = style
                 }
                 try {
                     while (ketoneList[j].recordEntity.date == date.date) {
@@ -859,11 +894,11 @@ class ExportData : Fragment() {
                         }
                         createCell(2).apply {
                             setCellValue(cellTime)
-                            cellStyle = styleNormal
+                            cellStyle = style
                         }
                         createCell(3).apply {
                             setCellValue(cellLevel)
-                            cellStyle = styleNormal
+                            cellStyle = style
                         }
                         j += 1
                     }
@@ -922,16 +957,26 @@ class ExportData : Fragment() {
         for (date in dates) {
             sheet.createRow(i).apply {
 
+                val style = styleNormal.copy().apply {
+                    if ((appType == "GDMRCT") or (appType == "GDM")) {
+                        fillForegroundColor = if (date.bool) {
+                            IndexedColors.SKY_BLUE.getIndex()
+                        } else {
+                            IndexedColors.SEA_GREEN.getIndex()
+                        }
+                    }
+                }
+
                 if ((appType == "GDMRCT") or (appType == "GDM")) {
                     createCell(0).apply {
                         setCellValue(date.week)
-                        cellStyle = if (date.bool) styleBlue else styleSeaGreen
+                        cellStyle = style
                     }
                 }
 
                 createCell(1).apply {
                     setCellValue(date.date)
-                    cellStyle = styleNormal
+                    cellStyle = style
                 }
                 try {
                     while (weightList[j].recordEntity.date == date.date) {
@@ -946,11 +991,11 @@ class ExportData : Fragment() {
                         }
                         createCell(2).apply {
                             setCellValue(cellTime)
-                            cellStyle = styleNormal
+                            cellStyle = style
                         }
                         createCell(3).apply {
                             setCellValue(cellWeight)
-                            cellStyle = styleNormal
+                            cellStyle = style
                         }
                         j += 1
                     }
@@ -1050,16 +1095,26 @@ class ExportData : Fragment() {
         for (date in dates) {
             sheet.createRow(i).apply {
 
+                val style = styleNormal.copy().apply {
+                    if ((appType == "GDMRCT") or (appType == "GDM")) {
+                        fillForegroundColor = if (date.bool) {
+                            IndexedColors.SKY_BLUE.getIndex()
+                        } else {
+                            IndexedColors.SEA_GREEN.getIndex()
+                        }
+                    }
+                }
+
                 if ((appType == "GDMRCT") or (appType == "GDM")) {
                     createCell(0).apply {
                         setCellValue(date.week)
-                        cellStyle = if (date.bool) styleBlue else styleSeaGreen
+                        cellStyle = style
                     }
                 }
 
                 createCell(1).apply {
                     setCellValue(date.date)
-                    cellStyle = styleNormal
+                    cellStyle = style
                 }
                 try {
                     while (workoutList[j].recordEntity.date == date.date) {
@@ -1077,15 +1132,15 @@ class ExportData : Fragment() {
                         }
                         createCell(2).apply {
                             setCellValue(cellTime)
-                            cellStyle = styleNormal
+                            cellStyle = style
                         }
                         createCell(3).apply {
                             setCellValue(cellDuration)
-                            cellStyle = styleNormal
+                            cellStyle = style
                         }
                         createCell(4).apply {
                             setCellValue(cellType)
-                            cellStyle = styleNormal
+                            cellStyle = style
                         }
                         j += 1
                     }
@@ -1103,11 +1158,11 @@ class ExportData : Fragment() {
                         }
                         createCell(6).apply {
                             setCellValue(cellTime)
-                            cellStyle = styleNormal
+                            cellStyle = style
                         }
                         createCell(7).apply {
                             setCellValue(cellDuration)
-                            cellStyle = styleNormal
+                            cellStyle = style
                         }
                         k += 1
                     }
@@ -1241,17 +1296,26 @@ class ExportData : Fragment() {
         val sl5 = mutableListOf<Double>()
         for (date in dates) {
             sheet.createRow(i).apply {
+                val style = styleNormal.copy().apply {
+                    if ((appType == "GDMRCT") or (appType == "GDM")) {
+                        fillForegroundColor = if (date.bool) {
+                            IndexedColors.SKY_BLUE.getIndex()
+                        } else {
+                            IndexedColors.SEA_GREEN.getIndex()
+                        }
+                    }
+                }
 
                 if ((appType == "GDMRCT") or (appType == "GDM")) {
                     createCell(0).apply {
                         setCellValue(date.week)
-                        cellStyle = if (date.bool) styleBlue else styleSeaGreen
+                        cellStyle = style
                     }
                 }
 
                 createCell(1).apply {
                     setCellValue(date.date)
-                    cellStyle = styleNormal
+                    cellStyle = style
                 }
                 try {
                     while (sugarLevelList[j].recordEntity.date == date.date) {
@@ -1278,11 +1342,11 @@ class ExportData : Fragment() {
                             setCellValue(cellValue)
                             cellStyle = if (sugarLevel > 6.8) styleRed
                             else if (sugarLevel < 4) styleBlue
-                            else styleNormal
+                            else style
                         }
                         createCell(columnIndex + 1).apply {
                             setCellValue(cellTime)
-                            cellStyle = styleNormal
+                            cellStyle = style
                         }
                         j += 1
                     }
@@ -1305,16 +1369,16 @@ class ExportData : Fragment() {
                         }
                         createCell(columnIndex).apply {
                             setCellValue(cellValue)
-                            cellStyle = styleNormal
+                            cellStyle = style
                         }
                         createCell(columnIndex + 1).apply {
                             setCellValue(cellType)
-                            cellStyle = styleNormal
+                            cellStyle = style
 
                         }
                         createCell(columnIndex + 2).apply {
                             setCellValue(cellTime)
-                            cellStyle = styleNormal
+                            cellStyle = style
                         }
                         k += 1
                     }

@@ -72,6 +72,8 @@ class HomePage : Fragment(), InterfaceRecordsInfo {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        ifOnBoardingFinished(view)
+
         postponeEnterTransition()
         record_recycler_view.apply {
             adapter = adapterRecords
@@ -79,11 +81,6 @@ class HomePage : Fragment(), InterfaceRecordsInfo {
         }
 
         val appType = sharedPreferences.getString("APP_TYPE","")!!
-        val name = sharedPreferences.getString("NAME","")!!
-        val secondName = sharedPreferences.getString("SECOND_NAME","")!!
-        val patronymic = sharedPreferences.getString("PATRONYMIC","")!!
-
-        tv_name.text = secondName + " " + name[0] + ". " + patronymic[0] + "."
 
                 appDatabaseViewModel.readLastRecords(appType).observe(viewLifecycleOwner, Observer { records ->
             if (records.isNullOrEmpty()) {
@@ -134,54 +131,49 @@ class HomePage : Fragment(), InterfaceRecordsInfo {
             Navigation.findNavController(view).navigate(R.id.action_homePage_to_recordHistory)
         }
 
-        val now = LocalDateTime.now()
-        val dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy", Locale.ROOT)
-        val presentDate = now.format(dateFormatter)
-        tv_present_date.text = presentDate
-
-
-        GlobalScope.launch(Dispatchers.Main) {
-            val presentDayMealRecords = GlobalScope.async(Dispatchers.Default) {
-                appDatabaseViewModel.readPresentDayMealRecords(presentDate)
-            }
-
-            val mealList = presentDayMealRecords.await()
-            var proteins = 0.0
-            var fats = 0.0
-            var carbs = 0.0
-            var kkals = 0.0
-            for (meal in mealList) {
-                for (food in meal.mealWithFoods.foods) {
-                    val weight = food.foodInMealEntity.weight!! / 100
-                    proteins += weight * food.food.prot!!
-                    fats += weight * food.food.fat!!
-                    carbs += weight * food.food.carbo!!
-                    kkals += weight * food.food.ec!!
-                }
-            }
-            tv_protein.text = proteins.toInt().toString()
-            tv_fat.text = fats.toInt().toString()
-            tv_carbs.text = carbs.toInt().toString()
-            tv_kkal.text = kkals.toInt().toString()
-        }
-        ifOnBoardingFinished(view)
     }
 
     private fun ifOnBoardingFinished(view: View){
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         val finished: Boolean = sharedPreferences!!.getBoolean("ON_BOARDING_FINISHED", false)
-        if (!finished) {Navigation.findNavController(view).navigate(R.id.action_homePage_to_greetingsPage)}
-    }
+        if (!finished) {Navigation.findNavController(view).navigate(R.id.action_homePage_to_greetingsPage)} else
+        {
+            val name = sharedPreferences.getString("NAME","")!!
+            val secondName = sharedPreferences.getString("SECOND_NAME","")!!
+            val patronymic = sharedPreferences.getString("PATRONYMIC","")!!
 
-    private fun deleteAllRecords(){
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setPositiveButton(this.resources.getString(R.string.Yes)) { _, _ ->
-             appDatabaseViewModel.deleteAllRecords()}
-        builder.setNegativeButton(this.resources.getString(R.string.No)) { _, _ ->
+            tv_name.text = secondName + " " + name[0] + ". " + patronymic[0] + "."
+
+            val now = LocalDateTime.now()
+            val dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy", Locale.ROOT)
+            val presentDate = now.format(dateFormatter)
+            tv_present_date.text = presentDate
+
+            GlobalScope.launch(Dispatchers.Main) {
+                val presentDayMealRecords = GlobalScope.async(Dispatchers.Default) {
+                    appDatabaseViewModel.readPresentDayMealRecords(presentDate)
+                }
+
+                val mealList = presentDayMealRecords.await()
+                var proteins = 0.0
+                var fats = 0.0
+                var carbs = 0.0
+                var kkals = 0.0
+                for (meal in mealList) {
+                    for (food in meal.mealWithFoods.foods) {
+                        val weight = food.foodInMealEntity.weight!! / 100
+                        proteins += weight * food.food.prot!!
+                        fats += weight * food.food.fat!!
+                        carbs += weight * food.food.carbo!!
+                        kkals += weight * food.food.ec!!
+                    }
+                }
+                tv_protein.text = proteins.toInt().toString()
+                tv_fat.text = fats.toInt().toString()
+                tv_carbs.text = carbs.toInt().toString()
+                tv_kkal.text = kkals.toInt().toString()
+            }
         }
-        builder.setTitle(this.resources.getString(R.string.DeleteAllRecords))
-        builder.setMessage(this.resources.getString(R.string.AreUSureDeleteAllRecords))
-        builder.create().show()
     }
 
     override fun transitionToRecordInfo(view: View, record: RecordEntity) {

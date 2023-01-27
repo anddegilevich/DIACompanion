@@ -123,6 +123,12 @@ interface AppDao {
     @Query("SELECT * FROM record_table WHERE category = 'meal_table' AND date = :presentDate ORDER BY dateInMilli ASC")
     fun readPresentDayMealRecords(presentDate: String): List<RecordWithMealWithFoods>
 
+    @Transaction
+    @Query("SELECT * FROM record_table WHERE category = 'meal_table' AND " +
+            "(dateInMilli > (:time + 0.75 * 60 * 60 * 1000)) AND" +
+            "(dateInMilli < (:time + 1.25 * 60 * 60 * 1000)) ORDER BY dateInMilli ASC")
+    fun readMealsBeforeSugarLevel(time: Long): List<RecordWithMealWithFoods>
+
     // Workout
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)

@@ -186,6 +186,9 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
     suspend fun readPresentDayMealRecords(presentDay: String): List<RecordWithMealWithFoods> {
         return repository.readPresentDayMealRecords(presentDay)
     }
+    suspend fun readMealsBeforeSugarLevel(time: Long): List<RecordWithMealWithFoods> {
+        return repository.readMealsBeforeSugarLevel(time)
+    }
 
 
 

@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import com.almazov.diacompanion.R
+import com.almazov.diacompanion.base.convertDateToMils
 import com.almazov.diacompanion.base.setTwoDigits
 import com.almazov.diacompanion.data.AppDatabaseViewModel
 import kotlinx.android.synthetic.main.fragment_export_data.*
@@ -32,7 +33,11 @@ import org.apache.poi.xssf.usermodel.XSSFSheet
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
+import kotlin.math.abs
+import kotlin.math.round
 
 class ExportData : Fragment() {
 
@@ -46,6 +51,16 @@ class ExportData : Fragment() {
     private lateinit var styleYellow: XSSFCellStyle
     private lateinit var styleBlue: XSSFCellStyle
     private lateinit var styleNormal: XSSFCellStyle
+
+    private var dayThreshold: Long = 0
+
+    private var bgTotal: Int = 0
+    private var bgHighFasting: Int = 0
+    private var bgHighFood: Int = 0
+    private var bgBadPpgr: Int = 0
+    private var allMeals: Int = 0
+    private var snacks: Int = 0
+    private var onTime: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,17 +79,35 @@ class ExportData : Fragment() {
 
         btn_export_to_slxs.setOnClickListener{
             lf_export.displayedChild = 1
-            createXmlFile()
+            createXmlFile(false)
         }
 
         btn_export_to_doctor.setOnClickListener{
-//            findNavController().popBackStack()
+            createXmlFile(true)
         }
 
         super.onViewCreated(view, savedInstanceState)
     }
 
-    private fun createXmlFile() {
+    private fun createXmlFile(send: Boolean) {
+
+        val name = sharedPreferences.getString("NAME","Имя")
+        val secondName = sharedPreferences.getString("SECOND_NAME","Фамилия")
+        val patronymic = sharedPreferences.getString("PATRONYMIC","Отчество")
+        val attendingDoctor = sharedPreferences.getString("ATTENDING_DOCTOR","Лечащий врач")
+        val birthDate = sharedPreferences.getString("BIRTH_DATE","0")
+        globalInfoString = "Пациент: $secondName $name $patronymic;   " +
+                "Дата рождения: $birthDate;   Лечащий врач: $attendingDoctor;   " +
+                "Программа: DiaCompanion Android $appType"
+
+        val now = LocalDateTime.now()
+        val dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy", Locale.ROOT)
+        val dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm dd.MM.yyyy", Locale.ROOT)
+        val presentDate = now.format(dateFormatter)
+
+        dayThreshold = convertDateToMils(now.format(dateTimeFormatter)) - 7 * 24 * 60 * 60 * 1000
+
+        val fileName = appType + 1 + " " + name + " " + presentDate + ".xlsx"
 
         val xlWb = XSSFWorkbook()
         styleNormal = xlWb.createCellStyle().apply {
@@ -102,14 +135,6 @@ class ExportData : Fragment() {
             fillForegroundColor = IndexedColors.BLUE.getIndex()
         }
 
-        val name = sharedPreferences.getString("NAME","Имя")
-        val secondName = sharedPreferences.getString("SECOND_NAME","Фамилия")
-        val patronymic = sharedPreferences.getString("PATRONYMIC","Отчество")
-        val attendingDoctor = sharedPreferences.getString("ATTENDING_DOCTOR","Лечащий врач")
-        val birthDate = sharedPreferences.getString("BIRTH_DATE","0")
-        globalInfoString = "Пациент: $secondName $name $patronymic;   " +
-                "Дата рождения: $birthDate;   Лечащий врач: $attendingDoctor;   " +
-                "Программа: DiaCompanion Android $appType"
 
         val xlWsSugarLevelInsulin = if (appType != "PCOS") {
             xlWb.createSheet("Уровень сахара и инсулин")
@@ -152,24 +177,67 @@ class ExportData : Fragment() {
 
                 xlWb.write(table)
                 xlWb.close()
+                table.flush()
+                table.close()
+
 
                 val uriPath = Uri.parse(path)
-                val excelIntent = Intent()
-                excelIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                excelIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                excelIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-                excelIntent.action = Intent.ACTION_VIEW
-                excelIntent.setDataAndType(uriPath, "application/vnd.ms-excel")
-                excelIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                try {
-                    startActivity(excelIntent)
-                } catch (e: ActivityNotFoundException) {
-                    Toast.makeText(
-                        requireContext(),
-                        "No Application available to view Excel",
-                        Toast.LENGTH_SHORT
-                    ).show()
+
+                if (send){
+
+                    val mealsMain = (((allMeals - snacks).toDouble() / allMeals.toDouble()) * 100).toInt()
+                    val mealsOnTime = (onTime.toDouble() / allMeals.toDouble() * 100).toInt()
+                    val textSL = if (appType != "PCOS") { "За последние 7 дней превышений УСК выше целевого: \n" +
+                            "Натощак: " + bgHighFasting + "\n" +
+                            "После еды: " + bgHighFood + "\n\n"} else ""
+                    val emailText =  textSL +
+                            "Основные приемы пищи: " + mealsMain +
+                            "% (" + (allMeals - snacks) + "/" + allMeals + ")\n" +
+                            "Записаны при приеме пищи: " + mealsOnTime +
+                            "% (" + onTime + "/" + allMeals + ")\n";
+                    val dangerLevel = if (bgBadPpgr > 1) "!!"
+                    else if ((bgHighFasting + bgHighFood).toDouble() / bgTotal > 1/3) "!"
+                    else ""
+
+                    val sendTo = arrayListOf<String>("deg548@gmail.com")
+                    val title = "$dangerLevel title"
+
+                    val emailIntent = Intent(Intent.ACTION_SEND)
+                    emailIntent.type = "vnd.android.cursor.dir/email"
+                    emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    emailIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                    val type = "application/vnd.ms-excel"
+                    emailIntent.setDataAndType(uriPath, type)
+                    emailIntent.putExtra(Intent.EXTRA_EMAIL, "deg548@gmail.com")
+                    emailIntent.putExtra(
+                        Intent.EXTRA_TEXT,
+                        emailText
+                    )
+                    emailIntent.putExtra(Intent.EXTRA_STREAM, uriPath)
+                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, title)
+                    requireContext().startActivity(
+                        Intent.createChooser(emailIntent, "Отправить email..."))
+
+                } else {
+                    val excelIntent = Intent()
+                    excelIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    excelIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    excelIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                    excelIntent.action = Intent.ACTION_VIEW
+                    excelIntent.setDataAndType(uriPath, "application/vnd.ms-excel")
+                    excelIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    val chooserIntent = Intent.createChooser(excelIntent, "Открыть дневник наблюдения")
+                    try {
+                        startActivity(chooserIntent)
+                    } catch (e: ActivityNotFoundException) {
+                        Toast.makeText(
+                            requireContext(),
+                            "Нет приложения для просмотра Excel файлов",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
+
                 lf_export.displayedChild = 2
                 findNavController().popBackStack()
             }
@@ -300,6 +368,11 @@ class ExportData : Fragment() {
             if (mealList[j].recordEntity.date == date.date) {
                 try {
                     while  (mealList[j].recordEntity.date == date.date) {
+
+                        allMeals += 1
+                        if (mealList[j].mealWithFoods.mealEntity.type == "Перекус") snacks += 1
+                        if (abs(mealList[j].recordEntity.dateInMilli!! - mealList[j].recordEntity.dateSubmit!!) < 1) onTime += 1
+
                         sheet.createRow(i).apply {
 
                             if ((appType == "GDMRCT") or (appType == "GDM")) {
@@ -1319,6 +1392,33 @@ class ExportData : Fragment() {
                 }
                 try {
                     while (sugarLevelList[j].recordEntity.date == date.date) {
+
+                        if (dayThreshold < sugarLevelList[j].recordEntity.dateInMilli!!) {
+                            bgTotal += 1
+                            if ((sugarLevelList[j].sugarLevelEntity.preferences!! == "Натощак") and
+                                (sugarLevelList[j].sugarLevelEntity.sugarLevel!! > 5.1))
+                                bgHighFasting += 1
+                            if ((sugarLevelList[j].sugarLevelEntity.preferences!! != "Натощак") and
+                                (sugarLevelList[j].sugarLevelEntity.sugarLevel!! > 7.0)) {
+                                bgHighFood += 1
+
+                                val meals = GlobalScope.async(Dispatchers.Default) {
+                                    appDatabaseViewModel.readMealsBeforeSugarLevel(sugarLevelList[j].recordEntity.dateInMilli!!)
+                                }
+                                var foodIntakes = 0
+                                var carbos = 0.0
+                                for (meal in meals.await()) {
+                                    foodIntakes += 1
+                                    for (food in meal.mealWithFoods.foods)
+                                    if (food.food.carbo != null) carbos += food.food.carbo * food.foodInMealEntity.weight!!
+
+                                }
+                                if ((carbos < 30) and (foodIntakes > 0)) bgBadPpgr += 1
+
+                            }
+
+                        }
+
                         val columnIndex = sugarLevelColumnIndex[sugarLevelList[j].sugarLevelEntity.preferences]
                         val sugarLevel = sugarLevelList[j].sugarLevelEntity.sugarLevel!!
                         when (columnIndex) {

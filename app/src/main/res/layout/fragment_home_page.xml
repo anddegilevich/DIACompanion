@@ -82,7 +82,9 @@
                     android:orientation="vertical">
 
                     <LinearLayout
-                        style="@style/Content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
@@ -99,7 +101,8 @@
                     <include layout="@layout/present_day_info_card"/>
 
                     <LinearLayout
-                        style="@style/Content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
@@ -179,11 +182,11 @@
             android:layout_height="wrap_content">
 
             <ImageButton
-                android:id="@+id/btn_export"
+                android:id="@+id/btn_recipe_list"
                 style="@style/ImageButton"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                app:srcCompat="@drawable/export"
+                app:srcCompat="@drawable/recipe_book"
                 android:layout_weight="1"/>
 
             <Space
@@ -192,11 +195,11 @@
                 android:layout_weight="3"/>
 
             <ImageButton
-                android:id="@+id/btn_recipe_list"
+                android:id="@+id/btn_export"
                 style="@style/ImageButton"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                app:srcCompat="@drawable/recipe_book"
+                app:srcCompat="@drawable/export"
                 android:layout_weight="1"/>
 
         </LinearLayout>

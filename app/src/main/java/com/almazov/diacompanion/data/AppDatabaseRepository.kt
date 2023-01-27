@@ -128,6 +128,9 @@ class AppDatabaseRepository(private val appDao: AppDao) {
     suspend fun readPresentDayMealRecords(presentDay: String): List<RecordWithMealWithFoods> {
         return appDao.readPresentDayMealRecords(presentDay)
     }
+    suspend fun readMealsBeforeSugarLevel(time: Long): List<RecordWithMealWithFoods> {
+        return appDao.readMealsBeforeSugarLevel(time)
+    }
 
 
     // Workout

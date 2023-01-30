@@ -476,131 +476,131 @@ class ExportData : Fragment() {
                             for (food in mealList[j].mealWithFoods.foods) {
                                 val weight = food.foodInMealEntity.weight!! / 100
                                 cellName += "\n" + food.food.name.toString() + "\n"
-                                cellWeight += setTwoDigits(food.foodInMealEntity.weight).toString() + "\n"
+                                cellWeight += "\n" + setTwoDigits(food.foodInMealEntity.weight).toString() + "\n"
                                 if (food.food.carbo != null) {
-                                    cellCarbs += setTwoDigits(weight * food.food.carbo).toString() + "\n"
+                                    cellCarbs += "\n" + setTwoDigits(weight * food.food.carbo).toString() + "\n"
                                     carboMeal.add(weight * food.food.carbo)
                                 }
                                 if (food.food.fat != null) {
-                                    cellFats += setTwoDigits(weight * food.food.fat).toString() + "\n"
+                                    cellFats += "\n" + setTwoDigits(weight * food.food.fat).toString() + "\n"
                                     fatMeal.add(weight * food.food.fat)
                                 }
                                 if (food.food.prot != null) {
-                                    cellProtein += setTwoDigits(weight * food.food.prot).toString() + "\n"
+                                    cellProtein += "\n" + setTwoDigits(weight * food.food.prot).toString() + "\n"
                                     protMeal.add(weight * food.food.prot)
                                 }
                                 if (food.food.ec != null) {
-                                    cellKCal += setTwoDigits(weight * food.food.ec).toString() + "\n"
+                                    cellKCal += "\n" + setTwoDigits(weight * food.food.ec).toString() + "\n"
                                     ecMeal.add(weight * food.food.ec)
                                 }
                                 if (food.food.gi != null) {
-                                    cellGI += setTwoDigits(weight * food.food.gi).toString() + "\n"
+                                    cellGI += "\n" + setTwoDigits(weight * food.food.gi).toString() + "\n"
                                     giMeal.add(weight * food.food.gi)
-                                    cellGL += setTwoDigits(weight*food.food.carbo!!*food.food.gi).toString() + "\n"
+                                    cellGL += "\n" + setTwoDigits(weight*food.food.carbo!!*food.food.gi).toString() + "\n"
                                 }
 
                                 if (food.food.water != null) {
-                                    cellWater += setTwoDigits(weight * food.food.water).toString() + "\n"
+                                    cellWater += "\n" + setTwoDigits(weight * food.food.water).toString() + "\n"
                                     waterMeal.add(weight * food.food.water)
                                 }
                                 if (food.food.nzhk != null) {
-                                    cellNzhk += setTwoDigits(weight * food.food.nzhk).toString() + "\n"
+                                    cellNzhk += "\n" + setTwoDigits(weight * food.food.nzhk).toString() + "\n"
                                     nzhkMeal.add(weight * food.food.nzhk)
                                 }
                                 if (food.food.hol != null) {
-                                    cellHol += setTwoDigits(weight * food.food.hol).toString() + "\n"
+                                    cellHol += "\n" + setTwoDigits(weight * food.food.hol).toString() + "\n"
                                     holMeal.add(weight * food.food.hol)
                                 }
                                 if (food.food.pv != null) {
-                                    cellPV += setTwoDigits(weight * food.food.pv).toString() + "\n"
+                                    cellPV += "\n" + setTwoDigits(weight * food.food.pv).toString() + "\n"
                                     pvMeal.add(weight * food.food.pv)
                                 }
                                 if (food.food.zola != null) {
-                                    cellZola += setTwoDigits(weight * food.food.zola).toString() + "\n"
+                                    cellZola += "\n" + setTwoDigits(weight * food.food.zola).toString() + "\n"
                                     zolaMeal.add(weight * food.food.zola)
                                 }
                                 if (food.food.na != null) {
-                                    cellNa += setTwoDigits(weight * food.food.na).toString() + "\n"
+                                    cellNa += "\n" + setTwoDigits(weight * food.food.na).toString() + "\n"
                                     naMeal.add(weight * food.food.na)
                                 }
                                 if (food.food.k != null) {
-                                    cellK += setTwoDigits(weight * food.food.k).toString() + "\n"
+                                    cellK += "\n" + setTwoDigits(weight * food.food.k).toString() + "\n"
                                     kMeal.add(weight * food.food.k)
                                 }
                                 if (food.food.ca != null) {
-                                    cellCa += setTwoDigits(weight * food.food.ca).toString() + "\n"
+                                    cellCa += "\n" + setTwoDigits(weight * food.food.ca).toString() + "\n"
                                     caMeal.add(weight * food.food.ca)
                                 }
                                 if (food.food.mg != null) {
-                                    cellMg += setTwoDigits(weight * food.food.mg).toString() + "\n"
+                                    cellMg += "\n" + setTwoDigits(weight * food.food.mg).toString() + "\n"
                                     mgMeal.add(weight * food.food.mg)
                                 }
                                 if (food.food.p != null) {
-                                    cellP += setTwoDigits(weight * food.food.p).toString() + "\n"
+                                    cellP += "\n" + setTwoDigits(weight * food.food.p).toString() + "\n"
                                     pMeal.add(weight * food.food.p)
                                 }
                                 if (food.food.fe != null) {
-                                    cellFe += setTwoDigits(weight * food.food.fe).toString() + "\n"
+                                    cellFe += "\n" + setTwoDigits(weight * food.food.fe).toString() + "\n"
                                     feMeal.add(weight * food.food.fe)
                                 }
                                 if (food.food.a != null) {
-                                    cellA += setTwoDigits(weight * food.food.a).toString() + "\n"
+                                    cellA += "\n" + setTwoDigits(weight * food.food.a).toString() + "\n"
                                     aMeal.add(weight * food.food.a)
                                 }
                                 if (food.food.b1 != null) {
-                                    cellB1 += setTwoDigits(weight * food.food.b1).toString() + "\n"
+                                    cellB1 += "\n" + setTwoDigits(weight * food.food.b1).toString() + "\n"
                                     b1Meal.add(weight * food.food.b1)
                                 }
                                 if (food.food.b2 != null) {
-                                    cellB2 += setTwoDigits(weight * food.food.b2).toString() + "\n"
+                                    cellB2 += "\n" + setTwoDigits(weight * food.food.b2).toString() + "\n"
                                     b2Meal.add(weight * food.food.b2)
                                 }
                                 if (food.food.rr != null) {
-                                    cellRr += setTwoDigits(weight * food.food.rr).toString() + "\n"
+                                    cellRr += "\n" + setTwoDigits(weight * food.food.rr).toString() + "\n"
                                     rrMeal.add(weight * food.food.rr)
                                 }
                                 if (food.food.c != null) {
-                                    cellC += setTwoDigits(weight * food.food.c).toString() + "\n"
+                                    cellC += "\n" + setTwoDigits(weight * food.food.c).toString() + "\n"
                                     cMeal.add(weight * food.food.c)
                                 }
                                 if (food.food.re != null) {
-                                    cellRe += setTwoDigits(weight * food.food.re).toString() + "\n"
+                                    cellRe += "\n" + setTwoDigits(weight * food.food.re).toString() + "\n"
                                     reMeal.add(weight * food.food.re)
                                 }
-                                if (food.food.kar != null) cellKar += setTwoDigits(weight*food.food.kar).toString() + "\n"
-                                if (food.food.mds != null) cellMds += setTwoDigits(weight*food.food.mds).toString() + "\n"
-                                if (food.food.kr != null) cellKr += setTwoDigits(weight*food.food.kr).toString() + "\n"
-                                if (food.food.te != null) cellTe += setTwoDigits(weight*food.food.te).toString() + "\n"
-                                if (food.food.ok != null) cellOk += setTwoDigits(weight*food.food.ok).toString() + "\n"
-                                if (food.food.ne != null) cellNe += setTwoDigits(weight*food.food.ne).toString() + "\n"
-                                if (food.food.zn != null) cellZn += setTwoDigits(weight*food.food.zn).toString() + "\n"
-                                if (food.food.cu != null) cellCu += setTwoDigits(weight*food.food.cu).toString() + "\n"
-                                if (food.food.mn != null) cellMn += setTwoDigits(weight*food.food.mn).toString() + "\n"
-                                if (food.food.se != null) cellSe += setTwoDigits(weight*food.food.se).toString() + "\n"
-                                if (food.food.b5 != null) cellB5 += setTwoDigits(weight*food.food.b5).toString() + "\n"
-                                if (food.food.b6 != null) cellB6 += setTwoDigits(weight*food.food.b6).toString() + "\n"
-                                if (food.food.fol != null) cellFol += setTwoDigits(weight*food.food.fol).toString() + "\n"
-                                if (food.food.b9 != null) cellB9 += setTwoDigits(weight*food.food.b9).toString() + "\n"
-                                if (food.food.dfe != null) cellDfe += setTwoDigits(weight*food.food.dfe).toString() + "\n"
-                                if (food.food.holin != null) cellHolin += setTwoDigits(weight*food.food.holin).toString() + "\n"
-                                if (food.food.b12 != null) cellB12 += setTwoDigits(weight*food.food.b12).toString() + "\n"
-                                if (food.food.ear != null) cellEar += setTwoDigits(weight*food.food.ear).toString() + "\n"
-                                if (food.food.a_kar != null) cellAKar += setTwoDigits(weight*food.food.a_kar).toString() + "\n"
-                                if (food.food.b_kript != null) cellBKript += setTwoDigits(weight*food.food.b_kript).toString() + "\n"
-                                if (food.food.likopin != null) cellLikopin += setTwoDigits(weight*food.food.likopin).toString() + "\n"
-                                if (food.food.lut_z != null) cellLutZ += setTwoDigits(weight*food.food.lut_z).toString() + "\n"
-                                if (food.food.vit_e != null) cellVitE += setTwoDigits(weight*food.food.vit_e).toString() + "\n"
-                                if (food.food.vit_d != null) cellVitD += setTwoDigits(weight*food.food.vit_d).toString() + "\n"
-                                if (food.food.d_mezd != null) cellDMezd += setTwoDigits(weight*food.food.d_mezd).toString() + "\n"
-                                if (food.food.vit_k != null) cellVitK += setTwoDigits(weight*food.food.vit_k).toString() + "\n"
-                                if (food.food.mzhk != null) cellMzhk += setTwoDigits(weight*food.food.mzhk).toString() + "\n"
-                                if (food.food.pzhk != null) cellPzhk += setTwoDigits(weight*food.food.pzhk).toString() + "\n"
+                                if (food.food.kar != null) cellKar += "\n" + setTwoDigits(weight*food.food.kar).toString() + "\n"
+                                if (food.food.mds != null) cellMds += "\n" + setTwoDigits(weight*food.food.mds).toString() + "\n"
+                                if (food.food.kr != null) cellKr += "\n" + setTwoDigits(weight*food.food.kr).toString() + "\n"
+                                if (food.food.te != null) cellTe += "\n" + setTwoDigits(weight*food.food.te).toString() + "\n"
+                                if (food.food.ok != null) cellOk += "\n" + setTwoDigits(weight*food.food.ok).toString() + "\n"
+                                if (food.food.ne != null) cellNe += "\n" + setTwoDigits(weight*food.food.ne).toString() + "\n"
+                                if (food.food.zn != null) cellZn += "\n" + setTwoDigits(weight*food.food.zn).toString() + "\n"
+                                if (food.food.cu != null) cellCu += "\n" + setTwoDigits(weight*food.food.cu).toString() + "\n"
+                                if (food.food.mn != null) cellMn += "\n" + setTwoDigits(weight*food.food.mn).toString() + "\n"
+                                if (food.food.se != null) cellSe += "\n" + setTwoDigits(weight*food.food.se).toString() + "\n"
+                                if (food.food.b5 != null) cellB5 += "\n" + setTwoDigits(weight*food.food.b5).toString() + "\n"
+                                if (food.food.b6 != null) cellB6 += "\n" + setTwoDigits(weight*food.food.b6).toString() + "\n"
+                                if (food.food.fol != null) cellFol += "\n" + setTwoDigits(weight*food.food.fol).toString() + "\n"
+                                if (food.food.b9 != null) cellB9 += "\n" + setTwoDigits(weight*food.food.b9).toString() + "\n"
+                                if (food.food.dfe != null) cellDfe += "\n" + setTwoDigits(weight*food.food.dfe).toString() + "\n"
+                                if (food.food.holin != null) cellHolin += "\n" + setTwoDigits(weight*food.food.holin).toString() + "\n"
+                                if (food.food.b12 != null) cellB12 += "\n" + setTwoDigits(weight*food.food.b12).toString() + "\n"
+                                if (food.food.ear != null) cellEar += "\n" + setTwoDigits(weight*food.food.ear).toString() + "\n"
+                                if (food.food.a_kar != null) cellAKar += "\n" + setTwoDigits(weight*food.food.a_kar).toString() + "\n"
+                                if (food.food.b_kript != null) cellBKript += "\n" + setTwoDigits(weight*food.food.b_kript).toString() + "\n"
+                                if (food.food.likopin != null) cellLikopin += "\n" + setTwoDigits(weight*food.food.likopin).toString() + "\n"
+                                if (food.food.lut_z != null) cellLutZ += "\n" + setTwoDigits(weight*food.food.lut_z).toString() + "\n"
+                                if (food.food.vit_e != null) cellVitE += "\n" + setTwoDigits(weight*food.food.vit_e).toString() + "\n"
+                                if (food.food.vit_d != null) cellVitD += "\n" + setTwoDigits(weight*food.food.vit_d).toString() + "\n"
+                                if (food.food.d_mezd != null) cellDMezd += "\n" + setTwoDigits(weight*food.food.d_mezd).toString() + "\n"
+                                if (food.food.vit_k != null) cellVitK += "\n" + setTwoDigits(weight*food.food.vit_k).toString() + "\n"
+                                if (food.food.mzhk != null) cellMzhk += "\n" + setTwoDigits(weight*food.food.mzhk).toString() + "\n"
+                                if (food.food.pzhk != null) cellPzhk += "\n" + setTwoDigits(weight*food.food.pzhk).toString() + "\n"
 
-                                if (food.food.w_1ed != null) cellW1Ed += setTwoDigits(weight*food.food.w_1ed).toString() + "\n"
-                                if (food.food.op_1ed != null) cellOp1Ed += setTwoDigits(food.food.op_1ed).toString() + "\n"
-                                if (food.food.w_2ed != null) cellW2Ed += setTwoDigits(food.food.w_2ed).toString() + "\n"
-                                if (food.food.op_2ed != null) cellOp2Ed += setTwoDigits(food.food.op_2ed).toString() + "\n"
-                                if (food.food.proc_pot != null) cellProcProt += setTwoDigits(weight*food.food.proc_pot).toString() + "\n"
+                                if (food.food.w_1ed != null) cellW1Ed += "\n" + setTwoDigits(weight*food.food.w_1ed).toString() + "\n"
+                                if (food.food.op_1ed != null) cellOp1Ed += "\n" + setTwoDigits(food.food.op_1ed).toString() + "\n"
+                                if (food.food.w_2ed != null) cellW2Ed += "\n" + setTwoDigits(food.food.w_2ed).toString() + "\n"
+                                if (food.food.op_2ed != null) cellOp2Ed += "\n" + setTwoDigits(food.food.op_2ed).toString() + "\n"
+                                if (food.food.proc_pot != null) cellProcProt += "\n" + setTwoDigits(weight*food.food.proc_pot).toString() + "\n"
                             }
                             val cellStrings = listOf(cellName, cellWeight, cellCarbs, cellFats,
                                 cellProtein, cellKCal, cellPV, cellGI, cellGL, "", cellWater, cellNzhk,

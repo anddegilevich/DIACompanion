@@ -28,7 +28,7 @@ class SettingsAccount : Fragment() {
     private lateinit var pregnancyDate: String
     private var weigth = 0f
     private var heigth = 0f
-    private var phone: Long = 0
+    private lateinit var phone: String
     private lateinit var email: String
     private lateinit var attendingDoctor: String
     private lateinit var apptype: String
@@ -70,7 +70,7 @@ class SettingsAccount : Fragment() {
             pregnancyDate = sharedPreferences.getString("PREGNANCY_DATE","01.01.2000")!!
             weigth = sharedPreferences.getFloat("WEIGHT",0f)
             heigth = sharedPreferences.getFloat("HEIGHT",0f)
-            phone = sharedPreferences.getLong("PHONE",0)
+            phone = sharedPreferences.getString("PHONE","")!!
             email = sharedPreferences.getString("EMAIL","")!!
             attendingDoctor = sharedPreferences.getString("ATTENDING_DOCTOR","")!!
             patientId = sharedPreferences.getInt("PATIENT_ID",1)
@@ -84,7 +84,7 @@ class SettingsAccount : Fragment() {
 
             view.editTextWeight.setText(weigth.toString())
             view.editTextHeight.setText(heigth.toString())
-            view.editTextPhone.setText(phone.toString())
+            view.editTextPhone.setText(phone)
             view.editTextEmail.setText(email)
             view.spinnerDoctor.setSelection(resources.getStringArray(R.array.AttendingDoctors).indexOf(attendingDoctor))
             view.editTextPatientId.setText(patientId.toString())
@@ -120,7 +120,7 @@ class SettingsAccount : Fragment() {
         weigth = editTextWeight.text.toString().toFloat()
         heigth = editTextHeight.text.toString().toFloat()
         val bmi  = weigth/heigth.pow(2)
-        phone = editTextPhone.text.toString().toLong()
+        phone = editTextPhone.text.toString()
         email = editTextEmail.text.toString()
         attendingDoctor = spinnerDoctor.selectedItem.toString()
         patientId = editTextPatientId.text.toString().toInt()
@@ -132,7 +132,7 @@ class SettingsAccount : Fragment() {
             putString("BIRTH_DATE",birthDate)
             putFloat("WEIGHT",weigth)
             putFloat("HEIGHT",heigth)
-            putLong("PHONE",phone)
+            putString("PHONE",phone)
             putString("EMAIL",email)
             putFloat("BMI",bmi)
             putString("ATTENDING_DOCTOR",attendingDoctor)
@@ -147,7 +147,6 @@ class SettingsAccount : Fragment() {
         return (!editTextFirstName.text.isEmpty() and !editTextLastName.text.isEmpty()
             and !editTextPatronymic.text.isEmpty() and !tv_birth_date.text.isEmpty()
             and !editTextWeight.text.isEmpty() and !editTextHeight.text.isEmpty()
-            and !editTextPhone.text.isEmpty() and !editTextEmail.text.isEmpty()
             and !editTextPatientId.text.isEmpty())
     }
 

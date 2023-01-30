@@ -96,7 +96,7 @@ class MealRecordInfo : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
                     if (appType != "PCOS") {
                         slideView(layout_sugar_level)
                         tv_sugar_level_before.text = record[0].meal.sugarLevel.toString()
-                        tv_sugar_level_predict.text = record[0].meal.sugarLevelPredicted.toString()
+//                        tv_sugar_level_predict.text = record[0].meal.sugarLevelPredicted.toString()
                     }
 
                     if (appType == "GDMRCT") {
@@ -180,6 +180,7 @@ class MealRecordInfo : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
         val textColor = MaterialColors.getColor(requireContext(), R.attr.main_text_color, Color.BLACK)
         val backgroundColor = ContextCompat.getColor(requireContext(), R.color.transparent)
         pieData.setValueTextColor(textColor)
+        pieData.setDrawValues(false)
 
         meal_pie_chart.apply{
             isDrawHoleEnabled = true

@@ -34,7 +34,7 @@ fun checkCarbs(mealType: String, listOfFood: MutableList<FoodInMealItem>): Boole
 }
 
 fun checkSLBefore(sugarLevel: Double): Boolean {
-    if (sugarLevel > 5.5) {
+    if (sugarLevel > 6.7) {
         return true
     }
     return false

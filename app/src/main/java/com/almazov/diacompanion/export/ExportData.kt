@@ -622,15 +622,15 @@ class ExportData : Fragment() {
                             }
                             createCell(k).apply {
                                 val slString = if
-                                        (mealList[j].mealWithFoods.mealEntity.sugarLevel != null)
+                                    (mealList[j].mealWithFoods.mealEntity.sugarLevel != null)
                                     mealList[j].mealWithFoods.mealEntity.sugarLevel.toString()
                                 else ""
                                 setCellValue(slString)
                                 cellStyle = style
                             }
-                            createCell(k+1).apply {
+                            createCell(k + 1).apply {
                                 val slString = if
-                                                       (mealList[j].mealWithFoods.mealEntity.sugarLevelPredicted != null)
+                                   (mealList[j].mealWithFoods.mealEntity.sugarLevelPredicted != null)
                                     mealList[j].mealWithFoods.mealEntity.sugarLevelPredicted.toString()
                                 else ""
                                 setCellValue(slString)

@@ -88,21 +88,21 @@
 
     //AppType
     <string name="GDMRCT" translatable="false">ГСД, диета (с прогнозированием)</string>
-    <string name="GDMRCTDescription" translatable="false">Режим позволяет вести контроль за приемами
-        пищи, физической активностью и уровнем сахара в крови. В режим внедрена рекомендательная
+    <string name="GDMRCTDescription" translatable="false">Версия позволяет вести контроль за приемами
+        пищи, физической активностью и уровнем сахара в крови. В версию внедрена рекомендательная
         система, помогающая корректировать прием пищи пациенток.\n
         Предназначен для беременных пациенток, страдающих ГСД</string>
     <string name="GDM" translatable="false">ГСД, диета + инсулинотерапия</string>
-    <string name="GDMDescription" translatable="false">Режим позволяет вести контроль за приемами
+    <string name="GDMDescription" translatable="false">Версия позволяет вести контроль за приемами
         пищи, физической активностью и уровнем сахара в крови.\n
         Предназначен для беременных пациенток, страдающих ГСД
     </string>
     <string name="MS" translatable="false">Дневник питания и самоконтроля</string>
-    <string name="MSDescription" translatable="false">Режим позволяет вести контроль за приемами
+    <string name="MSDescription" translatable="false">Версия позволяет вести контроль за приемами
         пищи, физической активностью и уровнем сахара в крови.\n
         Предназначен для пациентов, страдающих диабетом</string>
     <string name="PCOS" translatable="false">Дневник питания</string>
-    <string name="PCOSDescription" translatable="false">Режим предоставляет функционал
+    <string name="PCOSDescription" translatable="false">Версия предоставляет функционал
         для ведения данных о приемах пищи и физической активности.\n
         Подходит для пациентов, не болеющих диабетом</string>
 
@@ -205,6 +205,8 @@
         <item>Garden work</item>
     </string-array>
 
+    //SleepAddRecord
+    <string name="TimeDateSleep">Wake up time &amp; date</string>
     //KetoneAddRecord
     <string-array name="KetoneSpinner">
         <item>0</item>

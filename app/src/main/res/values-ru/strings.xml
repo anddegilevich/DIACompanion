@@ -228,4 +228,5 @@
     <string name="GL">ГН, %</string>
     <string name="PresentDay">Текущий день</string>
     <string name="PatientId">ID Пациента</string>
+    <string name="TimeDateSleep">Время пробуждения &amp; дата</string>
 </resources>

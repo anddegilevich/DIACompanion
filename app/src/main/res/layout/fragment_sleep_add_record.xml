@@ -92,7 +92,7 @@
                 style="@style/Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/TimeDate" />
+                android:text="@string/TimeDateSleep" />
 
             <LinearLayout
                 android:layout_width="match_parent"

@@ -69,19 +69,20 @@
     <string name="HeightSm">Height, sm</string>
     <string name="WeightKg">Weight, kg</string>
     <string name="AttendingDoctor">Attending doctor</string>
+    <string name="PatientId">Patient ID</string>
     <string name="PregnancyStart">Date of the beginning of pregnancy</string>
     <string name="PersonalData">Personal data</string>
     <string name="AccountData">Account data</string>
     <string name="Contacts">Contacts</string>
     <string name="Pregnancy">Pregnancy</string>
     <string-array name="AttendingDoctors">
+        <item>Без врача</item>
         <item>Анопова Анна Дмитриевна</item>
         <item>Болотько Яна Алексеевна</item>
         <item>Дронова Александра Владимировна</item>
         <item>Попова Полина Викторовна</item>
         <item>Ткачук Александра Сергеевна</item>
         <item>Васюкова Елена Андреевна</item>
-        <item>Без врача</item>
     </string-array>
     <string name="NotificationFillAllFields">Please fill all required fields to continue</string>
 

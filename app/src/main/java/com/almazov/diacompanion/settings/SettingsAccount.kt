@@ -32,6 +32,7 @@ class SettingsAccount : Fragment() {
     private lateinit var email: String
     private lateinit var attendingDoctor: String
     private lateinit var apptype: String
+    private var patientId = 0
 
     override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?,
@@ -72,6 +73,7 @@ class SettingsAccount : Fragment() {
             phone = sharedPreferences.getLong("PHONE",0)
             email = sharedPreferences.getString("EMAIL","")!!
             attendingDoctor = sharedPreferences.getString("ATTENDING_DOCTOR","")!!
+            patientId = sharedPreferences.getInt("PATIENT_ID",1)
 
             view.editTextFirstName.setText(name)
             view.editTextLastName.setText(secondName)
@@ -85,6 +87,7 @@ class SettingsAccount : Fragment() {
             view.editTextPhone.setText(phone.toString())
             view.editTextEmail.setText(email)
             view.spinnerDoctor.setSelection(resources.getStringArray(R.array.AttendingDoctors).indexOf(attendingDoctor))
+            view.editTextPatientId.setText(patientId.toString())
 
         }
 
@@ -120,8 +123,9 @@ class SettingsAccount : Fragment() {
         phone = editTextPhone.text.toString().toLong()
         email = editTextEmail.text.toString()
         attendingDoctor = spinnerDoctor.selectedItem.toString()
+        patientId = editTextPatientId.text.toString().toInt()
 
-        sharedPreferences.edit().apply{
+            sharedPreferences.edit().apply{
             putString("NAME",name)
             putString("SECOND_NAME",secondName)
             putString("PATRONYMIC",patronymic)
@@ -132,6 +136,7 @@ class SettingsAccount : Fragment() {
             putString("EMAIL",email)
             putFloat("BMI",bmi)
             putString("ATTENDING_DOCTOR",attendingDoctor)
+            putInt("PATIENT_ID",patientId)
             if ((apptype == "GDMRCT") or (apptype == "GDM")){
                 putString("PREGNANCY_DATE",pregnancyDate)
             }
@@ -142,7 +147,8 @@ class SettingsAccount : Fragment() {
         return (!editTextFirstName.text.isEmpty() and !editTextLastName.text.isEmpty()
             and !editTextPatronymic.text.isEmpty() and !tv_birth_date.text.isEmpty()
             and !editTextWeight.text.isEmpty() and !editTextHeight.text.isEmpty()
-            and !editTextPhone.text.isEmpty() and !editTextEmail.text.isEmpty())
+            and !editTextPhone.text.isEmpty() and !editTextEmail.text.isEmpty()
+            and !editTextPatientId.text.isEmpty())
     }
 
 }

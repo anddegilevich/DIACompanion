@@ -3,16 +3,17 @@ package com.almazov.diacompanion.export
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.SharedPreferences
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
+import com.almazov.diacompanion.BuildConfig
 import com.almazov.diacompanion.R
 import com.almazov.diacompanion.base.convertDateToMils
 import com.almazov.diacompanion.base.setTwoDigits
@@ -22,22 +23,21 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import org.apache.poi.ss.usermodel.BorderStyle
-import org.apache.poi.ss.usermodel.FillPatternType
-import org.apache.poi.ss.usermodel.IndexedColors
-import org.apache.poi.ss.usermodel.Sheet
+import org.apache.poi.ss.usermodel.*
 import org.apache.poi.ss.util.CellRangeAddress
 import org.apache.poi.ss.util.RegionUtil
 import org.apache.poi.xssf.usermodel.XSSFCellStyle
+import org.apache.poi.xssf.usermodel.XSSFFont
 import org.apache.poi.xssf.usermodel.XSSFSheet
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
+import java.io.File
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.math.abs
-import kotlin.math.round
+
 
 class ExportData : Fragment() {
 
@@ -47,10 +47,10 @@ class ExportData : Fragment() {
 
     private lateinit var globalInfoString: String
 
-    private lateinit var styleRed: XSSFCellStyle
     private lateinit var styleYellow: XSSFCellStyle
-    private lateinit var styleBlue: XSSFCellStyle
     private lateinit var styleNormal: XSSFCellStyle
+    private lateinit var fontRed: XSSFFont
+    private lateinit var fontBlue: XSSFFont
 
     private var dayThreshold: Long = 0
 
@@ -96,6 +96,7 @@ class ExportData : Fragment() {
         val patronymic = sharedPreferences.getString("PATRONYMIC","Отчество")
         val attendingDoctor = sharedPreferences.getString("ATTENDING_DOCTOR","Лечащий врач")
         val birthDate = sharedPreferences.getString("BIRTH_DATE","0")
+        val patientId = sharedPreferences.getInt("PATIENT_ID",1)
         globalInfoString = "Пациент: $secondName $name $patronymic;   " +
                 "Дата рождения: $birthDate;   Лечащий врач: $attendingDoctor;   " +
                 "Программа: DiaCompanion Android $appType"
@@ -107,9 +108,10 @@ class ExportData : Fragment() {
 
         dayThreshold = convertDateToMils(now.format(dateTimeFormatter)) - 7 * 24 * 60 * 60 * 1000
 
-        val fileName = appType + 1 + " " + name + " " + presentDate + ".xlsx"
+        val fileName = "$appType $patientId $secondName $name $patronymic $presentDate.xlsx"
 
         val xlWb = XSSFWorkbook()
+
         styleNormal = xlWb.createCellStyle().apply {
             wrapText = true
             fillForegroundColor = IndexedColors.WHITE.getIndex()
@@ -118,21 +120,24 @@ class ExportData : Fragment() {
             borderRight = BorderStyle.THIN
             borderBottom = BorderStyle.THIN
             borderLeft = BorderStyle.THIN
+            alignment = HorizontalAlignment.CENTER
+            verticalAlignment = VerticalAlignment.CENTER
         }
 
-        styleRed = styleNormal.copy()
-        styleRed.apply {
-            fillForegroundColor = IndexedColors.RED.getIndex()
+        styleYellow = styleNormal.copy().apply {
+            fillForegroundColor = IndexedColors.LEMON_CHIFFON.getIndex()
+            val font = xlWb.createFont().apply {
+                bold = true
+            }
+            setFont(font)
         }
-
-        styleYellow = styleNormal.copy()
-        styleYellow.apply {
-            fillForegroundColor = IndexedColors.YELLOW.getIndex()
+        fontRed = xlWb.createFont().apply {
+            bold = true
+            color = IndexedColors.RED.getIndex()
         }
-
-        styleBlue = styleNormal.copy()
-        styleBlue.apply {
-            fillForegroundColor = IndexedColors.BLUE.getIndex()
+        fontBlue = xlWb.createFont().apply {
+            bold = true
+            color = IndexedColors.BLUE.getIndex()
         }
 
 
@@ -147,41 +152,46 @@ class ExportData : Fragment() {
 
         GlobalScope.launch(Dispatchers.Main) {
 
-            val sugarLevelInsulinSheetCompleted = GlobalScope.async(Dispatchers.Default) {
+            val sugarLevelInsulinSheetCompleted = GlobalScope.async(Dispatchers.Main) {
                 if (xlWsSugarLevelInsulin != null) {
                     getSugarLevelAndInsulinTable(xlWsSugarLevelInsulin)
                 } else true
             }
 
-            val mealSheetCompleted = GlobalScope.async(Dispatchers.Default) {
+            val mealSheetCompleted = GlobalScope.async(Dispatchers.Main) {
                 getMealTable(xlWsMeal)
             }
-            val workoutSleepSheetCompleted = GlobalScope.async(Dispatchers.Default) {
+            val workoutSleepSheetCompleted = GlobalScope.async(Dispatchers.Main) {
                 getWorkoutAndSleepTable(xlWsWorkoutSleep)
             }
-            val weightSheetCompleted = GlobalScope.async(Dispatchers.Default) {
+            val weightSheetCompleted = GlobalScope.async(Dispatchers.Main) {
                 getWeightTable(xlWsWeight)
             }
-            val ketoneSheetCompleted = GlobalScope.async(Dispatchers.Default) {
+            val ketoneSheetCompleted = GlobalScope.async(Dispatchers.Main) {
                 getKetoneTable(xlWsKetone)
             }
-            val fullDaysSheetCompleted = GlobalScope.async(Dispatchers.Default) {
+            val fullDaysSheetCompleted = GlobalScope.async(Dispatchers.Main) {
                 getFullDaysTable(xlWsFullDay)
             }
             if (sugarLevelInsulinSheetCompleted.await() and workoutSleepSheetCompleted.await() and
                 weightSheetCompleted.await() and ketoneSheetCompleted.await() and
                 fullDaysSheetCompleted.await() and mealSheetCompleted.await()) {
 
-                val path = requireContext().getDatabasePath("exportTest.xlsx").path
-                val table = FileOutputStream(path)
+                val externalDirPath = requireContext().getExternalFilesDir(null)
+                val directory = File(externalDirPath, "export")
+                directory.mkdirs()
+                val file = File(directory, fileName)
 
-                xlWb.write(table)
+                val outputStream = FileOutputStream(file)
+
+                xlWb.write(outputStream)
                 xlWb.close()
-                table.flush()
-                table.close()
 
-
-                val uriPath = Uri.parse(path)
+                val uriPath = FileProvider.getUriForFile(
+                    requireContext(),
+                    BuildConfig.APPLICATION_ID + ".provider",
+                    file
+                )
 
                 if (send){
 
@@ -194,21 +204,29 @@ class ExportData : Fragment() {
                             "Основные приемы пищи: " + mealsMain +
                             "% (" + (allMeals - snacks) + "/" + allMeals + ")\n" +
                             "Записаны при приеме пищи: " + mealsOnTime +
-                            "% (" + onTime + "/" + allMeals + ")\n";
+                            "% (" + onTime + "/" + allMeals + ")\n"
                     val dangerLevel = if (bgBadPpgr > 1) "!!"
                     else if ((bgHighFasting + bgHighFood).toDouble() / bgTotal > 1/3) "!"
                     else ""
 
-                    val sendTo = arrayListOf<String>("deg548@gmail.com")
-                    val title = "$dangerLevel title"
+                    val doctorEmail = when (attendingDoctor) {
+                        "Анопова Анна Дмитриевна" -> "anopova.ann@gmail.com"
+                        "Болотько Яна Алексеевна" -> "yanabolotko@gmail.com"
+                        "Дронова Александра Владимировна" -> "aleksandra-dronova@yandex.ru"
+                        "Попова Полина Викторовна" -> "pvpopova@ya.ru"
+                        "Ткачук Александра Сергеевна" -> "aleksandra.tkachuk.1988@mail.ru"
+                        "Васюкова Елена Андреевна" -> "elenavasukova2@gmail.com"
+                        else -> ""
+                    }
+                    val sendTo = arrayOf("diacompanion@gmail.com", doctorEmail)
+
+                    val title = "$dangerLevel$appType $patientId $secondName $name $patronymic - Дневник наблюдения"
 
                     val emailIntent = Intent(Intent.ACTION_SEND)
-                    emailIntent.type = "vnd.android.cursor.dir/email"
                     emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                     emailIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-                    val type = "application/vnd.ms-excel"
-                    emailIntent.setDataAndType(uriPath, type)
-                    emailIntent.putExtra(Intent.EXTRA_EMAIL, "deg548@gmail.com")
+                    emailIntent.setDataAndType(uriPath, "vnd.android.cursor.dir/email")
+                    emailIntent.putExtra(Intent.EXTRA_EMAIL, sendTo)
                     emailIntent.putExtra(
                         Intent.EXTRA_TEXT,
                         emailText
@@ -219,13 +237,11 @@ class ExportData : Fragment() {
                         Intent.createChooser(emailIntent, "Отправить email..."))
 
                 } else {
-                    val excelIntent = Intent()
-                    excelIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    val excelIntent = Intent(Intent.ACTION_VIEW)
                     excelIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                     excelIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-                    excelIntent.action = Intent.ACTION_VIEW
                     excelIntent.setDataAndType(uriPath, "application/vnd.ms-excel")
-                    excelIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    excelIntent.putExtra(Intent.EXTRA_STREAM, uriPath)
                     val chooserIntent = Intent.createChooser(excelIntent, "Открыть дневник наблюдения")
                     try {
                         startActivity(chooserIntent)
@@ -358,9 +374,9 @@ class ExportData : Fragment() {
             val style = styleNormal.copy().apply {
                 if ((appType == "GDMRCT") or (appType == "GDM")) {
                     fillForegroundColor = if (date.bool) {
-                        IndexedColors.SKY_BLUE.getIndex()
+                        IndexedColors.LIGHT_GREEN.index
                     } else {
-                        IndexedColors.SEA_GREEN.getIndex()
+                        IndexedColors.LIGHT_TURQUOISE.index
                     }
                 }
             }
@@ -369,9 +385,11 @@ class ExportData : Fragment() {
                 try {
                     while  (mealList[j].recordEntity.date == date.date) {
 
-                        allMeals += 1
-                        if (mealList[j].mealWithFoods.mealEntity.type == "Перекус") snacks += 1
-                        if (abs(mealList[j].recordEntity.dateInMilli!! - mealList[j].recordEntity.dateSubmit!!) < 1) onTime += 1
+                        if (dayThreshold < mealList[j].recordEntity.dateInMilli!!) {
+                            allMeals += 1
+                            if (mealList[j].mealWithFoods.mealEntity.type == "Перекус") snacks += 1
+                            if (abs(mealList[j].recordEntity.dateInMilli!! - mealList[j].recordEntity.dateSubmit!!) < 3600000) onTime += 1
+                        }
 
                         sheet.createRow(i).apply {
 
@@ -734,9 +752,9 @@ class ExportData : Fragment() {
                 val style = styleNormal.copy().apply {
                     if ((appType == "GDMRCT") or (appType == "GDM")) {
                         fillForegroundColor = if (date.bool) {
-                            IndexedColors.SKY_BLUE.getIndex()
+                            IndexedColors.LIGHT_GREEN.getIndex()
                         } else {
-                            IndexedColors.SEA_GREEN.getIndex()
+                            IndexedColors.LIGHT_TURQUOISE.getIndex()
                         }
                     }
                 }
@@ -750,7 +768,7 @@ class ExportData : Fragment() {
 
                 createCell(1).apply {
                     setCellValue(date.date)
-                    cellStyle = styleNormal
+                    cellStyle = style
                 }
                 if (carbo[j].second == date.date) {
                     val carboDay = mutableListOf<Double>()
@@ -936,9 +954,9 @@ class ExportData : Fragment() {
                 val style = styleNormal.copy().apply {
                     if ((appType == "GDMRCT") or (appType == "GDM")) {
                         fillForegroundColor = if (date.bool) {
-                            IndexedColors.SKY_BLUE.getIndex()
+                            IndexedColors.LIGHT_GREEN.getIndex()
                         } else {
-                            IndexedColors.SEA_GREEN.getIndex()
+                            IndexedColors.LIGHT_TURQUOISE.getIndex()
                         }
                     }
                 }
@@ -1033,9 +1051,9 @@ class ExportData : Fragment() {
                 val style = styleNormal.copy().apply {
                     if ((appType == "GDMRCT") or (appType == "GDM")) {
                         fillForegroundColor = if (date.bool) {
-                            IndexedColors.SKY_BLUE.getIndex()
+                            IndexedColors.LIGHT_GREEN.getIndex()
                         } else {
-                            IndexedColors.SEA_GREEN.getIndex()
+                            IndexedColors.LIGHT_TURQUOISE.getIndex()
                         }
                     }
                 }
@@ -1171,9 +1189,9 @@ class ExportData : Fragment() {
                 val style = styleNormal.copy().apply {
                     if ((appType == "GDMRCT") or (appType == "GDM")) {
                         fillForegroundColor = if (date.bool) {
-                            IndexedColors.SKY_BLUE.getIndex()
+                            IndexedColors.LIGHT_GREEN.getIndex()
                         } else {
-                            IndexedColors.SEA_GREEN.getIndex()
+                            IndexedColors.LIGHT_TURQUOISE.getIndex()
                         }
                     }
                 }
@@ -1250,7 +1268,7 @@ class ExportData : Fragment() {
 
     private suspend fun getSugarLevelAndInsulinTable(sheet: XSSFSheet): Boolean{
 
-        sheet.defaultColumnWidth = 9
+        sheet.defaultColumnWidth = 10
         sheet.setColumnWidth(0, 5000)
         sheet.setColumnWidth(16, 5000)
         sheet.setColumnWidth(19, 5000)
@@ -1372,9 +1390,9 @@ class ExportData : Fragment() {
                 val style = styleNormal.copy().apply {
                     if ((appType == "GDMRCT") or (appType == "GDM")) {
                         fillForegroundColor = if (date.bool) {
-                            IndexedColors.SKY_BLUE.getIndex()
+                            IndexedColors.LIGHT_GREEN.getIndex()
                         } else {
-                            IndexedColors.SEA_GREEN.getIndex()
+                            IndexedColors.LIGHT_TURQUOISE.getIndex()
                         }
                     }
                 }
@@ -1438,15 +1456,23 @@ class ExportData : Fragment() {
                             cellValue = sugarLevel.toString()
                             cellTime = sugarLevelList[j].recordEntity.time!!
                         }
+                        val styleNotice = style.copy().apply {
+                            if (sugarLevel > 6.8) {
+                                val font = fontRed
+                                setFont(font)
+                            } else if (sugarLevel < 4){
+                                val font = fontBlue
+                                setFont(font)
+                            }
+
+                        }
                         createCell(columnIndex).apply {
                             setCellValue(cellValue)
-                            cellStyle = if (sugarLevel > 6.8) styleRed
-                            else if (sugarLevel < 4) styleBlue
-                            else style
+                            cellStyle = styleNotice
                         }
                         createCell(columnIndex + 1).apply {
                             setCellValue(cellTime)
-                            cellStyle = style
+                            cellStyle = styleNotice
                         }
                         j += 1
                     }

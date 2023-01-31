@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
@@ -66,6 +67,20 @@ class InsulinAddRecord : Fragment() {
             R.array.InsulinSpinner1,
             R.layout.spinner_item
         )
+
+        spinner1_insulin.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parentView: AdapterView<*>?,
+                selectedItemView: View?,
+                position: Int,
+                id: Long
+            ) {
+                setupSpinnerPreferences(tv_Date.text.toString())
+            }
+
+            override fun onNothingSelected(parentView: AdapterView<*>?) {
+            }
+        }
 
         spinnerStringArray = resources.getStringArray(R.array.InsulinSpinner2)
         spinnerAdapter = CustomStringAdapter(requireContext(),
@@ -184,6 +199,10 @@ class InsulinAddRecord : Fragment() {
             for (pref in prefs) {
                 if ((pref != spinnerStringArray[0]) and (pref != spinnerStringArray[4]))
                     items.add(spinnerStringArray.indexOf(pref))
+            }
+            if (spinner1_insulin.selectedItem.toString() != "Пролонгированный") {
+                items.add(spinnerStringArray.indexOf("Натощак"))
+                if (spinner2_insulin.selectedItem.toString() == "Натощак") spinner2_insulin.setSelection(4)
             }
             spinnerAdapter.setItemsToHide(items)
             if (spinner2_insulin.selectedItem.toString() in prefs) spinner2_insulin.setSelection(4)

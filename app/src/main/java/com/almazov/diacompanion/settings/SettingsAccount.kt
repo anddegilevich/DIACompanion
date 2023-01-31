@@ -68,7 +68,7 @@ class SettingsAccount : Fragment() {
             patronymic = sharedPreferences.getString("PATRONYMIC","")!!
             birthDate = sharedPreferences.getString("BIRTH_DATE","01.01.2000")!!
             pregnancyDate = sharedPreferences.getString("PREGNANCY_DATE","01.01.2000")!!
-            weigth = sharedPreferences.getFloat("WEIGHT",0f)
+            weigth = sharedPreferences.getFloat("WEIGHT_BEFORE_PREGNANCY",0f)
             heigth = sharedPreferences.getFloat("HEIGHT",0f)
             phone = sharedPreferences.getString("PHONE","")!!
             email = sharedPreferences.getString("EMAIL","")!!
@@ -93,7 +93,7 @@ class SettingsAccount : Fragment() {
 
         view.btn_save.setOnClickListener {
             if (fieldsAreFilled()) {
-                applyChanges()
+                applyChanges(finished)
                 if (finished)
                     findNavController().popBackStack()
                 else
@@ -110,7 +110,7 @@ class SettingsAccount : Fragment() {
     return view
     }
 
-    private fun applyChanges() {
+    private fun applyChanges(finished: Boolean) {
         name = editTextFirstName.text.toString()
         secondName = editTextLastName.text.toString()
         patronymic = editTextPatronymic.text.toString()
@@ -130,11 +130,15 @@ class SettingsAccount : Fragment() {
             putString("SECOND_NAME",secondName)
             putString("PATRONYMIC",patronymic)
             putString("BIRTH_DATE",birthDate)
-            putFloat("WEIGHT",weigth)
+            putFloat("WEIGHT_BEFORE_PREGNANCY",weigth)
+            if (!finished) {
+                val bmi  = weigth/heigth.pow(2)
+                putFloat("WEIGHT",weigth)
+                putFloat("BMI",bmi)
+            }
             putFloat("HEIGHT",heigth)
             putString("PHONE",phone)
             putString("EMAIL",email)
-            putFloat("BMI",bmi)
             putString("ATTENDING_DOCTOR",attendingDoctor)
             putInt("PATIENT_ID",patientId)
             if ((apptype == "GDMRCT") or (apptype == "GDM")){

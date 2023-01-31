@@ -2,6 +2,7 @@ package com.almazov.diacompanion.add_record
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
@@ -17,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.preference.PreferenceManager
 import com.almazov.diacompanion.R
 import com.almazov.diacompanion.base.convertDateToMils
 import com.almazov.diacompanion.base.editTextSeekBarSetup
@@ -42,6 +44,9 @@ class SugarLevelAddRecord : Fragment() {
     private val args by navArgs<SugarLevelAddRecordArgs>()
     private lateinit var spinnerAdapter: CustomStringAdapter
     private lateinit var spinnerStringArray: Array<String>
+
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var appType: String
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -53,6 +58,9 @@ class SugarLevelAddRecord : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        appType = sharedPreferences.getString("APP_TYPE","GDM RCT")!!
 
         appDatabaseViewModel = ViewModelProvider(this)[AppDatabaseViewModel::class.java]
 
@@ -171,6 +179,7 @@ class SugarLevelAddRecord : Fragment() {
                 if ((pref != spinnerStringArray[0]) and (pref != spinnerStringArray[5]))
                 items.add(spinnerStringArray.indexOf(pref))
             }
+            if (appType == "MS") items.add(spinnerStringArray.indexOf("При родах"))
             spinnerAdapter.setItemsToHide(items)
             if (spinner_sugar_level.selectedItem.toString() in prefs) spinner_sugar_level.setSelection(0)
         })

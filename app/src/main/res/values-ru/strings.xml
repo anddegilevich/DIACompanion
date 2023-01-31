@@ -221,7 +221,7 @@
     <string name="NotificationRemember">Не забудьте ввести информацию о своей активности за день</string>
     <string name="EnableNotifications">Включить уведомления</string>
     <string name="HeightSm">Рост, см</string>
-    <string name="WeightKg">Вес до беременности, кг</string>
+    <string name="WeightKg">Вес до начала исследований, кг</string>
     <string name="NotificationFillAllFields">Пожалуйста заполните все обязательные поля, чтобы продолжить</string>
     <string name="MealName">Название</string>
     <string name="WeightG">Вес, гр.</string>
@@ -229,4 +229,5 @@
     <string name="PresentDay">Текущий день</string>
     <string name="PatientId">ID Пациента</string>
     <string name="TimeDateSleep">Время пробуждения &amp; дата</string>
+    <string name="WeightKgPregnancy">Вес до беременности, кг</string>
 </resources>

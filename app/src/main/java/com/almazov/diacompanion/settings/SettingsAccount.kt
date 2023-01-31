@@ -56,6 +56,7 @@ class SettingsAccount : Fragment() {
             view.tv_pregnancy_date.setOnClickListener {
                 openDatePicker(requireFragmentManager(), tv_pregnancy_date)
             }
+            view.tv_weight_kg.setText(R.string.WeightKgPregnancy)
         }
 
         view.editTextPhone.addTextChangedListener(PhoneNumberFormattingTextWatcher())

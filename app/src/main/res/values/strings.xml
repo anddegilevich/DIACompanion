@@ -68,6 +68,7 @@
     <string name="Height">Height</string>
     <string name="HeightSm">Height, sm</string>
     <string name="WeightKg">Weight, kg</string>
+    <string name="WeightKgPregnancy">Weight, kg</string>
     <string name="AttendingDoctor">Attending doctor</string>
     <string name="PatientId">Patient ID</string>
     <string name="PregnancyStart">Date of the beginning of pregnancy</string>

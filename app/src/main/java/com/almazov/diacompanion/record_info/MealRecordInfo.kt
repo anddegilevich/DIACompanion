@@ -210,7 +210,7 @@ class MealRecordInfo : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
     }
 
     private fun getYesterdayDate(today: String): String {
-        val formatter = SimpleDateFormat("dd.MM.yyyy")
+        val formatter = SimpleDateFormat("dd.MM.yyyy", Locale("ru"))
         val date1 = formatter.parse(today)
 
         val calendar = Calendar.getInstance()

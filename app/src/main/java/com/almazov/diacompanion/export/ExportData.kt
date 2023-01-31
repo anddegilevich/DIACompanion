@@ -102,8 +102,8 @@ class ExportData : Fragment() {
                 "Программа: DiaCompanion Android $appType"
 
         val now = LocalDateTime.now()
-        val dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy", Locale.ROOT)
-        val dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm dd.MM.yyyy", Locale.ROOT)
+        val dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy", Locale("ru"))
+        val dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm dd.MM.yyyy", Locale("ru"))
         val presentDate = now.format(dateFormatter)
 
         dayThreshold = convertDateToMils(now.format(dateTimeFormatter)) - 7 * 24 * 60 * 60 * 1000
@@ -637,7 +637,7 @@ class ExportData : Fragment() {
                                 cellStyle = style
                             }
 
-                            val formatter = SimpleDateFormat("HH:mm dd.MM.yyyy")
+                            val formatter = SimpleDateFormat("HH:mm dd.MM.yyyy", Locale("ru"))
                             val calendar = Calendar.getInstance()
                             calendar.timeInMillis = mealList[j].recordEntity.dateSubmit!!
                             val dateString = formatter.format(calendar.time)
@@ -1560,7 +1560,7 @@ class ExportData : Fragment() {
 
     private fun getDates(firstDate: String, lastDate: String): MutableList<ExportDate> {
         val dates = mutableListOf<ExportDate>()
-        val formatter = SimpleDateFormat("dd.MM.yyyy")
+        val formatter = SimpleDateFormat("dd.MM.yyyy", Locale("ru"))
         val date1 = formatter.parse(firstDate)
         val date2 = formatter.parse(lastDate)
 

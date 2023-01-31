@@ -72,9 +72,9 @@ fun editTextSeekBarSetup(min: Int, max: Int, editText: EditText, seekBar: SeekBa
 @RequiresApi(Build.VERSION_CODES.O)
 fun timeDateSelectSetup(fragmentManager: FragmentManager, tvTime: TextView, tvDate: TextView): Long {
     val now = LocalDateTime.now()
-    val timeFormatter = DateTimeFormatter.ofPattern("HH:mm", Locale.ROOT)
-    val dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy", Locale.ROOT)
-    val timeDateFormatter = DateTimeFormatter.ofPattern("HH:mm dd.MM.yyyy", Locale.ROOT)
+    val timeFormatter = DateTimeFormatter.ofPattern("HH:mm", Locale("ru"))
+    val dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy", Locale("ru"))
+    val timeDateFormatter = DateTimeFormatter.ofPattern("HH:mm dd.MM.yyyy", Locale("ru"))
 
     tvTime.text = now.format(timeFormatter)
     tvDate.text = now.format(dateFormatter)
@@ -98,7 +98,7 @@ fun openDatePicker(fragmentManager: FragmentManager, tvDate: TextView) {
     val myFormat = "dd.MM.yyyy"
     val date = tvDate.text.toString()
 
-    val sPV = SimpleDateFormat(myFormat)
+    val sPV = SimpleDateFormat(myFormat, Locale("ru"))
     val curDate = sPV.parse(date)
     val timeInMillis = curDate.time
 
@@ -118,11 +118,11 @@ fun openDatePicker(fragmentManager: FragmentManager, tvDate: TextView) {
 
 @RequiresApi(Build.VERSION_CODES.O)
 private fun openTimePicker(fragmentManager: FragmentManager, tvTime: TextView){
-    val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
+    val timeFormatter = DateTimeFormatter.ofPattern("HH:mm", Locale("ru"))
 
     val now = LocalTime.parse(tvTime.text, timeFormatter)
-    val hourFormatter = DateTimeFormatter.ofPattern("HH")
-    val minuteFormatter = DateTimeFormatter.ofPattern("mm")
+    val hourFormatter = DateTimeFormatter.ofPattern("HH", Locale("ru"))
+    val minuteFormatter = DateTimeFormatter.ofPattern("mm", Locale("ru"))
 
     val currentHour = now.format(hourFormatter)
     val currentMinute = now.format(minuteFormatter)
@@ -156,9 +156,9 @@ private fun openTimePicker(fragmentManager: FragmentManager, tvTime: TextView){
 }
 
 fun convertDateToMils(date: String): Long {
-    val formatter = DateTimeFormatter.ofPattern("HH:mm dd.MM.yyyy")
+    val formatter = DateTimeFormatter.ofPattern("HH:mm dd.MM.yyyy", Locale("ru"))
     val localDate = LocalDateTime.parse(date, formatter)
-    return localDate.atOffset(ZoneOffset.UTC).toInstant().toEpochMilli()
+    return localDate.atOffset(ZoneOffset.ofHours(3)).toInstant().toEpochMilli()
 }
 
 fun slideView(

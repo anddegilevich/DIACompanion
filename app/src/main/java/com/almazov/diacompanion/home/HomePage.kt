@@ -145,7 +145,7 @@ class HomePage : Fragment(), InterfaceRecordsInfo {
             tv_name.text = secondName + " " + name[0] + ". " + patronymic[0] + "."
 
             val now = LocalDateTime.now()
-            val dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy", Locale.ROOT)
+            val dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy", Locale("ru"))
             val presentDate = now.format(dateFormatter)
             tv_present_date.text = presentDate
 

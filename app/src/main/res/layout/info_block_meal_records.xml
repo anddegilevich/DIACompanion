@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_meal_records"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="7dp"
+        android:clickable="true"
+        android:layout_margin="10dp"
+        android:outlineSpotShadowColor="?attr/shadow_color"
+        tools:targetApi="p">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?attr/panel_color"
+            android:padding="4dp">
+
+            <TextView
+                android:text="2.4 Записи о приеме пищи"
+                style="@style/MainText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </FrameLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:animateLayoutChanges="true"
+        android:id="@+id/info_meal_records"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/SmallText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\tДля добавления продуктов в список при создании записи о приеме пищи необходимо нажать на кнопку с изображением плюса. Она откроет страницу поиска по базе данных продуктов."
+            android:justificationMode="inter_word"/>
+
+        <TextView
+            style="@style/SmallText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\tПродукты представлены в виде списка карточек, который пользователь может пролистывать. На каждой карточке представлено название продукта, количество белков (Б), жиров (Ж), углеводов (У), килокалорий (К) и гликемический индекс (ГИ) рассчитанные на 100 грамм продукта."
+            android:justificationMode="inter_word"/>
+
+        <TextView
+            style="@style/SmallText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\tСправа на карточках есть кнопка в виде звезды, которая позволяет добавить продукт в избранное. Выбранные продукты появляются первыми в списке продуктов, что позволяет быстро их находить."
+            android:justificationMode="inter_word"/>
+
+        <TextView
+            style="@style/SmallText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\tРядом с иконкой избранных продуктов может присутствовать иконка в виде красного поварского колпака, которая говорит, что данный продукт является рецептом, внесенным пользователем. Собственные блюда также можно добавлять в избранные продукты."
+            android:justificationMode="inter_word"/>
+
+        <TextView
+            style="@style/SmallText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\tВверху страницы расположена строка поиска. Если ввести туда название продукта, то в списке останутся только продукты, содержащие введенное название."
+            android:justificationMode="inter_word"/>
+
+        <TextView
+            style="@style/SmallText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\tСправа от окна поиска расположена кнопка настроек сортировки, при нажатии на которую вверху открывается параметры сортировки. Можно выбрать определенную категорию продуктов, а также параметр и направление ранжирования. Стрелка вниз означает сортировку от большего к меньшему, вверх – от меньшего к большему."
+            android:justificationMode="inter_word"/>
+
+        <TextView
+            style="@style/SmallText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\tПри выборе продукта открывается диалоговое окно с выбором массы продукта."
+            android:justificationMode="inter_word"/>
+
+        <TextView
+            style="@style/SmallText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\tДобавленные продукты сохраняются в виде элементов списка. Для каждого продукта представлены их название, вес, ГИ и вклад в гликемическую нагрузку (ГН) в процентном соотношении. Гликемический индекс выделяется цветом в зависимости от величины. Красный для продуктов с высоким ГИ, оранжевый для среднего и зеленый для малого."
+            android:justificationMode="inter_word"/>
+
+        <TextView
+            style="@style/SmallText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\tПри нажатии на карточку снизу от продукта откроется его рецепт, если таковой существует. При нажатии на вес продукта в списке можно повторно вызвать окно выбора массы."
+            android:justificationMode="inter_word"/>
+
+        <TextView
+            style="@style/SmallText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\tДля удаления записи необходимо смахнуть элемент списка влево."
+            android:justificationMode="inter_word"/>
+
+        <TextView
+            style="@style/SmallText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\tПри выставлении галочки на Уровень сахара в крови открывается соответственное поле для ввода."
+            android:justificationMode="inter_word"/>
+
+        <TextView
+            style="@style/SmallText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\tПри вводе уровня сахара до еды и хотя бы одного продукта производится прогнозирование уровня сахара в крови после еды (если выбран соответствующий тип приложения). На основе рассчитанного значения и введенных данных формируется рекомендация по корректировки приема пищи, которая отображается в окне сверху."
+            android:justificationMode="inter_word"/>
+
+    </LinearLayout>
+
+</LinearLayout>

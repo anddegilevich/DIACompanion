@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/card_help"
+        android:id="@+id/card_add_record"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="16dp"
@@ -24,8 +24,7 @@
             android:padding="4dp">
 
             <TextView
-                android:text="Помощь"
-
+                android:text="2.3 Добавление записи"
                 style="@style/MainText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
@@ -36,7 +35,7 @@
 
     <LinearLayout
         android:animateLayoutChanges="true"
-        android:id="@+id/info_help"
+        android:id="@+id/info_add_record"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical">
@@ -45,21 +44,28 @@
             style="@style/SmallText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="\tПо вопросам работы с приложением - обращайтесь по адресу электронной почты:"
-            android:justificationMode="inter_word"/>
-
-        <TextView
-            style="@style/MainText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="\tdeg548@gmail.com"
+            android:text="\tПри нажатии на кнопку. Добавить новую запись на главной странице откроется страница  выбора категории записей."
             android:justificationMode="inter_word"/>
 
         <TextView
             style="@style/SmallText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="\tИспользуя данное приложение вы соглашаетесь с тем, что ваши персональные данные будут храниться на вашем устройстве в виде закрытой базы данных и XLS-таблиц. Передача ваших данных осуществляется только в виде лично отправляемых вами лечащему врачу электронных писем. Ни при каких условиях ни в каких иных формах ваши данные не будут переданы третьим лицам."
+            android:text="\tСуществует 7 доступных категорий: уровень сахара, инсулин, прием пищи, физическая активность, сон, вес и кетонурия. Некоторые категории могут быть недоступны для выбранного типа приложения."
+            android:justificationMode="inter_word"/>
+
+        <TextView
+            style="@style/SmallText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\tПри выборе категории путем нажатия на соответственную карточку открывается страница ввода данных. Вводимые данные отличаются в зависимости от категории записи."
+            android:justificationMode="inter_word"/>
+
+        <TextView
+            style="@style/SmallText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\tДля сохранения записи необходимо нажать кнопку сохранить, возвращающую пользователя на домашнюю страницу. Важно, что для сохранения записи необходимо заполнить все обязательные поля."
             android:justificationMode="inter_word"/>
 
     </LinearLayout>

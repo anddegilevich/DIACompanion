@@ -18,7 +18,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:dividerThickness="2dp"
-        app:dividerColor="?attr/category_color"/>
+        android:background="?attr/category_color"
+            app:dividerColor="?attr/category_color"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -33,6 +34,14 @@
             android:orientation="vertical">
 
             <include layout="@layout/info_block_about_app" />
+
+            <TextView
+                android:textAlignment="center"
+                style="@style/Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Гестационный сахарный диабет (ГСД)"/>
+
             <include layout="@layout/info_block_gsd" />
             <include layout="@layout/info_block_eating_habits" />
             <include layout="@layout/info_block_pv" />
@@ -40,6 +49,23 @@
             <include layout="@layout/info_block_physical_act" />
             <include layout="@layout/info_block_gi" />
             <include layout="@layout/info_block_help" />
+
+            <TextView
+                android:textAlignment="center"
+                style="@style/Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Руководство пользователя"/>
+
+            <include layout="@layout/info_block_home_page" />
+            <include layout="@layout/info_block_settings" />
+            <include layout="@layout/info_block_add_record" />
+            <include layout="@layout/info_block_meal_records" />
+            <include layout="@layout/info_block_record_history" />
+            <include layout="@layout/info_block_record_updates" />
+            <include layout="@layout/info_block_recipe" />
+            <include layout="@layout/info_block_export" />
+
 
         </LinearLayout>
 

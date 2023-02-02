@@ -21,7 +21,7 @@
     <string name="Sleep">Сон</string>
     <string name="Weight">Вес</string>
     <string name="Ketone">Кетонурия</string>
-    <string name="mmoll">ммол/л</string>
+    <string name="mmoll">ммоль/л</string>
     <string name="units">ед.</string>
     <string name="kkal">ккал</string>
     <string name="min">мин.</string>
@@ -228,6 +228,6 @@
     <string name="GL">ГН, %</string>
     <string name="PresentDay">Текущий день</string>
     <string name="PatientId">ID Пациента</string>
-    <string name="TimeDateSleep">Время пробуждения &amp; дата</string>
+    <string name="TimeDateSleep">Время и дата пробуждения</string>
     <string name="WeightKgPregnancy">Вес до беременности, кг</string>
 </resources>

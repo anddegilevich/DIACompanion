@@ -22,7 +22,7 @@ open class SelectWeightDialog(context: Context, val weight: Double?): DialogFrag
     ): View? {
         val view =  inflater.inflate(R.layout.select_weight_dialog, container, false)
 
-        val weightMin = 0
+        val weightMin = 1
         val weightMax = 500
 
         editTextSeekBarSetup(weightMin, weightMax, view.edit_text_weight, view.seek_bar_weight)

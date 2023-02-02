@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/card_help"
+        android:id="@+id/card_recipe"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="16dp"
@@ -24,8 +24,7 @@
             android:padding="4dp">
 
             <TextView
-                android:text="Помощь"
-
+                android:text="2.7 Добавление рецептов"
                 style="@style/MainText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
@@ -36,7 +35,7 @@
 
     <LinearLayout
         android:animateLayoutChanges="true"
-        android:id="@+id/info_help"
+        android:id="@+id/info_recipe"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical">
@@ -45,21 +44,28 @@
             style="@style/SmallText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="\tПо вопросам работы с приложением - обращайтесь по адресу электронной почты:"
-            android:justificationMode="inter_word"/>
-
-        <TextView
-            style="@style/MainText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="\tdeg548@gmail.com"
+            android:text="\tНа странице Книга рецептов представлен список блюд созданных пользователем. При нажатии на блюдо. Открывается страница для его редактирования."
             android:justificationMode="inter_word"/>
 
         <TextView
             style="@style/SmallText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="\tИспользуя данное приложение вы соглашаетесь с тем, что ваши персональные данные будут храниться на вашем устройстве в виде закрытой базы данных и XLS-таблиц. Передача ваших данных осуществляется только в виде лично отправляемых вами лечащему врачу электронных писем. Ни при каких условиях ни в каких иных формах ваши данные не будут переданы третьим лицам."
+            android:text="\tВ правом верхнем углу располагается кнопка Добавить рецепт с изображением плюса."
+            android:justificationMode="inter_word"/>
+
+        <TextView
+            style="@style/SmallText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\tПри создании рецепта необходимо ввести его название, категорию из предложенных и добавить продукты, являющиеся составными частями блюда."
+            android:justificationMode="inter_word"/>
+
+        <TextView
+            style="@style/SmallText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\tНа основе введенных данных приложение создаст новое блюдо и рассчитает для него количество нутриентов на 100 грамм продукта."
             android:justificationMode="inter_word"/>
 
     </LinearLayout>

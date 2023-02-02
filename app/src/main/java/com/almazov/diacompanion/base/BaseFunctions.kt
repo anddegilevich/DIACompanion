@@ -175,6 +175,6 @@ fun slideView(
 }
 
 fun setTwoDigits(double: Double): Double{
-    return BigDecimal(double).setScale(2, BigDecimal.ROUND_HALF_DOWN).toDouble()
+    return BigDecimal(double).setScale(1, BigDecimal.ROUND_HALF_DOWN).toDouble()
 }
 

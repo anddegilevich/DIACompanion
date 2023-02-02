@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/card_help"
+        android:id="@+id/card_export"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="16dp"
@@ -24,8 +24,7 @@
             android:padding="4dp">
 
             <TextView
-                android:text="Помощь"
-
+                android:text="2.8 Экспорт"
                 style="@style/MainText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
@@ -36,7 +35,7 @@
 
     <LinearLayout
         android:animateLayoutChanges="true"
-        android:id="@+id/info_help"
+        android:id="@+id/info_export"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical">
@@ -45,21 +44,35 @@
             style="@style/SmallText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="\tПо вопросам работы с приложением - обращайтесь по адресу электронной почты:"
-            android:justificationMode="inter_word"/>
-
-        <TextView
-            style="@style/MainText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="\tdeg548@gmail.com"
+            android:text="\tНа странице экспорта представлено два варианта экспорта записанных данных в Excel таблицу:"
             android:justificationMode="inter_word"/>
 
         <TextView
             style="@style/SmallText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="\tИспользуя данное приложение вы соглашаетесь с тем, что ваши персональные данные будут храниться на вашем устройстве в виде закрытой базы данных и XLS-таблиц. Передача ваших данных осуществляется только в виде лично отправляемых вами лечащему врачу электронных писем. Ни при каких условиях ни в каких иных формах ваши данные не будут переданы третьим лицам."
+            android:text="\t-Показать в таблице. Создает таблицу на вашем устройстве и открывает ее с помощью установленной программы на вашем устройстве."
+            android:justificationMode="inter_word"/>
+
+        <TextView
+            style="@style/SmallText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\t-Отправить врачу. Создает таблицу и формирует электронное письмо для отправки его лечащему врачу."
+            android:justificationMode="inter_word"/>
+
+        <TextView
+            style="@style/SmallText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\tВо время процесса создания таблице на экране отображается колесо загрузки. Когда компиляция будет завершена появится зеленая галочка и приложение перейдет на домашнюю страницу."
+            android:justificationMode="inter_word"/>
+
+        <TextView
+            style="@style/SmallText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\tЗаметьте, что чтобы открыть Excel таблицу или отправить ее по почте на устройстве должны быту установлены соответственные приложения для выполнения этих действий."
             android:justificationMode="inter_word"/>
 
     </LinearLayout>

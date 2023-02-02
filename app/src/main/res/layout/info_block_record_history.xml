@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/card_help"
+        android:id="@+id/card_record_history"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="16dp"
@@ -24,8 +24,7 @@
             android:padding="4dp">
 
             <TextView
-                android:text="Помощь"
-
+                android:text="2.5 История записей"
                 style="@style/MainText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
@@ -36,7 +35,7 @@
 
     <LinearLayout
         android:animateLayoutChanges="true"
-        android:id="@+id/info_help"
+        android:id="@+id/info_record_history"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical">
@@ -45,21 +44,28 @@
             style="@style/SmallText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="\tПо вопросам работы с приложением - обращайтесь по адресу электронной почты:"
-            android:justificationMode="inter_word"/>
-
-        <TextView
-            style="@style/MainText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="\tdeg548@gmail.com"
+            android:text="\tНа странице истории записей записи представлены в виде списка карточек, который можно пролистывать вертикальными взмахами. Записи сгруппированы по дням и отсортированы от новых к старым."
             android:justificationMode="inter_word"/>
 
         <TextView
             style="@style/SmallText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="\tИспользуя данное приложение вы соглашаетесь с тем, что ваши персональные данные будут храниться на вашем устройстве в виде закрытой базы данных и XLS-таблиц. Передача ваших данных осуществляется только в виде лично отправляемых вами лечащему врачу электронных писем. Ни при каких условиях ни в каких иных формах ваши данные не будут переданы третьим лицам."
+            android:text="\tПри нажатии на запись откроется подробная информация о ней."
+            android:justificationMode="inter_word"/>
+
+        <TextView
+            style="@style/SmallText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\tРядом с каждой датой находится галочка. Она используется для обозначения дней, когда пользователь ввел все активности, выполненные им за день."
+            android:justificationMode="inter_word"/>
+
+        <TextView
+            style="@style/SmallText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\tВ правом верхнем углу страницы находится кнопка настроек, которая позволяет выбрать категорию записей, которая будет отображена."
             android:justificationMode="inter_word"/>
 
     </LinearLayout>

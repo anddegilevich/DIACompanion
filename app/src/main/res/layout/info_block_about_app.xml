@@ -25,7 +25,6 @@
 
             <TextView
                 android:text = "О приложении"
-                android:id="@+id/info_block_title"
                 style="@style/MainText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>

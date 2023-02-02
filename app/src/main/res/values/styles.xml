@@ -5,7 +5,9 @@
     <style name="Button">
         <item name="android:textSize">22sp</item>
         <item name="android:padding">6dp</item>
-        <item name="android:backgroundTint">?attr/category_color</item>
+        <item name="colorAccent">?attr/category_color</item>
+        <item name="backgroundTint">?attr/category_color</item>
+
         <item name="android:textAllCaps">false</item>
         <item name="fontFamily">@font/open_sans</item>
         <item name="android:textColor">?attr/button_color</item>

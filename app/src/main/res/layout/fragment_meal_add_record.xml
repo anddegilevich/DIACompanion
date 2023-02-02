@@ -54,7 +54,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:dividerThickness="2dp"
-        app:dividerColor="?attr/category_color"/>
+        android:background="?attr/category_color"
+            app:dividerColor="?attr/category_color"/>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -139,7 +140,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:src="@drawable/plus"
-                android:background="?attr/category_color"/>
+                android:background="?attr/category_color"
+            app:dividerColor="?attr/category_color"/>
 
             <LinearLayout
                 android:id="@+id/layout_pcos"

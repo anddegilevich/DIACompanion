@@ -15,6 +15,7 @@
             android:layout_weight="0.3"
             android:layout_height="wrap_content"
             app:dividerThickness="2dp"
+            android:background="?attr/category_color"
             app:dividerColor="?attr/category_color"
             android:layout_gravity="center"/>
 
@@ -32,6 +33,8 @@
             android:layout_weight="0.3"
             android:layout_height="wrap_content"
             app:dividerThickness="2dp"
+
+            android:background="?attr/category_color"
             app:dividerColor="?attr/category_color"
             android:layout_gravity="center"/>
 

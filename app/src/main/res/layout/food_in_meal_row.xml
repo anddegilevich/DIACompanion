@@ -10,53 +10,63 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="?attr/panel_color"
-        android:paddingBottom="4dp"
-        android:paddingTop="4dp">
+        android:orientation="vertical"
+        android:background="?attr/panel_color">
+
         <TextView
-            android:layout_weight="4"
-            style="@style/SmallText"
+            style="@style/MainText"
             android:id="@+id/tv_food_in_meal_name"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:justificationMode="inter_word"
             />
 
-        <TextView
-            android:layout_weight="3"
-            style="@style/MainText"
-            android:id="@+id/tv_food_in_meal_weight"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:lines="1"
-            />
+            android:orientation="horizontal">
 
-        <TextView
-            android:layout_weight="2"
-            style="@style/MainText"
-            android:id="@+id/gi"
-            android:orientation="vertical"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="center"/>
+            <TextView
+                android:layout_weight="1"
+                style="@style/MainText"
+                android:id="@+id/tv_food_in_meal_weight"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:lines="1"
+                />
 
-        <TextView
-            android:layout_weight="2"
-            style="@style/MainText"
-            android:id="@+id/gl"
-            android:orientation="vertical"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="center"/>
+            <TextView
+                android:layout_weight="1"
+                style="@style/MainText"
+                android:id="@+id/carbs"
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="center"/>
 
-        <!--<View
-            android:id="@+id/gi_indexer"
-            android:layout_width="8dp"
-            android:layout_height="match_parent"/>-->
+            <TextView
+                android:layout_weight="1"
+                style="@style/MainText"
+                android:id="@+id/gi"
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="center"/>
+
+            <TextView
+                android:layout_weight="1"
+                style="@style/MainText"
+                android:id="@+id/gl"
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="center"/>
+
+        </LinearLayout>
+
     </LinearLayout>
 
     <com.google.android.material.divider.MaterialDivider

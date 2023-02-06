@@ -93,38 +93,45 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    style="@style/MainText"
+                    style="@style/SmallText"
                     android:layout_width="0dp"
-                    android:layout_weight="4"
-                    android:layout_height="wrap_content"
-                    android:text="@string/MealName"
-                    android:gravity="center"/>
-
-                <TextView
-                    style="@style/MainText"
-                    android:layout_width="0dp"
-                    android:layout_weight="3"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:text="@string/WeightG"
                     android:gravity="center"/>
 
                 <TextView
-                    style="@style/MainText"
+                    style="@style/SmallText"
                     android:layout_width="0dp"
-                    android:layout_weight="2"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="@string/CarbsG"
+                    android:gravity="center"/>
+
+                <TextView
+                    style="@style/SmallText"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:text="@string/GI"
                     android:gravity="center"/>
 
                 <TextView
-                    style="@style/MainText"
+                    style="@style/SmallText"
                     android:layout_width="0dp"
-                    android:layout_weight="2"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:text="@string/GL"
                     android:gravity="center"/>
 
             </LinearLayout>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:dividerThickness="2dp"
+                android:background="?attr/category_color"
+                app:dividerColor="?attr/category_color"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_food_in_recipe"

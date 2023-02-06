@@ -38,8 +38,8 @@ open class FoodInMealListAdapter(private val mListener: InterfaceFoodInMeal)
         editText.setText(foodItem.weight.toString())
 
         val intColor = if (foodItem.foodEntity.gi != null ) {
-            if (foodItem.foodEntity.gi > 55) R.color.red
-            else if (foodItem.foodEntity.gi > 25) R.color.orange
+            if (foodItem.foodEntity.gi >= 70) R.color.red
+            else if (foodItem.foodEntity.gi >= 20) R.color.orange
             else R.color.green
         } else R.color.green
         val itemColor = ContextCompat.getColor(context!!,intColor)
@@ -50,8 +50,10 @@ open class FoodInMealListAdapter(private val mListener: InterfaceFoodInMeal)
 
 //        holder.itemView.gi_indexer.setBackgroundColor(itemColor)
         holder.itemView.gi.text = if (foodItem.foodEntity.gi != null)
-            foodItem.foodEntity.gi.toString() else "0"
+            foodItem.foodEntity.gi.toInt().toString() else "0"
         holder.itemView.gi.setTextColor(itemColor)
+        holder.itemView.carbs.text = if (foodItem.foodEntity.carbo != null)
+            (foodItem.foodEntity.carbo * foodItem.weight / 100).toInt().toString() else "0"
         holder.itemView.gl.text = gl.toInt().toString()
         holder.itemView.tv_food_in_meal_weight.text = foodItem.weight.toString()
 

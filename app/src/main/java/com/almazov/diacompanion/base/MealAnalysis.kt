@@ -23,7 +23,7 @@ fun checkCarbs(mealType: String, listOfFood: MutableList<FoodInMealItem>): Boole
     var sumCarbs = 0.0
     val  breakfastString = "Завтрак"
     for (food in listOfFood) {
-        sumCarbs += food.foodEntity.carbo!! * food.weight!! / 100
+        sumCarbs += food.foodEntity.carbo!! * food.weight / 100
     }
     if (sumCarbs > 15 && mealType == breakfastString) {
         return true
@@ -164,23 +164,11 @@ fun getMealInfo(listOfFood: List<FoodInMealItem>): List<Double> {
         weight)
 }
 
-/*@Throws(IOException::class)
-fun getFileFromAssets(context: Context, fileName: String): File = File(context.cacheDir, fileName)
-    .also {
-        if (!it.exists()) {
-            it.outputStream().use { cache ->
-                context.assets.open(fileName).use { inputStream ->
-                    inputStream.copyTo(cache)
-                }
-            }
-        }
-    }*/
-
 fun getMessage(
     highGI: Boolean, manyCarbs: Boolean, highBGBefore: Boolean,
     glDistribution: Boolean, highBGPredict: Boolean, resources: Resources
 ): String {
-    var txtInt: Int = 1
+    var txtInt = 1
     if (highBGPredict) {
         if (highBGBefore) {
             txtInt = R.string.HighBGBefore

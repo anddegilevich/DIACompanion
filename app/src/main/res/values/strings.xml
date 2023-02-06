@@ -195,6 +195,7 @@
     <string name="EnterFoodWeight">Enter food weight:</string>
     <string name="MealName">Meal Name</string>
     <string name="WeightG">Weight, g</string>
+    <string name="CarbsG">Carbo, g</string>
 
 
     //WorkoutAddRecord

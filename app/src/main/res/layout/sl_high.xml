@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/border"
     android:padding="8dp"
     android:orientation="vertical">
@@ -18,7 +19,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@string/PredictedSLHigh"/>\
+            android:text="@string/PredictedSLHigh"/>
 
         <ImageView
             style="@style/ImageButton"
@@ -30,11 +31,16 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_recommendation"
-        style="@style/SmallText"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/pager_recommendations"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:justificationMode="inter_word"/>
+        android:layout_height="wrap_content"/>
+
+    <me.relex.circleindicator.CircleIndicator3
+        android:id="@+id/pager_recommendations_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        app:ci_drawable="@drawable/circle_indicator"
+        />
 
 </LinearLayout>

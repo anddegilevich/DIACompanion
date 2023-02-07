@@ -44,11 +44,12 @@ open class FoodInMealListAdapter(private val mListener: InterfaceFoodInMeal)
         } else R.color.green
         val itemColor = ContextCompat.getColor(context!!,intColor)
 
-        holder.itemView.setOnClickListener {
+        /*holder.itemView.setOnClickListener {
             slideView(holder.itemView.recipe_layout)
-        }
+        }*/
 
 //        holder.itemView.gi_indexer.setBackgroundColor(itemColor)
+        holder.itemView.tv_position.text = (position+1).toString() + "."
         holder.itemView.gi.text = if (foodItem.foodEntity.gi != null)
             foodItem.foodEntity.gi.toInt().toString() else "0"
         holder.itemView.gi.setTextColor(itemColor)

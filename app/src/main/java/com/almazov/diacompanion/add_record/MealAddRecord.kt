@@ -23,6 +23,7 @@ import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.almazov.diacompanion.R
 import com.almazov.diacompanion.base.*
 import com.almazov.diacompanion.data.AppDatabaseViewModel
@@ -64,7 +65,9 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
     private lateinit var spinnerAdapter: CustomStringAdapter
     private lateinit var spinnerStringArray: Array<String>
     private lateinit var appType: String
-    private lateinit var recommendationMessage: String
+
+    private var recommendations = emptyList<String>()
+    private lateinit var recommendationsAdapter: RecommendationPagerAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -90,6 +93,14 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
         super.onViewCreated(view, savedInstanceState)
 
         appDatabaseViewModel = ViewModelProvider(this)[AppDatabaseViewModel::class.java]
+
+        recommendationsAdapter = RecommendationPagerAdapter(emptyList())
+
+        pager_recommendations.adapter = recommendationsAdapter
+        pager_recommendations.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+
+        pager_recommendations_indicator.setViewPager(pager_recommendations)
+
 
         spinnerStringArray = resources.getStringArray(R.array.MealSpinner)
         spinnerAdapter = CustomStringAdapter(requireContext(),
@@ -381,7 +392,8 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
                 }
                 try {
                     vf_recommendation.displayedChild = result.await()
-                    tv_recommendation.text = recommendationMessage
+                    recommendationsAdapter.updateItems(recommendations)
+                    pager_recommendations_indicator.setViewPager(pager_recommendations)
                 } catch (e: Exception) {}
             }
         }
@@ -403,7 +415,7 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
             val highBGBefore = checkSLBefore(slBefore)
             val highBGPredict = checkSLPredict(sugarLevelPredicted!!)
             try {
-                recommendationMessage = getMessage(highGI, manyCarbs, highBGBefore,
+                recommendations = getMessage(highGI, manyCarbs, highBGBefore,
                     glCarbsKr.second,highBGPredict,resources)
             } catch (e: java.lang.IllegalStateException) {
             }

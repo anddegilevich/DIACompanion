@@ -111,11 +111,16 @@ class MealRecordInfo : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
                         val highBGBefore = checkSLBefore(record[0].meal.sugarLevel!!)
                         val highBGPredict = checkSLPredict(record[0].meal.sugarLevelPredicted!!)
                         try {
-                            val recommendationMessage = getMessage(
+                            val recommendations = getMessage(
                                 highGI, manyCarbs, highBGBefore,
                                 glCarbsKr.second, highBGPredict, resources
                             )
-                            tv_recommendation.text = recommendationMessage
+                            var recommendationSum = ""
+                            for (recommendation in recommendations) {
+                                if (recommendationSum.isNotBlank()) recommendationSum += "\n"
+                                recommendationSum += "- $recommendation"
+                            }
+                            tv_recommendation.text = recommendationSum
                         } catch (e: java.lang.IllegalStateException) {
                         }
                     }

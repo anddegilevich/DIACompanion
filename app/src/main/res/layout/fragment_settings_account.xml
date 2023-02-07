@@ -208,7 +208,7 @@
             app:dividerColor="?attr/category_color"
                 android:layout_marginTop="10dp"/>
 
-            <TextView
+            <!--<TextView
                 android:textAlignment="center"
                 style="@style/Title"
                 android:layout_width="wrap_content"
@@ -256,7 +256,7 @@
                 app:dividerThickness="2dp"
                 android:background="?attr/category_color"
             app:dividerColor="?attr/category_color"
-                android:layout_marginTop="10dp"/>
+                android:layout_marginTop="10dp"/>-->
 
             <TextView
                 style="@style/Title"

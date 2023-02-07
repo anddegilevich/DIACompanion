@@ -59,7 +59,7 @@ class SettingsAccount : Fragment() {
             view.tv_weight_kg.setText(R.string.WeightKgPregnancy)
         }
 
-        view.editTextPhone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
+//        view.editTextPhone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
         val finished: Boolean = sharedPreferences.getBoolean("ON_BOARDING_FINISHED", false)
         if (finished) {
@@ -85,8 +85,8 @@ class SettingsAccount : Fragment() {
 
             view.editTextWeight.setText(weigth.toString())
             view.editTextHeight.setText(heigth.toString())
-            view.editTextPhone.setText(phone)
-            view.editTextEmail.setText(email)
+            /*view.editTextPhone.setText(phone)
+            view.editTextEmail.setText(email)*/
             view.spinnerDoctor.setSelection(resources.getStringArray(R.array.AttendingDoctors).indexOf(attendingDoctor))
             view.editTextPatientId.setText(patientId.toString())
 
@@ -121,8 +121,8 @@ class SettingsAccount : Fragment() {
         weigth = editTextWeight.text.toString().toFloat()
         heigth = editTextHeight.text.toString().toFloat()
         val bmi  = weigth/heigth.pow(2)
-        phone = editTextPhone.text.toString()
-        email = editTextEmail.text.toString()
+        /*phone = editTextPhone.text.toString()
+        email = editTextEmail.text.toString()*/
         attendingDoctor = spinnerDoctor.selectedItem.toString()
         patientId = editTextPatientId.text.toString().toInt()
 
@@ -138,8 +138,8 @@ class SettingsAccount : Fragment() {
                 putFloat("BMI",bmi)
             }
             putFloat("HEIGHT",heigth)
-            putString("PHONE",phone)
-            putString("EMAIL",email)
+            /*putString("PHONE",phone)
+            putString("EMAIL",email)*/
             putString("ATTENDING_DOCTOR",attendingDoctor)
             putInt("PATIENT_ID",patientId)
             if ((apptype == "GDMRCT") or (apptype == "GDM")){

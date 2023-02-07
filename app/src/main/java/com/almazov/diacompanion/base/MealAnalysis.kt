@@ -167,22 +167,28 @@ fun getMealInfo(listOfFood: List<FoodInMealItem>): List<Double> {
 fun getMessage(
     highGI: Boolean, manyCarbs: Boolean, highBGBefore: Boolean,
     glDistribution: Boolean, highBGPredict: Boolean, resources: Resources
-): String {
-    var txtInt = 1
-    if (highBGPredict) {
+): List<String> {
+    val recommendations = mutableListOf<String>()
+    val txtInt = if (highBGPredict) {
+
         if (highBGBefore) {
-            txtInt = R.string.HighBGBefore
-        } else if (manyCarbs) {
+            recommendations.add(resources.getString(R.string.HighBGBefore))
+        }
+
+        if (manyCarbs) {
             if (glDistribution) {
-                txtInt = R.string.GLDestribution
+                R.string.GLDestribution
             } else if (highGI) {
-                txtInt = R.string.HighGI
+                R.string.HighGI
+            } else {
+                R.string.ManyCarbs
             }
         } else {
-            txtInt = R.string.BGPredict
+            R.string.BGPredict
         }
-    }  else txtInt = R.string.NoRecommendation
-    return resources.getString(txtInt)
+    }  else R.string.NoRecommendation
+    recommendations.add(resources.getString(txtInt))
+    return recommendations
 }
 
 fun checkSLPredict(sugarLevel: Double): Boolean {

@@ -13,14 +13,29 @@
         android:orientation="vertical"
         android:background="?attr/panel_color">
 
-        <TextView
-            style="@style/MainText"
-            android:id="@+id/tv_food_in_meal_name"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:justificationMode="inter_word"
-            />
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/MainText"
+                android:id="@+id/tv_position"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:justificationMode="inter_word"
+                />
+
+            <TextView
+                style="@style/MainText"
+                android:id="@+id/tv_food_in_meal_name"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:justificationMode="inter_word"
+                />
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -29,7 +44,7 @@
 
             <TextView
                 android:layout_weight="1"
-                style="@style/MainText"
+                style="@style/SmallText"
                 android:id="@+id/tv_food_in_meal_weight"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -40,7 +55,7 @@
 
             <TextView
                 android:layout_weight="1"
-                style="@style/MainText"
+                style="@style/SmallText"
                 android:id="@+id/carbs"
                 android:orientation="vertical"
                 android:layout_width="0dp"
@@ -49,7 +64,7 @@
 
             <TextView
                 android:layout_weight="1"
-                style="@style/MainText"
+                style="@style/SmallText"
                 android:id="@+id/gi"
                 android:orientation="vertical"
                 android:layout_width="0dp"
@@ -58,7 +73,7 @@
 
             <TextView
                 android:layout_weight="1"
-                style="@style/MainText"
+                style="@style/SmallText"
                 android:id="@+id/gl"
                 android:orientation="vertical"
                 android:layout_width="0dp"

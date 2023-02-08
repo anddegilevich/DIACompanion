@@ -63,6 +63,7 @@ open class FoodInMealListAdapter(private val mListener: InterfaceFoodInMeal)
 
     open fun changeWeight(holder: FoodInMealItemViewHolder, position: Int) {
         val editText = holder.itemView.tv_food_in_meal_weight
+        editText.setTextAppearance(R.style.MainText)
         editText.setOnClickListener {
             holder.mListener.updateRecommendationWeight(position)
         }

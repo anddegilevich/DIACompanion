@@ -97,18 +97,27 @@ class ExportData : Fragment() {
         val attendingDoctor = sharedPreferences.getString("ATTENDING_DOCTOR","Лечащий врач")
         val birthDate = sharedPreferences.getString("BIRTH_DATE","0")
         val patientId = sharedPreferences.getInt("PATIENT_ID",1)
+
+        val appTypeString = when (appType) {
+            "GDMRCT" -> "DiaI"
+            "GDM" -> "GDM"
+            "MS" -> "MS"
+            "PCOS" -> "PCOS"
+            else -> "GDM"
+        }
         globalInfoString = "Пациент: $secondName $name $patronymic;   " +
                 "Дата рождения: $birthDate;   Лечащий врач: $attendingDoctor;   " +
-                "Программа: DiaCompanion Android $appType"
+                "Программа: DiaCompanion Android $appTypeString"
 
         val now = LocalDateTime.now()
         val dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy", Locale("ru"))
         val dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm dd.MM.yyyy", Locale("ru"))
         val presentDate = now.format(dateFormatter)
 
+
         dayThreshold = convertDateToMils(now.format(dateTimeFormatter)) - 7 * 24 * 60 * 60 * 1000
 
-        val fileName = "$appType $patientId $secondName $name $patronymic $presentDate.xlsx"
+        val fileName = "$appTypeString $patientId $secondName $name $patronymic $presentDate.xlsx"
 
         val xlWb = XSSFWorkbook()
 
@@ -220,7 +229,7 @@ class ExportData : Fragment() {
                     }
                     val sendTo = arrayOf("diacompanion@gmail.com", doctorEmail)
 
-                    val title = "$dangerLevel$appType $patientId $secondName $name $patronymic - Дневник наблюдения"
+                    val title = "$dangerLevel$appTypeString $patientId $secondName $name $patronymic - Дневник наблюдения"
 
                     val emailIntent = Intent(Intent.ACTION_SEND)
                     emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)

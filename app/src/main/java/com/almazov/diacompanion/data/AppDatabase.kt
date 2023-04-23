@@ -32,8 +32,6 @@ abstract class AppDatabase: RoomDatabase() {
                 ).createFromAsset("database/db_asset.db").build()
                 INSTANCE = instance
                 return instance
-
-               /* createFromAsset()*/
             }
         }
 

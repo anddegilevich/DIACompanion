@@ -75,14 +75,14 @@ class ExportData : Fragment() {
         appDatabaseViewModel = ViewModelProvider(this)[AppDatabaseViewModel::class.java]
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
 
-        appType = sharedPreferences.getString("APP_TYPE","GDM RCT")!!
+        appType = sharedPreferences.getString("APP_TYPE", "GDM RCT")!!
 
-        btn_export_to_slxs.setOnClickListener{
+        btn_export_to_slxs.setOnClickListener {
             lf_export.displayedChild = 1
             createXmlFile(false)
         }
 
-        btn_export_to_doctor.setOnClickListener{
+        btn_export_to_doctor.setOnClickListener {
             createXmlFile(true)
         }
 
@@ -91,12 +91,12 @@ class ExportData : Fragment() {
 
     private fun createXmlFile(send: Boolean) {
 
-        val name = sharedPreferences.getString("NAME","Имя")
-        val secondName = sharedPreferences.getString("SECOND_NAME","Фамилия")
-        val patronymic = sharedPreferences.getString("PATRONYMIC","Отчество")
-        val attendingDoctor = sharedPreferences.getString("ATTENDING_DOCTOR","Лечащий врач")
-        val birthDate = sharedPreferences.getString("BIRTH_DATE","0")
-        val patientId = sharedPreferences.getInt("PATIENT_ID",1)
+        val name = sharedPreferences.getString("NAME", "Имя")
+        val secondName = sharedPreferences.getString("SECOND_NAME", "Фамилия")
+        val patronymic = sharedPreferences.getString("PATRONYMIC", "Отчество")
+        val attendingDoctor = sharedPreferences.getString("ATTENDING_DOCTOR", "Лечащий врач")
+        val birthDate = sharedPreferences.getString("BIRTH_DATE", "0")
+        val patientId = sharedPreferences.getInt("PATIENT_ID", 1)
 
         val appTypeString = when (appType) {
             "GDMRCT" -> "DiaI"
@@ -158,6 +158,7 @@ class ExportData : Fragment() {
         val xlWsWeight = xlWb.createSheet("Масса тела")
         val xlWsKetone = xlWb.createSheet("Кетоны в моче")
         val xlWsFullDay = xlWb.createSheet("Полные дни")
+        val xlWsQuestionnaire = xlWb.createSheet("Данные опроса")
 
         GlobalScope.launch(Dispatchers.Main) {
 
@@ -182,9 +183,14 @@ class ExportData : Fragment() {
             val fullDaysSheetCompleted = GlobalScope.async(Dispatchers.Main) {
                 getFullDaysTable(xlWsFullDay)
             }
+            val questionnaireSheetCompleted = GlobalScope.async(Dispatchers.Main) {
+                getQuestionnaireTable(xlWsQuestionnaire)
+            }
             if (sugarLevelInsulinSheetCompleted.await() and workoutSleepSheetCompleted.await() and
                 weightSheetCompleted.await() and ketoneSheetCompleted.await() and
-                fullDaysSheetCompleted.await() and mealSheetCompleted.await()) {
+                fullDaysSheetCompleted.await() and mealSheetCompleted.await()
+                and questionnaireSheetCompleted.await()
+            ) {
 
                 val externalDirPath = requireContext().getExternalFilesDir(null)
                 val directory = File(externalDirPath, "export")
@@ -202,20 +208,23 @@ class ExportData : Fragment() {
                     file
                 )
 
-                if (send){
+                if (send) {
 
-                    val mealsMain = (((allMeals - snacks).toDouble() / allMeals.toDouble()) * 100).toInt()
+                    val mealsMain =
+                        (((allMeals - snacks).toDouble() / allMeals.toDouble()) * 100).toInt()
                     val mealsOnTime = (onTime.toDouble() / allMeals.toDouble() * 100).toInt()
-                    val textSL = if (appType != "PCOS") { "За последние 7 дней превышений УСК выше целевого: \n" +
-                            "Натощак: " + bgHighFasting + "\n" +
-                            "После еды: " + bgHighFood + "\n\n"} else ""
-                    val emailText =  textSL +
+                    val textSL = if (appType != "PCOS") {
+                        "За последние 7 дней превышений УСК выше целевого: \n" +
+                                "Натощак: " + bgHighFasting + "\n" +
+                                "После еды: " + bgHighFood + "\n\n"
+                    } else ""
+                    val emailText = textSL +
                             "Основные приемы пищи: " + mealsMain +
                             "% (" + (allMeals - snacks) + "/" + allMeals + ")\n" +
                             "Записаны при приеме пищи: " + mealsOnTime +
                             "% (" + onTime + "/" + allMeals + ")\n"
                     val dangerLevel = if (bgBadPpgr > 1) "!!"
-                    else if ((bgHighFasting + bgHighFood).toDouble() / bgTotal > 1/3) "!"
+                    else if ((bgHighFasting + bgHighFood).toDouble() / bgTotal > 1 / 3) "!"
                     else ""
 
                     val doctorEmail = when (attendingDoctor) {
@@ -229,7 +238,8 @@ class ExportData : Fragment() {
                     }
                     val sendTo = arrayOf("diacompanion@gmail.com", doctorEmail)
 
-                    val title = "$dangerLevel$appTypeString $patientId $secondName $name $patronymic - Дневник наблюдения"
+                    val title =
+                        "$dangerLevel$appTypeString $patientId $secondName $name $patronymic - Дневник наблюдения"
 
                     val emailIntent = Intent(Intent.ACTION_SEND)
                     emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
@@ -243,7 +253,8 @@ class ExportData : Fragment() {
                     emailIntent.putExtra(Intent.EXTRA_STREAM, uriPath)
                     emailIntent.putExtra(Intent.EXTRA_SUBJECT, title)
                     requireContext().startActivity(
-                        Intent.createChooser(emailIntent, "Отправить email..."))
+                        Intent.createChooser(emailIntent, "Отправить email...")
+                    )
 
                 } else {
                     val excelIntent = Intent(Intent.ACTION_VIEW)
@@ -251,7 +262,8 @@ class ExportData : Fragment() {
                     excelIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
                     excelIntent.setDataAndType(uriPath, "application/vnd.ms-excel")
                     excelIntent.putExtra(Intent.EXTRA_STREAM, uriPath)
-                    val chooserIntent = Intent.createChooser(excelIntent, "Открыть дневник наблюдения")
+                    val chooserIntent =
+                        Intent.createChooser(excelIntent, "Открыть дневник наблюдения")
                     try {
                         startActivity(chooserIntent)
                     } catch (e: ActivityNotFoundException) {
@@ -270,6 +282,191 @@ class ExportData : Fragment() {
 
     }
 
+    private suspend fun getQuestionnaireTable(sheet: XSSFSheet): Boolean {
+        sheet.defaultColumnWidth = 10
+        sheet.setColumnWidth(0, 12000)
+
+        val questionnaireAsync = GlobalScope.async(Dispatchers.Default) {
+            appDatabaseViewModel.getQuestionnaire()
+        }
+
+        sheet.addMergedRegion(CellRangeAddress(0, 0, 0, 13))
+        sheet.createRow(0).createCell(0).setCellValue(globalInfoString)
+        sheet.addMergedRegion(CellRangeAddress(1, 1, 0, 3))
+        sheet.createRow(1).createCell(0).apply {
+            setCellValue("Опрос образа жизни")
+            cellStyle = styleYellow
+        }
+        sheet.createRow(2).apply {
+            createCell(0).apply {
+                setCellValue("Вопрос")
+                cellStyle = styleYellow
+            }
+            createCell(1).apply {
+                setCellValue("Ответ")
+                cellStyle = styleYellow
+            }
+        }
+
+        val questionnaire = questionnaireAsync.await()
+        val questions = listOf(
+            "Беременнось по счету",
+            "Количество родов",
+            "Применение комбинированных оральных контрацептивов",
+            "Брали ли у вас пролактин?",
+            "Если брали, то было ли зафиксировано повышение?",
+            "Если да, вам назначили препарат?",
+            "Перечислите препараты не вошедшие в список",
+            "Принимали ли вы витамин D до беременности?",
+            "Перечислите препараты",
+            "Принимали ли вы витамин D во время беременности?",
+            "Перечислите препараты",
+            "Отдыхали ли вы в жарких/солнечных странах во время беременности?",
+            "Отпуск пришелся на I триместр беременности?",
+            "Отпуск пришелся на II триместр беременности?",
+            "Отпуск пришелся на III триместр беременности?",
+            "Посещали ли вы солярий во время беременности?",
+            "Гликированный гемоглобин",
+            "Уровень триглицеридов",
+            "Уровень холестерина",
+            "Уровень глюкозы (натощак)",
+            "Был ли ранее выявлен диабет у кровных родственников?",
+            "Было ли замечено нарушение толерантности к глюкозе до беременности?",
+            "Диагностировали ли вам гипертоническую болезнь до беременности?",
+            "Диагностировали ли вам гипертоническую болезнь во время беременности?",
+            "Курили ли вы за 6 месяцев до беременности?",
+            "Курили вы до того как узнали о том, что беременны?",
+            "Курите ли вы во время беременности?",
+            "Укажите частоту потребления фруктов в неделю до беременности",
+            "Укажите частоту потребления фруктов в неделю во время беременности",
+            "Укажите частоту потребления пирожных в неделю до беременности",
+            "Укажите частоту потребления пирожных в неделю во время беременности",
+            "Укажите частоту потребления выпечки в неделю до беременности",
+            "Укажите частоту потребления выпечки в неделю во время беременности",
+            "Укажите частоту потребления шоколада в неделю до беременности",
+            "Укажите частоту потребления шоколада в неделю во время беременности",
+            "Укажите частоту потребления обезжиренных молочных продуктов в неделю до беременности",
+            "Укажите частоту потребления обезжиренных молочных продуктов в неделю во время беременности",
+            "Укажите частоту потребления не обезжиренных молочных продуктов в неделю до беременности",
+            "Укажите частоту потребления не обезжиренных молочных продуктов в неделю во время беременности",
+            "Укажите частоту потребления бобовых в неделю до беременности",
+            "Укажите частоту потребления бобовых в неделю во время беременности",
+            "Укажите частоту потребления мяса и мясных изделий в неделю до беременности",
+            "Укажите частоту потребления мяса и мясных изделий в неделю во время беременности",
+            "Укажите частоту потребления сухофруктов в неделю до беременности",
+            "Укажите частоту потребления сухофруктов в неделю во время беременности",
+            "Укажите частоту потребления рыбы и рыбных изделий в неделю до беременности",
+            "Укажите частоту потребления рыбы и рыбных изделий в неделю во время беременности",
+            "Укажите частоту потребления цельнозернового хлеба в неделю до беременности",
+            "Укажите частоту потребления цельнозернового хлеба в неделю во время беременности",
+            "Укажите частоту потребления любого хлеба в неделю до беременности",
+            "Укажите частоту потребления любого хлеба в неделю во время беременности",
+            "Укажите частоту потребления соусов и майонеза в неделю до беременности",
+            "Укажите частоту потребления соусов и майонеза в неделю во время беременности",
+            "Укажите частоту потребления овощей (сырых или приготовленных) в неделю до беременности",
+            "Укажите частоту потребления овощей (сырых или приготовленных) в неделю во время беременности",
+            "Укажите частоту потребления алкоголя в неделю до беременности",
+            "Укажите частоту потребления алкоголя в неделю во время беременности",
+            "Укажите частоту потребления сладких напитков в неделю до беременности",
+            "Укажите частоту потребления сладких напитков в неделю во время беременности",
+            "Укажите частоту потребления кофе в неделю до беременности",
+            "Укажите частоту потребления кофе в неделю во время беременности",
+            "Укажите частоту потребления сосисок и колбасы в неделю до беременности",
+            "Укажите частоту потребления сосисок и колбасы в неделю во время беременности",
+            "Укажите длительность легкой ходьбы до беременности, в день",
+            "Укажите длительность легкой ходьбы во время беременности, в день",
+            "Укажите среднее число лестничных пролетов, которые вы проходили в день до беременности",
+            "Укажите среднее число лестничных пролетов, которые вы проходите в день во время беременности",
+            "Укажите среднее число эпизодов посещения спортаза в неделю до беременности",
+            "Укажите среднее число эпизодов посещения спортаза в неделю во время беременности",
+        )
+        val answers = with(questionnaire) {
+            listOf(
+                pregnancyCount,
+                birthCount,
+                oralContraceptive,
+                prolactin,
+                prolactinRaising,
+                prolactinDrugs,
+                prolactinOtherDrugs,
+                vitaminDBefore,
+                vitaminDDrugsBefore,
+                vitaminD,
+                vitaminDDrugs,
+                vacation,
+                firstTrim,
+                secondTrim,
+                thirdTrim,
+                solarium,
+                hba1c,
+                triglyceride,
+                cholesterol,
+                glucose,
+                diabetesRelative,
+                glucoseTolerance,
+                hypertensionBefore,
+                hypertension,
+                smoking6MonthBefore,
+                smokingBefore,
+                smoking,
+                fruitsBefore,
+                fruits,
+                cupcakesBefore,
+                cupcakes,
+                cakesBefore,
+                cakes,
+                chocolateBefore,
+                chocolate,
+                defattedMilkBefore,
+                defattedMilk,
+                milkBefore,
+                milk,
+                beansBefore,
+                beans,
+                meatBefore,
+                meat,
+                dryFruitsBefore,
+                dryFruits,
+                fishBefore,
+                fish,
+                wholemealBreadBefore,
+                wholemealBread,
+                breadBefore,
+                bread,
+                sauceBefore,
+                sauce,
+                vegetablesBefore,
+                vegetables,
+                alcoholBefore,
+                alcohol,
+                sweetDrinksBefore,
+                sweetDrinks,
+                coffeeBefore,
+                coffee,
+                sausagesBefore,
+                sausages,
+                walkingBefore,
+                walking,
+                steppingBefore,
+                stepping,
+                sportBefore,
+                sport,
+            )
+        }
+        questions.forEachIndexed { index, question ->
+            sheet.createRow(index + 3).apply {
+                createCell(0).apply {
+                    setCellValue(question)
+                }
+                createCell(1).apply {
+                    setCellValue(answers[index])
+                }
+            }
+        }
+        setBordersToMergedCells(sheet)
+        return true
+    }
+
     private suspend fun getMealTable(sheet: XSSFSheet): Boolean {
         sheet.defaultColumnWidth = 16
         sheet.setColumnWidth(4, 10000)
@@ -286,23 +483,75 @@ class ExportData : Fragment() {
             cellStyle = styleYellow
         }
 
-        val columnNames = listOf("Дата", "Время", "Прием пищи", "Продукт", "Масса (г)",
-            "Углеводы (г)", "Белки (г)", "Жиры (г)", "Энерг. ценность (Ккал)", "Пищевые волокна (г)",
-            "ГИ", "ГН","",
-            "Вода (г)", "НЖК (г)", "Холестерин (мг)",
-            "Зола (г)", "Натрий (мг)", "Калий (мг)", "Кальций (мг)", "Магний (мг)", "Фосфор (мг)",
-            "Железо (мг)", "Ретинол (мкг)", "Тиамин (мг)", "Рибофлавин (мг)", "Ниацин (мг)",
-            "Аскорбиновая кисл. (мг)", "Ретиновый эквивалент (мкг)", "", "Бета-каротин (мкг)",
-            "Сахар, общее содержание (г)", "Крахмал (г)", "Токоферолэквивалент (мг)",
-            "Органические кислоты (г)", "Ниациновый эквивалент (мг)", "Цинк (мг)", "Медь (мг)",
-            "Марганец (мг)", "Селен (мкг)", "Пантотеновая кислота (мг)", "Витамин B6 (мг)",
-            "Фолаты общ. (мкг)", "Фолиевая кислота (мкг)", "Фолаты ДФЭ (мкг)", "Холин общ. (мкг)",
-            "Витамин B12 (мг)", "Витамин A (ЭАР)", "Альфа-каротин (мкг)",
-            "Криптоксантин бета (мкг)", "Ликопин (мкг)", "Лютеин + Гексаксантин (мкг)",
-            "Витамин E (мг)", "Витамин D (мкг)", "Витамин D (межд.ед.)", "Витамин K (мкг)",
-            "Мононенасыщенные жирные кислоты (г)", "Полиненасыщенные жирные кислоты (г)", "",
-            "Вес перв. ед. изм.", "Описание перв. ед. изм.", "Вес второй ед. изм",
-            "Опис. второй ед. изм.", "Процент потерь, %", "", "Углеводы (г)", "ГН", "УСК до еды",
+        val columnNames = listOf(
+            "Дата",
+            "Время",
+            "Прием пищи",
+            "Продукт",
+            "Масса (г)",
+            "Углеводы (г)",
+            "Белки (г)",
+            "Жиры (г)",
+            "Энерг. ценность (Ккал)",
+            "Пищевые волокна (г)",
+            "ГИ",
+            "ГН",
+            "",
+            "Вода (г)",
+            "НЖК (г)",
+            "Холестерин (мг)",
+            "Зола (г)",
+            "Натрий (мг)",
+            "Калий (мг)",
+            "Кальций (мг)",
+            "Магний (мг)",
+            "Фосфор (мг)",
+            "Железо (мг)",
+            "Ретинол (мкг)",
+            "Тиамин (мг)",
+            "Рибофлавин (мг)",
+            "Ниацин (мг)",
+            "Аскорбиновая кисл. (мг)",
+            "Ретиновый эквивалент (мкг)",
+            "",
+            "Бета-каротин (мкг)",
+            "Сахар, общее содержание (г)",
+            "Крахмал (г)",
+            "Токоферолэквивалент (мг)",
+            "Органические кислоты (г)",
+            "Ниациновый эквивалент (мг)",
+            "Цинк (мг)",
+            "Медь (мг)",
+            "Марганец (мг)",
+            "Селен (мкг)",
+            "Пантотеновая кислота (мг)",
+            "Витамин B6 (мг)",
+            "Фолаты общ. (мкг)",
+            "Фолиевая кислота (мкг)",
+            "Фолаты ДФЭ (мкг)",
+            "Холин общ. (мкг)",
+            "Витамин B12 (мг)",
+            "Витамин A (ЭАР)",
+            "Альфа-каротин (мкг)",
+            "Криптоксантин бета (мкг)",
+            "Ликопин (мкг)",
+            "Лютеин + Гексаксантин (мкг)",
+            "Витамин E (мг)",
+            "Витамин D (мкг)",
+            "Витамин D (межд.ед.)",
+            "Витамин K (мкг)",
+            "Мононенасыщенные жирные кислоты (г)",
+            "Полиненасыщенные жирные кислоты (г)",
+            "",
+            "Вес перв. ед. изм.",
+            "Описание перв. ед. изм.",
+            "Вес второй ед. изм",
+            "Опис. второй ед. изм.",
+            "Процент потерь, %",
+            "",
+            "Углеводы (г)",
+            "ГН",
+            "УСК до еды",
             "Прогноз УСК",
             "Время добавления записи"
         )
@@ -332,28 +581,28 @@ class ExportData : Fragment() {
         var i = 3
         var j = 0
 
-        val carbo = mutableListOf<Pair<Double,String>>()
-        val prot = mutableListOf<Pair<Double,String>>()
-        val fat = mutableListOf<Pair<Double,String>>()
-        val ec = mutableListOf<Pair<Double,String>>()
-        val gi = mutableListOf<Pair<Double,String>>()
-        val water = mutableListOf<Pair<Double,String>>()
-        val nzhk = mutableListOf<Pair<Double,String>>()
-        val hol = mutableListOf<Pair<Double,String>>()
-        val pv = mutableListOf<Pair<Double,String>>()
-        val zola = mutableListOf<Pair<Double,String>>()
-        val na = mutableListOf<Pair<Double,String>>()
-        val k = mutableListOf<Pair<Double,String>>()
-        val ca = mutableListOf<Pair<Double,String>>()
-        val mg = mutableListOf<Pair<Double,String>>()
-        val p = mutableListOf<Pair<Double,String>>()
-        val fe = mutableListOf<Pair<Double,String>>()
-        val a = mutableListOf<Pair<Double,String>>()
-        val b1 = mutableListOf<Pair<Double,String>>()
-        val b2 = mutableListOf<Pair<Double,String>>()
-        val rr = mutableListOf<Pair<Double,String>>()
-        val c = mutableListOf<Pair<Double,String>>()
-        val re = mutableListOf<Pair<Double,String>>()
+        val carbo = mutableListOf<Pair<Double, String>>()
+        val prot = mutableListOf<Pair<Double, String>>()
+        val fat = mutableListOf<Pair<Double, String>>()
+        val ec = mutableListOf<Pair<Double, String>>()
+        val gi = mutableListOf<Pair<Double, String>>()
+        val water = mutableListOf<Pair<Double, String>>()
+        val nzhk = mutableListOf<Pair<Double, String>>()
+        val hol = mutableListOf<Pair<Double, String>>()
+        val pv = mutableListOf<Pair<Double, String>>()
+        val zola = mutableListOf<Pair<Double, String>>()
+        val na = mutableListOf<Pair<Double, String>>()
+        val k = mutableListOf<Pair<Double, String>>()
+        val ca = mutableListOf<Pair<Double, String>>()
+        val mg = mutableListOf<Pair<Double, String>>()
+        val p = mutableListOf<Pair<Double, String>>()
+        val fe = mutableListOf<Pair<Double, String>>()
+        val a = mutableListOf<Pair<Double, String>>()
+        val b1 = mutableListOf<Pair<Double, String>>()
+        val b2 = mutableListOf<Pair<Double, String>>()
+        val rr = mutableListOf<Pair<Double, String>>()
+        val c = mutableListOf<Pair<Double, String>>()
+        val re = mutableListOf<Pair<Double, String>>()
 
         val carboMeal = mutableListOf<Double>()
         val protMeal = mutableListOf<Double>()
@@ -392,7 +641,7 @@ class ExportData : Fragment() {
 
             if (mealList[j].recordEntity.date == date.date) {
                 try {
-                    while  (mealList[j].recordEntity.date == date.date) {
+                    while (mealList[j].recordEntity.date == date.date) {
 
                         if (dayThreshold < mealList[j].recordEntity.dateInMilli!!) {
                             allMeals += 1
@@ -505,7 +754,7 @@ class ExportData : Fragment() {
                                 if (food.food.gi != null) {
                                     cellGI += "\n" + setTwoDigits(weight * food.food.gi).toString() + "\n"
                                     giMeal.add(weight * food.food.gi)
-                                    cellGL += "\n" + setTwoDigits(weight*food.food.carbo!!*food.food.gi).toString() + "\n"
+                                    cellGL += "\n" + setTwoDigits(weight * food.food.carbo!! * food.food.gi).toString() + "\n"
                                 }
 
                                 if (food.food.water != null) {
@@ -576,51 +825,115 @@ class ExportData : Fragment() {
                                     cellRe += "\n" + setTwoDigits(weight * food.food.re).toString() + "\n"
                                     reMeal.add(weight * food.food.re)
                                 }
-                                if (food.food.kar != null) cellKar += "\n" + setTwoDigits(weight*food.food.kar).toString() + "\n"
-                                if (food.food.mds != null) cellMds += "\n" + setTwoDigits(weight*food.food.mds).toString() + "\n"
-                                if (food.food.kr != null) cellKr += "\n" + setTwoDigits(weight*food.food.kr).toString() + "\n"
-                                if (food.food.te != null) cellTe += "\n" + setTwoDigits(weight*food.food.te).toString() + "\n"
-                                if (food.food.ok != null) cellOk += "\n" + setTwoDigits(weight*food.food.ok).toString() + "\n"
-                                if (food.food.ne != null) cellNe += "\n" + setTwoDigits(weight*food.food.ne).toString() + "\n"
-                                if (food.food.zn != null) cellZn += "\n" + setTwoDigits(weight*food.food.zn).toString() + "\n"
-                                if (food.food.cu != null) cellCu += "\n" + setTwoDigits(weight*food.food.cu).toString() + "\n"
-                                if (food.food.mn != null) cellMn += "\n" + setTwoDigits(weight*food.food.mn).toString() + "\n"
-                                if (food.food.se != null) cellSe += "\n" + setTwoDigits(weight*food.food.se).toString() + "\n"
-                                if (food.food.b5 != null) cellB5 += "\n" + setTwoDigits(weight*food.food.b5).toString() + "\n"
-                                if (food.food.b6 != null) cellB6 += "\n" + setTwoDigits(weight*food.food.b6).toString() + "\n"
-                                if (food.food.fol != null) cellFol += "\n" + setTwoDigits(weight*food.food.fol).toString() + "\n"
-                                if (food.food.b9 != null) cellB9 += "\n" + setTwoDigits(weight*food.food.b9).toString() + "\n"
-                                if (food.food.dfe != null) cellDfe += "\n" + setTwoDigits(weight*food.food.dfe).toString() + "\n"
-                                if (food.food.holin != null) cellHolin += "\n" + setTwoDigits(weight*food.food.holin).toString() + "\n"
-                                if (food.food.b12 != null) cellB12 += "\n" + setTwoDigits(weight*food.food.b12).toString() + "\n"
-                                if (food.food.ear != null) cellEar += "\n" + setTwoDigits(weight*food.food.ear).toString() + "\n"
-                                if (food.food.a_kar != null) cellAKar += "\n" + setTwoDigits(weight*food.food.a_kar).toString() + "\n"
-                                if (food.food.b_kript != null) cellBKript += "\n" + setTwoDigits(weight*food.food.b_kript).toString() + "\n"
-                                if (food.food.likopin != null) cellLikopin += "\n" + setTwoDigits(weight*food.food.likopin).toString() + "\n"
-                                if (food.food.lut_z != null) cellLutZ += "\n" + setTwoDigits(weight*food.food.lut_z).toString() + "\n"
-                                if (food.food.vit_e != null) cellVitE += "\n" + setTwoDigits(weight*food.food.vit_e).toString() + "\n"
-                                if (food.food.vit_d != null) cellVitD += "\n" + setTwoDigits(weight*food.food.vit_d).toString() + "\n"
-                                if (food.food.d_mezd != null) cellDMezd += "\n" + setTwoDigits(weight*food.food.d_mezd).toString() + "\n"
-                                if (food.food.vit_k != null) cellVitK += "\n" + setTwoDigits(weight*food.food.vit_k).toString() + "\n"
-                                if (food.food.mzhk != null) cellMzhk += "\n" + setTwoDigits(weight*food.food.mzhk).toString() + "\n"
-                                if (food.food.pzhk != null) cellPzhk += "\n" + setTwoDigits(weight*food.food.pzhk).toString() + "\n"
+                                if (food.food.kar != null) cellKar += "\n" + setTwoDigits(weight * food.food.kar).toString() + "\n"
+                                if (food.food.mds != null) cellMds += "\n" + setTwoDigits(weight * food.food.mds).toString() + "\n"
+                                if (food.food.kr != null) cellKr += "\n" + setTwoDigits(weight * food.food.kr).toString() + "\n"
+                                if (food.food.te != null) cellTe += "\n" + setTwoDigits(weight * food.food.te).toString() + "\n"
+                                if (food.food.ok != null) cellOk += "\n" + setTwoDigits(weight * food.food.ok).toString() + "\n"
+                                if (food.food.ne != null) cellNe += "\n" + setTwoDigits(weight * food.food.ne).toString() + "\n"
+                                if (food.food.zn != null) cellZn += "\n" + setTwoDigits(weight * food.food.zn).toString() + "\n"
+                                if (food.food.cu != null) cellCu += "\n" + setTwoDigits(weight * food.food.cu).toString() + "\n"
+                                if (food.food.mn != null) cellMn += "\n" + setTwoDigits(weight * food.food.mn).toString() + "\n"
+                                if (food.food.se != null) cellSe += "\n" + setTwoDigits(weight * food.food.se).toString() + "\n"
+                                if (food.food.b5 != null) cellB5 += "\n" + setTwoDigits(weight * food.food.b5).toString() + "\n"
+                                if (food.food.b6 != null) cellB6 += "\n" + setTwoDigits(weight * food.food.b6).toString() + "\n"
+                                if (food.food.fol != null) cellFol += "\n" + setTwoDigits(weight * food.food.fol).toString() + "\n"
+                                if (food.food.b9 != null) cellB9 += "\n" + setTwoDigits(weight * food.food.b9).toString() + "\n"
+                                if (food.food.dfe != null) cellDfe += "\n" + setTwoDigits(weight * food.food.dfe).toString() + "\n"
+                                if (food.food.holin != null) cellHolin += "\n" + setTwoDigits(weight * food.food.holin).toString() + "\n"
+                                if (food.food.b12 != null) cellB12 += "\n" + setTwoDigits(weight * food.food.b12).toString() + "\n"
+                                if (food.food.ear != null) cellEar += "\n" + setTwoDigits(weight * food.food.ear).toString() + "\n"
+                                if (food.food.a_kar != null) cellAKar += "\n" + setTwoDigits(weight * food.food.a_kar).toString() + "\n"
+                                if (food.food.b_kript != null) cellBKript += "\n" + setTwoDigits(
+                                    weight * food.food.b_kript
+                                ).toString() + "\n"
+                                if (food.food.likopin != null) cellLikopin += "\n" + setTwoDigits(
+                                    weight * food.food.likopin
+                                ).toString() + "\n"
+                                if (food.food.lut_z != null) cellLutZ += "\n" + setTwoDigits(weight * food.food.lut_z).toString() + "\n"
+                                if (food.food.vit_e != null) cellVitE += "\n" + setTwoDigits(weight * food.food.vit_e).toString() + "\n"
+                                if (food.food.vit_d != null) cellVitD += "\n" + setTwoDigits(weight * food.food.vit_d).toString() + "\n"
+                                if (food.food.d_mezd != null) cellDMezd += "\n" + setTwoDigits(
+                                    weight * food.food.d_mezd
+                                ).toString() + "\n"
+                                if (food.food.vit_k != null) cellVitK += "\n" + setTwoDigits(weight * food.food.vit_k).toString() + "\n"
+                                if (food.food.mzhk != null) cellMzhk += "\n" + setTwoDigits(weight * food.food.mzhk).toString() + "\n"
+                                if (food.food.pzhk != null) cellPzhk += "\n" + setTwoDigits(weight * food.food.pzhk).toString() + "\n"
 
-                                if (food.food.w_1ed != null) cellW1Ed += "\n" + setTwoDigits(weight*food.food.w_1ed).toString() + "\n"
+                                if (food.food.w_1ed != null) cellW1Ed += "\n" + setTwoDigits(weight * food.food.w_1ed).toString() + "\n"
                                 if (food.food.op_1ed != null) cellOp1Ed += "\n" + setTwoDigits(food.food.op_1ed).toString() + "\n"
                                 if (food.food.w_2ed != null) cellW2Ed += "\n" + setTwoDigits(food.food.w_2ed).toString() + "\n"
                                 if (food.food.op_2ed != null) cellOp2Ed += "\n" + setTwoDigits(food.food.op_2ed).toString() + "\n"
-                                if (food.food.proc_pot != null) cellProcProt += "\n" + setTwoDigits(weight*food.food.proc_pot).toString() + "\n"
+                                if (food.food.proc_pot != null) cellProcProt += "\n" + setTwoDigits(
+                                    weight * food.food.proc_pot
+                                ).toString() + "\n"
                             }
-                            val cellStrings = listOf(cellName, cellWeight, cellCarbs, cellFats,
-                                cellProtein, cellKCal, cellPV, cellGI, cellGL, "", cellWater, cellNzhk,
-                                cellHol, cellZola, cellNa, cellK, cellCa, cellMg, cellP,
-                                cellFe, cellA, cellB1, cellB2, cellRr, cellC, cellRe, "", cellKar,
-                                cellMds, cellKr, cellTe, cellOk, cellNe, cellZn, cellCu, cellMn,
-                                cellSe, cellB5, cellB6, cellFol, cellB9, cellDfe, cellHolin,
-                                cellB12, cellEar, cellAKar, cellBKript, cellLikopin, cellLutZ,
-                                cellVitE, cellVitD, cellDMezd, cellVitK, cellMzhk, cellPzhk, "",
-                                cellW1Ed, cellOp1Ed, cellW2Ed, cellOp2Ed, cellProcProt, "",
-                                cellCarbs, cellGL)
+                            val cellStrings = listOf(
+                                cellName,
+                                cellWeight,
+                                cellCarbs,
+                                cellFats,
+                                cellProtein,
+                                cellKCal,
+                                cellPV,
+                                cellGI,
+                                cellGL,
+                                "",
+                                cellWater,
+                                cellNzhk,
+                                cellHol,
+                                cellZola,
+                                cellNa,
+                                cellK,
+                                cellCa,
+                                cellMg,
+                                cellP,
+                                cellFe,
+                                cellA,
+                                cellB1,
+                                cellB2,
+                                cellRr,
+                                cellC,
+                                cellRe,
+                                "",
+                                cellKar,
+                                cellMds,
+                                cellKr,
+                                cellTe,
+                                cellOk,
+                                cellNe,
+                                cellZn,
+                                cellCu,
+                                cellMn,
+                                cellSe,
+                                cellB5,
+                                cellB6,
+                                cellFol,
+                                cellB9,
+                                cellDfe,
+                                cellHolin,
+                                cellB12,
+                                cellEar,
+                                cellAKar,
+                                cellBKript,
+                                cellLikopin,
+                                cellLutZ,
+                                cellVitE,
+                                cellVitD,
+                                cellDMezd,
+                                cellVitK,
+                                cellMzhk,
+                                cellPzhk,
+                                "",
+                                cellW1Ed,
+                                cellOp1Ed,
+                                cellW2Ed,
+                                cellOp2Ed,
+                                cellProcProt,
+                                "",
+                                cellCarbs,
+                                cellGL
+                            )
                             var k = 4
                             for (cellString in cellStrings) {
                                 createCell(k).apply {
@@ -631,7 +944,7 @@ class ExportData : Fragment() {
                             }
                             createCell(k).apply {
                                 val slString = if
-                                    (mealList[j].mealWithFoods.mealEntity.sugarLevel != null)
+                                                       (mealList[j].mealWithFoods.mealEntity.sugarLevel != null)
                                     mealList[j].mealWithFoods.mealEntity.sugarLevel.toString()
                                 else ""
                                 setCellValue(slString)
@@ -639,7 +952,7 @@ class ExportData : Fragment() {
                             }
                             createCell(k + 1).apply {
                                 val slString = if
-                                   (mealList[j].mealWithFoods.mealEntity.sugarLevelPredicted != null)
+                                                       (mealList[j].mealWithFoods.mealEntity.sugarLevelPredicted != null)
                                     mealList[j].mealWithFoods.mealEntity.sugarLevelPredicted.toString()
                                 else ""
                                 setCellValue(slString)
@@ -651,7 +964,7 @@ class ExportData : Fragment() {
                             calendar.timeInMillis = mealList[j].recordEntity.dateSubmit!!
                             val dateString = formatter.format(calendar.time)
 
-                            createCell(k+2).apply {
+                            createCell(k + 2).apply {
                                 setCellValue(dateString)
                                 cellStyle = style
                             }
@@ -665,28 +978,28 @@ class ExportData : Fragment() {
 
                 } finally {
                     i -= 1
-                    carbo.add(Pair(carboMeal.sum(),date.date))
-                    prot.add(Pair(protMeal.sum(),date.date))
-                    fat.add(Pair(fatMeal.sum(),date.date))
-                    ec.add(Pair(ecMeal.sum(),date.date))
-                    gi.add(Pair(giMeal.sum(),date.date))
-                    water.add(Pair(waterMeal.sum(),date.date))
-                    nzhk.add(Pair(nzhkMeal.sum(),date.date))
-                    hol.add(Pair(holMeal.sum(),date.date))
-                    pv.add(Pair(pvMeal.sum(),date.date))
-                    zola.add(Pair(zolaMeal.sum(),date.date))
-                    na.add(Pair(naMeal.sum(),date.date))
-                    k.add(Pair(kMeal.sum(),date.date))
-                    ca.add(Pair(caMeal.sum(),date.date))
-                    mg.add(Pair(mgMeal.sum(),date.date))
-                    p.add(Pair(pMeal.sum(),date.date))
-                    fe.add(Pair(feMeal.sum(),date.date))
-                    a.add(Pair(aMeal.sum(),date.date))
-                    b1.add(Pair(b1Meal.sum(),date.date))
-                    b2.add(Pair(b2Meal.sum(),date.date))
-                    rr.add(Pair(rrMeal.sum(),date.date))
-                    c.add(Pair(cMeal.sum(),date.date))
-                    re.add(Pair(reMeal.sum(),date.date))
+                    carbo.add(Pair(carboMeal.sum(), date.date))
+                    prot.add(Pair(protMeal.sum(), date.date))
+                    fat.add(Pair(fatMeal.sum(), date.date))
+                    ec.add(Pair(ecMeal.sum(), date.date))
+                    gi.add(Pair(giMeal.sum(), date.date))
+                    water.add(Pair(waterMeal.sum(), date.date))
+                    nzhk.add(Pair(nzhkMeal.sum(), date.date))
+                    hol.add(Pair(holMeal.sum(), date.date))
+                    pv.add(Pair(pvMeal.sum(), date.date))
+                    zola.add(Pair(zolaMeal.sum(), date.date))
+                    na.add(Pair(naMeal.sum(), date.date))
+                    k.add(Pair(kMeal.sum(), date.date))
+                    ca.add(Pair(caMeal.sum(), date.date))
+                    mg.add(Pair(mgMeal.sum(), date.date))
+                    p.add(Pair(pMeal.sum(), date.date))
+                    fe.add(Pair(feMeal.sum(), date.date))
+                    a.add(Pair(aMeal.sum(), date.date))
+                    b1.add(Pair(b1Meal.sum(), date.date))
+                    b2.add(Pair(b2Meal.sum(), date.date))
+                    rr.add(Pair(rrMeal.sum(), date.date))
+                    c.add(Pair(cMeal.sum(), date.date))
+                    re.add(Pair(reMeal.sum(), date.date))
 
                     carboMeal.clear()
                     protMeal.clear()
@@ -830,7 +1143,7 @@ class ExportData : Fragment() {
                             reDay.add(re[j].first)
                             j += 1
                         }
-                    }  catch (e: java.lang.IndexOutOfBoundsException) {
+                    } catch (e: java.lang.IndexOutOfBoundsException) {
 
                     }
 
@@ -858,7 +1171,8 @@ class ExportData : Fragment() {
                         setTwoDigits(b2Day.sum()),
                         setTwoDigits(rrDay.sum()),
                         setTwoDigits(cDay.sum()),
-                        setTwoDigits(reDay.sum()))
+                        setTwoDigits(reDay.sum())
+                    )
                     var k = 6
                     for (avg in avgs) {
                         if (avg != null) {
@@ -953,7 +1267,8 @@ class ExportData : Fragment() {
 
         val ketoneList = ketoneRecords.await()
         if (ketoneRecords.await().isNullOrEmpty()) return true
-        val dates = getDates(ketoneList[0].recordEntity.date!!, ketoneList.last().recordEntity.date!!)
+        val dates =
+            getDates(ketoneList[0].recordEntity.date!!, ketoneList.last().recordEntity.date!!)
 
         var i = 3
         var j = 0
@@ -986,8 +1301,10 @@ class ExportData : Fragment() {
                         var cellTime: String
                         var cellLevel: String
                         if (getCell(2) != null) {
-                            cellTime = getCell(2).stringCellValue + "\n" + ketoneList[j].recordEntity.time
-                            cellLevel = getCell(3).stringCellValue + "\n" + ketoneList[j].ketoneEntity.ketone.toString()
+                            cellTime =
+                                getCell(2).stringCellValue + "\n" + ketoneList[j].recordEntity.time
+                            cellLevel =
+                                getCell(3).stringCellValue + "\n" + ketoneList[j].ketoneEntity.ketone.toString()
                         } else {
                             cellTime = ketoneList[j].recordEntity.time!!
                             cellLevel = ketoneList[j].ketoneEntity.ketone.toString()
@@ -1002,7 +1319,8 @@ class ExportData : Fragment() {
                         }
                         j += 1
                     }
-                } catch (e: java.lang.IndexOutOfBoundsException) { }
+                } catch (e: java.lang.IndexOutOfBoundsException) {
+                }
             }
             i += 1
         }
@@ -1050,7 +1368,8 @@ class ExportData : Fragment() {
 
         val weightList = weightRecords.await().toList()
         if (weightList.isNullOrEmpty()) return true
-        val dates = getDates(weightList[0].recordEntity.date!!, weightList.last().recordEntity.date!!)
+        val dates =
+            getDates(weightList[0].recordEntity.date!!, weightList.last().recordEntity.date!!)
 
         var i = 3
         var j = 0
@@ -1083,8 +1402,10 @@ class ExportData : Fragment() {
                         var cellTime: String
                         var cellWeight: String
                         if (getCell(2) != null) {
-                            cellTime = getCell(2).stringCellValue + "\n" + weightList[j].recordEntity.time
-                            cellWeight = getCell(3).stringCellValue + "\n" + weightList[j].weightEntity.weight.toString()
+                            cellTime =
+                                getCell(2).stringCellValue + "\n" + weightList[j].recordEntity.time
+                            cellWeight =
+                                getCell(3).stringCellValue + "\n" + weightList[j].weightEntity.weight.toString()
                         } else {
                             cellTime = weightList[j].recordEntity.time!!
                             cellWeight = weightList[j].weightEntity.weight.toString()
@@ -1099,7 +1420,8 @@ class ExportData : Fragment() {
                         }
                         j += 1
                     }
-                } catch (e: java.lang.IndexOutOfBoundsException) { }
+                } catch (e: java.lang.IndexOutOfBoundsException) {
+                }
             }
             i += 1
         }
@@ -1180,12 +1502,13 @@ class ExportData : Fragment() {
         } else if (!workoutList.isNullOrEmpty() and sleepList.isNullOrEmpty()) {
             minDate = workoutList[0].recordEntity.date!!
             maxDate = workoutList.last().recordEntity.date!!
-        } else
-        {
-            minDate = if (workoutList[0].recordEntity.dateInMilli!! < sleepList[0].recordEntity.dateInMilli!!)
-                workoutList[0].recordEntity.date!! else sleepList[0].recordEntity.date!!
-            maxDate = if (workoutList.last().recordEntity.dateInMilli!! > sleepList.last().recordEntity.dateInMilli!!)
-                workoutList.last().recordEntity.date!! else sleepList.last().recordEntity.date!!
+        } else {
+            minDate =
+                if (workoutList[0].recordEntity.dateInMilli!! < sleepList[0].recordEntity.dateInMilli!!)
+                    workoutList[0].recordEntity.date!! else sleepList[0].recordEntity.date!!
+            maxDate =
+                if (workoutList.last().recordEntity.dateInMilli!! > sleepList.last().recordEntity.dateInMilli!!)
+                    workoutList.last().recordEntity.date!! else sleepList.last().recordEntity.date!!
         }
 
         val dates = getDates(minDate, maxDate)
@@ -1221,10 +1544,13 @@ class ExportData : Fragment() {
                         var cellTime: String
                         var cellDuration: String
                         var cellType: String
-                        if (getCell(2) != null){
-                            cellTime = getCell(2).stringCellValue + "\n" + workoutList[j].recordEntity.time
-                            cellDuration = getCell(3).stringCellValue + "\n" + workoutList[j].workoutEntity.duration.toString()
-                            cellType = getCell(4).stringCellValue + "\n" + workoutList[j].workoutEntity.type.toString()
+                        if (getCell(2) != null) {
+                            cellTime =
+                                getCell(2).stringCellValue + "\n" + workoutList[j].recordEntity.time
+                            cellDuration =
+                                getCell(3).stringCellValue + "\n" + workoutList[j].workoutEntity.duration.toString()
+                            cellType =
+                                getCell(4).stringCellValue + "\n" + workoutList[j].workoutEntity.type.toString()
                         } else {
                             cellTime = workoutList[j].recordEntity.time!!
                             cellDuration = workoutList[j].workoutEntity.duration.toString()
@@ -1244,14 +1570,17 @@ class ExportData : Fragment() {
                         }
                         j += 1
                     }
-                } catch (e: java.lang.IndexOutOfBoundsException) { }
+                } catch (e: java.lang.IndexOutOfBoundsException) {
+                }
                 try {
                     while (sleepList[k].recordEntity.date == date.date) {
                         var cellTime: String
                         var cellDuration: String
-                        if (getCell(2) != null){
-                            cellTime = getCell(2).stringCellValue + "\n" + sleepList[k].recordEntity.time
-                            cellDuration = getCell(3).stringCellValue + "\n" + sleepList[k].sleepEntity.duration.toString()
+                        if (getCell(2) != null) {
+                            cellTime =
+                                getCell(2).stringCellValue + "\n" + sleepList[k].recordEntity.time
+                            cellDuration =
+                                getCell(3).stringCellValue + "\n" + sleepList[k].sleepEntity.duration.toString()
                         } else {
                             cellTime = sleepList[k].recordEntity.time!!
                             cellDuration = sleepList[k].sleepEntity.duration.toString()
@@ -1266,7 +1595,8 @@ class ExportData : Fragment() {
                         }
                         k += 1
                     }
-                } catch (e: java.lang.IndexOutOfBoundsException) { }
+                } catch (e: java.lang.IndexOutOfBoundsException) {
+                }
             }
             i += 1
         }
@@ -1275,7 +1605,7 @@ class ExportData : Fragment() {
         return true
     }
 
-    private suspend fun getSugarLevelAndInsulinTable(sheet: XSSFSheet): Boolean{
+    private suspend fun getSugarLevelAndInsulinTable(sheet: XSSFSheet): Boolean {
 
         sheet.defaultColumnWidth = 10
         sheet.setColumnWidth(0, 5000)
@@ -1377,12 +1707,13 @@ class ExportData : Fragment() {
         } else if (!sugarLevelList.isNullOrEmpty() and insulinList.isNullOrEmpty()) {
             minDate = sugarLevelList[0].recordEntity.date!!
             maxDate = sugarLevelList.last().recordEntity.date!!
-        } else
-        {
-            minDate = if (sugarLevelList[0].recordEntity.dateInMilli!! < insulinList[0].recordEntity.dateInMilli!!)
-                sugarLevelList[0].recordEntity.date!! else insulinList[0].recordEntity.date!!
-            maxDate = if (sugarLevelList.last().recordEntity.dateInMilli!! > insulinList.last().recordEntity.dateInMilli!!)
-                sugarLevelList.last().recordEntity.date!! else insulinList.last().recordEntity.date!!
+        } else {
+            minDate =
+                if (sugarLevelList[0].recordEntity.dateInMilli!! < insulinList[0].recordEntity.dateInMilli!!)
+                    sugarLevelList[0].recordEntity.date!! else insulinList[0].recordEntity.date!!
+            maxDate =
+                if (sugarLevelList.last().recordEntity.dateInMilli!! > insulinList.last().recordEntity.dateInMilli!!)
+                    sugarLevelList.last().recordEntity.date!! else insulinList.last().recordEntity.date!!
         }
 
         val dates = getDates(minDate, maxDate)
@@ -1423,10 +1754,12 @@ class ExportData : Fragment() {
                         if (dayThreshold < sugarLevelList[j].recordEntity.dateInMilli!!) {
                             bgTotal += 1
                             if ((sugarLevelList[j].sugarLevelEntity.preferences!! == "Натощак") and
-                                (sugarLevelList[j].sugarLevelEntity.sugarLevel!! > 5.1))
+                                (sugarLevelList[j].sugarLevelEntity.sugarLevel!! > 5.1)
+                            )
                                 bgHighFasting += 1
                             if ((sugarLevelList[j].sugarLevelEntity.preferences!! != "Натощак") and
-                                (sugarLevelList[j].sugarLevelEntity.sugarLevel!! > 7.0)) {
+                                (sugarLevelList[j].sugarLevelEntity.sugarLevel!! > 7.0)
+                            ) {
                                 bgHighFood += 1
 
                                 val meals = GlobalScope.async(Dispatchers.Default) {
@@ -1437,7 +1770,7 @@ class ExportData : Fragment() {
                                 for (meal in meals.await()) {
                                     foodIntakes += 1
                                     for (food in meal.mealWithFoods.foods)
-                                    if (food.food.carbo != null) carbos += food.food.carbo * food.foodInMealEntity.weight!!
+                                        if (food.food.carbo != null) carbos += food.food.carbo * food.foodInMealEntity.weight!!
 
                                 }
                                 if ((carbos < 30) and (foodIntakes > 0)) bgBadPpgr += 1
@@ -1446,7 +1779,8 @@ class ExportData : Fragment() {
 
                         }
 
-                        val columnIndex = sugarLevelColumnIndex[sugarLevelList[j].sugarLevelEntity.preferences]
+                        val columnIndex =
+                            sugarLevelColumnIndex[sugarLevelList[j].sugarLevelEntity.preferences]
                         val sugarLevel = sugarLevelList[j].sugarLevelEntity.sugarLevel!!
                         when (columnIndex) {
                             2 -> sl1.add(sugarLevel)
@@ -1458,9 +1792,11 @@ class ExportData : Fragment() {
 
                         var cellValue: String
                         var cellTime: String
-                        if (getCell(columnIndex!!) != null){
-                            cellValue = getCell(columnIndex).stringCellValue + "\n" + sugarLevel.toString()
-                            cellTime = getCell(columnIndex+1).stringCellValue + "\n" + sugarLevelList[j].recordEntity.time
+                        if (getCell(columnIndex!!) != null) {
+                            cellValue =
+                                getCell(columnIndex).stringCellValue + "\n" + sugarLevel.toString()
+                            cellTime =
+                                getCell(columnIndex + 1).stringCellValue + "\n" + sugarLevelList[j].recordEntity.time
                         } else {
                             cellValue = sugarLevel.toString()
                             cellTime = sugarLevelList[j].recordEntity.time!!
@@ -1469,7 +1805,7 @@ class ExportData : Fragment() {
                             if (sugarLevel > 6.8) {
                                 val font = fontRed
                                 setFont(font)
-                            } else if (sugarLevel < 4){
+                            } else if (sugarLevel < 4) {
                                 val font = fontBlue
                                 setFont(font)
                             }
@@ -1485,18 +1821,23 @@ class ExportData : Fragment() {
                         }
                         j += 1
                     }
-                } catch (e: java.lang.IndexOutOfBoundsException) { }
+                } catch (e: java.lang.IndexOutOfBoundsException) {
+                }
                 try {
                     while (insulinList[k].recordEntity.date == date.date) {
-                        val columnIndex = insulinColumnIndex[insulinList[k].insulinEntity.preferences]
+                        val columnIndex =
+                            insulinColumnIndex[insulinList[k].insulinEntity.preferences]
                         val insulin = insulinList[k].insulinEntity.insulin
                         var cellValue: String
                         var cellType: String
                         var cellTime: String
-                        if (getCell(columnIndex!!) != null){
-                            cellValue = getCell(columnIndex).stringCellValue + "\n" + insulin.toString()
-                            cellType = getCell(columnIndex+1).stringCellValue + "\n" + insulinList[k].insulinEntity.type
-                            cellTime = getCell(columnIndex+2).stringCellValue + "\n" + insulinList[k].recordEntity.time
+                        if (getCell(columnIndex!!) != null) {
+                            cellValue =
+                                getCell(columnIndex).stringCellValue + "\n" + insulin.toString()
+                            cellType =
+                                getCell(columnIndex + 1).stringCellValue + "\n" + insulinList[k].insulinEntity.type
+                            cellTime =
+                                getCell(columnIndex + 2).stringCellValue + "\n" + insulinList[k].recordEntity.time
                         } else {
                             cellValue = insulin.toString()
                             cellType = insulinList[k].insulinEntity.type!!
@@ -1517,7 +1858,8 @@ class ExportData : Fragment() {
                         }
                         k += 1
                     }
-                } catch (e: java.lang.IndexOutOfBoundsException) { }
+                } catch (e: java.lang.IndexOutOfBoundsException) {
+                }
             }
             i += 1
         }
@@ -1584,22 +1926,22 @@ class ExportData : Fragment() {
         var bool = false
 
         if ((appType == "GDMRCT") or (appType == "GDM")) {
-            val datePregnancyStart = sharedPreferences.getString("PREGNANCY_DATE","01.01.2000")!!
+            val datePregnancyStart = sharedPreferences.getString("PREGNANCY_DATE", "01.01.2000")!!
 
             val dateP = formatter.parse(datePregnancyStart)
             val calP = Calendar.getInstance()
             calP.time = dateP!!
-            val daysBetween = ((cal1.timeInMillis - calP.timeInMillis) / (1000 * 60 * 60 * 24)).toInt()
+            val daysBetween =
+                ((cal1.timeInMillis - calP.timeInMillis) / (1000 * 60 * 60 * 24)).toInt()
             pregnancyWeek = (daysBetween / 7) + 1
             dayOfTheWeek = daysBetween % 7
             if (dayOfTheWeek == 0) dayOfTheWeek = -1
         }
 
-        while(!cal1.after(cal2))
-        {
+        while (!cal1.after(cal2)) {
             val date = formatter.format(cal1.time)
             val pregnancyWeekString = if (pregnancyWeek > 0) pregnancyWeek.toString() else ""
-            dates.add(ExportDate(date,pregnancyWeekString,bool))
+            dates.add(ExportDate(date, pregnancyWeekString, bool))
             cal1.add(Calendar.DATE, 1)
             if (dayOfTheWeek == 6) {
                 dayOfTheWeek = -1

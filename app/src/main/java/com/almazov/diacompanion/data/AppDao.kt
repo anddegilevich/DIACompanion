@@ -278,4 +278,10 @@ interface AppDao {
     @Query("DELETE FROM food_in_recipe_table WHERE idRecipe LIKE :id")
     suspend fun deleteRecipeWithFoodsRecord(id: Int?)
 
+    //Questionnaire
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun saveQuestionnaire(questionnaireEntity: QuestionnaireEntity)
+
+    @Query("SELECT * FROM questionnaire_table LIMIT 1")
+    fun getQuestionnaire(): QuestionnaireEntity
 }

@@ -4,12 +4,11 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.almazov.diacompanion.data.*
 
 @Database(entities = [RecordEntity::class, SugarLevelEntity::class, InsulinEntity::class,
                      MealEntity::class, WorkoutEntity::class, SleepEntity::class,
                      WeightEntity::class, KetoneEntity::class, FoodEntity::class,
-                     FoodInMealEntity::class, FoodInRecipeEntity::class],
+                     FoodInMealEntity::class, FoodInRecipeEntity::class, QuestionnaireEntity::class],
     version = 1, exportSchema = false)
 abstract class AppDatabase: RoomDatabase() {
 

@@ -94,6 +94,11 @@
             app:destination="@id/greetingsPage"
             app:popUpTo="@id/greetingsPage"
             app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_homePage_to_questionnaireFragment"
+            app:destination="@id/questionnaireFragment"
+            app:popUpTo="@id/questionnaireFragment"
+            app:popUpToInclusive="true"/>
 
     </fragment>
     <fragment
@@ -578,5 +583,72 @@
             app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@id/homePage"
             app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_setupCompletePage_to_questionnaireFragment"
+            app:destination="@id/questionnaireFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+    <fragment
+        android:id="@+id/questionnaireFragment"
+        android:name="com.almazov.diacompanion.questionnaire.QuestionnaireMetricsFragment"
+        android:label="QuestionnaireFragment"
+        tools:layout="@layout/fragment_metrics_questionnaire" >
+        <action
+            android:id="@+id/action_questionnaireFragment_to_questionnaireHealthFragment"
+            app:destination="@id/questionnaireHealthFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+    <fragment
+        android:id="@+id/questionnaireHealthFragment"
+        android:name="com.almazov.diacompanion.questionnaire.QuestionnaireHealthFragment"
+        android:label="QuestionnaireHealthFragment" >
+        <argument
+            android:name="data"
+            app:argType="com.almazov.diacompanion.data.QuestionnaireEntity" />
+        <action
+            android:id="@+id/action_questionnaireHealthFragment_to_questionnaireFoodFragment"
+            app:destination="@id/questionnaireFoodFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+    <fragment
+        android:id="@+id/questionnaireFoodFragment"
+        android:name="com.almazov.diacompanion.questionnaire.QuestionnaireFoodFragment"
+        android:label="QuestionnaireFoodFragment" >
+        <argument
+            android:name="data"
+            app:argType="com.almazov.diacompanion.data.QuestionnaireEntity" />
+        <action
+            android:id="@+id/action_questionnaireFoodFragment_to_questionnaireSportsFragment"
+            app:destination="@id/questionnaireSportsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+    <fragment
+        android:id="@+id/questionnaireSportsFragment"
+        android:name="com.almazov.diacompanion.questionnaire.QuestionnaireSportsFragment"
+        android:label="QuestionnaireSportsFragment" >
+        <argument
+            android:name="data"
+            app:argType="com.almazov.diacompanion.data.QuestionnaireEntity" />
+        <action
+            android:id="@+id/action_questionnaireSportsFragment_to_homePage"
+            app:popUpTo="@id/questionnaireSportsFragment"
+            app:popUpToInclusive="true"
+            app:destination="@id/homePage"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 </navigation>

@@ -9,7 +9,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
-class AppDatabaseViewModel(application: Application): AndroidViewModel(application) {
+class AppDatabaseViewModel(application: Application) : AndroidViewModel(application) {
 
     fun readDatesPaged(): Flow<PagingData<DateClass>> {
         return Pager(
@@ -18,7 +18,7 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
                 enablePlaceholders = true,
                 maxSize = 60
             )
-        ){
+        ) {
             repository.readDatesPaged()
         }.flow
     }
@@ -58,13 +58,17 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
         return repository.readDayRecords(date, appType)
     }
 
-    fun readDayRecords(date: String?, appType: String, filter: String): LiveData<List<RecordEntity>> {
-        return repository.readDayRecords(date, appType,  filter)
+    fun readDayRecords(
+        date: String?,
+        appType: String,
+        filter: String
+    ): LiveData<List<RecordEntity>> {
+        return repository.readDayRecords(date, appType, filter)
     }
 
     fun updateFullDays(date: String?, fullDay: Boolean?) {
         GlobalScope.launch(Dispatchers.IO) {
-            repository.updateFullDays(date,fullDay)
+            repository.updateFullDays(date, fullDay)
         }
     }
 
@@ -89,11 +93,11 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
         }
     }
 
-    fun readSugarLevelRecord(id: Int?): LiveData<SugarLevelEntity>{
+    fun readSugarLevelRecord(id: Int?): LiveData<SugarLevelEntity> {
         return repository.readSugarLevelRecord(id)
     }
 
-    fun deleteSugarLevelRecord(id: Int?){
+    fun deleteSugarLevelRecord(id: Int?) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteSugarLevelRecord(id)
         }
@@ -124,11 +128,11 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
         }
     }
 
-    fun readInsulinRecord(id: Int?): LiveData<InsulinEntity>{
+    fun readInsulinRecord(id: Int?): LiveData<InsulinEntity> {
         return repository.readInsulinRecord(id)
     }
 
-    fun deleteInsulinRecord(id: Int?){
+    fun deleteInsulinRecord(id: Int?) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteInsulinRecord(id)
         }
@@ -144,31 +148,41 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
 
     // Meal
 
-    fun addRecord(recordEntity: RecordEntity, mealEntity: MealEntity, foodList: MutableList<FoodInMealItem>) {
+    fun addRecord(
+        recordEntity: RecordEntity,
+        mealEntity: MealEntity,
+        foodList: MutableList<FoodInMealItem>
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
             val id = repository.addRecord(recordEntity)
             mealEntity.idMeal = id.toInt()
             repository.addRecord(mealEntity)
             for (food in foodList) {
-                val foodInMealEntity = FoodInMealEntity(id.toInt(), food.foodEntity.idFood!!,food.weight)
+                val foodInMealEntity =
+                    FoodInMealEntity(id.toInt(), food.foodEntity.idFood!!, food.weight)
                 repository.addRecord(foodInMealEntity)
             }
         }
     }
 
-    fun updateRecord(recordEntity: RecordEntity, mealEntity: MealEntity, foodList: MutableList<FoodInMealItem>) {
+    fun updateRecord(
+        recordEntity: RecordEntity,
+        mealEntity: MealEntity,
+        foodList: MutableList<FoodInMealItem>
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.updateRecord(recordEntity)
             repository.updateRecord(mealEntity)
             repository.deleteMealWithFoodsRecord(recordEntity.id)
             for (food in foodList) {
-                val foodInMealEntity = FoodInMealEntity(recordEntity.id!!, food.foodEntity.idFood!!,food.weight)
+                val foodInMealEntity =
+                    FoodInMealEntity(recordEntity.id!!, food.foodEntity.idFood!!, food.weight)
                 repository.addRecord(foodInMealEntity)
             }
         }
     }
 
-    fun deleteMealRecord(id: Int?){
+    fun deleteMealRecord(id: Int?) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteMealRecord(id)
             repository.deleteMealWithFoodsRecord(id)
@@ -186,10 +200,10 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
     suspend fun readPresentDayMealRecords(presentDay: String): List<RecordWithMealWithFoods> {
         return repository.readPresentDayMealRecords(presentDay)
     }
+
     suspend fun readMealsBeforeSugarLevel(time: Long): List<RecordWithMealWithFoods> {
         return repository.readMealsBeforeSugarLevel(time)
     }
-
 
 
     // Workout
@@ -209,11 +223,11 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
         }
     }
 
-    fun readWorkoutRecord(id: Int?): LiveData<WorkoutEntity>{
+    fun readWorkoutRecord(id: Int?): LiveData<WorkoutEntity> {
         return repository.readWorkoutRecord(id)
     }
 
-    fun deleteWorkoutRecord(id: Int?){
+    fun deleteWorkoutRecord(id: Int?) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteWorkoutRecord(id)
         }
@@ -240,11 +254,11 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
         }
     }
 
-    fun readSleepRecord(id: Int?): LiveData<SleepEntity>{
+    fun readSleepRecord(id: Int?): LiveData<SleepEntity> {
         return repository.readSleepRecord(id)
     }
 
-    fun deleteSleepRecord(id: Int?){
+    fun deleteSleepRecord(id: Int?) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteSleepRecord(id)
         }
@@ -271,17 +285,17 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
         }
     }
 
-    fun readWeightRecord(id: Int?): LiveData<WeightEntity>{
+    fun readWeightRecord(id: Int?): LiveData<WeightEntity> {
         return repository.readWeightRecord(id)
     }
 
-    fun deleteWeightRecord(id: Int?){
+    fun deleteWeightRecord(id: Int?) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteWeightRecord(id)
         }
     }
 
-    fun readLastWeightRecordDate(): LiveData<Long?>{
+    fun readLastWeightRecordDate(): LiveData<Long?> {
         return repository.readLastWeightRecordDate()
     }
 
@@ -306,11 +320,11 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
         }
     }
 
-    fun readKetoneRecord(id: Int?): LiveData<KetoneEntity>{
+    fun readKetoneRecord(id: Int?): LiveData<KetoneEntity> {
         return repository.readKetoneRecord(id)
     }
 
-    fun deleteKetoneRecord(id: Int?){
+    fun deleteKetoneRecord(id: Int?) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteKetoneRecord(id)
         }
@@ -329,37 +343,39 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
                 enablePlaceholders = true,
                 maxSize = 200
             )
-        ){
+        ) {
             repository.readFoodPaged(recipe)
         }.flow
     }
 
-    fun readFoodPagedFilter(filter: String, recipe: Boolean, category: String, sortVar: String,
-                            direction: String): Flow<PagingData<FoodEntity>> {
+    fun readFoodPagedFilter(
+        filter: String, recipe: Boolean, category: String, sortVar: String,
+        direction: String
+    ): Flow<PagingData<FoodEntity>> {
         return Pager(
             PagingConfig(
                 pageSize = 10,
                 enablePlaceholders = true,
                 maxSize = 200
             )
-        ){
-            repository.readFoodPagedFilter(filter,recipe, category, sortVar, direction)
+        ) {
+            repository.readFoodPagedFilter(filter, recipe, category, sortVar, direction)
         }.flow
     }
 
     fun updateFavourite(id: Int?, favourite: Boolean?) {
         GlobalScope.launch(Dispatchers.IO) {
-            repository.updateFavourite(id,favourite)
+            repository.updateFavourite(id, favourite)
         }
     }
 
     // Food in meal
 
-    fun getMealWithFoods(id: Int?): LiveData<List<MealWithFood>>{
+    fun getMealWithFoods(id: Int?): LiveData<List<MealWithFood>> {
         return repository.getMealWithFoods(id)
     }
 
-    fun getMealWithFoods6HoursAgo(timeInMilli: Long): LiveData<List<MealWithFood>>{
+    fun getMealWithFoods6HoursAgo(timeInMilli: Long): LiveData<List<MealWithFood>> {
         return repository.getMealWithFoods6HoursAgo(timeInMilli)
     }
 
@@ -373,7 +389,8 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
         viewModelScope.launch(Dispatchers.IO) {
             val id = repository.addRecord(foodEntity)
             for (food in foodList) {
-                val foodInRecipeEntity = FoodInRecipeEntity(id.toInt(), food.foodEntity.idFood!!,food.weight)
+                val foodInRecipeEntity =
+                    FoodInRecipeEntity(id.toInt(), food.foodEntity.idFood!!, food.weight)
                 repository.addRecord(foodInRecipeEntity)
             }
         }
@@ -384,13 +401,14 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
             repository.updateRecord(foodEntity)
             repository.deleteRecipeWithFoodsRecord(foodEntity.idFood)
             for (food in foodList) {
-                val foodInRecipeEntity = FoodInRecipeEntity(foodEntity.idFood!!, food.foodEntity.idFood!!,food.weight)
+                val foodInRecipeEntity =
+                    FoodInRecipeEntity(foodEntity.idFood!!, food.foodEntity.idFood!!, food.weight)
                 repository.addRecord(foodInRecipeEntity)
             }
         }
     }
 
-    fun deleteRecipeRecord(id: Int?){
+    fun deleteRecipeRecord(id: Int?) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteRecipeRecord(id)
             repository.deleteRecipeWithFoodsRecord(id)
@@ -405,7 +423,7 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
                 enablePlaceholders = true,
                 maxSize = 200
             )
-        ){
+        ) {
             repository.readRecipePaged()
         }.flow
     }
@@ -415,8 +433,20 @@ class AppDatabaseViewModel(application: Application): AndroidViewModel(applicati
     fun getRecipeWithFoods(id: Int?): LiveData<List<FoodEntity>> {
         return repository.getRecipeWithFoods(id)
     }
+
     fun getWeightsOfFoodsInRecipe(id: Int?): LiveData<List<Double>> {
         return repository.getWeightsOfFoodsInRecipe(id)
+    }
+
+    //Questionnaire
+    fun saveQuestionnaire(questionnaireEntity: QuestionnaireEntity) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.saveQuestionnaire(questionnaireEntity)
+        }
+    }
+
+    fun getQuestionnaire(): QuestionnaireEntity {
+        return repository.getQuestionnaire()
     }
 
 }

@@ -1,0 +1,256 @@
+package com.almazov.diacompanion.questionnaire
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import com.almazov.diacompanion.R
+import com.almazov.diacompanion.databinding.FragmentFoodQuestionnaireBinding
+import com.almazov.diacompanion.questionnaire.models.OneThreeRange
+import com.almazov.diacompanion.questionnaire.models.OneTwoRange
+import com.almazov.diacompanion.questionnaire.models.SixTwelveRange
+import com.almazov.diacompanion.questionnaire.models.ThreeSixRange
+import com.almazov.diacompanion.questionnaire.models.TwoFourRange
+
+class QuestionnaireFoodFragment : Fragment() {
+
+    private val args by navArgs<QuestionnaireFoodFragmentArgs>()
+    private var _binding: FragmentFoodQuestionnaireBinding? = null
+
+    private val binding get() = _binding!!
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentFoodQuestionnaireBinding.inflate(layoutInflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        with(binding) {
+            spinnerFruitsBefore.adapter = ArrayAdapter(
+                requireContext(),
+                R.layout.spinner_item,
+                SixTwelveRange.values().map { it.text })
+            spinnerFruits.adapter = ArrayAdapter(
+                requireContext(),
+                R.layout.spinner_item,
+                SixTwelveRange.values().map { it.text })
+
+            spinnerCupcakesBefore.adapter = ArrayAdapter(
+                requireContext(),
+                R.layout.spinner_item,
+                TwoFourRange.values().map { it.text })
+            spinnerCupcakes.adapter = ArrayAdapter(
+                requireContext(),
+                R.layout.spinner_item,
+                TwoFourRange.values().map { it.text })
+
+            spinnerCakesBefore.adapter = ArrayAdapter(
+                requireContext(),
+                R.layout.spinner_item,
+                TwoFourRange.values().map { it.text })
+            spinnerCakes.adapter = ArrayAdapter(
+                requireContext(),
+                R.layout.spinner_item,
+                TwoFourRange.values().map { it.text })
+
+            spinnerChocolateBefore.adapter = ArrayAdapter(
+                requireContext(),
+                R.layout.spinner_item,
+                TwoFourRange.values().map { it.text })
+            spinnerChocolate.adapter = ArrayAdapter(
+                requireContext(),
+                R.layout.spinner_item,
+                TwoFourRange.values().map { it.text })
+
+            spinnerDefattedMilkBefore.adapter = ArrayAdapter(
+                requireContext(),
+                R.layout.spinner_item,
+                ThreeSixRange.values().map { it.text })
+            spinnerDefattedMilk.adapter = ArrayAdapter(
+                requireContext(),
+                R.layout.spinner_item,
+                ThreeSixRange.values().map { it.text })
+
+            spinnerMilkBefore.adapter = ArrayAdapter(
+                requireContext(),
+                R.layout.spinner_item,
+                ThreeSixRange.values().map { it.text })
+            spinnerMilk.adapter = ArrayAdapter(
+                requireContext(),
+                R.layout.spinner_item,
+                ThreeSixRange.values().map { it.text })
+
+            spinnerBeansBefore.adapter = ArrayAdapter(
+                requireContext(),
+                R.layout.spinner_item,
+                OneTwoRange.values().map { it.text })
+            spinnerBeans.adapter = ArrayAdapter(
+                requireContext(),
+                R.layout.spinner_item,
+                OneTwoRange.values().map { it.text })
+
+            spinnerMeatBefore.adapter = ArrayAdapter(
+                requireContext(),
+                R.layout.spinner_item,
+                ThreeSixRange.values().map { it.text })
+            spinnerMeat.adapter = ArrayAdapter(
+                requireContext(),
+                R.layout.spinner_item,
+                ThreeSixRange.values().map { it.text })
+
+            spinnerDryFruitsBefore.adapter = ArrayAdapter(
+                requireContext(),
+                R.layout.spinner_item,
+                OneThreeRange.values().map { it.text })
+            spinnerDryFruits.adapter = ArrayAdapter(
+                requireContext(),
+                R.layout.spinner_item,
+                OneThreeRange.values().map { it.text })
+
+            spinnerFishBefore.adapter = ArrayAdapter(
+                requireContext(),
+                R.layout.spinner_item,
+                ThreeSixRange.values().map { it.text })
+            spinnerFish.adapter = ArrayAdapter(
+                requireContext(),
+                R.layout.spinner_item,
+                ThreeSixRange.values().map { it.text })
+
+            spinnerWholemealBreadBefore.adapter = ArrayAdapter(
+                requireContext(),
+                R.layout.spinner_item,
+                OneThreeRange.values().map { it.text })
+            spinnerWholemealBread.adapter = ArrayAdapter(
+                requireContext(),
+                R.layout.spinner_item,
+                OneThreeRange.values().map { it.text })
+
+            spinnerBreadBefore.adapter = ArrayAdapter(
+                requireContext(),
+                R.layout.spinner_item,
+                SixTwelveRange.values().map { it.text })
+            spinnerBread.adapter = ArrayAdapter(
+                requireContext(),
+                R.layout.spinner_item,
+                SixTwelveRange.values().map { it.text })
+
+            spinnerSauceBefore.adapter = ArrayAdapter(
+                requireContext(),
+                R.layout.spinner_item,
+                TwoFourRange.values().map { it.text })
+            spinnerSauce.adapter = ArrayAdapter(
+                requireContext(),
+                R.layout.spinner_item,
+                TwoFourRange.values().map { it.text })
+
+            spinnerVegetablesBefore.adapter = ArrayAdapter(
+                requireContext(),
+                R.layout.spinner_item,
+                SixTwelveRange.values().map { it.text })
+            spinnerVegetables.adapter = ArrayAdapter(
+                requireContext(),
+                R.layout.spinner_item,
+                SixTwelveRange.values().map { it.text })
+
+            spinnerAlcoholBefore.adapter = ArrayAdapter(
+                requireContext(),
+                R.layout.spinner_item,
+                OneThreeRange.values().map { it.text })
+            spinnerAlcohol.adapter = ArrayAdapter(
+                requireContext(),
+                R.layout.spinner_item,
+                OneThreeRange.values().map { it.text })
+
+            spinnerSweetDrinksBefore.adapter = ArrayAdapter(
+                requireContext(),
+                R.layout.spinner_item,
+                TwoFourRange.values().map { it.text })
+            spinnerSweetDrinks.adapter = ArrayAdapter(
+                requireContext(),
+                R.layout.spinner_item,
+                TwoFourRange.values().map { it.text })
+
+            spinnerCoffeeBefore.adapter = ArrayAdapter(
+                requireContext(),
+                R.layout.spinner_item,
+                OneThreeRange.values().map { it.text })
+            spinnerCoffee.adapter = ArrayAdapter(
+                requireContext(),
+                R.layout.spinner_item,
+                OneThreeRange.values().map { it.text })
+
+            spinnerSausagesBefore.adapter = ArrayAdapter(
+                requireContext(),
+                R.layout.spinner_item,
+                OneThreeRange.values().map { it.text })
+            spinnerSausages.adapter = ArrayAdapter(
+                requireContext(),
+                R.layout.spinner_item,
+                OneThreeRange.values().map { it.text })
+
+            btnContinue.setOnClickListener { onContinueClick() }
+        }
+    }
+
+    private fun onContinueClick() {
+        with(binding) {
+            val data = args.data.apply {
+                fruitsBefore = spinnerFruitsBefore.selectedItem.toString()
+                fruits = spinnerFruits.selectedItem.toString()
+                cupcakesBefore = spinnerCupcakesBefore.selectedItem.toString()
+                cupcakes = spinnerCupcakes.selectedItem.toString()
+                cakesBefore = spinnerCakesBefore.selectedItem.toString()
+                cakes = spinnerCakes.selectedItem.toString()
+                chocolateBefore = spinnerChocolateBefore.selectedItem.toString()
+                chocolate = spinnerChocolate.selectedItem.toString()
+                defattedMilkBefore = spinnerDefattedMilkBefore.selectedItem.toString()
+                defattedMilk = spinnerDefattedMilk.selectedItem.toString()
+                milkBefore = spinnerMilkBefore.selectedItem.toString()
+                milk = spinnerMilk.selectedItem.toString()
+                beansBefore = spinnerBeansBefore.selectedItem.toString()
+                beans = spinnerBeans.selectedItem.toString()
+                meatBefore = spinnerMeatBefore.selectedItem.toString()
+                meat = spinnerMeat.selectedItem.toString()
+                dryFruitsBefore = spinnerDryFruitsBefore.selectedItem.toString()
+                dryFruits = spinnerDryFruits.selectedItem.toString()
+                fishBefore = spinnerFishBefore.selectedItem.toString()
+                fish = spinnerFish.selectedItem.toString()
+                wholemealBreadBefore = spinnerWholemealBreadBefore.selectedItem.toString()
+                wholemealBread = spinnerWholemealBread.selectedItem.toString()
+                breadBefore = spinnerBreadBefore.selectedItem.toString()
+                bread = spinnerBread.selectedItem.toString()
+                sauceBefore = spinnerSauceBefore.selectedItem.toString()
+                sauce = spinnerSauce.selectedItem.toString()
+                vegetablesBefore = spinnerVegetablesBefore.selectedItem.toString()
+                vegetables = spinnerVegetables.selectedItem.toString()
+                alcoholBefore = spinnerAlcoholBefore.selectedItem.toString()
+                alcohol = spinnerAlcohol.selectedItem.toString()
+                sweetDrinksBefore = spinnerSweetDrinksBefore.selectedItem.toString()
+                sweetDrinks = spinnerSweetDrinks.selectedItem.toString()
+                coffeeBefore = spinnerCoffeeBefore.selectedItem.toString()
+                coffee = spinnerCoffee.selectedItem.toString()
+                sausagesBefore = spinnerSausagesBefore.selectedItem.toString()
+                sausages = spinnerSausages.selectedItem.toString()
+            }
+
+            findNavController().navigate(
+                QuestionnaireFoodFragmentDirections.actionQuestionnaireFoodFragmentToQuestionnaireSportsFragment(
+                    data
+                )
+            )
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+}

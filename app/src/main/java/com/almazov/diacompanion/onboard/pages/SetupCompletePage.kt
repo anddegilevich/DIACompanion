@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import com.almazov.diacompanion.R
@@ -32,7 +31,7 @@ class SetupCompletePage : Fragment() {
 
         view.btn_finish.setOnClickListener {
             onBoardingFinish()
-            findNavController().navigate(R.id.action_setupCompletePage_to_homePage)
+            findNavController().navigate(SetupCompletePageDirections.actionSetupCompletePageToQuestionnaireFragment())
         }
 
         return view

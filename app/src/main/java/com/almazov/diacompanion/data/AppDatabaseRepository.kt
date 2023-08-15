@@ -333,4 +333,12 @@ class AppDatabaseRepository(private val appDao: AppDao) {
         appDao.deleteRecipeWithFoodsRecord(id)
     }
 
+    //Questionnaire
+    suspend fun saveQuestionnaire(questionnaireEntity: QuestionnaireEntity){
+        appDao.saveQuestionnaire(questionnaireEntity)
+    }
+
+    fun getQuestionnaire(): QuestionnaireEntity {
+        return appDao.getQuestionnaire()
+    }
 }

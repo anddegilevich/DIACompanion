@@ -109,11 +109,11 @@ class MealRecordInfo : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
                         val highGI = checkGI(foodList)
                         val manyCarbs = checkCarbs(record[0].meal.type!!, foodList)
                         val highBGBefore = checkSLBefore(record[0].meal.sugarLevel!!)
-                        val highBGPredict = checkSLPredict(record[0].meal.sugarLevelPredicted!!)
+                        val hyperglycemiaChance = checkHyperglycemia(record[0].meal.hyperglycemiaChance!!)
                         try {
                             val recommendations = getMessage(
                                 highGI, manyCarbs, highBGBefore,
-                                glCarbsKr.second, highBGPredict, resources
+                                glCarbsKr.second, hyperglycemiaChance, resources
                             )
                             var recommendationSum = ""
                             for (recommendation in recommendations) {

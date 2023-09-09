@@ -233,7 +233,15 @@ interface AppDao {
         AND (food_in_meal_table.idMeal = (SELECT id FROM record_table WHERE (category = "meal_table") AND (dateInMilli < :timeInMilli) AND (dateInMilli > :timeInMilli - 21600000)))
         INNER JOIN food_table ON (food_table.idFood = food_in_meal_table.idFood)
         """)
-    fun getMealWithFoods6HoursAgo(timeInMilli: Long): LiveData<List<MealWithFood>>
+    suspend fun getMealWithFoods6HoursAgo(timeInMilli: Long): List<MealWithFood>
+
+    @Query("""
+        SELECT * FROM meal_table 
+        INNER JOIN food_in_meal_table ON (meal_table.idMeal = food_in_meal_table.idMeal)
+        AND (food_in_meal_table.idMeal = (SELECT id FROM record_table WHERE (category = "meal_table") AND (dateInMilli < :timeInMilli) AND (dateInMilli > :timeInMilli - 43200000)))
+        INNER JOIN food_table ON (food_table.idFood = food_in_meal_table.idFood)
+        """)
+    suspend fun getMealWithFoods12HoursAgo(timeInMilli: Long): List<MealWithFood>
 
     @Query("""
         SELECT * FROM meal_table 

@@ -283,8 +283,12 @@ class AppDatabaseRepository(private val appDao: AppDao) {
         return appDao.getMealWithFoods(id)
     }
 
-    fun getMealWithFoods6HoursAgo(timeInMilli: Long): LiveData<List<MealWithFood>>{
+    suspend fun getMealWithFoods6HoursAgo(timeInMilli: Long): List<MealWithFood>{
         return appDao.getMealWithFoods6HoursAgo(timeInMilli)
+    }
+
+    suspend fun getMealWithFoods12HoursAgo(timeInMilli: Long): List<MealWithFood> {
+        return appDao.getMealWithFoods12HoursAgo(timeInMilli)
     }
 
     suspend fun getMealWithFoodsThisDay(day: String): List<MealWithFood> {

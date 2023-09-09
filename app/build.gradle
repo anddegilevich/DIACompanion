@@ -103,4 +103,11 @@ dependencies {
 
     implementation "androidx.viewpager2:viewpager2:1.0.0"
     implementation "me.relex:circleindicator:2.1.4"
+
+    //Model
+    implementation("ai.catboost:catboost-common:1.2")
+    implementation("ai.catboost:catboost-prediction:1.2")
+    implementation("com.google.code.findbugs:jsr305:3.0.2")
+    implementation("org.slf4j:slf4j-api:2.0.7")
+    implementation("jakarta.validation:jakarta.validation-api:3.0.2")
 }

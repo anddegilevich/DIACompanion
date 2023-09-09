@@ -330,6 +330,7 @@ class ExportData : Fragment() {
             "Уровень триглицеридов",
             "Уровень холестерина",
             "Уровень глюкозы (натощак)",
+            "Неделя беременности на момент сдачи анализов",
             "Был ли ранее выявлен диабет у кровных родственников?",
             "Было ли замечено нарушение толерантности к глюкозе до беременности?",
             "Диагностировали ли вам гипертоническую болезнь до беременности?",
@@ -341,8 +342,8 @@ class ExportData : Fragment() {
             "Укажите частоту потребления фруктов в неделю во время беременности",
             "Укажите частоту потребления пирожных в неделю до беременности",
             "Укажите частоту потребления пирожных в неделю во время беременности",
-            "Укажите частоту потребления выпечки в неделю до беременности",
-            "Укажите частоту потребления выпечки в неделю во время беременности",
+            "Укажите частоту потребления сдобной выпечки в неделю до беременности",
+            "Укажите частоту потребления сдобной выпечки в неделю во время беременности",
             "Укажите частоту потребления шоколада в неделю до беременности",
             "Укажите частоту потребления шоколада в неделю во время беременности",
             "Укажите частоту потребления обезжиренных молочных продуктов в неделю до беременности",
@@ -402,6 +403,7 @@ class ExportData : Fragment() {
                 triglyceride,
                 cholesterol,
                 glucose,
+                pregnancyAnalysesCount,
                 diabetesRelative,
                 glucoseTolerance,
                 hypertensionBefore,
@@ -459,7 +461,7 @@ class ExportData : Fragment() {
                     setCellValue(question)
                 }
                 createCell(1).apply {
-                    setCellValue(answers[index])
+                    setCellValue(answers[index].toString())
                 }
             }
         }
@@ -552,7 +554,7 @@ class ExportData : Fragment() {
             "Углеводы (г)",
             "ГН",
             "УСК до еды",
-            "Прогноз УСК",
+            "Вероятность гипергликемии (%)",
             "Время добавления записи"
         )
         sheet.createRow(2).apply {
@@ -951,10 +953,9 @@ class ExportData : Fragment() {
                                 cellStyle = style
                             }
                             createCell(k + 1).apply {
-                                val slString = if
-                                                       (mealList[j].mealWithFoods.mealEntity.sugarLevelPredicted != null)
-                                    mealList[j].mealWithFoods.mealEntity.sugarLevelPredicted.toString()
-                                else ""
+                                val slString = mealList[j].mealWithFoods.mealEntity.hyperglycemiaChance?.let {hyperglycemiaChance ->
+                                    (hyperglycemiaChance * 100.0).toInt().toString()
+                                } ?: ""
                                 setCellValue(slString)
                                 cellStyle = style
                             }

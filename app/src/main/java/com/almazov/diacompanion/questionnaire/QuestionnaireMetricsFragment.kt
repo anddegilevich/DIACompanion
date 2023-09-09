@@ -114,10 +114,11 @@ class QuestionnaireMetricsFragment : Fragment() {
                 thirdTrim = spinnerThirdTrim.selectedItem.toString(),
                 solarium = spinnerSolarium.selectedItem.toString(),
 
-                hba1c = editTextHba1c.text.toString().ifEmpty { "0.0" },
-                triglyceride = editTextTriglyceride.text.toString().ifEmpty { "0.0" },
-                cholesterol = editTextCholesterol.text.toString().ifEmpty { "0.0" },
-                glucose = editTextGlucose.text.toString().ifEmpty { "0.0" },
+                hba1c = editTextHba1c.text.toString().ifEmpty { "0" }.toFloat(),
+                triglyceride = editTextTriglyceride.text.toString().ifEmpty { "0" }.toFloat(),
+                cholesterol = editTextCholesterol.text.toString().ifEmpty { "0" }.toFloat(),
+                glucose = editTextGlucose.text.toString().ifEmpty { "0" }.toFloat(),
+                pregnancyAnalysesCount = editTextPregnancyAnalysis.text.toString().ifEmpty { "0" }.toInt()
             )
 
             findNavController().navigate(QuestionnaireMetricsFragmentDirections.actionQuestionnaireFragmentToQuestionnaireHealthFragment(data))

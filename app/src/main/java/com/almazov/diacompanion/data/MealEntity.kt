@@ -9,5 +9,5 @@ data class MealEntity (
     var idMeal: Int?,
     val type: String?,
     val sugarLevel: Double?,
-    val sugarLevelPredicted: Double?
+    val hyperglycemiaChance: Double?
     )

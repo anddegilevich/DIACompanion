@@ -39,10 +39,14 @@ import kotlinx.android.synthetic.main.fragment_meal_add_record.tv_Time
 import kotlinx.android.synthetic.main.fragment_meal_add_record.tv_title
 import kotlinx.android.synthetic.main.fragment_meal_add_record.view.*
 import kotlinx.android.synthetic.main.sl_high.*
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.Period
+import java.time.format.DateTimeFormatter
 
 
 class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
@@ -57,10 +61,21 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
     var updateBool: Boolean = false
     var updateFinished: Boolean = false
 
-    private var bmi: Double? = null
-    private var protein: Double? = null
-    private var glCarbsKr: Pair<List<Double>, Boolean> = Pair(emptyList(),false)
-    private var sugarLevelPredicted: Double? = null
+    private var bmi: Float = 0f
+    private var weightBeforePregnancy: Float = 0f
+    private var sixHoursPredictors: SixHoursPredictors = SixHoursPredictors()
+    private var pv12: Float = 0f
+    private var iterablePredictors: Pair<IterablePredictors, Boolean> =
+        Pair(IterablePredictors(), false)
+    private var age: Float = 27f
+
+
+    private var hbA1C = 0f
+    private var tg = 0f
+    private var hol = 0f
+    private var glucoseNt = 0f
+    private var analysisTime = 0f
+    private var hyperglycemiaChance: Double? = null
 
     private lateinit var spinnerAdapter: CustomStringAdapter
     private lateinit var spinnerStringArray: Array<String>
@@ -75,12 +90,33 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
     ): View? {
 
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        bmi = sharedPreferences!!.getFloat("BMI", 20f).toDouble()
+        bmi = sharedPreferences!!.getFloat("BMI", 20f)
+        weightBeforePregnancy = sharedPreferences.getFloat("WEIGHT_BEFORE_PREGNANCY", 60f)
         appType = sharedPreferences.getString("APP_TYPE", "")!!
+        val birthDate = sharedPreferences.getString("BIRTH_DATE", "01.01.2000")!!
+        val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+        val dateTimeBirth = LocalDate.parse(birthDate, formatter)
+        age = Period.between(
+            dateTimeBirth,
+            LocalDate.now()
+        ).years.toFloat()
+
+        CoroutineScope(Dispatchers.Main).launch {
+            val questionnaire = CoroutineScope(Dispatchers.IO).async {
+                appDatabaseViewModel.getQuestionnaire()
+            }
+            questionnaire.await().let {
+                hbA1C = it.hba1c ?: 0f
+                tg = it.triglyceride ?: 0f
+                hol = it.cholesterol ?: 0f
+                glucoseNt = it.glucose ?: 0f
+                analysisTime = it.pregnancyAnalysesCount?.toFloat() ?: 0f
+            }
+        }
 
         val view = inflater.inflate(R.layout.fragment_meal_add_record, container, false)
 
-        if (appType != "PCOS"){
+        if (appType != "PCOS") {
             slideView(view.layout_pcos)
         }
 
@@ -103,7 +139,8 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
 
 
         spinnerStringArray = resources.getStringArray(R.array.MealSpinner)
-        spinnerAdapter = CustomStringAdapter(requireContext(),
+        spinnerAdapter = CustomStringAdapter(
+            requireContext(),
             R.layout.spinner_item, spinnerStringArray
         )
 
@@ -116,7 +153,8 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
                 id: Long
             ) {
                 if (!foodList.isNullOrEmpty() and checkbox_sugar_level.isChecked
-                    and !edit_text_sugar_level.text.isNullOrEmpty()) updateRecommendation()
+                    and !edit_text_sugar_level.text.isNullOrEmpty()
+                ) updateRecommendation()
             }
 
             override fun onNothingSelected(parentView: AdapterView<*>?) {
@@ -147,7 +185,7 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
                 val time = tv_Time.text.toString()
                 val date = tv_Date.text.toString()
                 val dateInMilli = convertDateToMils("$time $date")
-                getProteinDate(dateInMilli)
+                getTimeIntervalPredictors(dateInMilli)
             }
         }
         dateSubmit = timeDateSelectSetup(childFragmentManager, tv_Time, tv_Date)
@@ -163,13 +201,15 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
                     ItemTouchHelper.LEFT -> {
                         foodList.removeAt(viewHolder.adapterPosition)
                         adapter.updateItems(foodList)
-                        if ( foodList.isNullOrEmpty() and (vf_recommendation.height != 0)) {
-                            slideView(vf_recommendation)} else
-                        if (checkbox_sugar_level.isChecked
-                            and !edit_text_sugar_level.text.isNullOrEmpty()) {
-                            glCarbsKr = getGLCarbsKr(foodList)
-                            updateRecommendation()
-                        }
+                        if (foodList.isNullOrEmpty() and (vf_recommendation.height != 0)) {
+                            slideView(vf_recommendation)
+                        } else
+                            if (checkbox_sugar_level.isChecked
+                                and !edit_text_sugar_level.text.isNullOrEmpty()
+                            ) {
+                                iterablePredictors = getGLCarbsKr(foodList)
+                                updateRecommendation()
+                            }
                     }
                 }
             }
@@ -194,7 +234,7 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
 
                     if (!foodAlreadyInList) {
                         lastFood = it.idFood!!
-                        val selectWeightDialog = SelectWeightDialog(requireContext(),null)
+                        val selectWeightDialog = SelectWeightDialog(requireContext(), null)
                         selectWeightDialog.isCancelable = true
                         selectWeightDialog.show(requireFragmentManager(), "weight select dialog")
 
@@ -202,7 +242,7 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
                             val result = bundle.getString("resultKey")
                             foodList.add(FoodInMealItem(it, result!!.toDouble()))
                             adapter.updateItems(foodList)
-                            glCarbsKr = getGLCarbsKr(foodList)
+                            iterablePredictors = getGLCarbsKr(foodList)
                             if (checkbox_sugar_level.isChecked and
                                 !edit_text_sugar_level.text.isNullOrEmpty()
                             ) {
@@ -248,8 +288,8 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
                 slideView(sugar_level_layout)
             }
         }
-        editTextSeekBarSetup(1, 20, edit_text_sugar_level, seek_bar_sugar_level )
-        edit_text_sugar_level.addTextChangedListener (object : TextWatcher {
+        editTextSeekBarSetup(1, 20, edit_text_sugar_level, seek_bar_sugar_level)
+        edit_text_sugar_level.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
 
@@ -257,38 +297,41 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                if ((s.isNullOrEmpty()) and (vf_recommendation.height != 0)) slideView(vf_recommendation)
+                if ((s.isNullOrEmpty()) and (vf_recommendation.height != 0)) slideView(
+                    vf_recommendation
+                )
                 if (!foodList.isNullOrEmpty() and checkbox_sugar_level.isChecked and !s.isNullOrEmpty()) {
                     updateRecommendation()
                 }
             }
         })
 
-        if (updateBool and !updateFinished)
-        {
-            appDatabaseViewModel.getMealWithFoods(args.selectedRecord?.id).observe(viewLifecycleOwner, Observer{record ->
+        if (updateBool and !updateFinished) {
+            appDatabaseViewModel.getMealWithFoods(args.selectedRecord?.id)
+                .observe(viewLifecycleOwner, Observer { record ->
 
-                if (!record.isNullOrEmpty()) {
-                    view.spinner_meal.setSelection(
-                        resources.getStringArray(R.array.MealSpinner).indexOf(record[0].meal.type)
-                    )
-                    if (foodList.isNullOrEmpty()) {
-                        for (food in record) {
-                            foodList.add(FoodInMealItem(food.food, food.weight!!))
+                    if (!record.isNullOrEmpty()) {
+                        view.spinner_meal.setSelection(
+                            resources.getStringArray(R.array.MealSpinner)
+                                .indexOf(record[0].meal.type)
+                        )
+                        if (foodList.isNullOrEmpty()) {
+                            for (food in record) {
+                                foodList.add(FoodInMealItem(food.food, food.weight!!))
+                            }
+                            adapter.updateItems(foodList)
+                            iterablePredictors = getGLCarbsKr(foodList)
                         }
-                        adapter.updateItems(foodList)
-                        glCarbsKr = getGLCarbsKr(foodList)
+                        if (record[0].meal.sugarLevel != null) {
+                            view.checkbox_sugar_level.isChecked = true
+                            edit_text_sugar_level.setText(record[0].meal.sugarLevel.toString())
+                        }
                     }
-                    if (record[0].meal.sugarLevel != null) {
-                        view.checkbox_sugar_level.isChecked = true
-                        edit_text_sugar_level.setText(record[0].meal.sugarLevel.toString())
-                    }
-                }
 
-            })
+                })
 
             val currentTime = getSelectedTimeInMilli()
-            getProteinDate(currentTime)
+            getTimeIntervalPredictors(currentTime)
 
             tv_title.text = this.resources.getString(R.string.UpdateRecord)
             tv_Time.text = args.selectedRecord?.time
@@ -301,24 +344,43 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
         }
     }
 
-    private fun getProteinDate(time: Long) {
-        appDatabaseViewModel.getMealWithFoods6HoursAgo(time).observe(viewLifecycleOwner, Observer{record ->
-
-                protein = getProtein(record)
+    private fun getTimeIntervalPredictors(time: Long) {
+        CoroutineScope(Dispatchers.Main).launch {
+            val isSixHoursLoaded = CoroutineScope(Dispatchers.IO).async {
+                getSixHourPredictors(time)
+            }
+            val isTwelveHoursLoaded = CoroutineScope(Dispatchers.IO).async {
+                getTwelveHourPredictors(time)
+            }
+            if (isSixHoursLoaded.await() && isTwelveHoursLoaded.await()) {
                 if (checkbox_sugar_level.isChecked
                     and !edit_text_sugar_level.text.isNullOrEmpty()
-                    and !foodList.isNullOrEmpty()) updateRecommendation()
-        })
+                    and !foodList.isNullOrEmpty()
+                ) updateRecommendation()
+            }
+        }
+    }
+
+    private suspend fun getTwelveHourPredictors(time: Long): Boolean {
+        val records = appDatabaseViewModel.getMealWithFoods12HoursAgo(time)
+        pv12 = getPv(records)
+        return true
+    }
+
+    private suspend fun getSixHourPredictors(time: Long): Boolean {
+        val records = appDatabaseViewModel.getMealWithFoods6HoursAgo(time)
+        sixHoursPredictors = getSixHoursPredictors(records)
+        return true
     }
 
     private fun deleteRecord() {
         val builder = AlertDialog.Builder(requireContext())
-        builder.setPositiveButton(this.resources.getString(R.string.Yes)) {_, _ ->
+        builder.setPositiveButton(this.resources.getString(R.string.Yes)) { _, _ ->
             appDatabaseViewModel.deleteMealRecord(args.selectedRecord?.id)
             args.selectedRecord?.let { appDatabaseViewModel.deleteRecord(it) }
             findNavController().navigate(R.id.action_mealAddRecord_to_homePage)
         }
-        builder.setNegativeButton(this.resources.getString(R.string.No)) {_, _ ->
+        builder.setNegativeButton(this.resources.getString(R.string.No)) { _, _ ->
         }
         builder.setTitle(this.resources.getString(R.string.DeleteRecord))
         builder.setMessage(this.resources.getString(R.string.AreUSureDeleteRecord))
@@ -349,7 +411,7 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
                 null, category, mainInfo, dateInMilli, time, date,
                 dateSubmit, false
             )
-            val mealEntity = MealEntity(null, type, sugarLevel, sugarLevelPredicted)
+            val mealEntity = MealEntity(null, type, sugarLevel, hyperglycemiaChance)
 
             appDatabaseViewModel.addRecord(recordEntity, mealEntity, foodList)
             findNavController().navigate(R.id.action_mealAddRecord_to_homePage)
@@ -358,27 +420,35 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
 
     private fun updateRecord(sugarLevelSubmit: Boolean) {
         GlobalScope.launch(Dispatchers.Main) {
-        val type = spinner_meal.selectedItem.toString()
-        val mainInfo = type
+            val type = spinner_meal.selectedItem.toString()
 
-        val sugarLevel = if (sugarLevelSubmit) {
-            getRecommendation()
-            edit_text_sugar_level.text.toString().toDouble()
-        } else {
-            null
-        }
+            val sugarLevel = if (sugarLevelSubmit) {
+                getRecommendation()
+                edit_text_sugar_level.text.toString().toDouble()
+            } else {
+                null
+            }
 
-        val time = tv_Time.text.toString()
-        val date = tv_Date.text.toString()
-        val dateInMilli = convertDateToMils("$time $date")
+            val time = tv_Time.text.toString()
+            val date = tv_Date.text.toString()
+            val dateInMilli = convertDateToMils("$time $date")
 
-        val recordEntity = RecordEntity(args.selectedRecord?.id, args.selectedRecord?.category, mainInfo,dateInMilli, time, date,
-            args.selectedRecord?.dateSubmit,args.selectedRecord?.fullDay)
-        val mealEntity = MealEntity(args.selectedRecord?.id,type, sugarLevel, sugarLevelPredicted)
+            val recordEntity = RecordEntity(
+                args.selectedRecord?.id,
+                args.selectedRecord?.category,
+                type,
+                dateInMilli,
+                time,
+                date,
+                args.selectedRecord?.dateSubmit,
+                args.selectedRecord?.fullDay
+            )
+            val mealEntity =
+                MealEntity(args.selectedRecord?.id, type, sugarLevel, hyperglycemiaChance)
 
-        appDatabaseViewModel.updateRecord(recordEntity,mealEntity,foodList)
-        findNavController().previousBackStackEntry?.savedStateHandle?.set("mealTypeKey", type)
-        findNavController().popBackStack()
+            appDatabaseViewModel.updateRecord(recordEntity, mealEntity, foodList)
+            findNavController().previousBackStackEntry?.savedStateHandle?.set("mealTypeKey", type)
+            findNavController().popBackStack()
         }
     }
 
@@ -386,15 +456,16 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
         if (appType == "GDMRCT") {
             vf_recommendation.displayedChild = 0
             if (vf_recommendation.height == 0) slideView(vf_recommendation)
-            GlobalScope.launch(Dispatchers.Main) {
-                val result = GlobalScope.async(Dispatchers.Default) {
+            CoroutineScope(Dispatchers.Main).launch {
+                val result = CoroutineScope(Dispatchers.IO).async {
                     getRecommendation()
                 }
                 try {
                     vf_recommendation.displayedChild = result.await()
                     recommendationsAdapter.updateItems(recommendations)
                     pager_recommendations_indicator.setViewPager(pager_recommendations)
-                } catch (e: Exception) {}
+                } catch (e: Exception) {
+                }
             }
         }
     }
@@ -405,18 +476,34 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
             val slBefore = edit_text_sugar_level.text.toString().toDouble()
             val mealType = spinner_meal.selectedItem.toString()
 
-            sugarLevelPredicted = setTwoDigits(predictSL(
-                requireContext(), slBefore,
-                glCarbsKr.first, protein, mealType, bmi
-            ))
+            hyperglycemiaChance = setTwoDigits(
+                predictSL(
+                    context = requireContext(),
+                    bg0 = slBefore.toFloat(),
+                    iterablePredictors = iterablePredictors.first,
+                    sixHoursPredictors = sixHoursPredictors,
+                    pvTwelveHours = pv12,
+                    mealType = mealType,
+                    bmi = bmi,
+                    hbA1C = hbA1C,
+                    tg = tg,
+                    hol = hol,
+                    weight = weightBeforePregnancy,
+                    age = age,
+                    glucoseNt = glucoseNt,
+                    analysisTime = analysisTime
+                )
+            )
 
             val highGI = checkGI(foodList)
-            val manyCarbs = checkCarbs(mealType,foodList)
+            val manyCarbs = checkCarbs(mealType, foodList)
             val highBGBefore = checkSLBefore(slBefore)
-            val highBGPredict = checkSLPredict(sugarLevelPredicted!!)
+            val highBGPredict = checkHyperglycemia(hyperglycemiaChance!!)
             try {
-                recommendations = getMessage(highGI, manyCarbs, highBGBefore,
-                    glCarbsKr.second,highBGPredict,resources)
+                recommendations = getMessage(
+                    highGI, manyCarbs, highBGBefore,
+                    iterablePredictors.second, highBGPredict, resources
+                )
             } catch (e: java.lang.IllegalStateException) {
             }
 
@@ -429,7 +516,7 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
             0
     }
 
-    private fun  getSelectedTimeInMilli(): Long {
+    private fun getSelectedTimeInMilli(): Long {
         val time = tv_Time.text.toString()
         val date = tv_Date.text.toString()
         return convertDateToMils("$time $date")
@@ -437,7 +524,8 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
 
     override fun onGetLayoutInflater(savedInstanceState: Bundle?): LayoutInflater {
         val inflater = super.onGetLayoutInflater(savedInstanceState)
-        val contextThemeWrapper: Context = ContextThemeWrapper(requireContext(), R.style.InsulinTheme)
+        val contextThemeWrapper: Context =
+            ContextThemeWrapper(requireContext(), R.style.InsulinTheme)
         return inflater.cloneInContext(contextThemeWrapper)
     }
 
@@ -450,7 +538,7 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
             val result = bundle.getString("resultKey")
             foodList[position].weight = result!!.toDouble()
             adapter.updateItems(foodList)
-            glCarbsKr = getGLCarbsKr(foodList)
+            iterablePredictors = getGLCarbsKr(foodList)
             if (checkbox_sugar_level.isChecked and
                 !edit_text_sugar_level.text.isNullOrEmpty()
             ) {
@@ -461,8 +549,7 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
 
     private fun setupSpinnerPreferences(date: String) {
         val id = if (updateBool) args.selectedRecord?.id else 0
-        appDatabaseViewModel.checkMealType(date,id).
-        observe(viewLifecycleOwner, Observer { types ->
+        appDatabaseViewModel.checkMealType(date, id).observe(viewLifecycleOwner) { types ->
             val items = mutableListOf<Int>()
             for (pref in types) {
                 if ((pref != spinnerStringArray[3]))
@@ -470,7 +557,7 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
             }
             spinnerAdapter.setItemsToHide(items)
             if (spinner_meal.selectedItem.toString() in types) spinner_meal.setSelection(3)
-        })
+        }
 
     }
 

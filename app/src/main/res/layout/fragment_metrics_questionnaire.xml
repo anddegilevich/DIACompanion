@@ -380,7 +380,7 @@
             android:id="@+id/editTextHba1c"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textMultiLine"
+            android:inputType="numberDecimal"
             android:hint="Уровень HbA1C" />
 
         <EditText
@@ -389,7 +389,7 @@
             android:id="@+id/editTextTriglyceride"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textMultiLine"
+            android:inputType="numberDecimal"
             android:hint="Уровень триглицеридов" />
 
         <EditText
@@ -398,7 +398,7 @@
             android:id="@+id/editTextCholesterol"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textMultiLine"
+            android:inputType="numberDecimal"
             android:hint="Уровень холестерина" />
 
         <EditText
@@ -407,8 +407,17 @@
             android:id="@+id/editTextGlucose"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textMultiLine"
+            android:inputType="numberDecimal"
             android:hint="Уровень глюкозы (натощак)" />
+
+        <EditText
+            style="@style/EditText"
+            android:layout_marginTop="4dp"
+            android:id="@+id/editTextPregnancyAnalysis"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:hint="Неделя беременности на момент сдачи анализов" />
 
         <Button
             android:id="@+id/btnContinue"

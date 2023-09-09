@@ -5,9 +5,8 @@ import android.content.res.Resources
 import com.almazov.diacompanion.R
 import com.almazov.diacompanion.data.MealWithFood
 import com.almazov.diacompanion.meal.FoodInMealItem
-import com.almazov.diacompanion.model.util.FVec
-import java.io.FileInputStream
 import kotlin.math.floor
+import ai.catboost.CatBoostModel
 
 
 fun checkGI(listOfFood: MutableList<FoodInMealItem>): Boolean {
@@ -21,7 +20,7 @@ fun checkGI(listOfFood: MutableList<FoodInMealItem>): Boolean {
 
 fun checkCarbs(mealType: String, listOfFood: MutableList<FoodInMealItem>): Boolean {
     var sumCarbs = 0.0
-    val  breakfastString = "Завтрак"
+    val breakfastString = "Завтрак"
     for (food in listOfFood) {
         sumCarbs += food.foodEntity.carbo!! * food.weight / 100
     }
@@ -40,7 +39,11 @@ fun checkSLBefore(sugarLevel: Double): Boolean {
     return false
 }
 
-fun checkPV(listOfFood: List<MealWithFood>, listOfFoodToday: List<MealWithFood>, listOfFoodYesterday: List<MealWithFood>): Boolean {
+fun checkPV(
+    listOfFood: List<MealWithFood>,
+    listOfFoodToday: List<MealWithFood>,
+    listOfFoodYesterday: List<MealWithFood>
+): Boolean {
     var sumPV = 0.0
     var sumPVToday = 0.0
     var sumPVYesterday = 0.0
@@ -56,87 +59,146 @@ fun checkPV(listOfFood: List<MealWithFood>, listOfFoodToday: List<MealWithFood>,
 
     if (sumPV < 8) {
         return true
-    } else if (sumPV + sumPVToday < 20)
-    {
+    } else if (sumPV + sumPVToday < 20) {
         return true
-    } else if (sumPV + sumPVToday  + sumPVYesterday < 28) return true
+    } else if (sumPV + sumPVToday + sumPVYesterday < 28) return true
     return false
 }
 
 suspend fun predictSL(
     context: Context,
-    BG0: Double?,
-    glCarbsKr: List<Double?>,
-    protein: Double?,
-    mealType: String?,
-    bmi: Double?
-): Double {
-   /* val breakfast = Resources.getSystem().getString(R.string.Breakfast)
-    val lunch = Resources.getSystem().getString(R.string.Lunch)
-    val dinner = Resources.getSystem().getString(R.string.Dinner)
-    val snack = Resources.getSystem().getString(R.string.Snack)*/
+    bg0: Float,
+    iterablePredictors: IterablePredictors,
+    sixHoursPredictors: SixHoursPredictors,
+    pvTwelveHours: Float,
+    mealType: String,
+    bmi: Float,
+    hbA1C: Float,
+    tg: Float,
+    hol: Float,
+    weight: Float,
+    age: Float,
+    glucoseNt: Float,
+    analysisTime: Float
 
+): Double {
     val breakfast = "Завтрак"
     val lunch = "Обед"
     val dinner = "Ужин"
     val snack = "Перекус"
 
-    var t1 = 0.0
-    var t2 = 0.0
-    var t3 = 0.0
-    var t4 = 0.0
-
-    when (mealType) {
-        breakfast -> t1 = 1.0
-        lunch -> t2 = 1.0
-        dinner -> t3 = 1.0
-        snack -> t4 = 1.0
+    val mealTypeFloat = when (mealType) {
+        breakfast -> 1f
+        lunch -> 2f
+        dinner -> 3f
+        snack -> 4f
+        else -> 1f
     }
 
-    val modelPath: String = context.getDatabasePath("model.model").path
-    val predictor = com.almazov.diacompanion.model.Predictor(
-        FileInputStream(modelPath)
+    val assetManager = context.assets
+    val inputStream = assetManager.open("model.cbm")
+    val catboostModel = CatBoostModel.loadModel(inputStream)
+
+    val numericFeatures = floatArrayOf(
+        mealTypeFloat,
+        iterablePredictors.gi,
+        iterablePredictors.gl,
+        iterablePredictors.carbs,
+        iterablePredictors.mds,
+        iterablePredictors.kr,
+        iterablePredictors.ca,
+        iterablePredictors.fe,
+        sixHoursPredictors.carbs,
+        sixHoursPredictors.protein,
+        sixHoursPredictors.fat,
+        pvTwelveHours,
+        bg0,
+        bmi,
+        hbA1C,
+        tg,
+        hol,
+        weight,
+        age,
+        glucoseNt,
+        analysisTime
     )
 
-    val denseArray = doubleArrayOf(
-        BG0!!, glCarbsKr[0]!!, glCarbsKr[1]!!,
-        protein!!, t1, t2, t3, t4, glCarbsKr[2]!!, bmi!!
-    )
-    val fVecDense: FVec = FVec.Transformer.fromArray(denseArray, false)
+    val catFeatures: Array<String>? = null
 
-    return predictor.predictSingle(fVecDense)
+    val prediction = catboostModel.predict(numericFeatures, catFeatures, null, null)
+    prediction.get(0, 1)
+
+    return prediction.get(0, 1)
 }
 
-fun getProtein(listOfFood: List<MealWithFood>): Double {
+fun getSixHoursPredictors(listOfFood: List<MealWithFood>): SixHoursPredictors {
+    var carbs = 0.0
     var protein = 0.0
+    var fat = 0.0
     for (food in listOfFood) {
-        protein += food.food.prot!! * food.weight!! / 100
+        val weight = food.weight!! / 100
+        carbs += food.food.carbo!! * weight
+        protein += food.food.prot!! * weight
+        fat += food.food.fat!! * weight
     }
-    return protein
+    return SixHoursPredictors(
+        carbs = carbs.toFloat(),
+        protein = protein.toFloat(),
+        fat = fat.toFloat()
+    )
+}
+fun getPv(listOfFood: List<MealWithFood>): Float {
+    var pv = 0.0
+    for (food in listOfFood) {
+        val weight = food.weight!! / 100
+        pv += food.food.pv!! * weight
+    }
+    return pv.toFloat()
 }
 
-fun getGLCarbsKr(listOfFood: List<FoodInMealItem>): Pair<List<Double>, Boolean> {
-    var gl = mutableListOf<Double>()
+fun getGLCarbsKr(listOfFood: List<FoodInMealItem>): Pair<IterablePredictors, Boolean> {
+    val gl = mutableListOf<Double>()
     var carbs = 0.0
     var krs = 0.0
+    var mdsSum = 0.0
+    var caSum = 0.0
+    var feSum = 0.0
     for (food in listOfFood) {
-        val gi = food.foodEntity.gi ?: 0.0
-        val carb = food.foodEntity.carbo ?: 0.0
-        val kr = food.foodEntity.kr ?: 0.0
-        gl.add(gi * carb * food.weight / 100)
-        carbs += carb * food.weight / 100
-        krs += kr * food.weight / 100
+        with(food.foodEntity) {
+            val weight = food.weight / 100
+            val gi = gi ?: 0.0
+            val carb = carbo ?: 0.0
+            val kr = kr ?: 0.0
+            val mds = mds ?: 0.0
+            val ca = ca ?: 0.0
+            val fe = fe ?: 0.0
+            gl.add(gi * carb * weight)
+            carbs += carb * weight
+            krs += kr * weight
+            mdsSum += mds * weight
+            caSum += ca * weight
+            feSum += fe * weight
+        }
     }
-    var glSum = gl.sum() / 100
+    val giSum = gl.sum() / carbs
+    val glSum = gl.sum() / 100
     gl.sortDescending()
     var glMax = 0.0
-    for (i in 0 until floor(gl.size.toDouble()/2).toInt()){
+    for (i in 0 until floor(gl.size.toDouble() / 2).toInt()) {
         gl[i] = gl[i] / glSum
         glMax += gl[i]
     }
     val glDistribution = glMax > 60
-    glSum /= 100
-    return Pair(listOf(glSum, carbs, krs),glDistribution)
+    val iterablePredictors = IterablePredictors(
+        gi = giSum.toFloat(),
+        gl = glSum.toFloat(),
+        carbs = carbs.toFloat(),
+        mds = mdsSum.toFloat(),
+        kr = krs.toFloat(),
+        ca = caSum.toFloat(),
+        fe = feSum.toFloat()
+    )
+    return iterablePredictors to glDistribution
 }
 
 fun getMealInfo(listOfFood: List<FoodInMealItem>): List<Double> {
@@ -159,9 +221,11 @@ fun getMealInfo(listOfFood: List<FoodInMealItem>): List<Double> {
         gl += gi * carb * food.weight
         weight += food.weight
     }
-    val gis = gl/carbs
-    return listOf(proteins / 100, fats / 100, carbs / 100, kkals / 100, gis, gl / 10000,
-        weight)
+    val gis = gl / carbs
+    return listOf(
+        proteins / 100, fats / 100, carbs / 100, kkals / 100, gis, gl / 10000,
+        weight
+    )
 }
 
 fun getMessage(
@@ -186,14 +250,11 @@ fun getMessage(
         } else {
             R.string.BGPredict
         }
-    }  else R.string.NoRecommendation
+    } else R.string.NoRecommendation
     recommendations.add(resources.getString(txtInt))
     return recommendations
 }
 
-fun checkSLPredict(sugarLevel: Double): Boolean {
-    if (sugarLevel > 6.8) {
-        return true
-    }
-    return false
+fun checkHyperglycemia(chance: Double): Boolean {
+    return chance > 0.52
 }

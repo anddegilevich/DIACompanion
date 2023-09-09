@@ -34,10 +34,11 @@ data class QuestionnaireEntity (
     var solarium: String? = null,
 
     //OtherAnalyses
-    var hba1c: String? = null,
-    var triglyceride: String? = null,
-    var cholesterol: String? = null,
-    var glucose: String? = null,
+    var hba1c: Float? = null,
+    var triglyceride: Float? = null,
+    var cholesterol: Float? = null,
+    var glucose: Float? = null,
+    var pregnancyAnalysesCount: Int? = null,
 
     //2 Health
     //Diabetes

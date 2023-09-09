@@ -13,7 +13,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import com.almazov.diacompanion.R
 import kotlinx.android.synthetic.main.fragment_setup_complete_page.view.*
-import java.io.*
 
 
 class SetupCompletePage : Fragment() {
@@ -38,32 +37,9 @@ class SetupCompletePage : Fragment() {
     }
 
     private fun onBoardingFinish(){
-
-        try {
-            val myInput: InputStream = requireContext().assets.open("model.model")
-            val modelPath: String = requireContext().getDatabasePath("model.model").path
-            val myOutput: OutputStream = FileOutputStream(modelPath)
-            val buffer = ByteArray(1024)
-            var length: Int
-            while (myInput.read(buffer).also { length = it } > 0) {
-                myOutput.write(buffer, 0, length)
-            }
-            myOutput.flush()
-            myOutput.close()
-            myInput.close()
-        } catch (e: FileNotFoundException) {
-            e.printStackTrace()
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-
-//        createNotificationChanel()
-
         val finished = true
-
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         sharedPreferences.edit().putBoolean("ON_BOARDING_FINISHED", finished).apply()
-
     }
 
     private fun createNotificationChanel() {

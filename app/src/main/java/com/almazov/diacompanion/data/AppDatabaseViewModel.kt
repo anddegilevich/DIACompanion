@@ -375,8 +375,11 @@ class AppDatabaseViewModel(application: Application) : AndroidViewModel(applicat
         return repository.getMealWithFoods(id)
     }
 
-    fun getMealWithFoods6HoursAgo(timeInMilli: Long): LiveData<List<MealWithFood>> {
+    suspend fun getMealWithFoods6HoursAgo(timeInMilli: Long): List<MealWithFood> {
         return repository.getMealWithFoods6HoursAgo(timeInMilli)
+    }
+    suspend fun getMealWithFoods12HoursAgo(timeInMilli: Long): List<MealWithFood> {
+        return repository.getMealWithFoods12HoursAgo(timeInMilli)
     }
 
     suspend fun getMealWithFoodsThisDay(day: String): List<MealWithFood> {

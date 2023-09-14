@@ -1,12 +1,17 @@
 package com.almazov.diacompanion.base
 
+import ai.onnxruntime.OnnxSequence
+import ai.onnxruntime.OnnxTensor
+import ai.onnxruntime.OrtEnvironment
+import ai.onnxruntime.OrtSession
 import android.content.Context
 import android.content.res.Resources
 import com.almazov.diacompanion.R
 import com.almazov.diacompanion.data.MealWithFood
 import com.almazov.diacompanion.meal.FoodInMealItem
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import kotlin.math.floor
-import ai.catboost.CatBoostModel
 
 
 fun checkGI(listOfFood: MutableList<FoodInMealItem>): Boolean {
@@ -95,10 +100,17 @@ suspend fun predictSL(
         else -> 1f
     }
 
+    // Load the model
     val assetManager = context.assets
-    val inputStream = assetManager.open("model.cbm")
-    val catboostModel = CatBoostModel.loadModel(inputStream)
+    val inputStream = assetManager.open("model.onnx")
+    val modelData = inputStream.readBytes()
+    withContext(Dispatchers.IO) {
+        inputStream.close()
+    }
+    val env = OrtEnvironment.getEnvironment()
+    val session = env.createSession(modelData, OrtSession.SessionOptions())
 
+    // Create input tensor
     val numericFeatures = floatArrayOf(
         mealTypeFloat,
         iterablePredictors.gi,
@@ -122,13 +134,16 @@ suspend fun predictSL(
         glucoseNt,
         analysisTime
     )
+    val reshapedInputData = arrayOf(numericFeatures)
+    val inputTensor = OnnxTensor.createTensor(env, reshapedInputData)
+    val inputName = session.inputNames.first()
 
-    val catFeatures: Array<String>? = null
-
-    val prediction = catboostModel.predict(numericFeatures, catFeatures, null, null)
-    prediction.get(0, 1)
-
-    return prediction.get(0, 1)
+    // Get the result
+    val output = session.run(mapOf(Pair(inputName, inputTensor)))
+    val result = output["probabilities"].get() as OnnxSequence
+    val map = result.value.first().value as HashMap<Long,Float>
+    val probability = map[1]?.toDouble() ?: 0.0
+    return probability
 }
 
 fun getSixHoursPredictors(listOfFood: List<MealWithFood>): SixHoursPredictors {
@@ -147,6 +162,7 @@ fun getSixHoursPredictors(listOfFood: List<MealWithFood>): SixHoursPredictors {
         fat = fat.toFloat()
     )
 }
+
 fun getPv(listOfFood: List<MealWithFood>): Float {
     var pv = 0.0
     for (food in listOfFood) {
@@ -256,5 +272,5 @@ fun getMessage(
 }
 
 fun checkHyperglycemia(chance: Double): Boolean {
-    return chance > 0.52
+    return chance > 0.5225
 }

@@ -14,7 +14,7 @@
     <string name="SelectRecordDate">Выбрать дату записи</string>
     <string name="Yes">Да</string>
     <string name="No">Нет</string>
-    <string name="SugarLevel">Уровень сахара</string>
+    <string name="SugarLevel">Уровень глюкозы</string>
     <string name="Insulin">Инсулин</string>
     <string name="Meal">Прием пищи</string>
     <string name="Workout">Физ. активность</string>
@@ -125,7 +125,7 @@
     </string-array>
     <string name="g">гр.</string>
     <string name="EnterFoodWeight">Введите массу продукта</string>
-    <string name="SugarLevelBeforeFood">Уровень сахара до еды</string>
+    <string name="SugarLevelBeforeFood">Уровень глюкозы до еды</string>
     <string name="NoRecords">Нет записей</string>
     <string name="RecipeList">Книга рецептов</string>
     <string name="AddRecipe">Добавить рецепт</string>
@@ -187,12 +187,12 @@
     <string name="Lunch">Обед</string>
     <string name="Dinner">Ужин</string>
     <string name="Snack">Перекус</string>
-    <string name="PredictedSLHigh">Прогнозируемый УСК\n выше нормы</string>
-    <string name="PredictedSLLow">Прогнозируемый УСК\n в норме</string>
+    <string name="PredictedSLHigh">Прогнозируемый УГК\n выше нормы</string>
+    <string name="PredictedSLLow">Прогнозируемый УГК\n в норме</string>
     <string name="EnterFullData">Введите все данные</string>
     <string name="Recommendation">Рекомендации</string>
-    <string name="SugarLevelBeforeMeal">Уровень сахара до приема пищи</string>
-    <string name="SugarLevelPredicted">Прогнозируемый уровень сахара</string>
+    <string name="SugarLevelBeforeMeal">Уровень глюкозы до приема пищи</string>
+    <string name="SugarLevelPredicted">Прогнозируемый уровень глюкозы</string>
     <string name="NoRecommendation">Нет рекомендаций</string>
     <string name="Duration">Длительность:</string>
     <string name="ExportData">Экспорт данных</string>

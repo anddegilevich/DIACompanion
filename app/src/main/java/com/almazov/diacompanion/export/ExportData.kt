@@ -151,7 +151,7 @@ class ExportData : Fragment() {
 
 
         val xlWsSugarLevelInsulin = if (appType != "PCOS") {
-            xlWb.createSheet("Уровень сахара и инсулин")
+            xlWb.createSheet("Уровень глюкозы и инсулин")
         } else null
         val xlWsMeal = xlWb.createSheet("Приемы пищи")
         val xlWsWorkoutSleep = xlWb.createSheet("Физическая нагрузка и сон")
@@ -218,7 +218,7 @@ class ExportData : Fragment() {
                         (((allMeals - snacks).toDouble() / allMeals.toDouble()) * 100).toInt()
                     val mealsOnTime = (onTime.toDouble() / allMeals.toDouble() * 100).toInt()
                     val textSL = if (appType != "PCOS") {
-                        "За последние 7 дней превышений УСК выше целевого: \n" +
+                        "За последние 7 дней превышений УГК выше целевого: \n" +
                                 "Натощак: " + bgHighFasting + "\n" +
                                 "После еды: " + bgHighFood + "\n\n"
                     } else ""
@@ -561,7 +561,7 @@ class ExportData : Fragment() {
             "",
             "Углеводы (г)",
             "ГН",
-            "УСК до еды",
+            "УГК до еды",
             "Вероятность гипергликемии (%)",
             "Время добавления записи"
         )
@@ -1638,7 +1638,7 @@ class ExportData : Fragment() {
         sheet.addMergedRegion(CellRangeAddress(1, 1, 15, 32))
         sheet.createRow(1).apply {
             createCell(0).apply {
-                setCellValue("Измерение сахара")
+                setCellValue("Измерение глюкозы")
                 cellStyle = styleYellow
             }
             createCell(15).apply {

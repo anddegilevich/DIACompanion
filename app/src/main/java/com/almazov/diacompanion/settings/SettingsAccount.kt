@@ -82,7 +82,7 @@ class SettingsAccount : Fragment() {
             phone = sharedPreferences.getString("PHONE","")!!
             email = sharedPreferences.getString("EMAIL","")!!
             attendingDoctor = sharedPreferences.getString("ATTENDING_DOCTOR","")!!
-            patientId = sharedPreferences.getInt("PATIENT_ID",1)
+            patientId = sharedPreferences.getInt("PATIENT_ID",0)
 
             view.editTextFirstName.setText(name)
             view.editTextLastName.setText(secondName)
@@ -97,7 +97,9 @@ class SettingsAccount : Fragment() {
             /*view.editTextPhone.setText(phone)
             view.editTextEmail.setText(email)*/
             view.spinnerDoctor.setSelection(resources.getStringArray(R.array.AttendingDoctors).indexOf(attendingDoctor))
-            view.editTextPatientId.setText(patientId.toString())
+            if (patientId != 0) {
+                view.editTextPatientId.setText(patientId.toString())
+            }
 
         } else {
             view.tv_registration_date.text = getLocalDateAsString()

@@ -231,4 +231,5 @@
     <string name="TimeDateSleep">Время и дата пробуждения</string>
     <string name="WeightKgPregnancy">Вес до беременности, кг</string>
     <string name="CarbsG">Уг-ды, гр.</string>
+    <string name="Questionnaire">Анкетирование</string>
 </resources>

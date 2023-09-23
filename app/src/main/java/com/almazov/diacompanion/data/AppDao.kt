@@ -291,5 +291,5 @@ interface AppDao {
     suspend fun saveQuestionnaire(questionnaireEntity: QuestionnaireEntity)
 
     @Query("SELECT * FROM questionnaire_table LIMIT 1")
-    fun getQuestionnaire(): QuestionnaireEntity
+    fun getQuestionnaire(): QuestionnaireEntity?
 }

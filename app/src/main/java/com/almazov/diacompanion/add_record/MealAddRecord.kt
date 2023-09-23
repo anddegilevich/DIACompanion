@@ -106,11 +106,11 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
                 appDatabaseViewModel.getQuestionnaire()
             }
             questionnaire.await().let {
-                hbA1C = it.hba1c ?: 0f
-                tg = it.triglyceride ?: 0f
-                hol = it.cholesterol ?: 0f
-                glucoseNt = it.glucose ?: 0f
-                analysisTime = it.pregnancyAnalysesCount?.toFloat() ?: 0f
+                hbA1C = it?.hba1c ?: 0f
+                tg = it?.triglyceride ?: 0f
+                hol = it?.cholesterol ?: 0f
+                glucoseNt = it?.glucose ?: 0f
+                analysisTime = it?.pregnancyAnalysesCount?.toFloat() ?: 0f
             }
         }
 

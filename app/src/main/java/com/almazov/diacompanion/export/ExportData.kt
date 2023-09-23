@@ -312,7 +312,7 @@ class ExportData : Fragment() {
             }
         }
 
-        val questionnaire = questionnaireAsync.await()
+        val questionnaire = questionnaireAsync.await() ?: return true
         val questions = listOf(
             "Беременнось по счету",
             "Количество родов",

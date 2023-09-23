@@ -326,6 +326,7 @@
 
     // Sleep record info
     <string name="SleepDurationDistribution">Sleep Duration Distribution</string>
+    <string name="Questionnaire">Questionnaire</string>
 
 
 </resources>

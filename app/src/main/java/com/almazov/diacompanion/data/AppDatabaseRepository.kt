@@ -342,7 +342,7 @@ class AppDatabaseRepository(private val appDao: AppDao) {
         appDao.saveQuestionnaire(questionnaireEntity)
     }
 
-    fun getQuestionnaire(): QuestionnaireEntity {
+    fun getQuestionnaire(): QuestionnaireEntity? {
         return appDao.getQuestionnaire()
     }
 }

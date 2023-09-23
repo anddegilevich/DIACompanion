@@ -8,6 +8,7 @@ import android.text.TextWatcher
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.SeekBar
+import android.widget.Spinner
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentManager
@@ -178,3 +179,12 @@ fun setTwoDigits(double: Double): Double{
     return BigDecimal(double).setScale(1, BigDecimal.ROUND_HALF_DOWN).toDouble()
 }
 
+fun Spinner.setSelectedByTitle(itemTitle: String?) {
+    val items = mutableListOf<String>()
+    for (i in 0 until this.adapter.count) {
+        items.add(this.adapter.getItem(i) as String)
+    }
+    var position = items.indexOf(itemTitle)
+    position = if (position == -1) 0 else position
+    this.setSelection(position)
+}

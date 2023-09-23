@@ -448,7 +448,7 @@ class AppDatabaseViewModel(application: Application) : AndroidViewModel(applicat
         }
     }
 
-    fun getQuestionnaire(): QuestionnaireEntity {
+    fun getQuestionnaire(): QuestionnaireEntity? {
         return repository.getQuestionnaire()
     }
 

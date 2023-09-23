@@ -8,20 +8,25 @@ import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.preference.PreferenceManager
 import com.almazov.diacompanion.R
+import com.almazov.diacompanion.base.setSelectedByTitle
 import com.almazov.diacompanion.data.AppDatabaseViewModel
+import com.almazov.diacompanion.data.QuestionnaireEntity
 import com.almazov.diacompanion.databinding.FragmentSportsQuestionnaireBinding
 import com.almazov.diacompanion.questionnaire.models.SportTimes
 import com.almazov.diacompanion.questionnaire.models.SteppingTimes
 import com.almazov.diacompanion.questionnaire.models.WalkingTime
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 class QuestionnaireSportsFragment : Fragment() {
 
-    private val args by navArgs<QuestionnaireSportsFragmentArgs>()
     private var _binding: FragmentSportsQuestionnaireBinding? = null
     private lateinit var appDatabaseViewModel: AppDatabaseViewModel
+    private var data: QuestionnaireEntity? = null
 
     private val binding get() = _binding!!
     override fun onCreateView(
@@ -73,21 +78,45 @@ class QuestionnaireSportsFragment : Fragment() {
                 SportTimes.values().map { it.text })
 
             btnContinue.setOnClickListener { onContinueClick() }
+            initQuestionnaireData()
+        }
+    }
+
+    private fun initQuestionnaireData() {
+        CoroutineScope(Dispatchers.Main).launch {
+            val questionnaireDeferred = CoroutineScope(Dispatchers.IO).async {
+                appDatabaseViewModel.getQuestionnaire()
+            }
+            val questionnaire = questionnaireDeferred.await() ?: return@launch
+            data = questionnaire
+            with(questionnaire) {
+                with(binding) {
+                    spinnerWalkingBefore.setSelectedByTitle(walkingBefore)
+                    spinnerWalking.setSelectedByTitle(walking)
+
+                    spinnerSteppingBefore.setSelectedByTitle(steppingBefore)
+                    spinnerStepping.setSelectedByTitle(stepping)
+
+                    spinnerSportBefore.setSelectedByTitle(sportBefore)
+                    spinnerSport.setSelectedByTitle(sport)
+                }
+            }
         }
     }
 
     private fun onContinueClick() {
         with(binding) {
-            val data = args.data.apply {
-                id = 0
+            data?.apply {
                 walkingBefore = spinnerWalkingBefore.selectedItem.toString()
-                walking= spinnerWalking.selectedItem.toString()
+                walking = spinnerWalking.selectedItem.toString()
                 steppingBefore = spinnerSteppingBefore.selectedItem.toString()
                 stepping = spinnerStepping.selectedItem.toString()
                 sportBefore = spinnerSportBefore.selectedItem.toString()
                 sport = spinnerSport.selectedItem.toString()
             }
-            appDatabaseViewModel.saveQuestionnaire(data)
+            data?.let {
+                appDatabaseViewModel.saveQuestionnaire(it)
+            }
 
             val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
             sharedPreferences.edit().putBoolean("QUESTIONNARIE_FINISHED", true).apply()

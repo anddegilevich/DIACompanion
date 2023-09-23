@@ -121,15 +121,23 @@ class HomePage : Fragment(), InterfaceRecordsInfo {
                 R.id.nav_view_app_type -> {
                     findNavController().navigate(R.id.action_homePage_to_settingsAppType)
                 }
-//                R.id.nav_view_notifications -> {findNavController().navigate(R.id.action_homePage_to_settingsNotifications)}
+
                 R.id.nav_view_help -> {
                     findNavController().navigate(R.id.action_homePage_to_settingsHelp)
                 }
+
+                R.id.nav_view_questions -> {
+                    findNavController().navigate(R.id.action_homePage_to_questionnaireFragment)
+                }
+
+                else -> Unit
             }
 
             drawer_layout.closeDrawer(GravityCompat.START)
             true
-
+        }
+        if (appType == "GDM" || appType == "GDMRCT") {
+            nav_view.inflateMenu(R.menu.nav_menu_with_questions)
         }
 
         recordHistoryLink.setOnClickListener {

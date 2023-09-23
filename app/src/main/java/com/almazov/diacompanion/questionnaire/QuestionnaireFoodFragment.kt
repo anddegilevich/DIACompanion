@@ -6,26 +6,35 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.almazov.diacompanion.R
+import com.almazov.diacompanion.base.setSelectedByTitle
+import com.almazov.diacompanion.data.AppDatabaseViewModel
+import com.almazov.diacompanion.data.QuestionnaireEntity
 import com.almazov.diacompanion.databinding.FragmentFoodQuestionnaireBinding
 import com.almazov.diacompanion.questionnaire.models.OneThreeRange
 import com.almazov.diacompanion.questionnaire.models.OneTwoRange
 import com.almazov.diacompanion.questionnaire.models.SixTwelveRange
 import com.almazov.diacompanion.questionnaire.models.ThreeSixRange
 import com.almazov.diacompanion.questionnaire.models.TwoFourRange
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 class QuestionnaireFoodFragment : Fragment() {
 
-    private val args by navArgs<QuestionnaireFoodFragmentArgs>()
     private var _binding: FragmentFoodQuestionnaireBinding? = null
+    private lateinit var appDatabaseViewModel: AppDatabaseViewModel
+    private var data: QuestionnaireEntity? = null
 
     private val binding get() = _binding!!
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        appDatabaseViewModel = ViewModelProvider(this)[AppDatabaseViewModel::class.java]
         _binding = FragmentFoodQuestionnaireBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
@@ -196,12 +205,80 @@ class QuestionnaireFoodFragment : Fragment() {
                 OneThreeRange.values().map { it.text })
 
             btnContinue.setOnClickListener { onContinueClick() }
+            initQuestionnaireData()
+        }
+    }
+
+    private fun initQuestionnaireData() {
+        CoroutineScope(Dispatchers.Main).launch {
+            val questionnaireDeferred = CoroutineScope(Dispatchers.IO).async {
+                appDatabaseViewModel.getQuestionnaire()
+            }
+            val questionnaire = questionnaireDeferred.await() ?: return@launch
+            data = questionnaire
+            with(questionnaire) {
+                with(binding) {
+                    spinnerFruitsBefore.setSelectedByTitle(fruitsBefore)
+                    spinnerFruits.setSelectedByTitle(fruits)
+
+                    spinnerCupcakesBefore.setSelectedByTitle(cupcakesBefore)
+                    spinnerCupcakes.setSelectedByTitle(cupcakes)
+
+                    spinnerCakesBefore.setSelectedByTitle(cakesBefore)
+                    spinnerCakes.setSelectedByTitle(cakes)
+
+                    spinnerChocolateBefore.setSelectedByTitle(chocolateBefore)
+                    spinnerChocolate.setSelectedByTitle(chocolate)
+
+                    spinnerDefattedMilkBefore.setSelectedByTitle(defattedMilkBefore)
+                    spinnerDefattedMilk.setSelectedByTitle(defattedMilk)
+
+                    spinnerMilkBefore.setSelectedByTitle(milkBefore)
+                    spinnerMilk.setSelectedByTitle(milk)
+
+                    spinnerBeansBefore.setSelectedByTitle(beansBefore)
+                    spinnerBeans.setSelectedByTitle(beans)
+
+                    spinnerMeatBefore.setSelectedByTitle(meatBefore)
+                    spinnerMeat.setSelectedByTitle(meat)
+
+                    spinnerDryFruitsBefore.setSelectedByTitle(dryFruitsBefore)
+                    spinnerDryFruits.setSelectedByTitle(dryFruits)
+
+                    spinnerFishBefore.setSelectedByTitle(fishBefore)
+                    spinnerFish.setSelectedByTitle(fish)
+
+                    spinnerWholemealBreadBefore.setSelectedByTitle(wholemealBreadBefore)
+                    spinnerWholemealBread.setSelectedByTitle(wholemealBread)
+
+                    spinnerBreadBefore.setSelectedByTitle(breadBefore)
+                    spinnerBread.setSelectedByTitle(bread)
+
+                    spinnerSauceBefore.setSelectedByTitle(sauceBefore)
+                    spinnerSauce.setSelectedByTitle(sauce)
+
+                    spinnerVegetablesBefore.setSelectedByTitle(vegetablesBefore)
+                    spinnerVegetables.setSelectedByTitle(vegetables)
+
+                    spinnerAlcoholBefore.setSelectedByTitle(alcoholBefore)
+                    spinnerAlcohol.setSelectedByTitle(alcohol)
+
+                    spinnerSweetDrinksBefore.setSelectedByTitle(sweetDrinksBefore)
+                    spinnerSweetDrinks.setSelectedByTitle(sweetDrinks)
+
+                    spinnerCoffeeBefore.setSelectedByTitle(coffeeBefore)
+                    spinnerCoffee.setSelectedByTitle(coffee)
+
+                    spinnerSausagesBefore.setSelectedByTitle(sausagesBefore)
+                    spinnerSausages.setSelectedByTitle(sausages)
+                }
+            }
         }
     }
 
     private fun onContinueClick() {
         with(binding) {
-            val data = args.data.apply {
+            data?.apply {
                 fruitsBefore = spinnerFruitsBefore.selectedItem.toString()
                 fruits = spinnerFruits.selectedItem.toString()
                 cupcakesBefore = spinnerCupcakesBefore.selectedItem.toString()
@@ -239,11 +316,11 @@ class QuestionnaireFoodFragment : Fragment() {
                 sausagesBefore = spinnerSausagesBefore.selectedItem.toString()
                 sausages = spinnerSausages.selectedItem.toString()
             }
-
+            data?.let {
+                appDatabaseViewModel.saveQuestionnaire(it)
+            }
             findNavController().navigate(
-                QuestionnaireFoodFragmentDirections.actionQuestionnaireFoodFragmentToQuestionnaireSportsFragment(
-                    data
-                )
+                QuestionnaireFoodFragmentDirections.actionQuestionnaireFoodFragmentToQuestionnaireSportsFragment()
             )
         }
     }

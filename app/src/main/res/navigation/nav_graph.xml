@@ -608,9 +608,6 @@
         android:id="@+id/questionnaireHealthFragment"
         android:name="com.almazov.diacompanion.questionnaire.QuestionnaireHealthFragment"
         android:label="QuestionnaireHealthFragment" >
-        <argument
-            android:name="data"
-            app:argType="com.almazov.diacompanion.data.QuestionnaireEntity" />
         <action
             android:id="@+id/action_questionnaireHealthFragment_to_questionnaireFoodFragment"
             app:destination="@id/questionnaireFoodFragment"
@@ -623,9 +620,6 @@
         android:id="@+id/questionnaireFoodFragment"
         android:name="com.almazov.diacompanion.questionnaire.QuestionnaireFoodFragment"
         android:label="QuestionnaireFoodFragment" >
-        <argument
-            android:name="data"
-            app:argType="com.almazov.diacompanion.data.QuestionnaireEntity" />
         <action
             android:id="@+id/action_questionnaireFoodFragment_to_questionnaireSportsFragment"
             app:destination="@id/questionnaireSportsFragment"
@@ -638,9 +632,6 @@
         android:id="@+id/questionnaireSportsFragment"
         android:name="com.almazov.diacompanion.questionnaire.QuestionnaireSportsFragment"
         android:label="QuestionnaireSportsFragment" >
-        <argument
-            android:name="data"
-            app:argType="com.almazov.diacompanion.data.QuestionnaireEntity" />
         <action
             android:id="@+id/action_questionnaireSportsFragment_to_homePage"
             app:popUpTo="@id/questionnaireSportsFragment"

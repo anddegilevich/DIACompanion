@@ -95,9 +95,9 @@
 
     <string-array name="InsulinSpinner2">
         <item>Натощак</item>
-        <item>После завтрака</item>
-        <item>После обеда</item>
-        <item>После ужина</item>
+        <item>До завтрака</item>
+        <item>До обеда</item>
+        <item>До ужина</item>
         <item>Дополнительно</item>
     </string-array>
 
@@ -187,8 +187,8 @@
     <string name="Lunch">Обед</string>
     <string name="Dinner">Ужин</string>
     <string name="Snack">Перекус</string>
-    <string name="PredictedSLHigh">Прогнрозируемый УСК\n выше нормы</string>
-    <string name="PredictedSLLow">Прогнрозируемый УСК\n в норме</string>
+    <string name="PredictedSLHigh">Прогнозируемый УСК\n выше нормы</string>
+    <string name="PredictedSLLow">Прогнозируемый УСК\n в норме</string>
     <string name="EnterFullData">Введите все данные</string>
     <string name="Recommendation">Рекомендации</string>
     <string name="SugarLevelBeforeMeal">Уровень сахара до приема пищи</string>

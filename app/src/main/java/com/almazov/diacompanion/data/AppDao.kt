@@ -287,7 +287,7 @@ interface AppDao {
     suspend fun deleteRecipeWithFoodsRecord(id: Int?)
 
     //Questionnaire
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveQuestionnaire(questionnaireEntity: QuestionnaireEntity)
 
     @Query("SELECT * FROM questionnaire_table LIMIT 1")

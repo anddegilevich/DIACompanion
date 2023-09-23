@@ -60,7 +60,7 @@ class SugarLevelAddRecord : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        appType = sharedPreferences.getString("APP_TYPE","GDM RCT")!!
+        appType = sharedPreferences.getString("APP_TYPE","GDMRCT")!!
 
         appDatabaseViewModel = ViewModelProvider(this)[AppDatabaseViewModel::class.java]
 

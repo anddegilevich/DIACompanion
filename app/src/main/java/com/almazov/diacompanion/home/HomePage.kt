@@ -139,16 +139,15 @@ class HomePage : Fragment(), InterfaceRecordsInfo {
     }
 
     private fun ifOnBoardingFinished() {
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        val finished: Boolean = sharedPreferences!!.getBoolean("ON_BOARDING_FINISHED", false)
-        val questionnaireFinished: Boolean =
-            sharedPreferences.getBoolean("QUESTIONNARIE_FINISHED", false)
+        val finished: Boolean = sharedPreferences.getBoolean("ON_BOARDING_FINISHED", false)
+        val questionnaireFinished: Boolean = sharedPreferences.getBoolean("QUESTIONNARIE_FINISHED", false)
+        val appType = sharedPreferences.getString("APP_TYPE", "GDMRCT")!!
 
         when {
             !finished -> {
                 findNavController().navigate(R.id.action_homePage_to_greetingsPage)
             }
-            !questionnaireFinished -> {
+            !questionnaireFinished && (appType == "GDMRCT" || appType == "GDM") -> {
                findNavController().navigate(R.id.action_homePage_to_questionnaireFragment)
             }
             else -> {

@@ -272,5 +272,5 @@ fun getMessage(
 }
 
 fun checkHyperglycemia(chance: Double): Boolean {
-    return chance > 0.5225
+    return chance > 0.51
 }

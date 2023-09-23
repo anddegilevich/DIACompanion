@@ -9,7 +9,7 @@ import kotlinx.android.parcel.Parcelize
 @Entity(tableName = "questionnaire_table")
 data class QuestionnaireEntity (
     @PrimaryKey(autoGenerate = true)
-    val id: Int? = null,
+    var id: Int? = null,
     //1 page
     //Pregnancy
     var pregnancyCount: String? = null,

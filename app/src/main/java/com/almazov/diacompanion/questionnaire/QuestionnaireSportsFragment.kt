@@ -79,6 +79,7 @@ class QuestionnaireSportsFragment : Fragment() {
     private fun onContinueClick() {
         with(binding) {
             val data = args.data.apply {
+                id = 0
                 walkingBefore = spinnerWalkingBefore.selectedItem.toString()
                 walking= spinnerWalking.selectedItem.toString()
                 steppingBefore = spinnerSteppingBefore.selectedItem.toString()

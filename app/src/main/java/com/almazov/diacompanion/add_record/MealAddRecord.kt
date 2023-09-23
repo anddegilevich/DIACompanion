@@ -476,23 +476,21 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
             val slBefore = edit_text_sugar_level.text.toString().toDouble()
             val mealType = spinner_meal.selectedItem.toString()
 
-            hyperglycemiaChance = setTwoDigits(
-                predictSL(
-                    context = requireContext(),
-                    bg0 = slBefore.toFloat(),
-                    iterablePredictors = iterablePredictors.first,
-                    sixHoursPredictors = sixHoursPredictors,
-                    pvTwelveHours = pv12,
-                    mealType = mealType,
-                    bmi = bmi,
-                    hbA1C = hbA1C,
-                    tg = tg,
-                    hol = hol,
-                    weight = weightBeforePregnancy,
-                    age = age,
-                    glucoseNt = glucoseNt,
-                    analysisTime = analysisTime
-                )
+            hyperglycemiaChance = predictSL(
+                context = requireContext(),
+                bg0 = slBefore.toFloat(),
+                iterablePredictors = iterablePredictors.first,
+                sixHoursPredictors = sixHoursPredictors,
+                pvTwelveHours = pv12,
+                mealType = mealType,
+                bmi = bmi,
+                hbA1C = hbA1C,
+                tg = tg,
+                hol = hol,
+                weight = weightBeforePregnancy,
+                age = age,
+                glucoseNt = glucoseNt,
+                analysisTime = analysisTime
             )
 
             val highGI = checkGI(foodList)

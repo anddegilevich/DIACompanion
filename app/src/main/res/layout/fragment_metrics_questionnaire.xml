@@ -381,7 +381,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="numberDecimal"
-            android:hint="Уровень HbA1C" />
+            android:hint="Уровень HbA1C, %" />
 
         <EditText
             style="@style/EditText"
@@ -408,7 +408,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="numberDecimal"
-            android:hint="Уровень глюкозы (натощак)" />
+            android:hint="Уровень глюкозы (натощак), ммоль/л" />
 
         <EditText
             style="@style/EditText"
@@ -417,7 +417,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number"
-            android:hint="Неделя беременности на момент сдачи анализов" />
+            android:hint="Неделя беременности на момент анализов" />
 
         <Button
             android:id="@+id/btnContinue"

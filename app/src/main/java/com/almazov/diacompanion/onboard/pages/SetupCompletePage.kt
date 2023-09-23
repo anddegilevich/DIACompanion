@@ -1,8 +1,5 @@
 package com.almazov.diacompanion.onboard.pages
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -28,9 +25,16 @@ class SetupCompletePage : Fragment() {
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
 
+        val appType = sharedPreferences.getString("APP_TYPE", "GDMRCT")!!
+
         view.btn_finish.setOnClickListener {
             onBoardingFinish()
-            findNavController().navigate(SetupCompletePageDirections.actionSetupCompletePageToQuestionnaireFragment())
+            val destination  = if (appType == "GDMRCT" || appType == "GDM") {
+                SetupCompletePageDirections.actionSetupCompletePageToQuestionnaireFragment()
+            } else {
+                SetupCompletePageDirections.actionSetupCompletePageToHomePage()
+            }
+            findNavController().navigate(destination)
         }
 
         return view
@@ -38,19 +42,7 @@ class SetupCompletePage : Fragment() {
 
     private fun onBoardingFinish(){
         val finished = true
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         sharedPreferences.edit().putBoolean("ON_BOARDING_FINISHED", finished).apply()
-    }
-
-    private fun createNotificationChanel() {
-        val channel = NotificationChannel(
-            "channel_dia_reminder","Reminder", NotificationManager.IMPORTANCE_DEFAULT
-        ).apply {
-            description = "Used to remind about entering your activities data"
-        }
-        val notificationManager: NotificationManager = requireContext()
-            .getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.createNotificationChannel(channel)
     }
 
 }

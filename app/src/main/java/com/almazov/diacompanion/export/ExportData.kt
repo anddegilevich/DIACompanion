@@ -75,7 +75,7 @@ class ExportData : Fragment() {
         appDatabaseViewModel = ViewModelProvider(this)[AppDatabaseViewModel::class.java]
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
 
-        appType = sharedPreferences.getString("APP_TYPE", "GDM RCT")!!
+        appType = sharedPreferences.getString("APP_TYPE", "GDMRCT")!!
 
         btn_export_to_slxs.setOnClickListener {
             lf_export.displayedChild = 1
@@ -158,7 +158,9 @@ class ExportData : Fragment() {
         val xlWsWeight = xlWb.createSheet("Масса тела")
         val xlWsKetone = xlWb.createSheet("Кетоны в моче")
         val xlWsFullDay = xlWb.createSheet("Полные дни")
-        val xlWsQuestionnaire = xlWb.createSheet("Данные опроса")
+        val xlWsQuestionnaire = if (appType == "GDM" || appType == "GDMRCT") {
+            xlWb.createSheet("Данные опроса")
+        } else null
 
         GlobalScope.launch(Dispatchers.Main) {
 
@@ -184,7 +186,9 @@ class ExportData : Fragment() {
                 getFullDaysTable(xlWsFullDay)
             }
             val questionnaireSheetCompleted = GlobalScope.async(Dispatchers.Main) {
-                getQuestionnaireTable(xlWsQuestionnaire)
+                if (xlWsQuestionnaire != null) {
+                    getQuestionnaireTable(xlWsQuestionnaire)
+                } else true
             }
             if (sugarLevelInsulinSheetCompleted.await() and workoutSleepSheetCompleted.await() and
                 weightSheetCompleted.await() and ketoneSheetCompleted.await() and
@@ -954,7 +958,7 @@ class ExportData : Fragment() {
                             }
                             createCell(k + 1).apply {
                                 val slString = mealList[j].mealWithFoods.mealEntity.hyperglycemiaChance?.let {hyperglycemiaChance ->
-                                    (hyperglycemiaChance * 100.0).toInt().toString()
+                                    setTwoDigits(hyperglycemiaChance * 100.0).toString()
                                 } ?: ""
                                 setCellValue(slString)
                                 cellStyle = style
@@ -1154,7 +1158,7 @@ class ExportData : Fragment() {
                         setTwoDigits(fatDay.sum()),
                         setTwoDigits(ecDay.sum()),
                         setTwoDigits(pvDay.sum()),
-                        setTwoDigits(giDay.sum()),
+                        null,
                         null,
                         null,
                         setTwoDigits(waterDay.sum()),
@@ -1638,9 +1642,13 @@ class ExportData : Fragment() {
             }
         }
 
-        val listRowNames = mutableListOf(
+        val listRowNamesSugar = mutableListOf(
             "Натощак", "После завтрака", "После обеда", "После ужина",
             "Дополнительно", "При родах"
+        )
+        val listRowNamesInsulin = mutableListOf(
+            "Натощак", "До завтрака", "До обеда", "До ужина",
+            "Дополнительно", "Левемир"
         )
         sheet.createRow(2).apply {
 
@@ -1656,7 +1664,7 @@ class ExportData : Fragment() {
                 cellStyle = styleYellow
             }
             var i = 1
-            for (rowName in listRowNames) {
+            for (rowName in listRowNamesSugar) {
                 sheet.addMergedRegion(CellRangeAddress(2, 2, i * 2, i * 2 + 1))
                 createCell(2 * i).apply {
                     setCellValue(rowName)
@@ -1664,10 +1672,8 @@ class ExportData : Fragment() {
                 }
                 i += 1
             }
-            listRowNames.removeLast()
-            listRowNames.add("Левемир")
             i = 1
-            for (rowName in listRowNames) {
+            for (rowName in listRowNamesInsulin) {
                 sheet.addMergedRegion(CellRangeAddress(2, 2, 12 + i * 3, 12 + i * 3 + 2))
                 createCell(12 + 3 * i).apply {
                     setCellValue(rowName)
@@ -1687,9 +1693,9 @@ class ExportData : Fragment() {
         )
         val insulinColumnIndex = mutableMapOf(
             "Натощак" to 15,
-            "После завтрака" to 18,
-            "После обеда" to 21,
-            "После ужина" to 24,
+            "До завтрака" to 18,
+            "До обеда" to 21,
+            "До ужина" to 24,
             "Дополнительно" to 27
         )
         val sugarLevelList = sugarLevelRecords.await().toList()

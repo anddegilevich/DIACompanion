@@ -1,7 +1,7 @@
 <resources>
 
     //Global
-    <string name="app_name" translatable="false">DIA Companion</string>
+    <string name="app_name" translatable="false">Диа Компаньон</string>
     <string name="Next">Next</string>
     <string name="Back">Back</string>
     <string name="LogIn">Log in</string>
@@ -89,23 +89,13 @@
 
     //AppType
     <string name="GDMRCT" translatable="false">ГСД, диета (с прогнозированием)</string>
-    <string name="GDMRCTDescription" translatable="false">Версия позволяет вести контроль за приемами
-        пищи, физической активностью и уровнем сахара в крови. В версию внедрена рекомендательная
-        система, помогающая корректировать прием пищи пациенток.\n
-        Предназначен для беременных пациенток, страдающих ГСД</string>
+    <string name="GDMRCTDescription" translatable="false">Версия позволяет вести контроль за приемами пищи, физической активностью и уровнем глюкозы в крови. Содержит рекомендательную систему, помогающую корректировать прием пищи. Предназначена для беременных с ГСД на диетотерапии.</string>
     <string name="GDM" translatable="false">ГСД, диета + инсулинотерапия</string>
-    <string name="GDMDescription" translatable="false">Версия позволяет вести контроль за приемами
-        пищи, физической активностью и уровнем сахара в крови.\n
-        Предназначен для беременных пациенток, страдающих ГСД
-    </string>
+    <string name="GDMDescription" translatable="false">Версия позволяет вести контроль за приемами пищи, физической активностью, уровнем глюкозы в крови и дозами инсулина. Предназначена для беременных с ГСД на инсулинотерапии.</string>
     <string name="MS" translatable="false">Дневник питания и самоконтроля</string>
-    <string name="MSDescription" translatable="false">Версия позволяет вести контроль за приемами
-        пищи, физической активностью и уровнем сахара в крови.\n
-        Предназначен для пациентов, страдающих диабетом</string>
+    <string name="MSDescription" translatable="false">Версия позволяет вести контроль за приемами пищи, физической активностью, уровнем глюкозы в крови и дозами инсулина. Предназначена для пациентов с сахарным диабетом.</string>
     <string name="PCOS" translatable="false">Дневник питания</string>
-    <string name="PCOSDescription" translatable="false">Версия предоставляет функционал
-        для ведения данных о приемах пищи и физической активности.\n
-        Подходит для пациентов, не болеющих диабетом</string>
+    <string name="PCOSDescription" translatable="false">Версия позволяет вести контроль за приемами пищи и физической активностью.</string>
 
     //Notifications
     <string name="EnableNotifications">Enable notifications</string>

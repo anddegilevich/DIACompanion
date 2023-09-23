@@ -187,10 +187,26 @@
                     style="@style/MainText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="Неделя беременности на момент регистрации"/>
+
+                <EditText
+                    style="@style/EditText"
+                    android:id="@+id/editTextWeek"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="3"
+                    android:inputType="number"
+                    android:hint="Номер недели" />
+
+                <TextView
+                    android:textAlignment="center"
+                    style="@style/MainText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="@string/PregnancyStart"/>
 
                 <TextView
-                    android:id="@+id/tv_pregnancy_date"
+                    android:id="@+id/tv_registration_date"
                     style="@style/EditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

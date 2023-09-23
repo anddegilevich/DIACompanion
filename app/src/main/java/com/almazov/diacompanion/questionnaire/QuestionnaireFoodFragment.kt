@@ -168,6 +168,15 @@ class QuestionnaireFoodFragment : Fragment() {
                 R.layout.spinner_item,
                 SixTwelveRange.values().map { it.text })
 
+            spinnerVegetablesRawBefore.adapter = ArrayAdapter(
+                requireContext(),
+                R.layout.spinner_item,
+                SixTwelveRange.values().map { it.text })
+            spinnerVegetablesRaw.adapter = ArrayAdapter(
+                requireContext(),
+                R.layout.spinner_item,
+                SixTwelveRange.values().map { it.text })
+
             spinnerAlcoholBefore.adapter = ArrayAdapter(
                 requireContext(),
                 R.layout.spinner_item,
@@ -260,6 +269,9 @@ class QuestionnaireFoodFragment : Fragment() {
                     spinnerVegetablesBefore.setSelectedByTitle(vegetablesBefore)
                     spinnerVegetables.setSelectedByTitle(vegetables)
 
+                    spinnerVegetablesRawBefore.setSelectedByTitle(vegetablesRawBefore)
+                    spinnerVegetablesRaw.setSelectedByTitle(vegetablesRaw)
+
                     spinnerAlcoholBefore.setSelectedByTitle(alcoholBefore)
                     spinnerAlcohol.setSelectedByTitle(alcohol)
 
@@ -307,6 +319,8 @@ class QuestionnaireFoodFragment : Fragment() {
                 sauce = spinnerSauce.selectedItem.toString()
                 vegetablesBefore = spinnerVegetablesBefore.selectedItem.toString()
                 vegetables = spinnerVegetables.selectedItem.toString()
+                vegetablesRawBefore = spinnerVegetablesRawBefore.selectedItem.toString()
+                vegetablesRaw = spinnerVegetablesRaw.selectedItem.toString()
                 alcoholBefore = spinnerAlcoholBefore.selectedItem.toString()
                 alcohol = spinnerAlcohol.selectedItem.toString()
                 sweetDrinksBefore = spinnerSweetDrinksBefore.selectedItem.toString()

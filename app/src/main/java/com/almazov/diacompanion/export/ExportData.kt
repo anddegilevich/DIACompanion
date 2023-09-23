@@ -368,8 +368,10 @@ class ExportData : Fragment() {
             "Укажите частоту потребления любого хлеба в неделю во время беременности",
             "Укажите частоту потребления соусов и майонеза в неделю до беременности",
             "Укажите частоту потребления соусов и майонеза в неделю во время беременности",
-            "Укажите частоту потребления овощей (сырых или приготовленных) в неделю до беременности",
-            "Укажите частоту потребления овощей (сырых или приготовленных) в неделю во время беременности",
+            "Укажите частоту потребления овощей и овощных салатов (сырых и/или вареных) в неделю до беременности",
+            "Укажите частоту потребления овощей и овощных салатов (сырых и/или вареных)в неделю во время беременности",
+            "Укажите частоту потребления сырых овощей и салатов из сырых овощей в неделю до беременности",
+            "Укажите частоту потребления сырых овощей и салатов из сырых овощей в неделю во время беременности",
             "Укажите частоту потребления алкоголя в неделю до беременности",
             "Укажите частоту потребления алкоголя в неделю во время беременности",
             "Укажите частоту потребления сладких напитков в неделю до беременности",
@@ -443,6 +445,8 @@ class ExportData : Fragment() {
                 sauce,
                 vegetablesBefore,
                 vegetables,
+                vegetablesRawBefore,
+                vegetablesRaw,
                 alcoholBefore,
                 alcohol,
                 sweetDrinksBefore,
@@ -758,9 +762,10 @@ class ExportData : Fragment() {
                                     ecMeal.add(weight * food.food.ec)
                                 }
                                 if (food.food.gi != null) {
-                                    cellGI += "\n" + setTwoDigits(weight * food.food.gi).toString() + "\n"
-                                    giMeal.add(weight * food.food.gi)
-                                    cellGL += "\n" + setTwoDigits(weight * food.food.carbo!! * food.food.gi).toString() + "\n"
+                                    val carbos = food.food.carbo ?: 0.0
+                                    cellGI += "\n" + setTwoDigits(food.food.gi).toString() + "\n"
+                                    giMeal.add(weight * carbos * food.food.gi)
+                                    cellGL += "\n" + setTwoDigits(weight * carbos * food.food.gi / 100.0).toString() + "\n"
                                 }
 
                                 if (food.food.water != null) {
@@ -987,7 +992,7 @@ class ExportData : Fragment() {
                     prot.add(Pair(protMeal.sum(), date.date))
                     fat.add(Pair(fatMeal.sum(), date.date))
                     ec.add(Pair(ecMeal.sum(), date.date))
-                    gi.add(Pair(giMeal.sum(), date.date))
+                    gi.add(Pair(giMeal.sum() / carboMeal.sum(), date.date))
                     water.add(Pair(waterMeal.sum(), date.date))
                     nzhk.add(Pair(nzhkMeal.sum(), date.date))
                     hol.add(Pair(holMeal.sum(), date.date))

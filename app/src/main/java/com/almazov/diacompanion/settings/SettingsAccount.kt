@@ -2,7 +2,6 @@ package com.almazov.diacompanion.settings
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.telephony.PhoneNumberFormattingTextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +14,11 @@ import com.almazov.diacompanion.base.openDatePicker
 import com.almazov.diacompanion.base.slideView
 import kotlinx.android.synthetic.main.fragment_settings_account.*
 import kotlinx.android.synthetic.main.fragment_settings_account.view.*
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Calendar
+import java.util.Locale
 import kotlin.math.pow
 
 
@@ -26,6 +30,8 @@ class SettingsAccount : Fragment() {
     private lateinit var patronymic: String
     private lateinit var birthDate: String
     private lateinit var pregnancyDate: String
+    private lateinit var registrationDate: String
+    private var pregnancyWeek: Int = 1
     private var weigth = 0f
     private var heigth = 0f
     private lateinit var phone: String
@@ -53,8 +59,8 @@ class SettingsAccount : Fragment() {
         }
         if ((apptype == "GDMRCT") or (apptype == "GDM")){
             slideView(view.layout_pregnancy)
-            view.tv_pregnancy_date.setOnClickListener {
-                openDatePicker(requireFragmentManager(), tv_pregnancy_date)
+            view.tv_registration_date.setOnClickListener {
+                openDatePicker(requireFragmentManager(), tv_registration_date)
             }
             view.tv_weight_kg.setText(R.string.WeightKgPregnancy)
         }
@@ -69,6 +75,8 @@ class SettingsAccount : Fragment() {
             patronymic = sharedPreferences.getString("PATRONYMIC","")!!
             birthDate = sharedPreferences.getString("BIRTH_DATE","01.01.2000")!!
             pregnancyDate = sharedPreferences.getString("PREGNANCY_DATE","01.01.2000")!!
+            registrationDate = sharedPreferences.getString("REGISTRATION_DATE","01.01.2000")!!
+            pregnancyWeek = sharedPreferences.getInt("PREGNANCY_WEEK",1)
             weigth = sharedPreferences.getFloat("WEIGHT_BEFORE_PREGNANCY",0f)
             heigth = sharedPreferences.getFloat("HEIGHT",0f)
             phone = sharedPreferences.getString("PHONE","")!!
@@ -81,7 +89,8 @@ class SettingsAccount : Fragment() {
             view.editTextPatronymic.setText(patronymic)
 
             view.tv_birth_date.text = birthDate
-            view.tv_pregnancy_date.text = pregnancyDate
+            view.tv_registration_date.text = registrationDate
+            view.editTextWeek.setText(pregnancyWeek.toString())
 
             view.editTextWeight.setText(weigth.toString())
             view.editTextHeight.setText(heigth.toString())
@@ -90,7 +99,10 @@ class SettingsAccount : Fragment() {
             view.spinnerDoctor.setSelection(resources.getStringArray(R.array.AttendingDoctors).indexOf(attendingDoctor))
             view.editTextPatientId.setText(patientId.toString())
 
+        } else {
+            view.tv_registration_date.text = getLocalDateAsString()
         }
+        view.tv_registration_date.isClickable = !finished
 
         view.btn_save.setOnClickListener {
             if (fieldsAreFilled()) {
@@ -116,7 +128,9 @@ class SettingsAccount : Fragment() {
         secondName = editTextLastName.text.toString()
         patronymic = editTextPatronymic.text.toString()
         birthDate = tv_birth_date.text.toString()
-        pregnancyDate = tv_pregnancy_date.text.toString()
+        registrationDate = tv_registration_date.text.toString()
+        pregnancyWeek = editTextWeek.text.toString().ifEmpty { "1" }.toInt()
+        pregnancyDate = getDateNWeeksAgo(registrationDate, pregnancyWeek)
 
         weigth = editTextWeight.text.toString().toFloat()
         heigth = editTextHeight.text.toString().toFloat()
@@ -144,6 +158,8 @@ class SettingsAccount : Fragment() {
             putInt("PATIENT_ID",patientId)
             if ((apptype == "GDMRCT") or (apptype == "GDM")){
                 putString("PREGNANCY_DATE",pregnancyDate)
+                putString("REGISTRATION_DATE",registrationDate)
+                putInt("PREGNANCY_WEEK",pregnancyWeek)
             }
         }?.apply()
     }
@@ -154,5 +170,24 @@ class SettingsAccount : Fragment() {
             and !editTextWeight.text.isEmpty() and !editTextHeight.text.isEmpty()
             and !editTextPatientId.text.isEmpty())
     }
+
+    private fun getDateNWeeksAgo(dateString: String, n: Int): String {
+        val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+        val date = dateFormat.parse(dateString)
+
+        val calendar = Calendar.getInstance()
+        calendar.time = date
+        calendar.add(Calendar.WEEK_OF_YEAR, -n)
+
+        return dateFormat.format(calendar.time)
+    }
+
+    private fun getLocalDateAsString(): String {
+        val currentDate = LocalDate.now()
+        val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+
+        return currentDate.format(formatter)
+    }
+
 
 }

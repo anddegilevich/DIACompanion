@@ -390,7 +390,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="numberDecimal"
-            android:hint="Уровень триглицеридов" />
+            android:hint="Уровень триглицеридов, ммоль/л" />
 
         <EditText
             style="@style/EditText"
@@ -399,7 +399,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="numberDecimal"
-            android:hint="Уровень холестерина" />
+            android:hint="Уровень холестерина, ммоль/л" />
 
         <EditText
             style="@style/EditText"

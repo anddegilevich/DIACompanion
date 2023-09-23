@@ -111,6 +111,10 @@ data class QuestionnaireEntity (
     var vegetablesBefore: String? = null,
     var vegetables: String? = null,
 
+    //Vegetables (raw)
+    var vegetablesRawBefore: String? = null,
+    var vegetablesRaw: String? = null,
+
     //Alcohol
     var alcoholBefore: String? = null,
     var alcohol: String? = null,

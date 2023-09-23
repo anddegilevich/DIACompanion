@@ -52,7 +52,7 @@
     <string name="Gender">Пол</string>
     <string name="Height">Рост</string>
     <string name="AttendingDoctor">Лечащий доктор</string>
-    <string name="PregnancyStart">Дата начала беременности</string>
+    <string name="PregnancyStart">Дата регистрации</string>
     <string name="OnBWelcome">Добро пожаловать в\nDIA Companion!</string>
     <string name="OnBAboutApp">Пожалуйста, выполните начальные шаги по настройке вашего приложения.</string>
     <string name="OnBLetsStart">Начнем!</string>

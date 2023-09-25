@@ -345,14 +345,18 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
     }
 
     private fun getTimeIntervalPredictors(time: Long) {
+        getSixHourPredictors(time)
+        getTwelveHourPredictors(time)
+    }
+
+    private fun getTwelveHourPredictors(time: Long) {
         CoroutineScope(Dispatchers.Main).launch {
-            val isSixHoursLoaded = CoroutineScope(Dispatchers.IO).async {
-                getSixHourPredictors(time)
-            }
             val isTwelveHoursLoaded = CoroutineScope(Dispatchers.IO).async {
-                getTwelveHourPredictors(time)
+                val records = appDatabaseViewModel.getMealWithFoods12HoursAgo(time)
+                pv12 = getPv(records)
+                true
             }
-            if (isSixHoursLoaded.await() && isTwelveHoursLoaded.await()) {
+            if (isTwelveHoursLoaded.await()) {
                 if (checkbox_sugar_level.isChecked
                     and !edit_text_sugar_level.text.isNullOrEmpty()
                     and !foodList.isNullOrEmpty()
@@ -361,16 +365,20 @@ class MealAddRecord : Fragment(), FoodInMealListAdapter.InterfaceFoodInMeal {
         }
     }
 
-    private suspend fun getTwelveHourPredictors(time: Long): Boolean {
-        val records = appDatabaseViewModel.getMealWithFoods12HoursAgo(time)
-        pv12 = getPv(records)
-        return true
-    }
-
-    private suspend fun getSixHourPredictors(time: Long): Boolean {
-        val records = appDatabaseViewModel.getMealWithFoods6HoursAgo(time)
-        sixHoursPredictors = getSixHoursPredictors(records)
-        return true
+    private fun getSixHourPredictors(time: Long) {
+        CoroutineScope(Dispatchers.Main).launch {
+            val isSixHoursLoaded = CoroutineScope(Dispatchers.IO).async {
+                val records = appDatabaseViewModel.getMealWithFoods6HoursAgo(time)
+                sixHoursPredictors = getSixHoursPredictors(records)
+                true
+            }
+            if (isSixHoursLoaded.await()) {
+                if (checkbox_sugar_level.isChecked
+                    and !edit_text_sugar_level.text.isNullOrEmpty()
+                    and !foodList.isNullOrEmpty()
+                ) updateRecommendation()
+            }
+        }
     }
 
     private fun deleteRecord() {

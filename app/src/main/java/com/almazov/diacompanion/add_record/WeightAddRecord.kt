@@ -26,7 +26,6 @@ import com.almazov.diacompanion.data.WeightEntity
 import kotlinx.android.synthetic.main.fragment_weight_add_record.*
 import kotlinx.android.synthetic.main.fragment_weight_add_record.btn_delete
 import kotlinx.android.synthetic.main.fragment_weight_add_record.tv_title
-import kotlin.math.pow
 
 
 class WeightAddRecord : Fragment() {
@@ -96,11 +95,8 @@ class WeightAddRecord : Fragment() {
                 val sharedPreferences =
                     PreferenceManager.getDefaultSharedPreferences(requireContext())
                 val editor = sharedPreferences.edit()
-                val height = sharedPreferences.getFloat("HEIGHT", 1f)
-                val bmi = weight / height.pow(2)
                 editor?.apply {
                     putFloat("WEIGHT", weight)
-                    putFloat("BMI", bmi)
                 }?.apply()
             }
         })

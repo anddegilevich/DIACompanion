@@ -136,9 +136,7 @@ class SettingsAccount : Fragment() {
 
         weigth = editTextWeight.text.toString().toFloat()
         heigth = editTextHeight.text.toString().toFloat()
-        val bmi  = weigth/heigth.pow(2)
-        /*phone = editTextPhone.text.toString()
-        email = editTextEmail.text.toString()*/
+        val bmi  = weigth/(heigth / 100f).pow(2)
         attendingDoctor = spinnerDoctor.selectedItem.toString()
         patientId = editTextPatientId.text.toString().toInt()
 
@@ -148,14 +146,11 @@ class SettingsAccount : Fragment() {
             putString("PATRONYMIC",patronymic)
             putString("BIRTH_DATE",birthDate)
             putFloat("WEIGHT_BEFORE_PREGNANCY",weigth)
+            putFloat("BMI",bmi)
             if (!finished) {
-                val bmi  = weigth/heigth.pow(2)
                 putFloat("WEIGHT",weigth)
-                putFloat("BMI",bmi)
             }
             putFloat("HEIGHT",heigth)
-            /*putString("PHONE",phone)
-            putString("EMAIL",email)*/
             putString("ATTENDING_DOCTOR",attendingDoctor)
             putInt("PATIENT_ID",patientId)
             if ((apptype == "GDMRCT") or (apptype == "GDM")){
